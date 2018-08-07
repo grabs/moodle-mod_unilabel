@@ -1,0 +1,25 @@
+{{#showintro}}
+    {{{intro}}}
+{{/showintro}}
+{{#hasitems}}
+    <div class="row mx-0">
+        {{#items}}
+            <div class="text-center col-md-4 col-sm-6 col-12">
+                <!-- The overlay is used as button to show the modal dialog -->
+                <a href="{{{courseurl}}}">
+                    <div class="unilabel-overlay-effect bg-primary h-100 w-100"></div>
+                </a>
+                <h3>{{title}}</h3>
+                {{#imageurl}}
+                    <div style="width:100%;">
+                        <img class="img-fluid mh-100 mb-3" src="{{{imageurl}}}" style="object-fit:contain;"/>
+                    </div>
+                {{/imageurl}}
+            </div>
+        {{/items}}
+    </div>
+{{/hasitems}}
+
+{{^hasitems}}
+    <span>{{#str}} nocontent , unilabeltype_courseteaser {{/str}}</span>
+{{/hasitems}}

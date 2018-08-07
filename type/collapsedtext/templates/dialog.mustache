@@ -1,0 +1,28 @@
+<!-- Link to Open the Modal -->
+<span class="unilabeltype-collapsed-dialog-button">
+    <a href="" data-toggle="modal" data-target="#unilabeltype-collapsed-dialog-{{cmid}}">
+        {{title}}
+    </a>
+</span>
+<!-- The Modal -->
+<div class="modal{{#useanimation}} fade{{/useanimation}}" id="unilabeltype-collapsed-dialog-{{cmid}}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">{{title}}</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                {{{content}}}
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">{{#str}} closebuttontitle {{/str}}</button>
+            </div>
+        </div>
+    </div>
+</div>

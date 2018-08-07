@@ -1,0 +1,25 @@
+{{^useanimation}}
+    <div class="unilabeltype-details">
+        <details>
+            <summary>{{{title}}}</summary>
+            <div>{{{content}}}</div>
+        </details>
+    </div>
+{{/useanimation}}
+
+{{#useanimation}}
+    <div class="unilabeltype-collapsed">
+        <a class="unilabel-title collapsed"
+                data-toggle="collapse"
+                href="#unilabeltype-collapsed-{{cmid}}"
+                role="button"
+                aria-expanded="false"
+                aria-controls="unilabeltype-collapsed-{{cmid}}"
+        >
+            <span class="unilabeltype-collapsed-caret"> </span> {{{title}}}
+        </a>
+        <div class="collapse" id="unilabeltype-collapsed-{{cmid}}">
+            {{{content}}}
+        </div>
+    </div>
+{{/useanimation}}

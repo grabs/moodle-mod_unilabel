@@ -1,0 +1,26 @@
+{{#showintro}}
+    {{{intro}}}
+{{/showintro}}
+{{#hasitems}}
+    <div class="row mx-0">
+        {{#items}}
+            <div class="text-center col-md-4 col-sm-6 col-12">
+                <!-- The overlay is used as button to show the modal dialog -->
+                <a href="#" data-toggle="modal" data-target="#topicteaser-modal-{{cmid}}-{{nr}}">
+                    <div class="unilabel-overlay-effect bg-primary h-100 w-100"></div>
+                </a>
+                <h3>{{name}}</h3>
+                {{{summary}}}
+            </div>
+        {{/items}}
+    </div>
+
+    {{#items}}
+        {{> unilabeltype_topicteaser/dialog }}
+    {{/items}}
+
+{{/hasitems}}
+
+{{^hasitems}}
+    <span>{{#str}} nocontent , unilabeltype_topicteaser {{/str}}</span>
+{{/hasitems}}

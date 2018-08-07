@@ -1,0 +1,46 @@
+{{#showintro}}
+    {{{intro}}}
+{{/showintro}}
+{{#hasitems}}
+    <div id="unilabeltype-topicteaser-{{cmid}}" class="carousel slide my-2" data-ride="carousel" data-interval="{{interval}}000">
+
+        <!-- Indicators -->
+        <ul class="carousel-indicators">
+            {{#items}}
+                <li data-target="#unilabeltype-topicteaser-{{cmid}}" data-slide-to="{{nr}}"{{#first}} class="active"{{/first}}></li>
+            {{/items}}
+        </ul>
+
+        <!-- The slideshow -->
+        <div class="carousel-inner">
+            {{#items}}
+                <div class="carousel-item text-center py-4{{#first}} active{{/first}}">
+                    <!-- The overlay is used as button to show the modal dialog -->
+                    <a href="#" data-toggle="modal" data-target="#topicteaser-modal-{{cmid}}-{{nr}}">
+                        <div class="unilabel-overlay-effect bg-primary h-100 w-100"></div>
+                    </a>
+                    <h3>{{name}}</h3>
+                    {{{summary}}}
+                </div>
+            {{/items}}
+        </div>
+
+        <!-- Left and right controls -->
+        <a class="carousel-control-prev" href="#unilabeltype-topicteaser-{{cmid}}" data-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+            {{! <i class="fa fa-angle-left" style="color:#000000;font-size:40px;font-weight:bold;"> </i> }}
+        </a>
+        <a class="carousel-control-next" href="#unilabeltype-topicteaser-{{cmid}}" data-slide="next">
+            <span class="carousel-control-next-icon"></span>
+            {{! <i class="fa fa-angle-right" style="color:#000000;font-size:40px;font-weight:bold;"> </i> }}
+        </a>
+    </div>
+
+    {{#items}}
+        {{> unilabeltype_topicteaser/dialog }}
+    {{/items}}
+{{/hasitems}}
+
+{{^hasitems}}
+    <span>{{#str}} nocontent , unilabeltype_topicteaser {{/str}}</span>
+{{/hasitems}}
