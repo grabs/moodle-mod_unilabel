@@ -29,7 +29,7 @@ $page = new admin_settingpage('unilabeltype_topicteaser', get_string('pluginname
 
 $topicteasersettings = array();
 
-$numbers = array_combine(range(1, 10), range(1,10));
+$numbers = array_combine(range(1, 10), range(1, 10));
 $topicteasersettings[] = new admin_setting_configselect('unilabeltype_topicteaser/carouselinterval',
     get_string('default_carouselinterval', 'unilabeltype_topicteaser'),
     '',

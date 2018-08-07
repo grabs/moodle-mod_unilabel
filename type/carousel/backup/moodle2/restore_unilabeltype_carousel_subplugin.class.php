@@ -27,10 +27,6 @@ defined('MOODLE_INTERNAL') || die();
 
 class restore_unilabeltype_carousel_subplugin extends restore_subplugin {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // mappings of XML paths to the processable methods
-    ////////////////////////////////////////////////////////////////////////////
-
     /**
      * Returns the paths to be handled by the subplugin at unilabel level
      */
@@ -46,12 +42,8 @@ class restore_unilabeltype_carousel_subplugin extends restore_subplugin {
         $elepath = $this->get_pathfor('/unilabeltype_carousel/unilabeltype_carousel_slide');
         $paths[] = new restore_path_element($elename, $elepath);
 
-        return $paths; // And we return the interesting paths
+        return $paths; // And we return the interesting paths.
     }
-
-    ////////////////////////////////////////////////////////////////////////////
-    // defined path elements are dispatched to the following methods
-    ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Processes the carousel element
@@ -80,8 +72,7 @@ class restore_unilabeltype_carousel_subplugin extends restore_subplugin {
         $newitemid = $DB->insert_record('unilabeltype_carousel_slide', $data);
         $this->set_mapping($this->get_namefor('slide'), $oldid, $newitemid, true);
 
-        // Process files
-        // $this->add_related_files('unilabeltype_carousel', 'image', 'unilabeltype_carousel_slide', null, $oldid);
+        // Process files.
         $this->add_related_files('unilabeltype_carousel', 'image', 'unilabeltype_carousel_slide');
         $this->add_related_files('unilabeltype_carousel', 'image_mobile', 'unilabeltype_carousel_slide');
     }

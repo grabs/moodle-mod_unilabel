@@ -38,7 +38,7 @@ function unilabeltype_courseteaser_pluginfile($course, $cm, $context, $filearea,
         return false;
     }
 
-    // finally send the file
+    // Finally send the file.
     send_stored_file($file, 0, 0, true);
     return false;
- }
+}

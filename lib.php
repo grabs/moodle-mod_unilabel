@@ -25,11 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die;
 
-/** unilabel_MAX_NAME_LENGTH = 50 */
-define('unilabel_MAX_NAME_LENGTH', 50);
-
 /**
- * @uses unilabel_MAX_NAME_LENGTH
  * @param object $label
  * @return string
  */
@@ -129,14 +125,10 @@ function unilabel_get_coursemodule_info($coursemodule) {
     global $DB;
 
     if ($unilabel = $DB->get_record('unilabel', ['id' => $coursemodule->instance], 'id, name, intro, introformat, unilabeltype')) {
-        // $renderer = $PAGE->get_renderer('mod_unilabel');
-        // $unilabeltype = \mod_unilabel\factory::get_plugin($unilabel->unilabeltype);
-
-        // $content = $unilabeltype->get_content($unilabel, $coursemodule, $renderer);
         $content = format_module_intro('unilabel', $unilabel, $coursemodule->id, false);
 
         $info = new cached_cm_info();
-        // no filtering hre because this info is cached and filtered later
+        // No filtering here because this info is cached and filtered later.
         $info->content = $content;
         $info->name = $unilabel->name;
         return $info;
@@ -151,15 +143,14 @@ function unilabel_cm_info_view(\cm_info $cm) {
     $renderer = $PAGE->get_renderer('mod_unilabel');
     $unilabel = $DB->get_record('unilabel', ['id' => $cm->instance], 'id, name, intro, introformat, unilabeltype');
     $unilabeltype = \mod_unilabel\factory::get_plugin($unilabel->unilabeltype);
-    $content = array('content' => $unilabeltype->get_content($unilabel, $cm, $renderer));
-    // $content = array('content' => $cm->content);
-// print_object($content);exit;
+    $content = ['content' => $unilabeltype->get_content($unilabel, $cm, $renderer)];
+
     // Add the edit link if needed.
     if ($PAGE->user_is_editing()) {
         if (has_capability('mod/unilabel:edit', $cm->context)) {
             $editlink = new \stdClass();
             $editlink->title = get_string('editcontent', 'mod_unilabel');
-            $editlink->url = new \moodle_url('/mod/unilabel/edit_content.php', array('cmid' => $cm->id));
+            $editlink->url = new \moodle_url('/mod/unilabel/edit_content.php', ['cmid' => $cm->id]);
             $content['editlink'] = $editlink;
         }
     }
@@ -203,18 +194,29 @@ function unilabel_get_extra_capabilities() {
  */
 function unilabel_supports($feature) {
     switch ($feature) {
-        case FEATURE_IDNUMBER:                return false;
-        case FEATURE_GROUPS:                  return false;
-        case FEATURE_GROUPINGS:               return false;
-        case FEATURE_MOD_INTRO:               return true;
-        case FEATURE_COMPLETION_TRACKS_VIEWS: return false;
-        case FEATURE_GRADE_HAS_GRADE:         return false;
-        case FEATURE_GRADE_OUTCOMES:          return false;
-        case FEATURE_MOD_ARCHETYPE:           return MOD_ARCHETYPE_RESOURCE;
-        case FEATURE_BACKUP_MOODLE2:          return true;
-        case FEATURE_NO_VIEW_LINK:            return true;
+        case FEATURE_IDNUMBER:
+            return false;
+        case FEATURE_GROUPS:
+            return false;
+        case FEATURE_GROUPINGS:
+            return false;
+        case FEATURE_MOD_INTRO:
+            return true;
+        case FEATURE_COMPLETION_TRACKS_VIEWS:
+            return false;
+        case FEATURE_GRADE_HAS_GRADE:
+            return false;
+        case FEATURE_GRADE_OUTCOMES:
+            return false;
+        case FEATURE_MOD_ARCHETYPE:
+            return MOD_ARCHETYPE_RESOURCE;
+        case FEATURE_BACKUP_MOODLE2:
+            return true;
+        case FEATURE_NO_VIEW_LINK:
+            return true;
 
-        default: return null;
+        default:
+            return null;
     }
 }
 

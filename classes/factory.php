@@ -65,8 +65,6 @@ class factory {
         $unilabletype = self::get_plugin($unilabel->unilabeltype);
 
         if ($unilabletype->save_content($formdata, $unilabel)) {
-            // $course = get_course($unilabel->course);
-            // \course_modinfo::build_course_cache($course);
             return true;
         }
         return false;

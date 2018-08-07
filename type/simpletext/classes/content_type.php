@@ -29,21 +29,10 @@ defined('MOODLE_INTERNAL') || die;
 
 class content_type extends \mod_unilabel\content_type {
     public function add_form_fragment(\mod_unilabel\edit_content_form $form, \context $context) {
-        // $mform->addElement('editor',
-        //     'introeditor',
-        //     get_string('unilabeltext', 'mod_unilabel'),
-        //     array('rows' => 10),
-        //     array('maxfiles' => EDITOR_UNLIMITED_FILES, 'noclean' => true, 'context' => $context, 'subdirs' => true)
-        // );
-        // $mform->setType('introeditor', PARAM_RAW); // no XSS prevention here, users must be trusted
         return null;
     }
 
     public function get_form_default($data, $unilabel) {
-        // $data['introeditor'] = array(
-        //     'text' => $unilabel->intro,
-        //     'format' => $unilabel->introformat
-        // );
         return $data;
     }
 

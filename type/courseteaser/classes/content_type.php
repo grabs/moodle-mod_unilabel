@@ -51,7 +51,7 @@ class content_type extends \mod_unilabel\content_type {
     }
 
     public function get_form_default($data, $unilabel) {
-        global $DB; /** @var \moodle_database $DB */
+        global $DB;
         $config = get_config($this->get_namespace());
         $prefix = $this->get_namespace().'_';
 
@@ -109,13 +109,13 @@ class content_type extends \mod_unilabel\content_type {
     }
 
     public function delete_content($unilabelid) {
-        global $DB; /** @var \moodle_database $DB */
+        global $DB;
 
         $DB->delete_records($this->get_namespace(), array('unilabelid' => $unilabelid));
     }
 
     public function save_content($formdata, $unilabel) {
-        global $DB; /** @var \moodle_database $DB */
+        global $DB;
 
         if (!$unilabletyperecord = $this->load_unilabeltype_record($unilabel->id)) {
             $unilabletyperecord = new \stdClass();
@@ -137,7 +137,7 @@ class content_type extends \mod_unilabel\content_type {
     }
 
     private function load_unilabeltype_record($unilabelid) {
-        global $DB; /** @var \moodle_database $DB */
+        global $DB;
 
         if (empty($this->unilabeltyperecord)) {
             $this->unilabeltyperecord = $DB->get_record($this->get_namespace(), array('unilabelid' => $unilabelid));
@@ -171,9 +171,10 @@ class content_type extends \mod_unilabel\content_type {
             $item->title = $course->fullname;
             if ($cil->has_course_overviewfiles()) {
                 $overviewfiles = $cil->get_course_overviewfiles();
-                $file = array_shift($overviewfiles); // We have to build our own pluginfile url so we can control the output by our self.
 
+                $file = array_shift($overviewfiles);
 
+                // We have to build our own pluginfile url so we can control the output by our self.
                 $imageurl = \moodle_url::make_pluginfile_url(
                     $file->get_contextid(),
                     $this->get_namespace(),
@@ -182,16 +183,13 @@ class content_type extends \mod_unilabel\content_type {
                     '/',
                     $file->get_filename()
                 );
-//                 print_object($imageurl->out());
                 $item->imageurl = $imageurl;
             }
-//             $section = self::get_section_null_html($id);
             $item->nr = $counter;
             if ($counter == 0) {
                 $item->first = true;
             }
             $counter++;
-//             $sections[] = $section;
             $items[] = $item;
         }
         return $items;

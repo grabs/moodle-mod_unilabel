@@ -52,7 +52,7 @@ class content_type extends \mod_unilabel\content_type {
     }
 
     public function get_form_default($data, $unilabel) {
-        global $DB; /** @var \moodle_database $DB */
+        global $DB;
         $config = get_config($this->get_namespace());
         $prefix = $this->get_namespace().'_';
 
@@ -105,13 +105,13 @@ class content_type extends \mod_unilabel\content_type {
     }
 
     public function delete_content($unilabelid) {
-        global $DB; /** @var \moodle_database $DB */
+        global $DB;
 
         $DB->delete_records($this->get_namespace(), array('unilabelid' => $unilabelid));
     }
 
     public function save_content($formdata, $unilabel) {
-        global $DB; /** @var \moodle_database $DB */
+        global $DB;
         if (!$unilabletyperecord = $this->load_unilabeltype_record($unilabel)) {
             $unilabletyperecord = new \stdClass();
             $unilabletyperecord->unilabelid = $unilabel->id;
@@ -152,7 +152,7 @@ class content_type extends \mod_unilabel\content_type {
     }
 
     private function load_unilabeltype_record($unilabel) {
-        global $DB; /** @var \moodle_database $DB */
+        global $DB;
 
         if (empty($this->unilabeltyperecord)) {
             $this->unilabeltyperecord = $DB->get_record($this->get_namespace(), array('unilabelid' => $unilabel->id));

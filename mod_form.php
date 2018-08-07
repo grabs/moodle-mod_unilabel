@@ -25,11 +25,11 @@
 
 defined('MOODLE_INTERNAL') || die;
 
-require_once ($CFG->dirroot.'/course/moodleform_mod.php');
+require_once($CFG->dirroot.'/course/moodleform_mod.php');
 
 class mod_unilabel_mod_form extends moodleform_mod {
 
-    function definition() {
+    public function definition() {
         global $PAGE;
 
         $PAGE->force_settings_menu();
@@ -44,24 +44,13 @@ class mod_unilabel_mod_form extends moodleform_mod {
         $mform->addElement('select', 'unilabeltype', get_string('labeltype', 'mod_unilabel'), $plugins);
         $mform->addRule('unilabeltype', get_string('required'), 'required', null, 'client');
 
-        // if ($plugins = \core_component::get_plugin_list_with_class('unilabeltype', 'content')) {
-        //     foreach ($plugins as $plugin => $classname) {
-        //         if (!method_exists($classname, 'add_form_fragment')) {
-        //             continue;
-        //         }
-        //         $mform->addElement('header', $plugin.'_hdr', get_string('pluginname', $plugin));
-        //         $classname::add_form_fragment($mform);
-        //     }
-        // }
-
-        // unilabel does not add "Show description" checkbox meaning that 'intro' is always shown on the course page.
+        // Unilabel does not add "Show description" checkbox meaning that 'intro' is always shown on the course page.
         $mform->addElement('hidden', 'showdescription', 1);
         $mform->setType('showdescription', PARAM_INT);
 
         $this->standard_coursemodule_elements();
 
-//-------------------------------------------------------------------------------
-// buttons
+        // The buttons.
         $this->add_action_buttons(true, false, null);
 
     }

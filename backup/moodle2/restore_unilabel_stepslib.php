@@ -23,6 +23,8 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+defined('MOODLE_INTERNAL') || die;
+
 /**
  * Define all the restore steps that will be used by the restore_url_activity_task
  */
@@ -40,7 +42,7 @@ class restore_unilabel_activity_structure_step extends restore_activity_structur
 
         $this->add_subplugin_structure('unilabeltype', $unilabel);
 
-        // Return the paths wrapped into standard activity structure
+        // Return the paths wrapped into standard activity structure.
         return $this->prepare_activity_structure($paths);
     }
 
@@ -54,14 +56,14 @@ class restore_unilabel_activity_structure_step extends restore_activity_structur
         // Any changes to the list of dates that needs to be rolled should be same during course restore and course reset.
         // See MDL-9367.
 
-        // insert the unilabel record
+        // Insert the unilabel record.
         $newitemid = $DB->insert_record('unilabel', $data);
-        // immediately after inserting "activity" record, call this
+        // Immediately after inserting "activity" record, call this.
         $this->apply_activity_instance($newitemid);
     }
 
     protected function after_execute() {
-        // Add unilabel related files, no need to match by itemname (just internally handled context)
+        // Add unilabel related files, no need to match by itemname (just internally handled context).
         $this->add_related_files('mod_unilabel', 'intro', null);
 
     }

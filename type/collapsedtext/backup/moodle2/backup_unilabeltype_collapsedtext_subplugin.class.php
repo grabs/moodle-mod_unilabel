@@ -32,17 +32,17 @@ class backup_unilabeltype_collapsedtext_subplugin extends backup_subplugin {
      */
     protected function define_unilabel_subplugin_structure() {
 
-        // XML nodes declaration
-        $subplugin = $this->get_subplugin_element(); // virtual optigroup element
+        // XML nodes declaration.
+        $subplugin = $this->get_subplugin_element();
         $subpluginwrapper = new backup_nested_element($this->get_recommended_name());
         $subplugincollapsedtext = new backup_nested_element('unilabeltype_collapsedtext', array('id'), array(
             'title', 'presentation', 'useanimation'));
 
-        // connect XML elements into the tree
+        // Connect XML elements into the tree.
         $subplugin->add_child($subpluginwrapper);
         $subpluginwrapper->add_child($subplugincollapsedtext);
 
-        // set source to populate the data
+        // Set source to populate the data.
         $subplugincollapsedtext->set_source_table('unilabeltype_collapsedtext', array('unilabelid' => backup::VAR_ACTIVITYID));
 
         return $subplugin;

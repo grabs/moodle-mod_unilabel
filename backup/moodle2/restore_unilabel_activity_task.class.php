@@ -25,7 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot . '/mod/unilabel/backup/moodle2/restore_unilabel_stepslib.php'); // Because it exists (must)
+require_once($CFG->dirroot . '/mod/unilabel/backup/moodle2/restore_unilabel_stepslib.php'); // Because it exists (must).
 
 /**
  * unilabel restore task that provides all the settings and steps to perform one
@@ -37,14 +37,14 @@ class restore_unilabel_activity_task extends restore_activity_task {
      * Define (add) particular settings this activity can have
      */
     protected function define_my_settings() {
-        // No particular settings for this activity
+        // No particular settings for this activity.
     }
 
     /**
      * Define (add) particular steps this activity can have
      */
     protected function define_my_steps() {
-        // unilabel only has one structure step
+        // Unilabel only has one structure step.
         $this->add_step(new restore_unilabel_activity_structure_step('unilabel_structure', 'unilabel.xml'));
     }
 

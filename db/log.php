@@ -25,7 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$logs = array(
-    array('module'=>'unilabel', 'action'=>'add', 'mtable'=>'unilabel', 'field'=>'name'),
-    array('module'=>'unilabel', 'action'=>'update', 'mtable'=>'unilabel', 'field'=>'name'),
-);
+$logs = [
+    ['module' => 'unilabel', 'action' => 'add', 'mtable' => 'unilabel', 'field' => 'name'],
+    ['module' => 'unilabel', 'action' => 'update', 'mtable' => 'unilabel', 'field' => 'name'],
+];

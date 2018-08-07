@@ -41,13 +41,10 @@ class content_type extends \mod_unilabel\content_type {
      * @return void
      */
     public function add_form_fragment(\mod_unilabel\edit_content_form $form, \context $context) {
-        // global $PAGE;
-
-        // $renderer = $PAGE->get_renderer('mod_unilabel');
 
         $unilabeltyperecord = $this->load_unilabeltype_record($form->unilabel->id);
 
-        $mform = $form->get_mform(); /** @var \moodleQuickform $mform */
+        $mform = $form->get_mform();
         $prefix = $this->get_namespace().'_';
 
         $mform->addElement('advcheckbox', $prefix.'showintro', get_string('showunilabeltext', $this->get_namespace()));
@@ -72,8 +69,16 @@ class content_type extends \mod_unilabel\content_type {
         $mform->addElement('html', '<h4>'.get_string('slides', $this->get_namespace()).'<hr /></h4>');
 
         $repeatarray = [];
-        $repeatarray[] = $mform->createElement('editor', $prefix.'caption', get_string('caption', $this->get_namespace()), array('rows' => 4));
-        $repeatarray[] = $mform->createElement('text', $prefix.'url', get_string('url', $this->get_namespace()), array('size' => 50));
+        $repeatarray[] = $mform->createElement(
+                                'editor',
+                                $prefix.'caption',
+                                get_string('caption', $this->get_namespace()),
+                                array('rows' => 4));
+        $repeatarray[] = $mform->createElement(
+                                'text',
+                                $prefix.'url',
+                                get_string('url', $this->get_namespace()),
+                                array('size' => 50));
         $repeatarray[] = $mform->createElement(
             'filemanager',
             $prefix.'image',
@@ -132,7 +137,7 @@ class content_type extends \mod_unilabel\content_type {
     }
 
     public function get_form_default($data, $unilabel) {
-        global $DB; /** @var \moodle_database $DB */
+        global $DB;
 
         $cm = get_coursemodule_from_instance('unilabel', $unilabel->id);
         $context = \context_module::instance($cm->id);
@@ -157,7 +162,8 @@ class content_type extends \mod_unilabel\content_type {
         $data[$prefix.'usemobile'] = $unilabeltyperecord->usemobile;
 
         // Set default data for slides.
-        if (!$slides = $DB->get_records($this->get_namespace().'_slide', array('carouselid' => $unilabeltyperecord->id), 'id ASC')) {
+        if (!$slides = $DB->get_records($this->get_namespace().'_slide',
+                                            array('carouselid' => $unilabeltyperecord->id), 'id ASC')) {
             return $data;
         }
 
@@ -223,7 +229,7 @@ class content_type extends \mod_unilabel\content_type {
     }
 
     public function delete_content($unilabelid) {
-        global $DB; /** @var \moodle_database $DB */
+        global $DB;
 
         $unilabeltyperecord = $this->load_unilabeltype_record($unilabelid);
 
@@ -236,14 +242,14 @@ class content_type extends \mod_unilabel\content_type {
     }
 
     public function save_content($formdata, $unilabel) {
-        global $DB, $USER; /** @var \moodle_database $DB */
+        global $DB, $USER;
 
         // We want to keep the slides consistent so we start a transaction here.
         $transaction = $DB->start_delegated_transaction();
 
         $prefix = $this->get_namespace().'_';
 
-        // first save the carousel record.
+        // First save the carousel record.
         if (!$unilabeltyperecord = $DB->get_record($this->get_namespace(), ['unilabelid' => $unilabel->id])) {
             $unilabeltyperecord = new \stdClass();
             $unilabeltyperecord->unilabelid = $unilabel->id;
@@ -298,7 +304,11 @@ class content_type extends \mod_unilabel\content_type {
             // Now we can save our draft files.
             file_save_draft_area_files($draftitemid, $context->id, $this->get_namespace(), 'image', $sliderecord->id);
             if (!empty($formdata->{$prefix.'usemobile'})) {
-                file_save_draft_area_files($draftitemidmobile, $context->id, $this->get_namespace(), 'image_mobile', $sliderecord->id);
+                file_save_draft_area_files($draftitemidmobile,
+                            $context->id,
+                            $this->get_namespace(),
+                            'image_mobile',
+                            $sliderecord->id);
             }
         }
 
@@ -308,7 +318,7 @@ class content_type extends \mod_unilabel\content_type {
     }
 
     public function load_unilabeltype_record($unilabelid) {
-        global $DB; /** @var \moodle_database $DB */
+        global $DB;
 
         if (empty($this->unilabeltyperecord)) {
             if (!$this->unilabeltyperecord = $DB->get_record($this->get_namespace(), ['unilabelid' => $unilabelid])) {
@@ -333,7 +343,7 @@ class content_type extends \mod_unilabel\content_type {
 
     private function get_image_for_slide($slide) {
         $fs = get_file_storage();
-        // $file = $fs->get_file($this->context->id, $this->get_namespace(), 'image', $slide->id);
+
         $files = $fs->get_area_files($this->context->id, $this->get_namespace(), 'image', $slide->id, "", $includedirs = false);
         if (!$file = array_shift($files)) {
             return '';
@@ -350,8 +360,13 @@ class content_type extends \mod_unilabel\content_type {
 
     private function get_image_mobile_for_slide($slide) {
         $fs = get_file_storage();
-        // $file = $fs->get_file($this->context->id, $this->get_namespace(), 'image', $slide->id);
-        $files = $fs->get_area_files($this->context->id, $this->get_namespace(), 'image_mobile', $slide->id, "", $includedirs = false);
+
+        $files = $fs->get_area_files($this->context->id,
+                                    $this->get_namespace(),
+                                    'image_mobile',
+                                    $slide->id,
+                                    "",
+                                    $includedirs = false);
         if (!$file = array_shift($files)) {
             return '';
         }

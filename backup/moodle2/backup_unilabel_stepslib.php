@@ -23,6 +23,8 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+defined('MOODLE_INTERNAL') || die;
+
 /**
  * Define all the backup steps that will be used by the backup_unilabel_activity_task
  */
@@ -34,28 +36,27 @@ class backup_unilabel_activity_structure_step extends backup_activity_structure_
 
     protected function define_structure() {
 
-        // To know if we are including userinfo
+        // To know if we are including userinfo.
         $userinfo = $this->get_setting_value('userinfo');
 
-        // Define each element separated
+        // Define each element separated.
         $unilabel = new backup_nested_element('unilabel', array('id'), array(
             'name', 'intro', 'introformat', 'unilabeltype', 'timemodified'));
 
         $this->add_subplugin_structure('unilabeltype', $unilabel, true);
 
-        // Build the tree
-        // (love this)
+        // Build the tree.
 
-        // Define sources
+        // Define sources.
         $unilabel->set_source_table('unilabel', array('id' => backup::VAR_ACTIVITYID));
 
-        // Define id annotations
-        // (none)
+        // Define id annotations.
+        // Nothing to do here.
 
-        // Define file annotations
-        $unilabel->annotate_files('mod_unilabel', 'intro', null); // This file area hasn't itemid
+        // Define file annotations.
+        $unilabel->annotate_files('mod_unilabel', 'intro', null); // This file area hasn't itemid.
 
-        // Return the root element (unilabel), wrapped into standard activity structure
+        // Return the root element (unilabel), wrapped into standard activity structure.
         return $this->prepare_activity_structure($unilabel);
     }
 }

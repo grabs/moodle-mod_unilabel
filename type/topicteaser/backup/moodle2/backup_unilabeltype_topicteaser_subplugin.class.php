@@ -32,17 +32,17 @@ class backup_unilabeltype_topicteaser_subplugin extends backup_subplugin {
      */
     protected function define_unilabel_subplugin_structure() {
 
-        // XML nodes declaration
-        $subplugin = $this->get_subplugin_element(); // virtual optigroup element
+        // XML nodes declaration.
+        $subplugin = $this->get_subplugin_element();
         $subpluginwrapper = new backup_nested_element($this->get_recommended_name());
         $subplugintopicteaser = new backup_nested_element('unilabeltype_topicteaser', array('id'), array(
             'course', 'presentation', 'showintro'));
 
-        // connect XML elements into the tree
+        // Connect XML elements into the tree.
         $subplugin->add_child($subpluginwrapper);
         $subpluginwrapper->add_child($subplugintopicteaser);
 
-        // set source to populate the data
+        // Set source to populate the data.
         $subplugintopicteaser->set_source_table('unilabeltype_topicteaser', array('unilabelid' => backup::VAR_ACTIVITYID));
 
         return $subplugin;

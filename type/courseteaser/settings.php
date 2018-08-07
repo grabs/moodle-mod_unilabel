@@ -29,7 +29,7 @@ $page = new admin_settingpage('unilabeltype_courseteaser', get_string('pluginnam
 
 $courseteasersettings = array();
 
-$numbers = array_combine(range(1, 10), range(1,10));
+$numbers = array_combine(range(1, 10), range(1, 10));
 $courseteasersettings[] = new admin_setting_configselect('unilabeltype_courseteaser/carouselinterval',
     get_string('default_carouselinterval', 'unilabeltype_courseteaser'),
     '',

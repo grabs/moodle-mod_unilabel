@@ -78,7 +78,7 @@ class edit_content_form extends \moodleform {
             array('rows' => 10),
             self::editor_options($this->context)
         );
-        $mform->setType('introeditor', PARAM_RAW); // no XSS prevention here, users must be trusted
+        $mform->setType('introeditor', PARAM_RAW); // No XSS prevention here, users must be trusted.
     }
 
     public function set_data($defaultvalues) {
@@ -97,7 +97,7 @@ class edit_content_form extends \moodleform {
                                 'mod_unilabel',
                                 'intro',
                                 false,
-                                array('subdirs'=>true),
+                                array('subdirs' => true),
                                 $defaultvalues['intro']);
         $defaultvalues['introeditor']['format'] = $defaultvalues['introformat'];
         $defaultvalues['introeditor']['itemid'] = $draftitemid;

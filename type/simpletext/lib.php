@@ -28,4 +28,4 @@ defined('MOODLE_INTERNAL') || die;
 function unilabeltype_simpletext_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload) {
     global $CFG, $DB, $USER;
     return false;
- }
+}

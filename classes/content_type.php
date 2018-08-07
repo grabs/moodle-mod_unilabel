@@ -44,7 +44,7 @@ abstract class content_type {
         return get_string('pluginname', $this->get_namespace());
     }
 
-    function form_validation($errors, $data, $files) {
+    public function form_validation($errors, $data, $files) {
         return $errors;
     }
 }

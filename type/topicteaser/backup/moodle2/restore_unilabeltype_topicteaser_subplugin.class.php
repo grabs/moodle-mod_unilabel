@@ -27,10 +27,6 @@ defined('MOODLE_INTERNAL') || die();
 
 class restore_unilabeltype_topicteaser_subplugin extends restore_subplugin {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // mappings of XML paths to the processable methods
-    ////////////////////////////////////////////////////////////////////////////
-
     /**
      * Returns the paths to be handled by the subplugin at unilabel level
      */
@@ -42,12 +38,8 @@ class restore_unilabeltype_topicteaser_subplugin extends restore_subplugin {
         $elepath = $this->get_pathfor('/unilabeltype_topicteaser');
         $paths[] = new restore_path_element($elename, $elepath);
 
-        return $paths; // And we return the interesting paths
+        return $paths; // And we return the interesting paths.
     }
-
-    ////////////////////////////////////////////////////////////////////////////
-    // defined path elements are dispatched to the following methods
-    ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Processes the topicteaser element
@@ -56,7 +48,6 @@ class restore_unilabeltype_topicteaser_subplugin extends restore_subplugin {
         global $DB;
 
         $data = (object)$data;
-        // $oldid = $data->id;
 
         $restoreid = $this->get_restoreid();
         $controller = restore_controller::load_controller($restoreid);
@@ -67,6 +58,5 @@ class restore_unilabeltype_topicteaser_subplugin extends restore_subplugin {
         $data->unilabelid = $this->get_new_parentid('unilabel');
 
         $newitemid = $DB->insert_record('unilabeltype_topicteaser', $data);
-        // $this->set_mapping($this->get_namefor(), $oldid, $newitemid, true);
     }
 }

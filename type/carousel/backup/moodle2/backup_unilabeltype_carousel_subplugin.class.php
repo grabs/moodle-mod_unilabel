@@ -32,8 +32,8 @@ class backup_unilabeltype_carousel_subplugin extends backup_subplugin {
      */
     protected function define_unilabel_subplugin_structure() {
 
-        // XML nodes declaration
-        $subplugin = $this->get_subplugin_element(); // virtual optigroup element
+        // XML nodes declaration.
+        $subplugin = $this->get_subplugin_element();
         $subpluginwrapper = new backup_nested_element($this->get_recommended_name());
         $subplugincarousel = new backup_nested_element('unilabeltype_carousel', array('id'), array(
             'carouselinterval', 'height', 'background', 'showintro', 'usemobile'));
@@ -42,16 +42,16 @@ class backup_unilabeltype_carousel_subplugin extends backup_subplugin {
             array('url', 'caption')
         );
 
-        // connect XML elements into the tree
+        // Connect XML elements into the tree.
         $subplugin->add_child($subpluginwrapper);
         $subpluginwrapper->add_child($subplugincarousel);
         $subplugincarousel->add_child($subpluginslide);
 
-        // set source to populate the data
+        // Set source to populate the data.
         $subplugincarousel->set_source_table('unilabeltype_carousel', array('unilabelid' => backup::VAR_ACTIVITYID));
         $subpluginslide->set_source_table('unilabeltype_carousel_slide', array('carouselid' => backup::VAR_PARENTID));
 
-        // file annotations
+        // File annotations.
         $subpluginslide->annotate_files('unilabeltype_carousel', 'image', 'id');
         $subpluginslide->annotate_files('unilabeltype_carousel', 'image_mobile', 'id');
 

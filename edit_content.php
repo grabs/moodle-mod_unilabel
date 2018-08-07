@@ -26,22 +26,21 @@
 require_once(__DIR__."/../../config.php");
 require_once($CFG->dirroot.'/course/format/lib.php');
 
-$cmid = required_param('cmid',PARAM_INT);   // course
+$cmid = required_param('cmid', PARAM_INT);   // The course module id.
 
 if (!$cm = get_coursemodule_from_id('unilabel', $cmid)) {
     print_error('invalidcoursemodule');
 }
 
-$unilabel = $DB->get_record('unilabel', array('id'=>$cm->instance), '*', MUST_EXIST);
-$course = $DB->get_record('course', array('id'=>$cm->course), '*', MUST_EXIST);
+$unilabel = $DB->get_record('unilabel', array('id' => $cm->instance), '*', MUST_EXIST);
+$course = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
 
 $section = $DB->get_record('course_sections', array('id' => $cm->section));
 $courseformat = course_get_format($course->id);
 
 $unilabeltype = \mod_unilabel\factory::get_plugin($unilabel->unilabeltype);
 
-// require_course_login($course, true, $cm);
-require_login($course, true, $cm);
+require_course_login($course, true, $cm);
 $context = context_module::instance($cm->id);
 require_capability('mod/unilabel:edit', $context);
 
