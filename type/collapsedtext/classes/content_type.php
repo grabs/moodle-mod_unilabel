@@ -73,6 +73,7 @@ class content_type extends \mod_unilabel\content_type {
     }
 
     public function get_content($unilabel, $cm, \plugin_renderer_base $renderer) {
+        $cmidfromurl = optional_param('cmid', 0, PARAM_INT);
         if (!$unilabeltyperecord = $this->load_unilabeltype_record($unilabel)) {
             $content = array();
             $template = 'default';
@@ -86,6 +87,10 @@ class content_type extends \mod_unilabel\content_type {
                 'cmid' => $cm->id,
                 'useanimation' => $useanimation,
             ];
+
+            if ($cm->id == $cm->id) {
+                $content['openonstart'] = true;
+            }
 
             switch ($unilabeltyperecord->presentation) {
                 case 'collapsed':

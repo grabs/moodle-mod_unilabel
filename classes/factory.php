@@ -51,6 +51,9 @@ class factory {
 
     public static function get_plugin($name) : content_type {
         $classname = '\\unilabeltype_'.$name.'\\content_type';
+        if (!class_exists($classname)) {
+            $classname = '\mod_unilabel\unknown_type';
+        }
         return new $classname();
     }
 

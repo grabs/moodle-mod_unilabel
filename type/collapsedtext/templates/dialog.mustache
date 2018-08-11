@@ -26,3 +26,10 @@
         </div>
     </div>
 </div>
+{{#openonstart}}
+    {{#js}}
+        $(window).on('load',function(){
+            $('#unilabeltype-collapsed-dialog-{{cmid}}').modal('show');
+        });
+    {{/js}}
+{{/openonstart}}

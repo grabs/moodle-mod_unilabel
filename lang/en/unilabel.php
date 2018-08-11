@@ -43,3 +43,4 @@ $string['unilabel:edit'] = 'Edit unilabel';
 $string['unilabeltext'] = 'Unilabel text';
 $string['updatefailed'] = 'Update failed';
 $string['updatesuccessful'] = 'Update successful';
+$string['unknowntype'] = 'Unknown type';

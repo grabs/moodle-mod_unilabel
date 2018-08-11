@@ -23,9 +23,36 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+namespace mod_unilabel;
 
-$plugin->version   = 2018081100;     // The current module version (Date: YYYYMMDDXX).
-$plugin->requires  = 2018050800;     // Requires this Moodle version.
-$plugin->component = 'mod_unilabel'; // Full name of the plugin (used for diagnostics).
-$plugin->cron      = 0;
+defined('MOODLE_INTERNAL') || die;
+
+class unknown_type extends \mod_unilabel\content_type {
+    public function add_form_fragment(\mod_unilabel\edit_content_form $form, \context $context) {
+        return null;
+    }
+
+    public function get_form_default($data, $unilabel) {
+        return $data;
+    }
+
+    public function get_namespace() {
+        return __NAMESPACE__;
+    }
+
+    public function get_name() {
+        return get_string('unknowntype', 'mod_unilabel');
+    }
+
+    public function get_content($unilabel, $cm, \plugin_renderer_base $renderer) {
+        return get_string('unknowntype', 'mod_unilabel');
+    }
+
+    public function delete_content($unilabelid) {
+        return true;
+    }
+
+    public function save_content($formdata, $unilabel) {
+        return true;
+    }
+}

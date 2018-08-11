@@ -40,7 +40,7 @@ class mod_unilabel_mod_form extends moodleform_mod {
         $this->standard_intro_elements(get_string('unilabeltext', 'mod_unilabel'));
 
         $plugins = \mod_unilabel\factory::get_plugin_list();
-        $plugins = array(get_string('choose')) + $plugins;
+        $plugins = array('' => get_string('choose')) + $plugins;
         $mform->addElement('select', 'unilabeltype', get_string('labeltype', 'mod_unilabel'), $plugins);
         $mform->addRule('unilabeltype', get_string('required'), 'required', null, 'client');
 
