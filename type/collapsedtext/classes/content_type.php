@@ -88,7 +88,7 @@ class content_type extends \mod_unilabel\content_type {
                 'useanimation' => $useanimation,
             ];
 
-            if ($cm->id == $cm->id) {
+            if ($cm->id == $cmidfromurl) {
                 $content['openonstart'] = true;
             }
 

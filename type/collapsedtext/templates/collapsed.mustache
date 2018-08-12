@@ -1,6 +1,6 @@
 {{^useanimation}}
     <div class="unilabeltype-details">
-        <details>
+        <details{{#openonstart}} open=""{{/openonstart}}>
             <summary>{{{title}}}</summary>
             <div>{{{content}}}</div>
         </details>
@@ -9,7 +9,7 @@
 
 {{#useanimation}}
     <div class="unilabeltype-collapsed">
-        <a class="unilabel-title collapsed"
+        <a class="unilabel-title{{^openonstart}} collapsed{{/openonstart}}"
                 data-toggle="collapse"
                 href="#unilabeltype-collapsed-{{cmid}}"
                 role="button"
@@ -18,7 +18,7 @@
         >
             <span class="unilabeltype-collapsed-caret"> </span> {{{title}}}
         </a>
-        <div class="collapse" id="unilabeltype-collapsed-{{cmid}}">
+        <div class="collapse{{#openonstart}} show{{/openonstart}}" id="unilabeltype-collapsed-{{cmid}}">
             {{{content}}}
         </div>
     </div>
