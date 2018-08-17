@@ -44,6 +44,10 @@ abstract class content_type {
         return get_string('pluginname', $this->get_namespace());
     }
 
+    public function get_plugintype() {
+        return str_replace('unilabeltype_', '', $this->get_namespace());
+    }
+
     public function form_validation($errors, $data, $files) {
         return $errors;
     }

@@ -27,6 +27,7 @@ require_once(__DIR__."/../../config.php");
 require_once($CFG->dirroot.'/course/format/lib.php');
 
 $cmid = required_param('cmid', PARAM_INT);   // The course module id.
+$switchtype = optional_param('switchtype', false, PARAM_COMPONENT);
 
 if (!$cm = get_coursemodule_from_id('unilabel', $cmid)) {
     print_error('invalidcoursemodule');
@@ -54,6 +55,13 @@ $strtitle = $course->shortname.': '. $unilabeltype->get_name(). ' - ' .$unilabel
 $PAGE->set_url($myurl);
 $PAGE->set_title($strtitle);
 $PAGE->set_heading($course->fullname);
+
+if ($switchtype) {
+    require_sesskey();
+    $unilabeltype = \mod_unilabel\factory::get_plugin($switchtype);
+    $DB->set_field('unilabel', 'unilabeltype', $unilabeltype->get_plugintype(), array('id' => $unilabel->id));
+    redirect(new \moodle_url($mybaseurl, array('cmid' => $cmid)));
+}
 
 $form = new \mod_unilabel\edit_content_form(null, array('unilabel' => $unilabel, 'cm' => $cm, 'unilabeltype' => $unilabeltype));
 if ($form->is_cancelled()) {
@@ -96,6 +104,16 @@ if ($formdata = $form->get_data()) {
 
 $renderer = $PAGE->get_renderer('mod_unilabel');
 
+$plugins = \mod_unilabel\factory::get_plugin_list();
+$select = new single_select(
+                        new \moodle_url($mybaseurl, array('cmid' => $cmid, 'sesskey' => sesskey())),
+                        'switchtype',
+                        $plugins,
+                        $unilabeltype->get_plugintype()
+                    );
+$select->label = get_string('switchtype', 'mod_unilabel');
+
 echo $renderer->header();
+echo $renderer->render($select);
 $form->display();
 echo $renderer->footer();

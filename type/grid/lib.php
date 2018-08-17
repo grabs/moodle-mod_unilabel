@@ -25,6 +25,30 @@
 
 defined('MOODLE_INTERNAL') || die;
 
-$plugin->component = 'unilabeltype_topicteaser';
-$plugin->version   = 2018081700;
-$plugin->requires  = 2018050800;
+function unilabeltype_grid_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload) {
+    global $CFG, $DB, $USER;
+
+    if ($context->contextlevel != CONTEXT_MODULE) {
+        return false;
+    }
+
+    require_course_login($course, true, $cm);
+    if (!has_capability('mod/unilabel:view', $context)) {
+        return false;
+    }
+
+    if (($filearea !== 'image') AND ($filearea !== 'image_mobile') AND ($filearea !== 'content')) {
+        return false;
+    }
+
+    $relativepath = implode('/', $args);
+    $fullpath = '/'.$context->id.'/unilabeltype_grid/'.$filearea.'/'.$relativepath;
+
+    $fs = get_file_storage();
+    if (!$file = $fs->get_file_by_hash(sha1($fullpath)) or $file->is_directory()) {
+        return false;
+    }
+
+    send_stored_file($file, 0, 0, true); // Download MUST be forced - security!
+
+}

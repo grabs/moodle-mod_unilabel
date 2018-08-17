@@ -25,13 +25,13 @@
 
 defined('MOODLE_INTERNAL') || die;
 
-$string['addmoreslides'] = 'Add more slides';
+$string['addmoretiles'] = 'Add more tiles';
 $string['autoheight'] = 'Auto height';
 $string['background'] = 'Background';
-$string['caption'] = 'Caption';
-$string['caption_help'] = 'The caption is shown in addition to the defined image. It is also shown if no image is defined.';
-$string['carouselinterval'] = 'Interval';
-$string['default_carouselinterval'] = 'Default interval';
+$string['columns'] = 'Columns';
+$string['content'] = 'Content';
+$string['content_help'] = 'If defined the content is shown as modal dialog. It is not shown if the field url is set!';
+$string['default_columns'] = 'Default columns';
 $string['default_height'] = 'Default height';
 $string['default_showintro'] = 'Default show unilabel text';
 $string['default_usemobile'] = 'Default use mobile images';
@@ -41,13 +41,14 @@ $string['image'] = 'Image';
 $string['image_mobile'] = 'Image mobile';
 $string['image_mobile_help'] = 'Mobile images will be shown on screens smaller than 768px. If you do not define a mobile image the general image is shown on all screens.';
 $string['nocontent'] = 'No content';
-$string['pluginname'] = 'Carousel';
-$string['pluginname_help'] = 'The carousel content type offers you a slide show with freely defined images.';
+$string['pluginname'] = 'Grid';
+$string['pluginname_help'] = 'This plugin lets you create a nice grid with freely defined tiles.';
 $string['showunilabeltext'] = 'Show unilabel text';
-$string['slide'] = 'Slide';
-$string['slides'] = 'Slides';
+$string['tile'] = 'Tile';
+$string['tilenr'] = 'Tile {$a}';
+$string['tiles'] = 'Tiles';
 $string['title'] = 'Title';
 $string['url'] = 'Url';
-$string['url_help'] = 'If you define a url here the whole slide is a clickable button to link the user to this url.';
+$string['url_help'] = 'If you define a url here the whole tile is a clickable button to link the user to this url.';
 $string['use_mobile_images'] = 'Use mobile images';
 $string['use_mobile_images_help'] = 'If you activate the usage of mobile images to each image you can upload a mobile version which is shown on small devices.';

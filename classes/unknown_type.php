@@ -44,6 +44,10 @@ class unknown_type extends \mod_unilabel\content_type {
         return get_string('unknowntype', 'mod_unilabel');
     }
 
+    public function get_plugintype() {
+        return 'unknowntype';
+    }
+
     public function get_content($unilabel, $cm, \plugin_renderer_base $renderer) {
         return get_string('unknowntype', 'mod_unilabel');
     }

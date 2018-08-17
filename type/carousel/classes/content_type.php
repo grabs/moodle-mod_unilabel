@@ -66,23 +66,24 @@ class content_type extends \mod_unilabel\content_type {
         $mform->addElement('checkbox', $prefix.'usemobile', get_string('use_mobile_images', $this->get_namespace()));
         $mform->addHelpButton($prefix.'usemobile', 'use_mobile_images', $this->get_namespace());
 
-        $mform->addElement('html', '<h4>'.get_string('slides', $this->get_namespace()).'<hr /></h4>');
-
         $repeatarray = [];
+        // If we want each repeated elment in a numbered group we add a header with '{no}' in its label.
+        // This is replaced by the number of element.
+        $repeatarray[] = $mform->createElement('header', $prefix.'slidehdr', get_string('slide', $this->get_namespace()).'-{no}');
         $repeatarray[] = $mform->createElement(
                                 'editor',
                                 $prefix.'caption',
-                                get_string('caption', $this->get_namespace()),
+                                get_string('caption', $this->get_namespace()).'-{no}',
                                 array('rows' => 4));
         $repeatarray[] = $mform->createElement(
                                 'text',
                                 $prefix.'url',
-                                get_string('url', $this->get_namespace()),
+                                get_string('url', $this->get_namespace()).'-{no}',
                                 array('size' => 50));
         $repeatarray[] = $mform->createElement(
             'filemanager',
             $prefix.'image',
-            get_string('image', $this->get_namespace()),
+            get_string('image', $this->get_namespace()).'-{no}',
             null,
             [
                 'maxbytes' => $form->get_course()->maxbytes,
@@ -94,7 +95,7 @@ class content_type extends \mod_unilabel\content_type {
         $repeatarray[] = $mform->createElement(
             'filemanager',
             $prefix.'image_mobile',
-            get_string('image_mobile', $this->get_namespace()),
+            get_string('image_mobile', $this->get_namespace()).'-{no}',
             null,
             [
                 'maxbytes' => $form->get_course()->maxbytes,
@@ -103,7 +104,7 @@ class content_type extends \mod_unilabel\content_type {
                 'accepted_types' => array('web_image'),
             ]
         );
-        $repeatarray[] = $mform->createElement('html', '<hr />'); // Print a separator between each tile definition.
+
         $repeatedoptions = [];
         $repeatedoptions[$prefix.'url']['type'] = PARAM_URL;
         $repeatedoptions[$prefix.'caption']['type'] = PARAM_RAW;

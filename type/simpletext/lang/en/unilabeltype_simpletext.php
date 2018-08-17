@@ -27,3 +27,4 @@ defined('MOODLE_INTERNAL') || die;
 
 $string['filteractive'] = 'Activate filter';
 $string['pluginname'] = 'Simple text';
+$string['pluginname_help'] = 'Prints a simple text element';
