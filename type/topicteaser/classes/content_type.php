@@ -45,8 +45,13 @@ class content_type extends \mod_unilabel\content_type {
             'carousel' => get_string('carousel', $this->get_namespace()),
             'grid' => get_string('grid', $this->get_namespace()),
         );
-
         $mform->addElement('select', $prefix.'presentation', get_string('presentation', $this->get_namespace()), $select);
+
+        $select = array(
+            'opendialog' => get_string('opendialog', 'unilabeltype_topicteaser'),
+            'opencourseurl' => get_string('opencourseurl', 'unilabeltype_topicteaser'),
+        );
+        $mform->addElement('select', $prefix.'clickaction', get_string('clickaction', $this->get_namespace()), $select);
     }
 
     public function get_form_default($data, $unilabel) {
@@ -56,9 +61,11 @@ class content_type extends \mod_unilabel\content_type {
 
         if (!$unilabeltyperecord = $this->load_unilabeltype_record($unilabel->id)) {
             $data[$prefix.'presentation'] = $config->presentation;
+            $data[$prefix.'clickaction'] = $config->clickaction;
             $data[$prefix.'showintro'] = $config->showintro;
         } else {
             $data[$prefix.'presentation'] = $unilabeltyperecord->presentation;
+            $data[$prefix.'clickaction'] = $unilabeltyperecord->clickaction;
             $data[$prefix.'showintro'] = $unilabeltyperecord->showintro;
             $data[$prefix.'course'] = $unilabeltyperecord->course;
         }
@@ -91,6 +98,8 @@ class content_type extends \mod_unilabel\content_type {
                 'height' => 300,
                 'items' => array_values($items),
                 'hasitems' => count($items) > 0,
+                'openmodal' => ($unilabeltyperecord->clickaction == 'opendialog'),
+                'opencourseurl' => ($unilabeltyperecord->clickaction == 'opencourseurl'),
                 'cmid' => $cm->id,
             ];
             switch ($unilabeltyperecord->presentation) {
@@ -124,6 +133,7 @@ class content_type extends \mod_unilabel\content_type {
         $prefix = $this->get_namespace().'_';
 
         $unilabletyperecord->presentation = $formdata->{$prefix.'presentation'};
+        $unilabletyperecord->clickaction = $formdata->{$prefix.'clickaction'};
         $unilabletyperecord->showintro = $formdata->{$prefix.'showintro'};
         $unilabletyperecord->course = $formdata->{$prefix.'course'};
 
@@ -139,8 +149,13 @@ class content_type extends \mod_unilabel\content_type {
     private function load_unilabeltype_record($unilabelid) {
         global $DB;
 
+        $config = get_config($this->get_namespace());
+
         if (empty($this->unilabeltyperecord)) {
             $this->unilabeltyperecord = $DB->get_record($this->get_namespace(), array('unilabelid' => $unilabelid));
+            if (empty($this->unilabeltyperecord->clickaction)) {
+                $this->unilabeltyperecord->clickaction = $config->clickaction;
+            }
         }
         return $this->unilabeltyperecord;
     }
@@ -170,6 +185,7 @@ class content_type extends \mod_unilabel\content_type {
 
         $course = $DB->get_record('course', array('id' => $courseid));
         $sections = $this->get_sections_from_course($courseid);
+        $courseformat = course_get_format($course->id);
 
         $sectionsoutput = array();
         $courserenderer = $PAGE->get_renderer('core', 'course');
@@ -178,6 +194,7 @@ class content_type extends \mod_unilabel\content_type {
             $section = new \stdClass();
             $section->name = get_section_name($course, $s);
             $section->section = $s->section;
+            $section->viewurl = $courseformat->get_view_url($s->section);
 
             $context = \context_course::instance($s->course);
             $summarytext = file_rewrite_pluginfile_urls($s->summary, 'pluginfile.php',

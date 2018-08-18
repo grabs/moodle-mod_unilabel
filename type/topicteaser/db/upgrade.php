@@ -23,19 +23,27 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die;
+defined('MOODLE_INTERNAL') || die();
 
-$string['carousel'] = 'Carousel';
-$string['clickaction'] = 'Click action';
-$string['default_carouselinterval'] = 'Default interval';
-$string['default_clickaction'] = 'Default click action';
-$string['default_showintro'] = 'Default show unilabeltext';
-$string['default_presentation'] = 'Default presentation';
-$string['grid'] = 'Grid';
-$string['nocontent'] = 'No content';
-$string['opendialog'] = 'Open dialog';
-$string['opencourseurl'] = 'Open course url';
-$string['pluginname'] = 'Topic teaser';
-$string['pluginname_help'] = 'This content type shows you the descriptions of the visible sections of the defined course. The content of the section is shown as modal dialog. This content type enables you to show content from other courses inside another course or on the frontpage.';
-$string['presentation'] = 'Presentation';
-$string['showunilabeltext'] = 'Show unilabeltext';
+function xmldb_unilabeltype_topicteaser_upgrade($oldversion) {
+    global $CFG, $DB;
+
+    $dbman = $DB->get_manager();
+
+    if ($oldversion < 2018081800) {
+
+        // Define field clickaction to be added to unilabeltype_topicteaser.
+        $table = new xmldb_table('unilabeltype_topicteaser');
+        $field = new xmldb_field('clickaction', XMLDB_TYPE_CHAR, '255', null, null, null, null, 'presentation');
+
+        // Conditionally launch add field clickaction.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Topicteaser savepoint reached.
+        upgrade_plugin_savepoint(true, 2018081800, 'unilabeltype', 'topicteaser');
+    }
+
+    return true;
+}

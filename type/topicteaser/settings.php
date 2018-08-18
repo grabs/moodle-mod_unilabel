@@ -49,6 +49,18 @@ $topicteasersettings[] = new admin_setting_configselect(
     $select
 );
 
+$select = array(
+    'opendialog' => get_string('opendialog', 'unilabeltype_topicteaser'),
+    'opencourseurl' => get_string('opencourseurl', 'unilabeltype_topicteaser'),
+);
+$topicteasersettings[] = new admin_setting_configselect(
+    'unilabeltype_topicteaser/clickaction',
+    get_string('default_clickaction', 'unilabeltype_topicteaser'),
+    '',
+    'opendialog',
+    $select
+);
+
 $topicteasersettings[] = new admin_setting_configcheckbox('unilabeltype_topicteaser/showintro',
     get_string('default_showintro', 'unilabeltype_topicteaser'),
     '',

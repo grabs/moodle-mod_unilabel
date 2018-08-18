@@ -16,7 +16,7 @@
             {{#items}}
                 <div class="carousel-item text-center py-4{{#first}} active{{/first}}">
                     <!-- The overlay is used as button to show the modal dialog -->
-                    <a href="#" data-toggle="modal" data-target="#topicteaser-modal-{{cmid}}-{{nr}}">
+                    <a href="{{{viewurl}}}"{{#openmodal}} data-toggle="modal" data-target="#topicteaser-modal-{{cmid}}-{{nr}}"{{/openmodal}}>
                         <div class="unilabel-overlay-effect bg-primary h-100 w-100"></div>
                     </a>
                     <h3>{{name}}</h3>
@@ -36,9 +36,11 @@
         </a>
     </div>
 
-    {{#items}}
-        {{> unilabeltype_topicteaser/dialog }}
-    {{/items}}
+    {{#openmodal}}
+        {{#items}}
+            {{> unilabeltype_topicteaser/dialog }}
+        {{/items}}
+    {{/openmodal}}
 {{/hasitems}}
 
 {{^hasitems}}
