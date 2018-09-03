@@ -99,7 +99,11 @@ class content_type extends \mod_unilabel\content_type {
             $items = $this->get_sections_html($courseid);
             $title = null;
             if (!empty($unilabeltyperecord->showcoursetitle)) {
-                $title = $DB->get_field('course', 'fullname', array('id' => $courseid));
+                if ($course = $DB->get_record('course', array('id' => $courseid))) {
+                    $title = $course->fullname;
+                } else {
+                    $title = get_string('coursenotfound', $this->get_namespace());
+                }
             }
             $content = [
                 'title' => $title,
@@ -195,7 +199,9 @@ class content_type extends \mod_unilabel\content_type {
     public function get_sections_html($courseid) {
         global $DB, $PAGE;
 
-        $course = $DB->get_record('course', array('id' => $courseid));
+        if (!$course = $DB->get_record('course', array('id' => $courseid))) {
+            return array();
+        }
         $sections = $this->get_sections_from_course($courseid);
         $courseformat = course_get_format($course->id);
 

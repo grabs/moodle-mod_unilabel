@@ -141,7 +141,7 @@ function unilabel_cm_info_view(\cm_info $cm) {
     global $DB, $PAGE;
 
     $renderer = $PAGE->get_renderer('mod_unilabel');
-    $unilabel = $DB->get_record('unilabel', ['id' => $cm->instance], 'id, name, intro, introformat, unilabeltype');
+    $unilabel = $DB->get_record('unilabel', ['id' => $cm->instance], 'id, course, name, intro, introformat, unilabeltype');
     $unilabeltype = \mod_unilabel\factory::get_plugin($unilabel->unilabeltype);
     $content = ['content' => $unilabeltype->get_content($unilabel, $cm, $renderer)];
 

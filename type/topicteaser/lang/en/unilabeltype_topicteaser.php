@@ -27,6 +27,7 @@ defined('MOODLE_INTERNAL') || die;
 
 $string['carousel'] = 'Carousel';
 $string['clickaction'] = 'Click action';
+$string['coursenotfound'] = 'Course not found';
 $string['default_carouselinterval'] = 'Default interval';
 $string['default_clickaction'] = 'Default click action';
 $string['default_showcoursetitle'] = 'Default show course title';

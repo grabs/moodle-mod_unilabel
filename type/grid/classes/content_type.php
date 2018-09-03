@@ -59,7 +59,7 @@ class content_type extends \mod_unilabel\content_type {
         $mform->addElement('select', $prefix.'height', get_string('height', $this->get_namespace()), $numbers);
         $mform->addHelpButton($prefix.'height', 'height', $this->get_namespace());
 
-        $mform->addElement('checkbox', $prefix.'usemobile', get_string('use_mobile_images', $this->get_namespace()));
+        $mform->addElement('advcheckbox', $prefix.'usemobile', get_string('use_mobile_images', $this->get_namespace()));
         $mform->addHelpButton($prefix.'usemobile', 'use_mobile_images', $this->get_namespace());
 
         $repeatarray = [];
@@ -116,7 +116,6 @@ class content_type extends \mod_unilabel\content_type {
         $repeatedoptions[$prefix.'content']['type'] = PARAM_RAW;
         $repeatedoptions[$prefix.'image']['type'] = PARAM_FILE;
         $repeatedoptions[$prefix.'image_mobile']['type'] = PARAM_FILE;
-        $repeatedoptions[$prefix.'image_mobile']['disabledif'] = [$prefix.'usemobile'];
         // Adding the help buttons.
         $repeatedoptions[$prefix.'content']['helpbutton'] = ['content', $this->get_namespace()];
         $repeatedoptions[$prefix.'url']['helpbutton'] = ['url', $this->get_namespace()];

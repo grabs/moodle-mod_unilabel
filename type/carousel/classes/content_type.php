@@ -63,7 +63,7 @@ class content_type extends \mod_unilabel\content_type {
         $backgrounddefault = empty($unilabeltyperecord->background) ? '' : $unilabeltyperecord->background;
         $this->add_colourpicker($mform, $prefix.'background', get_string('background', $this->get_namespace()), $backgrounddefault);
 
-        $mform->addElement('checkbox', $prefix.'usemobile', get_string('use_mobile_images', $this->get_namespace()));
+        $mform->addElement('advcheckbox', $prefix.'usemobile', get_string('use_mobile_images', $this->get_namespace()));
         $mform->addHelpButton($prefix.'usemobile', 'use_mobile_images', $this->get_namespace());
 
         $repeatarray = [];
@@ -110,7 +110,6 @@ class content_type extends \mod_unilabel\content_type {
         $repeatedoptions[$prefix.'caption']['type'] = PARAM_RAW;
         $repeatedoptions[$prefix.'image']['type'] = PARAM_FILE;
         $repeatedoptions[$prefix.'image_mobile']['type'] = PARAM_FILE;
-        $repeatedoptions[$prefix.'image_mobile']['disabledif'] = array($prefix.'usemobile');
         // Adding the help buttons.
         $repeatedoptions[$prefix.'caption']['helpbutton'] = array('caption', $this->get_namespace());
         $repeatedoptions[$prefix.'url']['helpbutton'] = array('url', $this->get_namespace());
