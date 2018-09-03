@@ -473,14 +473,22 @@ class content_type extends \mod_unilabel\content_type {
             'maxfiles' => EDITOR_UNLIMITED_FILES,
             'noclean' => true,
             'context' => $context,
-            'subdirs' => true];
+            'subdirs' => true
+        ];
+    }
+
+    public function format_options($context) {
+        return [
+            'noclean' => true,
+            'context' => $context
+        ];
     }
 
     public function format_content($tile, $context) {
         global $CFG;
         require_once($CFG->libdir.'/filelib.php');
 
-        $options = $this->editor_options($context);
+        $options = $this->format_options($context);
         $content = file_rewrite_pluginfile_urls(
                 $tile->content,
                 'pluginfile.php',

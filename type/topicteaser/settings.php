@@ -67,6 +67,12 @@ $topicteasersettings[] = new admin_setting_configcheckbox('unilabeltype_topictea
     false
 );
 
+$topicteasersettings[] = new admin_setting_configcheckbox('unilabeltype_topicteaser/showcoursetitle',
+    get_string('default_showcoursetitle', 'unilabeltype_topicteaser'),
+    '',
+    true
+);
+
 foreach ($topicteasersettings as $setting) {
     $page->add($setting);
 }

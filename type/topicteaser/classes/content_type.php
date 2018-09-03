@@ -39,6 +39,8 @@ class content_type extends \mod_unilabel\content_type {
         $mform->addElement('header', $prefix.'hdr', $this->get_name());
         $mform->addHelpButton($prefix.'hdr', 'pluginname', $this->get_namespace());
 
+        $mform->addElement('advcheckbox', $prefix.'showcoursetitle', get_string('showcoursetitle', $this->get_namespace()));
+
         $mform->addElement('course', $prefix.'course', get_string('course'), array('multiple' => false));
 
         $select = array(
@@ -63,10 +65,12 @@ class content_type extends \mod_unilabel\content_type {
             $data[$prefix.'presentation'] = $config->presentation;
             $data[$prefix.'clickaction'] = $config->clickaction;
             $data[$prefix.'showintro'] = $config->showintro;
+            $data[$prefix.'showcoursetitle'] = $config->showcoursetitle;
         } else {
             $data[$prefix.'presentation'] = $unilabeltyperecord->presentation;
             $data[$prefix.'clickaction'] = $unilabeltyperecord->clickaction;
             $data[$prefix.'showintro'] = $unilabeltyperecord->showintro;
+            $data[$prefix.'showcoursetitle'] = $unilabeltyperecord->showcoursetitle;
             $data[$prefix.'course'] = $unilabeltyperecord->course;
         }
 
@@ -78,6 +82,8 @@ class content_type extends \mod_unilabel\content_type {
     }
 
     public function get_content($unilabel, $cm, \plugin_renderer_base $renderer) {
+        global $DB;
+
         $config = get_config($this->get_namespace());
 
         if (!$unilabeltyperecord = $this->load_unilabeltype_record($unilabel->id)) {
@@ -91,7 +97,12 @@ class content_type extends \mod_unilabel\content_type {
             $showintro = !empty($unilabeltyperecord->showintro);
             $courseid = empty($unilabeltyperecord->course) ? $unilabel->course : $unilabeltyperecord->course;
             $items = $this->get_sections_html($courseid);
+            $title = null;
+            if (!empty($unilabeltyperecord->showcoursetitle)) {
+                $title = $DB->get_field('course', 'fullname', array('id' => $courseid));
+            }
             $content = [
+                'title' => $title,
                 'showintro' => $showintro,
                 'intro' => $showintro ? $intro : '',
                 'interval' => $config->carouselinterval,
@@ -135,6 +146,7 @@ class content_type extends \mod_unilabel\content_type {
         $unilabletyperecord->presentation = $formdata->{$prefix.'presentation'};
         $unilabletyperecord->clickaction = $formdata->{$prefix.'clickaction'};
         $unilabletyperecord->showintro = $formdata->{$prefix.'showintro'};
+        $unilabletyperecord->showcoursetitle = $formdata->{$prefix.'showcoursetitle'};
         $unilabletyperecord->course = $formdata->{$prefix.'course'};
 
         if (empty($unilabletyperecord->id)) {

@@ -45,5 +45,20 @@ function xmldb_unilabeltype_topicteaser_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2018081800, 'unilabeltype', 'topicteaser');
     }
 
+    if ($oldversion < 2018090201) {
+
+        // Define field showcoursetitle to be added to unilabeltype_topicteaser.
+        $table = new xmldb_table('unilabeltype_topicteaser');
+        $field = new xmldb_field('showcoursetitle', XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'showintro');
+
+        // Conditionally launch add field showcoursetitle.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Topicteaser savepoint reached.
+        upgrade_plugin_savepoint(true, 2018090201, 'unilabeltype', 'topicteaser');
+    }
+
     return true;
 }
