@@ -25,10 +25,10 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2018090300;     // The current module version (Date: YYYYMMDDXX).
-$plugin->release = '3.5';
-$plugin->maturity = MATURITY_STABLE;
+function xmldb_unilabel_upgrade($oldversion) {
+    global $CFG, $DB;
 
-$plugin->requires  = 2018050800;     // Requires this Moodle version.
-$plugin->component = 'mod_unilabel'; // Full name of the plugin (used for diagnostics).
-$plugin->cron      = 0;
+    $dbman = $DB->get_manager();
+
+    return true;
+}
