@@ -169,9 +169,7 @@ class content_type extends \mod_unilabel\content_type {
 
         if (empty($this->unilabeltyperecord)) {
             $this->unilabeltyperecord = $DB->get_record('unilabeltype_topicteaser', array('unilabelid' => $unilabelid));
-            if (empty($this->unilabeltyperecord->clickaction)) {
-                $this->unilabeltyperecord->clickaction = $config->clickaction;
-            }
+            return $this->unilabeltyperecord;
         }
         return $this->unilabeltyperecord;
     }

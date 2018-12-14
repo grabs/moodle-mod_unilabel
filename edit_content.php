@@ -41,7 +41,11 @@ $courseformat = course_get_format($course->id);
 
 $unilabeltype = \mod_unilabel\factory::get_plugin($unilabel->unilabeltype);
 
-require_course_login($course, true, $cm);
+if ($course->id === SITEID) {
+    require_login($course, true);
+} else {
+    require_course_login($course, true, $cm);
+}
 $context = context_module::instance($cm->id);
 require_capability('mod/unilabel:edit', $context);
 
