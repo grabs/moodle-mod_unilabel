@@ -23,9 +23,18 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die;
+namespace unilabeltype_simpletext\privacy;
 
-$string['filteractive'] = 'Activate filter';
-$string['pluginname'] = 'Simple text';
-$string['pluginname_help'] = 'Prints a simple text element';
-$string['privacy:metadata'] = 'The unilabel type Simple text does not store any personal data.';
+defined('MOODLE_INTERNAL') || die();
+
+class provider implements \core_privacy\local\metadata\null_provider {
+    /**
+     * Get the language string identifier with the component's language
+     * file to explain why this plugin stores no data.
+     *
+     * @return  string
+     */
+    public static function get_reason() : string {
+        return 'privacy:metadata';
+    }
+}

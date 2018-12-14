@@ -35,4 +35,5 @@ $string['nocontent'] = 'No content';
 $string['pluginname'] = 'Course teaser';
 $string['pluginname_help'] = 'This content type shows you the image and/or the title of the selected courses. The shown element is a big click button that brings the user to the related course.';
 $string['presentation'] = 'Presentation';
+$string['privacy:metadata'] = 'The unilabel type Course teaser does not store any personal data.';
 $string['showunilabeltext'] = 'Show unilabel text';

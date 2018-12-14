@@ -32,5 +32,6 @@ $string['notitle'] = 'No title';
 $string['pluginname'] = 'Collapsed text';
 $string['pluginname_help'] = 'This content type shows you the content in a collapsed form or in a modal dialog. You have to define a title where the user can click on.';
 $string['presentation'] = 'Presentation';
+$string['privacy:metadata'] = 'The unilabel type Collapsed text does not store any personal data.';
 $string['title'] = 'Title';
 $string['useanimation'] = 'Use animation';

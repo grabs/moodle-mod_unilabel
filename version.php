@@ -25,7 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2018090301;     // The current module version (Date: YYYYMMDDXX).
+$plugin->version   = 2018121400;     // The current module version (Date: YYYYMMDDXX).
 $plugin->release = '3.5';
 $plugin->maturity = MATURITY_STABLE;
 

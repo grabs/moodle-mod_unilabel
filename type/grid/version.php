@@ -26,5 +26,5 @@
 defined('MOODLE_INTERNAL') || die;
 
 $plugin->component = 'unilabeltype_grid';
-$plugin->version   = 2018090301;
+$plugin->version   = 2018121400;
 $plugin->requires  = 2018050800;

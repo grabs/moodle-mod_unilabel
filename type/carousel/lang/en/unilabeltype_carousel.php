@@ -43,6 +43,7 @@ $string['image_mobile_help'] = 'Mobile images will be shown on screens smaller t
 $string['nocontent'] = 'No content';
 $string['pluginname'] = 'Carousel';
 $string['pluginname_help'] = 'The carousel content type offers you a slide show with freely defined images.';
+$string['privacy:metadata'] = 'The unilabel type Carousel does not store any personal data.';
 $string['showunilabeltext'] = 'Show unilabel text';
 $string['slide'] = 'Slide';
 $string['slides'] = 'Slides';
