@@ -26,8 +26,6 @@
 defined('MOODLE_INTERNAL') || die;
 
 function unilabeltype_carousel_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload) {
-    global $CFG, $DB, $USER;
-
     if ($context->contextlevel != CONTEXT_MODULE) {
         return false;
     }

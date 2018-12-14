@@ -26,8 +26,6 @@
 defined('MOODLE_INTERNAL') || die;
 
 function unilabeltype_grid_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload) {
-    global $CFG, $DB, $USER;
-
     if ($context->contextlevel != CONTEXT_MODULE) {
         return false;
     }
