@@ -27,12 +27,6 @@ namespace mod_unilabel\privacy;
 
 defined('MOODLE_INTERNAL') || die();
 
-/**
- * The mod_unilabel module does not store any data.
- *
- * @copyright  2018 Zig Tan <zig@moodle.com>
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
 class provider implements \core_privacy\local\metadata\null_provider {
     /**
      * Get the language string identifier with the component's language

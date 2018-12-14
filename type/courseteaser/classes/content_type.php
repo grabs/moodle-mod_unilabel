@@ -32,28 +32,28 @@ class content_type extends \mod_unilabel\content_type {
 
     public function add_form_fragment(\mod_unilabel\edit_content_form $form, \context $context) {
         $mform = $form->get_mform();
-        $prefix = $this->get_namespace().'_';
+        $prefix = 'unilabeltype_courseteaser_';
 
-        $mform->addElement('advcheckbox', $prefix.'showintro', get_string('showunilabeltext', $this->get_namespace()));
+        $mform->addElement('advcheckbox', $prefix.'showintro', get_string('showunilabeltext', 'unilabeltype_courseteaser'));
 
         $mform->addElement('header', $prefix.'hdr', $this->get_name());
-        $mform->addHelpButton($prefix.'hdr', 'pluginname', $this->get_namespace());
+        $mform->addHelpButton($prefix.'hdr', 'pluginname', 'unilabeltype_courseteaser');
 
-        $mform->addElement('course', $prefix.'courses', get_string('courses', $this->get_namespace()), array('multiple' => true));
+        $mform->addElement('course', $prefix.'courses', get_string('courses', 'unilabeltype_courseteaser'), array('multiple' => true));
         $mform->addRule($prefix.'courses', get_string('required'), 'required', null, 'client');
 
         $select = array(
-            'carousel' => get_string('carousel', $this->get_namespace()),
-            'grid' => get_string('grid', $this->get_namespace()),
+            'carousel' => get_string('carousel', 'unilabeltype_courseteaser'),
+            'grid' => get_string('grid', 'unilabeltype_courseteaser'),
         );
 
-        $mform->addElement('select', $prefix.'presentation', get_string('presentation', $this->get_namespace()), $select);
+        $mform->addElement('select', $prefix.'presentation', get_string('presentation', 'unilabeltype_courseteaser'), $select);
     }
 
     public function get_form_default($data, $unilabel) {
         global $DB;
-        $config = get_config($this->get_namespace());
-        $prefix = $this->get_namespace().'_';
+        $config = get_config('unilabeltype_courseteaser');
+        $prefix = 'unilabeltype_courseteaser_';
 
         if (!$unilabeltyperecord = $this->load_unilabeltype_record($unilabel->id)) {
             $data[$prefix.'presentation'] = $config->presentation;
@@ -72,7 +72,7 @@ class content_type extends \mod_unilabel\content_type {
     }
 
     public function get_content($unilabel, $cm, \plugin_renderer_base $renderer) {
-        $config = get_config($this->get_namespace());
+        $config = get_config('unilabeltype_courseteaser');
 
         if (!$unilabeltyperecord = $this->load_unilabeltype_record($unilabel->id)) {
             $content = [
@@ -104,14 +104,14 @@ class content_type extends \mod_unilabel\content_type {
                     $template = 'default';
             }
         }
-        $content = $renderer->render_from_template($this->get_namespace().'/'.$template, $content);
+        $content = $renderer->render_from_template('unilabeltype_courseteaser/'.$template, $content);
         return $content;
     }
 
     public function delete_content($unilabelid) {
         global $DB;
 
-        $DB->delete_records($this->get_namespace(), array('unilabelid' => $unilabelid));
+        $DB->delete_records('unilabeltype_courseteaser', array('unilabelid' => $unilabelid));
     }
 
     public function save_content($formdata, $unilabel) {
@@ -121,16 +121,16 @@ class content_type extends \mod_unilabel\content_type {
             $unilabletyperecord = new \stdClass();
             $unilabletyperecord->unilabelid = $unilabel->id;
         }
-        $prefix = $this->get_namespace().'_';
+        $prefix = 'unilabeltype_courseteaser_';
 
         $unilabletyperecord->presentation = $formdata->{$prefix.'presentation'};
         $unilabletyperecord->showintro = $formdata->{$prefix.'showintro'};
         $unilabletyperecord->courses = implode(',', $formdata->{$prefix.'courses'});
 
         if (empty($unilabletyperecord->id)) {
-            $unilabletyperecord->id = $DB->insert_record($this->get_namespace(), $unilabletyperecord);
+            $unilabletyperecord->id = $DB->insert_record('unilabeltype_courseteaser', $unilabletyperecord);
         } else {
-            $DB->update_record($this->get_namespace(), $unilabletyperecord);
+            $DB->update_record('unilabeltype_courseteaser', $unilabletyperecord);
         }
 
         return !empty($unilabletyperecord->id);
@@ -140,7 +140,7 @@ class content_type extends \mod_unilabel\content_type {
         global $DB;
 
         if (empty($this->unilabeltyperecord)) {
-            $this->unilabeltyperecord = $DB->get_record($this->get_namespace(), array('unilabelid' => $unilabelid));
+            $this->unilabeltyperecord = $DB->get_record('unilabeltype_courseteaser', array('unilabelid' => $unilabelid));
         }
         return $this->unilabeltyperecord;
     }
@@ -177,7 +177,7 @@ class content_type extends \mod_unilabel\content_type {
                 // We have to build our own pluginfile url so we can control the output by our self.
                 $imageurl = \moodle_url::make_pluginfile_url(
                     $file->get_contextid(),
-                    $this->get_namespace(),
+                    'unilabeltype_courseteaser',
                     'overviewfiles',
                     $file->get_itemid(),
                     '/',

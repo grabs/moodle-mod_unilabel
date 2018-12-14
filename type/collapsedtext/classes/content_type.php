@@ -32,29 +32,29 @@ class content_type extends \mod_unilabel\content_type {
 
     public function add_form_fragment(\mod_unilabel\edit_content_form $form, \context $context) {
         $mform = $form->get_mform();
-        $prefix = $this->get_namespace().'_';
+        $prefix = 'unilabeltype_collapsedtext_';
 
         $mform->addElement('header', $prefix.'hdr', $this->get_name());
-        $mform->addHelpButton($prefix.'hdr', 'pluginname', $this->get_namespace());
+        $mform->addHelpButton($prefix.'hdr', 'pluginname', 'unilabeltype_collapsedtext');
 
-        $mform->addElement('text', $prefix.'title', get_string('title', $this->get_namespace()), array('size' => 40));
+        $mform->addElement('text', $prefix.'title', get_string('title', 'unilabeltype_collapsedtext'), array('size' => 40));
         $mform->setType($prefix.'title', PARAM_TEXT);
         $mform->addRule($prefix.'title', get_string('required'), 'required', null, 'client');
 
         $select = array(
-            'collapsed' => get_string('collapsed', $this->get_namespace()),
-            'dialog' => get_string('dialog', $this->get_namespace()),
+            'collapsed' => get_string('collapsed', 'unilabeltype_collapsedtext'),
+            'dialog' => get_string('dialog', 'unilabeltype_collapsedtext'),
         );
-        $mform->addElement('select', $prefix.'presentation', get_string('presentation', $this->get_namespace()), $select);
+        $mform->addElement('select', $prefix.'presentation', get_string('presentation', 'unilabeltype_collapsedtext'), $select);
 
-        $mform->addElement('checkbox', $prefix.'useanimation', get_string('useanimation', $this->get_namespace()));
+        $mform->addElement('checkbox', $prefix.'useanimation', get_string('useanimation', 'unilabeltype_collapsedtext'));
 
     }
 
     public function get_form_default($data, $unilabel) {
         global $DB;
-        $config = get_config($this->get_namespace());
-        $prefix = $this->get_namespace().'_';
+        $config = get_config('unilabeltype_collapsedtext');
+        $prefix = 'unilabeltype_collapsedtext_';
 
         if (!$unilabletyperecord = $this->load_unilabeltype_record($unilabel)) {
             $data[$prefix.'title'] = '';
@@ -104,7 +104,7 @@ class content_type extends \mod_unilabel\content_type {
             }
         }
 
-        $content = $renderer->render_from_template($this->get_namespace().'/'.$template, $content);
+        $content = $renderer->render_from_template('unilabeltype_collapsedtext/'.$template, $content);
 
         return $content;
     }
@@ -112,7 +112,7 @@ class content_type extends \mod_unilabel\content_type {
     public function delete_content($unilabelid) {
         global $DB;
 
-        $DB->delete_records($this->get_namespace(), array('unilabelid' => $unilabelid));
+        $DB->delete_records('unilabeltype_collapsedtext', array('unilabelid' => $unilabelid));
     }
 
     public function save_content($formdata, $unilabel) {
@@ -122,16 +122,16 @@ class content_type extends \mod_unilabel\content_type {
             $unilabletyperecord->unilabelid = $unilabel->id;
         }
 
-        $prefix = $this->get_namespace().'_';
+        $prefix = 'unilabeltype_collapsedtext_';
 
         $unilabletyperecord->title = $formdata->{$prefix.'title'};
         $unilabletyperecord->useanimation = !empty($formdata->{$prefix.'useanimation'});
         $unilabletyperecord->presentation = $formdata->{$prefix.'presentation'};
 
         if (empty($unilabletyperecord->id)) {
-            $unilabletyperecord->id = $DB->insert_record($this->get_namespace(), $unilabletyperecord);
+            $unilabletyperecord->id = $DB->insert_record('unilabeltype_collapsedtext', $unilabletyperecord);
         } else {
-            $DB->update_record($this->get_namespace(), $unilabletyperecord);
+            $DB->update_record('unilabeltype_collapsedtext', $unilabletyperecord);
         }
 
         return !empty($unilabletyperecord->id);
@@ -141,14 +141,14 @@ class content_type extends \mod_unilabel\content_type {
         $this->load_unilabeltype_record($unilabel);
 
         if (empty($this->unilabeltyperecord->title)) {
-            return get_string('notitle', $this->get_namespace());
+            return get_string('notitle', 'unilabeltype_collapsedtext');
         }
         return $this->unilabeltyperecord->title;
     }
 
     public function get_useanimation($unilabel) {
         if (empty($this->unilabeltyperecord)) {
-            $config = get_config($this->get_namespace());
+            $config = get_config('unilabeltype_collapsedtext');
             return $config->useanimation;
         }
         $this->load_unilabeltype_record($unilabel);
@@ -160,7 +160,7 @@ class content_type extends \mod_unilabel\content_type {
         global $DB;
 
         if (empty($this->unilabeltyperecord)) {
-            $this->unilabeltyperecord = $DB->get_record($this->get_namespace(), array('unilabelid' => $unilabel->id));
+            $this->unilabeltyperecord = $DB->get_record('unilabeltype_collapsedtext', array('unilabelid' => $unilabel->id));
         }
         return $this->unilabeltyperecord;
     }
