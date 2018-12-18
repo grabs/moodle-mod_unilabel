@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel module
+ * Unilabel type carousel
  *
- * @package     mod_unilabel
+ * @package     unilabeltype_carousel
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -25,10 +25,18 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Restore definition of this content type
+ * @package     unilabeltype_carousel
+ * @author      Andreas Grabs <info@grabs-edv.de>
+ * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class restore_unilabeltype_carousel_subplugin extends restore_subplugin {
 
     /**
      * Returns the paths to be handled by the subplugin at unilabel level
+     * @return array
      */
     protected function define_unilabel_subplugin_structure() {
 
@@ -46,7 +54,9 @@ class restore_unilabeltype_carousel_subplugin extends restore_subplugin {
     }
 
     /**
-     * Processes the carousel element
+     * Processes the element
+     * @param array $data
+     * @return void
      */
     public function process_unilabeltype_carousel($data) {
         global $DB;
@@ -62,6 +72,7 @@ class restore_unilabeltype_carousel_subplugin extends restore_subplugin {
 
     /**
      * Processes the unilabeltype_carousel_slide element
+     * @return void
      */
     public function process_unilabeltype_carousel_slide($data) {
         global $DB;

@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel module
+ * unilabel type grid
  *
- * @package     mod_unilabel
+ * @package     unilabeltype_grid
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -27,10 +27,24 @@ namespace unilabeltype_grid;
 
 defined('MOODLE_INTERNAL') || die;
 
+/**
+ * Content type definition
+ * @package     unilabeltype_grid
+ * @author      Andreas Grabs <info@grabs-edv.de>
+ * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class content_type extends \mod_unilabel\content_type {
+    /** @var \stdClass $unilabeltyperecord */
     private $unilabeltyperecord;
+
+    /** @var array $tiles */
     private $tiles;
+
+    /** @var \stdClass $cm */
     private $cm;
+
+    /** @var \context $context */
     private $context;
 
     /**
@@ -142,6 +156,13 @@ class content_type extends \mod_unilabel\content_type {
         );
     }
 
+    /**
+     * Get the default values for the settings form
+     *
+     * @param array $data
+     * @param \stdClass $unilabel
+     * @return array
+     */
     public function get_form_default($data, $unilabel) {
         global $DB;
 
@@ -218,10 +239,23 @@ class content_type extends \mod_unilabel\content_type {
         return $data;
     }
 
+    /**
+     * Get the namespace of this content type
+     *
+     * @return string
+     */
     public function get_namespace() {
         return __NAMESPACE__;
     }
 
+    /**
+     * Get the html formated content for this type.
+     *
+     * @param \stdClass $unilabel
+     * @param \stdClass $cm
+     * @param \plugin_renderer_base $renderer
+     * @return string
+     */
     public function get_content($unilabel, $cm, \plugin_renderer_base $renderer) {
         if (!$unilabeltyperecord = $this->load_unilabeltype_record($unilabel->id)) {
             $content = [
@@ -251,6 +285,12 @@ class content_type extends \mod_unilabel\content_type {
         return $content;
     }
 
+    /**
+     * Delete the content of this type
+     *
+     * @param int $unilabelid
+     * @return void
+     */
     public function delete_content($unilabelid) {
         global $DB;
 
@@ -264,6 +304,13 @@ class content_type extends \mod_unilabel\content_type {
         $DB->delete_records('unilabeltype_grid', ['unilabelid' => $unilabelid]);
     }
 
+    /**
+     * Save the content from settings page
+     *
+     * @param \stdClass $formdata
+     * @param \stdClass $unilabel
+     * @return bool
+     */
     public function save_content($formdata, $unilabel) {
         global $DB, $USER;
 
@@ -355,6 +402,12 @@ class content_type extends \mod_unilabel\content_type {
         return !empty($unilabeltyperecord->id);
     }
 
+    /**
+     * Load and cache the unilabel record
+     *
+     * @param int $unilabelid
+     * @return \stdClass
+     */
     public function load_unilabeltype_record($unilabelid) {
         global $DB;
 
@@ -382,6 +435,12 @@ class content_type extends \mod_unilabel\content_type {
         return $this->unilabeltyperecord;
     }
 
+    /**
+     * Get the image url for the given tile
+     *
+     * @param \stdClass $tile
+     * @return string
+     */
     private function get_image_for_tile($tile) {
         $fs = get_file_storage();
 
@@ -400,6 +459,12 @@ class content_type extends \mod_unilabel\content_type {
         return $imageurl;
     }
 
+    /**
+     * Get the mobile image url
+     *
+     * @param \stdClass $tile
+     * @return string
+     */
     private function get_image_mobile_for_tile($tile) {
         $fs = get_file_storage();
 
@@ -425,6 +490,12 @@ class content_type extends \mod_unilabel\content_type {
         return $imageurl;
     }
 
+    /**
+     * Check whether ther is content or not.
+     *
+     * @param string $content
+     * @return bool
+     */
     private function html_has_content($content) {
         $searches = [
             '<br>',
@@ -438,6 +509,13 @@ class content_type extends \mod_unilabel\content_type {
         return !empty($check);
     }
 
+    /**
+     * Get the bootstrap definition for the col settings
+     * It depends on the choosen count of columns in the settings
+     *
+     * @param int $columns
+     * @return array
+     */
     private function get_bootstrap_cols($columns) {
         /*
         count tiles lg    count tiles md    count tiles sm
@@ -467,6 +545,12 @@ class content_type extends \mod_unilabel\content_type {
         }
     }
 
+    /**
+     * Get the options array to support files in editor.
+     *
+     * @param \context $context
+     * @return array
+     */
     public function editor_options($context) {
         return [
             'maxfiles' => EDITOR_UNLIMITED_FILES,
@@ -476,6 +560,12 @@ class content_type extends \mod_unilabel\content_type {
         ];
     }
 
+    /**
+     * Get the format options array
+     *
+     * @param \context $context
+     * @return array
+     */
     public function format_options($context) {
         return [
             'noclean' => true,
@@ -483,6 +573,13 @@ class content_type extends \mod_unilabel\content_type {
         ];
     }
 
+    /**
+     * Format the content of a tile
+     *
+     * @param \stdClass $tile
+     * @param \context $context
+     * @return string
+     */
     public function format_content($tile, $context) {
         global $CFG;
         require_once($CFG->libdir.'/filelib.php');

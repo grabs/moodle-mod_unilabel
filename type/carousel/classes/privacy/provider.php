@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel module
+ * unilabel type carousel
  *
- * @package     mod_unilabel
+ * @package     unilabeltype_carousel
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -27,6 +27,13 @@ namespace unilabeltype_carousel\privacy;
 
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Privacy api class
+ * @package     unilabeltype_carousel
+ * @author      Andreas Grabs <info@grabs-edv.de>
+ * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class provider implements \core_privacy\local\metadata\null_provider {
     /**
      * Get the language string identifier with the component's language

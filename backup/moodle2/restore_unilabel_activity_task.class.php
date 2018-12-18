@@ -28,8 +28,12 @@ defined('MOODLE_INTERNAL') || die();
 require_once($CFG->dirroot . '/mod/unilabel/backup/moodle2/restore_unilabel_stepslib.php'); // Because it exists (must).
 
 /**
- * unilabel restore task that provides all the settings and steps to perform one
+ * Unilabel restore task that provides all the settings and steps to perform one
  * complete restore of the activity
+ * @package     mod_unilabel
+ * @author      Andreas Grabs <info@grabs-edv.de>
+ * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class restore_unilabel_activity_task extends restore_activity_task {
 
@@ -102,6 +106,11 @@ class restore_unilabel_activity_task extends restore_activity_task {
         return $rules;
     }
 
+    /**
+     * After restore is done, rebuild the course cache.
+     *
+     * @return void
+     */
     public function after_restore() {
         $course = get_course($this->get_courseid());
         \course_modinfo::build_course_cache($course);

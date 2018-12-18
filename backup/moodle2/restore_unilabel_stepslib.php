@@ -27,13 +27,16 @@ defined('MOODLE_INTERNAL') || die;
 
 /**
  * Define all the restore steps that will be used by the restore_url_activity_task
- */
-
-/**
- * Structure step to restore one unilabel activity
+ * @package     mod_unilabel
+ * @author      Andreas Grabs <info@grabs-edv.de>
+ * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class restore_unilabel_activity_structure_step extends restore_activity_structure_step {
 
+    /**
+     * Structure step to restore one unilabel activity
+     */
     protected function define_structure() {
 
         $paths = array();
@@ -46,6 +49,12 @@ class restore_unilabel_activity_structure_step extends restore_activity_structur
         return $this->prepare_activity_structure($paths);
     }
 
+    /**
+     * Create a new instance of unilabel
+     *
+     * @param \stdClass $data
+     * @return void
+     */
     protected function process_unilabel($data) {
         global $DB;
 
@@ -62,6 +71,11 @@ class restore_unilabel_activity_structure_step extends restore_activity_structur
         $this->apply_activity_instance($newitemid);
     }
 
+    /**
+     * After restoring this instance restore related files too.
+     *
+     * @return void
+     */
     protected function after_execute() {
         // Add unilabel related files, no need to match by itemname (just internally handled context).
         $this->add_related_files('mod_unilabel', 'intro', null);

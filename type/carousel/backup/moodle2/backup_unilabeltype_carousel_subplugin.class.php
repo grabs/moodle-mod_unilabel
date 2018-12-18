@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel module
+ * Unilabel type carousel
  *
- * @package     mod_unilabel
+ * @package     unilabeltype_carousel
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -25,10 +25,18 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Backup definition for this content type
+ * @package     unilabeltype_carousel
+ * @author      Andreas Grabs <info@grabs-edv.de>
+ * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class backup_unilabeltype_carousel_subplugin extends backup_subplugin {
 
     /**
-     * Returns the assessment form definition to attach to 'unilabel' XML element
+     * Returns the nested structure of this content type
+     * @return \backup_subplugin_element
      */
     protected function define_unilabel_subplugin_structure() {
 

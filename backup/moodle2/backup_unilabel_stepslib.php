@@ -27,13 +27,18 @@ defined('MOODLE_INTERNAL') || die;
 
 /**
  * Define all the backup steps that will be used by the backup_unilabel_activity_task
- */
-
-/**
- * Define the complete unilabel structure for backup, with file and id annotations
+ * @package     mod_unilabel
+ * @author      Andreas Grabs <info@grabs-edv.de>
+ * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class backup_unilabel_activity_structure_step extends backup_activity_structure_step {
 
+    /**
+     * Define the complete unilabel structure for backup, with file and id annotations
+     *
+     * @return void
+     */
     protected function define_structure() {
 
         // To know if we are including userinfo.

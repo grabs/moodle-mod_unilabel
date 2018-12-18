@@ -27,8 +27,20 @@ namespace mod_unilabel;
 
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Create a instance of a content type
+ * @package     mod_unilabel
+ * @author      Andreas Grabs <info@grabs-edv.de>
+ * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class factory {
 
+    /**
+     * Get a list of names from all content type plugins.
+     *
+     * @return array
+     */
     public static function get_plugin_list() {
         $plugins = self::get_plugins();
 
@@ -39,6 +51,11 @@ class factory {
         return $return;
     }
 
+    /**
+     * Get all content type plugins
+     *
+     * @return array
+     */
     public static function get_plugins() {
         $plugins = \core_component::get_plugin_list('unilabeltype');
 
@@ -49,6 +66,12 @@ class factory {
         return $return;
     }
 
+    /**
+     * Get a content type plugin by a given name.
+     *
+     * @param string $name
+     * @return content_type
+     */
     public static function get_plugin($name) : content_type {
         $classname = '\\unilabeltype_'.$name.'\\content_type';
         if (!class_exists($classname)) {
@@ -57,6 +80,12 @@ class factory {
         return new $classname();
     }
 
+    /**
+     * Delete the content of the current content type.
+     *
+     * @param int $unilabelid
+     * @return void
+     */
     public static function delete_plugin_content($unilabelid) {
         $plugins = self::get_plugins();
         foreach ($plugins as $plugin) {
@@ -64,6 +93,13 @@ class factory {
         }
     }
 
+    /**
+     * Save the content for the current content type plugin
+     *
+     * @param \stdClass $formdata
+     * @param \stdClass $unilabel
+     * @return bool
+     */
     public static function save_plugin_content($formdata, $unilabel) {
         $unilabletype = self::get_plugin($unilabel->unilabeltype);
 

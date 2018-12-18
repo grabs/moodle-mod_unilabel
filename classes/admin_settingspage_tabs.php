@@ -26,16 +26,25 @@
 namespace mod_unilabel;
 
 defined('MOODLE_INTERNAL') || die();
+/**
+ * Settings page providing a tabbed view.
+ * @package     mod_unilabel
+ * @author      Andreas Grabs <info@grabs-edv.de>
+ * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class admin_settingspage_tabs extends \admin_settingpage {
 
-    /** @var The tabs */
+    /** @var array $tabs The tabs of this page */
     protected $tabs = array();
+    /** @var string $description The description of this page */
     private $description = '';
 
     /**
      * Add a tab.
      *
      * @param admin_settingpage $tab A tab.
+     * @return bool
      */
     public function add_tab(\admin_settingpage $tab) {
         foreach ($tab->settings as $setting) {
@@ -45,10 +54,22 @@ class admin_settingspage_tabs extends \admin_settingpage {
         return true;
     }
 
+    /**
+     * Add a setting page as new tab.
+     *
+     * @param \admin_settingpage $tab
+     * @return bool
+     */
     public function add($tab) {
         return $this->add_tab($tab);
     }
 
+    /**
+     * Set a description of this setting page.
+     *
+     * @param string $description
+     * @return void
+     */
     public function set_description($description) {
         $this->description = $description;
     }

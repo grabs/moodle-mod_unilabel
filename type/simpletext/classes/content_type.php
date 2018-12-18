@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel module
+ * unilabel type simple text
  *
- * @package     mod_unilabel
+ * @package     unilabeltype_simpletext
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -27,27 +27,74 @@ namespace unilabeltype_simpletext;
 
 defined('MOODLE_INTERNAL') || die;
 
+/**
+ * Content type definition
+ * @package     unilabeltype_simpletext
+ * @author      Andreas Grabs <info@grabs-edv.de>
+ * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class content_type extends \mod_unilabel\content_type {
+    /**
+     * Add elements to the activity settings form.
+     *
+     * @param \mod_unilabel\edit_content_form $form
+     * @param \context $context
+     * @return void
+     */
     public function add_form_fragment(\mod_unilabel\edit_content_form $form, \context $context) {
         return null;
     }
 
+    /**
+     * Get the default values for the settings form
+     *
+     * @param array $data
+     * @param \stdClass $unilabel
+     * @return array
+     */
     public function get_form_default($data, $unilabel) {
         return $data;
     }
 
+    /**
+     * Get the namespace of this content type
+     *
+     * @return string
+     */
     public function get_namespace() {
         return __NAMESPACE__;
     }
 
+    /**
+     * Get the html formated content for this type.
+     *
+     * @param \stdClass $unilabel
+     * @param \stdClass $cm
+     * @param \plugin_renderer_base $renderer
+     * @return string
+     */
     public function get_content($unilabel, $cm, \plugin_renderer_base $renderer) {
         return $this->format_intro($unilabel, $cm);
     }
 
+    /**
+     * Delete the content of this type
+     *
+     * @param int $unilabelid
+     * @return void
+     */
     public function delete_content($unilabelid) {
         return true;
     }
 
+    /**
+     * Save the content from settings page
+     *
+     * @param \stdClass $formdata
+     * @param \stdClass $unilabel
+     * @return bool
+     */
     public function save_content($formdata, $unilabel) {
         return true;
     }

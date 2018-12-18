@@ -27,6 +27,15 @@ namespace mod_unilabel\output;
 
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * The unilabel renderer class.
+ * There is nothing special implemented yet.
+ * But it can already be overridden in themes.
+ * @package     mod_unilabel
+ * @author      Andreas Grabs <info@grabs-edv.de>
+ * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class renderer extends \plugin_renderer_base {
 
 }

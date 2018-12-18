@@ -32,6 +32,10 @@ defined('MOODLE_INTERNAL') || die();
  *
  * Although there is no name field the intro value is stored internally, so no need
  * to overwrite self::get_document.
+ * @package     mod_unilabel
+ * @author      Andreas Grabs <info@grabs-edv.de>
+ * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class activity extends \core_search\base_activity {
 

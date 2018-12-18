@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel module
+ * unilabel type carousel
  *
- * @package     mod_unilabel
+ * @package     unilabeltype_carousel
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -27,10 +27,24 @@ namespace unilabeltype_carousel;
 
 defined('MOODLE_INTERNAL') || die;
 
+/**
+ * Content type definition
+ * @package     unilabeltype_carousel
+ * @author      Andreas Grabs <info@grabs-edv.de>
+ * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class content_type extends \mod_unilabel\content_type {
+    /** @var \stdClass $unilabeltyperecord */
     private $unilabeltyperecord;
+
+    /** @var array $slides */
     private $slides;
+
+    /** @var \stdClass $cm */
     private $cm;
+
+    /** @var \context $context */
     private $context;
 
     /**
@@ -136,6 +150,13 @@ class content_type extends \mod_unilabel\content_type {
         );
     }
 
+    /**
+     * Get the default values for the settings form
+     *
+     * @param array $data
+     * @param \stdClass $unilabel
+     * @return array
+     */
     public function get_form_default($data, $unilabel) {
         global $DB;
 
@@ -197,10 +218,23 @@ class content_type extends \mod_unilabel\content_type {
         return $data;
     }
 
+    /**
+     * Get the namespace of this content type
+     *
+     * @return string
+     */
     public function get_namespace() {
         return __NAMESPACE__;
     }
 
+    /**
+     * Get the html formated content for this type.
+     *
+     * @param \stdClass $unilabel
+     * @param \stdClass $cm
+     * @param \plugin_renderer_base $renderer
+     * @return string
+     */
     public function get_content($unilabel, $cm, \plugin_renderer_base $renderer) {
         if (!$unilabeltyperecord = $this->load_unilabeltype_record($unilabel->id)) {
             $content = [
@@ -228,6 +262,12 @@ class content_type extends \mod_unilabel\content_type {
         return $content;
     }
 
+    /**
+     * Delete the content of this type
+     *
+     * @param int $unilabelid
+     * @return void
+     */
     public function delete_content($unilabelid) {
         global $DB;
 
@@ -241,6 +281,13 @@ class content_type extends \mod_unilabel\content_type {
         $DB->delete_records('unilabeltype_carousel', ['unilabelid' => $unilabelid]);
     }
 
+    /**
+     * Save the content from settings page
+     *
+     * @param \stdClass $formdata
+     * @param \stdClass $unilabel
+     * @return bool
+     */
     public function save_content($formdata, $unilabel) {
         global $DB, $USER;
 
@@ -317,6 +364,12 @@ class content_type extends \mod_unilabel\content_type {
         return !empty($unilabeltyperecord->id);
     }
 
+    /**
+     * Load and cache the unilabel record
+     *
+     * @param int $unilabelid
+     * @return \stdClass
+     */
     public function load_unilabeltype_record($unilabelid) {
         global $DB;
 
@@ -341,6 +394,12 @@ class content_type extends \mod_unilabel\content_type {
         return $this->unilabeltyperecord;
     }
 
+    /**
+     * Get the image url for the given slide
+     *
+     * @param \stdClass $slide
+     * @return string
+     */
     private function get_image_for_slide($slide) {
         $fs = get_file_storage();
 
@@ -358,6 +417,12 @@ class content_type extends \mod_unilabel\content_type {
         return $imageurl;
     }
 
+    /**
+     * Get the mobile image url
+     *
+     * @param \stdClass $slide
+     * @return string
+     */
     private function get_image_mobile_for_slide($slide) {
         $fs = get_file_storage();
 
@@ -380,6 +445,15 @@ class content_type extends \mod_unilabel\content_type {
         return $imageurl;
     }
 
+    /**
+     * Add a colourpicker element into the settings form.
+     *
+     * @param \MoodleQuickForm $mform
+     * @param string $name
+     * @param string $label
+     * @param string $defaultvalue
+     * @return void
+     */
     private function add_colourpicker($mform, $name, $label, $defaultvalue) {
         global $PAGE;
         $mform->addElement('hidden', $name);
@@ -396,6 +470,12 @@ class content_type extends \mod_unilabel\content_type {
         $PAGE->requires->js_init_call('M.util.init_colour_picker', array($colourpickercontent->inputid, null));
     }
 
+    /**
+     * Check whether ther is content or not.
+     *
+     * @param string $caption
+     * @return bool
+     */
     private function html_has_content($caption) {
         $searches = array(
             '<br>',

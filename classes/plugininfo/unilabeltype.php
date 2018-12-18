@@ -27,8 +27,19 @@ namespace mod_unilabel\plugininfo;
 
 defined('MOODLE_INTERNAL') || die();
 
-
+/**
+ * Handles information about subplugins
+ * @package     mod_unilabel
+ * @author      Andreas Grabs <info@grabs-edv.de>
+ * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class unilabeltype extends \core\plugininfo\base {
+    /**
+     * Can the subplugin be uninstalled.
+     *
+     * @return boolean
+     */
     public function is_uninstall_allowed() {
         return true;
     }

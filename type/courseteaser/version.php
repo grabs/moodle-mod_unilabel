@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel module
+ * unilabel type course teaser
  *
- * @package     mod_unilabel
+ * @package     unilabeltype_courseteaser
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -26,5 +26,5 @@
 defined('MOODLE_INTERNAL') || die;
 
 $plugin->component = 'unilabeltype_courseteaser';
-$plugin->version   = 2018121700;
+$plugin->version   = 2018121701;
 $plugin->requires  = 2018050800;

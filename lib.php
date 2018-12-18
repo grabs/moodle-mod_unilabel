@@ -26,7 +26,8 @@
 defined('MOODLE_INTERNAL') || die;
 
 /**
- * @param object $label
+ * Get the name of the given instance.
+ * @param \stdClass $unilabel
  * @return string
  */
 function unilabel_get_name($unilabel) {
@@ -38,8 +39,7 @@ function unilabel_get_name($unilabel) {
  * will create a new instance and return the id number
  * of the new instance.
  *
- * @global object
- * @param object $unilabel
+ * @param \stdClass $unilabel
  * @return bool|int
  */
 function unilabel_add_instance($unilabel) {
@@ -63,8 +63,7 @@ function unilabel_add_instance($unilabel) {
  * (defined by the form in mod_form.php) this function
  * will update an existing instance with new data.
  *
- * @global object
- * @param object $unilabel
+ * @param \stdClass $unilabel
  * @return bool
  */
 function unilabel_update_instance($unilabel) {
@@ -85,7 +84,6 @@ function unilabel_update_instance($unilabel) {
  * this function will permanently delete the instance
  * and any data that depends on it.
  *
- * @global object
  * @param int $id
  * @return bool
  */
@@ -117,8 +115,7 @@ function unilabel_delete_instance($id) {
  * this activity in a course listing.
  * See get_array_of_activities() in course/lib.php
  *
- * @global object
- * @param object $coursemodule
+ * @param \stdClass $coursemodule
  * @return cached_cm_info|null
  */
 function unilabel_get_coursemodule_info($coursemodule) {
@@ -137,6 +134,12 @@ function unilabel_get_coursemodule_info($coursemodule) {
     }
 }
 
+/**
+ * Set the content for the course page to show there.
+ *
+ * @param \cm_info $cm
+ * @return void
+ */
 function unilabel_cm_info_view(\cm_info $cm) {
     global $DB, $PAGE;
 
@@ -161,7 +164,7 @@ function unilabel_cm_info_view(\cm_info $cm) {
 /**
  * This function is used by the reset_course_userdata function in moodlelib.
  *
- * @param object $data the data submitted from the reset course.
+ * @param \stdClass $data the data submitted from the reset course.
  * @return array status array
  */
 function unilabel_reset_userdata($data) {
@@ -182,6 +185,7 @@ function unilabel_get_extra_capabilities() {
 }
 
 /**
+ * What features are supported in this activity?
  * @uses FEATURE_IDNUMBER
  * @uses FEATURE_GROUPS
  * @uses FEATURE_GROUPINGS

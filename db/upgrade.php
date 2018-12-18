@@ -25,6 +25,12 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Upgrade hook for this plugin
+ *
+ * @param int $oldversion
+ * @return bool
+ */
 function xmldb_unilabel_upgrade($oldversion) {
     global $CFG, $DB;
 

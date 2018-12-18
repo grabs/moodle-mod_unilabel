@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel module
+ * unilabel type topic teaser
  *
- * @package     mod_unilabel
+ * @package     unilabeltype_topicteaser
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -25,6 +25,12 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Upgrade hook for this plugin
+ *
+ * @param int $oldversion
+ * @return bool
+ */
 function xmldb_unilabeltype_topicteaser_upgrade($oldversion) {
     global $CFG, $DB;
 

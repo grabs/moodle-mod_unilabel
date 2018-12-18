@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel module
+ * unilabel type carousel
  *
- * @package     mod_unilabel
+ * @package     unilabeltype_carousel
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -25,6 +25,17 @@
 
 defined('MOODLE_INTERNAL') || die;
 
+/**
+ * Send files provided by this plugin
+ *
+ * @param \stdClass $course
+ * @param \stdClass $cm
+ * @param \context $context
+ * @param string $filearea
+ * @param array $args
+ * @param bool $forcedownload
+ * @return bool
+ */
 function unilabeltype_carousel_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload) {
     if ($context->contextlevel != CONTEXT_MODULE) {
         return false;

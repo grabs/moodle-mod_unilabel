@@ -27,8 +27,20 @@ defined('MOODLE_INTERNAL') || die;
 
 require_once($CFG->dirroot.'/course/moodleform_mod.php');
 
+/**
+ * Settings form for the activity instance.
+ * @package     mod_unilabel
+ * @author      Andreas Grabs <info@grabs-edv.de>
+ * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class mod_unilabel_mod_form extends moodleform_mod {
 
+    /**
+     * Definition of elements for the activity instance
+     *
+     * @return void
+     */
     public function definition() {
         global $PAGE;
 

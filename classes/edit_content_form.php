@@ -29,9 +29,23 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir.'/formslib.php');
 
+/**
+ * Build a moodle form and uses the form elements given by the used content type.
+ * @package     mod_unilabel
+ * @author      Andreas Grabs <info@grabs-edv.de>
+ * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class edit_content_form extends \moodleform {
+    /** @var \stdClass $_course */
     private $_course;
 
+    /**
+     * Get an options array to use files in the editor.
+     *
+     * @param \context $context
+     * @return array
+     */
     public static function editor_options($context) {
         return array(
             'maxfiles' => EDITOR_UNLIMITED_FILES,
@@ -40,6 +54,12 @@ class edit_content_form extends \moodleform {
             'subdirs' => true);
     }
 
+    /**
+     * Moodle form definition method to define all needed elements.
+     * It uses the elements needed by the current content type.
+     *
+     * @return void
+     */
     public function definition() {
         $mform = $this->_form;
         $this->unilabel = $this->_customdata['unilabel'];
@@ -64,12 +84,24 @@ class edit_content_form extends \moodleform {
         $this->set_data((array) $this->unilabel);
     }
 
+    /**
+     * Does the validation of the submitted values.
+     *
+     * @param array $data
+     * @param array $files
+     * @return array
+     */
     public function validation($data, $files) {
         $errors = parent::validation($data, $files);
         $errors = $this->unilabeltype->form_validation($errors, $data, $files);
         return $errors;
     }
 
+    /**
+     * Add the intro editor as form element.
+     *
+     * @return void
+     */
     private function add_intro_editor() {
         $mform = $this->_form;
         $mform->addElement('editor',
@@ -81,6 +113,12 @@ class edit_content_form extends \moodleform {
         $mform->setType('introeditor', PARAM_RAW); // No XSS prevention here, users must be trusted.
     }
 
+    /**
+     * Set all default data while loading the form.
+     *
+     * @param array $defaultvalues
+     * @return void
+     */
     public function set_data($defaultvalues) {
 
         $defaultvalues['cmid'] = $this->cm->id;
@@ -105,10 +143,20 @@ class edit_content_form extends \moodleform {
         parent::set_data($defaultvalues);
     }
 
+    /**
+     * Add all form elements needed by the current content type.
+     *
+     * @return void
+     */
     private function add_plugin_form_elements() {
         $this->unilabeltype->add_form_fragment($this, $this->context);
     }
 
+    /**
+     * Get all default values from the current content type.
+     *
+     * @return array
+     */
     private function get_plugin_defaultvalues() {
         $data = array();
 
@@ -116,10 +164,20 @@ class edit_content_form extends \moodleform {
         return $data;
     }
 
+    /**
+     * Return the \MoodleQuickForm form so the current content type can use it.
+     *
+     * @return \MoodleQuickForm
+     */
     public function get_mform() {
         return $this->_form;
     }
 
+    /**
+     * Return the current course.
+     *
+     * @return \stdClass
+     */
     public function get_course() {
         return $this->_course;
     }
