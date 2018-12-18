@@ -1,3 +1,65 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template unilabeltype_carousel/carousel
+    Template to show a bootstrap carousel.
+
+    Example context (json):
+    {
+        "showintro": false,
+        "intro": "",
+        "interval": "5",
+        "height": "300",
+        "autoheight": false,
+        "background": "#A0E2FD",
+        "slides": [
+            {
+                "id": "4",
+                "carouselid": "1",
+                "url": "",
+                "caption": "<p>Slide 1<br><\/p>",
+                "imageurl": "",
+                "imagemobileurl": "",
+                "nr": 0
+            },
+            {
+                "id": "5",
+                "carouselid": "1",
+                "url": "",
+                "caption": "<p>Slide 2<br><\/p>",
+                "imageurl": "",
+                "imagemobileurl": "",
+                "nr": 1
+            },
+            {
+                "id": "6",
+                "carouselid": "1",
+                "url": "",
+                "caption": "<p>Slide 3<br><\/p>",
+                "imageurl": "",
+                "imagemobileurl": "",
+                "nr": 2
+            }
+        ],
+        "hasslides": true,
+        "cmid": "55"
+    }
+}}
+
 {{#showintro}}
     {{{intro}}}
 {{/showintro}}

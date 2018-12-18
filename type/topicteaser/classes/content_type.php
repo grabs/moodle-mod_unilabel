@@ -151,7 +151,11 @@ class content_type extends \mod_unilabel\content_type {
         $unilabletyperecord->clickaction = $formdata->{$prefix.'clickaction'};
         $unilabletyperecord->showintro = $formdata->{$prefix.'showintro'};
         $unilabletyperecord->showcoursetitle = $formdata->{$prefix.'showcoursetitle'};
-        $unilabletyperecord->course = $formdata->{$prefix.'course'};
+        $course = 0;
+        if (is_array($formdata->{$prefix.'course'})) {
+            $course = (int) array_shift($formdata->{$prefix.'course'});
+        }
+        $unilabletyperecord->course = $course;
 
         if (empty($unilabletyperecord->id)) {
             $unilabletyperecord->id = $DB->insert_record('unilabeltype_topicteaser', $unilabletyperecord);
