@@ -69,7 +69,10 @@
 
 {{> unilabeltype_topicteaser/intro }}
 {{#hasitems}}
-    <div id="unilabeltype-topicteaser-{{cmid}}" class="carousel slide my-2" data-ride="carousel" data-interval="{{interval}}000">
+    {{#custombuttons}}
+        {{>mod_unilabel/carousel_button_style}}
+    {{/custombuttons}}
+    <div id="{{plugin}}-{{cmid}}" class="{{plugin}} carousel slide my-2" data-ride="carousel" data-interval="{{interval}}000">
 
         <!-- Indicators -->
         <ul class="carousel-indicators">
@@ -95,11 +98,9 @@
         <!-- Left and right controls -->
         <a class="carousel-control-prev" href="#unilabeltype-topicteaser-{{cmid}}" data-slide="prev">
             <span class="carousel-control-prev-icon"></span>
-            {{! <i class="fa fa-angle-left" style="color:#000000;font-size:40px;font-weight:bold;"> </i> }}
         </a>
         <a class="carousel-control-next" href="#unilabeltype-topicteaser-{{cmid}}" data-slide="next">
             <span class="carousel-control-next-icon"></span>
-            {{! <i class="fa fa-angle-right" style="color:#000000;font-size:40px;font-weight:bold;"> </i> }}
         </a>
     </div>
 
@@ -113,3 +114,11 @@
 {{^hasitems}}
     <span>{{#str}} nocontent , unilabeltype_topicteaser {{/str}}</span>
 {{/hasitems}}
+{{#js}}
+require(['theme_boost/loader']);
+require(['theme_boost/carousel']);
+require(['mod_unilabel/carouselstart'], function(mod) {
+    mod.init('{{plugin}}-{{cmid}}');
+});
+
+{{/js}}

@@ -29,6 +29,11 @@ $page = new admin_settingpage('unilabeltype_collapsedtext', get_string('pluginna
 
 $collapsedtextsettings = array();
 
+$collapsedtextsettings[] = new admin_setting_configcheckbox('unilabeltype_collapsedtext/active',
+    get_string('active'),
+    '',
+    true);
+
 $collapsedtextsettings[] = new admin_setting_configcheckbox(
     'unilabeltype_collapsedtext/useanimation',
     get_string('useanimation', 'unilabeltype_collapsedtext'),

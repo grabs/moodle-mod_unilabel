@@ -29,6 +29,11 @@ $page = new admin_settingpage('unilabeltype_grid', get_string('pluginname', 'uni
 
 $gridsettings = array();
 
+$gridsettings[] = new admin_setting_configcheckbox('unilabeltype_grid/active',
+    get_string('active'),
+    '',
+    true);
+
 $numbers = array_combine(range(1, 6), range(1, 6));
 $gridsettings[] = new admin_setting_configselect('unilabeltype_grid/columns',
     get_string('default_columns', 'unilabeltype_grid'),

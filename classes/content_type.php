@@ -129,4 +129,11 @@ abstract class content_type {
     public function form_validation($errors, $data, $files) {
         return $errors;
     }
+
+    /** Get the configuration setting "active" to this plugin
+     *
+     * @return bool
+     */
+    abstract public function is_active();
+
 }

@@ -98,4 +98,8 @@ class content_type extends \mod_unilabel\content_type {
     public function save_content($formdata, $unilabel) {
         return true;
     }
+
+    public function is_active() {
+        return true;
+    }
 }

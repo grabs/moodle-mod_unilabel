@@ -38,6 +38,13 @@ class content_type extends \mod_unilabel\content_type {
     /** @var \stdClass $unilabeltyperecord */
     private $unilabeltyperecord;
 
+    /** @var \stdClass $config */
+    private $config;
+
+    public function __construct() {
+        $this->config = get_config('unilabeltype_topicteaser');
+    }
+
     /**
      * Add elements to the activity settings form.
      *
@@ -80,14 +87,13 @@ class content_type extends \mod_unilabel\content_type {
      */
     public function get_form_default($data, $unilabel) {
         global $DB;
-        $config = get_config('unilabeltype_topicteaser');
         $prefix = 'unilabeltype_topicteaser_';
 
         if (!$unilabeltyperecord = $this->load_unilabeltype_record($unilabel->id)) {
-            $data[$prefix.'presentation'] = $config->presentation;
-            $data[$prefix.'clickaction'] = $config->clickaction;
-            $data[$prefix.'showintro'] = $config->showintro;
-            $data[$prefix.'showcoursetitle'] = $config->showcoursetitle;
+            $data[$prefix.'presentation'] = $this->config->presentation;
+            $data[$prefix.'clickaction'] = $this->config->clickaction;
+            $data[$prefix.'showintro'] = $this->config->showintro;
+            $data[$prefix.'showcoursetitle'] = $this->config->showcoursetitle;
         } else {
             $data[$prefix.'presentation'] = $unilabeltyperecord->presentation;
             $data[$prefix.'clickaction'] = $unilabeltyperecord->clickaction;
@@ -119,8 +125,6 @@ class content_type extends \mod_unilabel\content_type {
     public function get_content($unilabel, $cm, \plugin_renderer_base $renderer) {
         global $DB;
 
-        $config = get_config('unilabeltype_topicteaser');
-
         if (!$unilabeltyperecord = $this->load_unilabeltype_record($unilabel->id)) {
             $content = [
                 'cmid' => $cm->id,
@@ -144,7 +148,7 @@ class content_type extends \mod_unilabel\content_type {
                 'title' => $title,
                 'showintro' => $showintro,
                 'intro' => $showintro ? $intro : '',
-                'interval' => $config->carouselinterval,
+                'interval' => $this->config->carouselinterval,
                 'height' => 300,
                 'items' => array_values($items),
                 'hasitems' => count($items) > 0,
@@ -155,6 +159,15 @@ class content_type extends \mod_unilabel\content_type {
             switch ($unilabeltyperecord->presentation) {
                 case 'carousel':
                     $template = 'carousel';
+                    $template = 'carousel';
+                    if (!empty($this->config->custombutton)) {
+                        $content['custombuttons'] = 1;
+                        $content['plugin'] = 'unilabeltype_topicteaser';
+                        $content['fontawesomenext'] =
+                            \mod_unilabel\setting_configselect_button::$buttonlist[$this->config->custombutton]['next'];
+                        $content['fontawesomeprev'] =
+                            \mod_unilabel\setting_configselect_button::$buttonlist[$this->config->custombutton]['prev'];
+                    }
                     break;
                 case 'grid':
                     $template = 'grid';
@@ -222,8 +235,6 @@ class content_type extends \mod_unilabel\content_type {
      */
     private function load_unilabeltype_record($unilabelid) {
         global $DB;
-
-        $config = get_config('unilabeltype_topicteaser');
 
         if (empty($this->unilabeltyperecord)) {
             $this->unilabeltyperecord = $DB->get_record('unilabeltype_topicteaser', array('unilabelid' => $unilabelid));
@@ -308,5 +319,9 @@ class content_type extends \mod_unilabel\content_type {
         }
 
         return $sectionsoutput;
+    }
+
+    public function is_active() {
+        return !empty($this->config->active);
     }
 }

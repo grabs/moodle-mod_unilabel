@@ -146,6 +146,10 @@ function unilabel_cm_info_view(\cm_info $cm) {
     $renderer = $PAGE->get_renderer('mod_unilabel');
     $unilabel = $DB->get_record('unilabel', ['id' => $cm->instance], 'id, course, name, intro, introformat, unilabeltype');
     $unilabeltype = \mod_unilabel\factory::get_plugin($unilabel->unilabeltype);
+    if (!$unilabeltype->is_active()) {
+        $unilabeltype = \mod_unilabel\factory::get_plugin('simpletext');
+    }
+
     $content = ['content' => $unilabeltype->get_content($unilabel, $cm, $renderer)];
 
     // Add the edit link if needed.

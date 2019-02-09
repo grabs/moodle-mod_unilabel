@@ -29,6 +29,11 @@ $page = new admin_settingpage('unilabeltype_courseteaser', get_string('pluginnam
 
 $courseteasersettings = array();
 
+$courseteasersettings[] = new admin_setting_configcheckbox('unilabeltype_courseteaser/active',
+    get_string('active'),
+    '',
+    true);
+
 $numbers = array_combine(range(1, 10), range(1, 10));
 $courseteasersettings[] = new admin_setting_configselect('unilabeltype_courseteaser/carouselinterval',
     get_string('default_carouselinterval', 'unilabeltype_courseteaser'),
@@ -53,6 +58,12 @@ $courseteasersettings[] = new admin_setting_configcheckbox('unilabeltype_courset
     get_string('default_showintro', 'unilabeltype_courseteaser'),
     '',
     false
+);
+
+$courseteasersettings[] = new \mod_unilabel\setting_configselect_button('unilabeltype_courseteaser/custombutton',
+    get_string('custombutton', 'unilabeltype_courseteaser'),
+    '',
+    0
 );
 
 foreach ($courseteasersettings as $setting) {

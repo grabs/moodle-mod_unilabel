@@ -61,7 +61,11 @@ class factory {
 
         $return = array();
         foreach ($plugins as $name => $notused) {
-            $return[$name] = self::get_plugin($name);
+            $plugin = self::get_plugin($name);
+            if (!$plugin->is_active()) {
+                continue;
+            }
+            $return[$name] = $plugin;
         }
         return $return;
     }

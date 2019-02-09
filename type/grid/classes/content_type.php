@@ -47,6 +47,13 @@ class content_type extends \mod_unilabel\content_type {
     /** @var \context $context */
     private $context;
 
+    /** @var \stdClass $config */
+    private $config;
+
+    public function __construct() {
+        $this->config = get_config('unilabeltype_grid');
+    }
+
     /**
      * Add elements to the activity settings form.
      *
@@ -173,11 +180,10 @@ class content_type extends \mod_unilabel\content_type {
 
         // Set default data for the grid in generel.
         if (!$unilabeltyperecord = $this->load_unilabeltype_record($unilabel->id)) {
-            $config = get_config('unilabeltype_grid');
-            $data[$prefix.'columns'] = $config->columns;
-            $data[$prefix.'height'] = $config->height;
-            $data[$prefix.'showintro'] = !empty($config->showintro);
-            $data[$prefix.'usemobile'] = !empty($config->usemobile);
+            $data[$prefix.'columns'] = $this->config->columns;
+            $data[$prefix.'height'] = $this->config->height;
+            $data[$prefix.'showintro'] = !empty($this->config->showintro);
+            $data[$prefix.'usemobile'] = !empty($this->config->usemobile);
             return $data;
         }
 
@@ -597,4 +603,7 @@ class content_type extends \mod_unilabel\content_type {
         return trim(format_text($content, FORMAT_HTML, $options, null));
     }
 
+    public function is_active() {
+        return !empty($this->config->active);
+    }
 }

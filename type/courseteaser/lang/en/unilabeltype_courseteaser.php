@@ -27,6 +27,7 @@ defined('MOODLE_INTERNAL') || die;
 
 $string['carousel'] = 'Carousel';
 $string['courses'] = 'Courses';
+$string['custombutton'] = 'Custom button';
 $string['default_carouselinterval'] = 'Default interval';
 $string['default_showintro'] = 'Default show unilabel text';
 $string['default_presentation'] = 'Default presentation';

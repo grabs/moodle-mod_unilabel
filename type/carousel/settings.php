@@ -29,6 +29,11 @@ $page = new admin_settingpage('unilabeltype_carousel', get_string('pluginname', 
 
 $carouselsettings = array();
 
+$carouselsettings[] = new admin_setting_configcheckbox('unilabeltype_carousel/active',
+    get_string('active'),
+    '',
+    true);
+
 $numbers = array_combine(range(1, 10), range(1, 10));
 $carouselsettings[] = new admin_setting_configselect('unilabeltype_carousel/carouselinterval',
     get_string('default_carouselinterval', 'unilabeltype_carousel'),
@@ -56,6 +61,12 @@ $carouselsettings[] = new admin_setting_configcheckbox('unilabeltype_carousel/us
     get_string('default_usemobile', 'unilabeltype_carousel'),
     '',
     true
+);
+
+$carouselsettings[] = new \mod_unilabel\setting_configselect_button('unilabeltype_carousel/custombutton',
+    get_string('custombutton', 'unilabeltype_carousel'),
+    '',
+    0
 );
 
 foreach ($carouselsettings as $setting) {

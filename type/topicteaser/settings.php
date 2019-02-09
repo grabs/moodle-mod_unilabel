@@ -29,6 +29,11 @@ $page = new admin_settingpage('unilabeltype_topicteaser', get_string('pluginname
 
 $topicteasersettings = array();
 
+$topicteasersettings[] = new admin_setting_configcheckbox('unilabeltype_topicteaser/active',
+    get_string('active'),
+    '',
+    true);
+
 $numbers = array_combine(range(1, 10), range(1, 10));
 $topicteasersettings[] = new admin_setting_configselect('unilabeltype_topicteaser/carouselinterval',
     get_string('default_carouselinterval', 'unilabeltype_topicteaser'),
@@ -71,6 +76,12 @@ $topicteasersettings[] = new admin_setting_configcheckbox('unilabeltype_topictea
     get_string('default_showcoursetitle', 'unilabeltype_topicteaser'),
     '',
     true
+);
+
+$topicteasersettings[] = new \mod_unilabel\setting_configselect_button('unilabeltype_topicteaser/custombutton',
+    get_string('custombutton', 'unilabeltype_topicteaser'),
+    '',
+    0
 );
 
 foreach ($topicteasersettings as $setting) {

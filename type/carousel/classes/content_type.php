@@ -47,6 +47,13 @@ class content_type extends \mod_unilabel\content_type {
     /** @var \context $context */
     private $context;
 
+    /** @var \stdClass $config */
+    private $config;
+
+    public function __construct() {
+        $this->config = get_config('unilabeltype_carousel');
+    }
+
     /**
      * Add elements to the activity settings form.
      *
@@ -75,7 +82,10 @@ class content_type extends \mod_unilabel\content_type {
         $mform->addHelpButton($prefix.'height', 'height', 'unilabeltype_carousel');
 
         $backgrounddefault = empty($unilabeltyperecord->background) ? '' : $unilabeltyperecord->background;
-        $this->add_colourpicker($mform, $prefix.'background', get_string('background', 'unilabeltype_carousel'), $backgrounddefault);
+        $this->add_colourpicker($mform,
+            $prefix.'background',
+            get_string('background', 'unilabeltype_carousel'),
+            $backgrounddefault);
 
         $mform->addElement('advcheckbox', $prefix.'usemobile', get_string('use_mobile_images', 'unilabeltype_carousel'));
         $mform->addHelpButton($prefix.'usemobile', 'use_mobile_images', 'unilabeltype_carousel');
@@ -167,12 +177,11 @@ class content_type extends \mod_unilabel\content_type {
 
         // Set default data for the carousel in generel.
         if (!$unilabeltyperecord = $this->load_unilabeltype_record($unilabel->id)) {
-            $config = get_config('unilabeltype_carousel');
-            $data[$prefix.'carouselinterval'] = $config->carouselinterval;
-            $data[$prefix.'height'] = $config->height;
+            $data[$prefix.'carouselinterval'] = $this->config->carouselinterval;
+            $data[$prefix.'height'] = $this->config->height;
             $data[$prefix.'background'] = '#ffffff';
-            $data[$prefix.'showintro'] = !empty($config->showintro);
-            $data[$prefix.'usemobile'] = !empty($config->usemobile);
+            $data[$prefix.'showintro'] = !empty($this->config->showintro);
+            $data[$prefix.'usemobile'] = !empty($this->config->usemobile);
             return $data;
         }
 
@@ -256,6 +265,16 @@ class content_type extends \mod_unilabel\content_type {
                 'hasslides' => count($this->slides) > 0,
                 'cmid' => $cm->id,
             ];
+
+            if (!empty($this->config->custombutton)) {
+                $content['custombuttons'] = 1;
+                $content['plugin'] = 'unilabeltype_carousel';
+                $content['fontawesomenext'] =
+                    \mod_unilabel\setting_configselect_button::$buttonlist[$this->config->custombutton]['next'];
+                $content['fontawesomeprev'] =
+                    \mod_unilabel\setting_configselect_button::$buttonlist[$this->config->custombutton]['prev'];
+            }
+
         }
         $content = $renderer->render_from_template('unilabeltype_carousel/carousel', $content);
 
@@ -487,5 +506,9 @@ class content_type extends \mod_unilabel\content_type {
         $check = trim(str_replace($searches, '', $caption));
 
         return !empty($check);
+    }
+
+    public function is_active() {
+        return !empty($this->config->active);
     }
 }

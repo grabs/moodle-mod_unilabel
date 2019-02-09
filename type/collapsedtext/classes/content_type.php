@@ -38,6 +38,13 @@ class content_type extends \mod_unilabel\content_type {
     /** @var \stdClass $unilabeltyperecord */
     private $unilabeltyperecord;
 
+    /** @var \stdClass $config */
+    private $config;
+
+    public function __construct() {
+        $this->config = get_config('unilabeltype_collapsedtext');
+    }
+
     /**
      * Add elements to the activity settings form.
      *
@@ -75,13 +82,12 @@ class content_type extends \mod_unilabel\content_type {
      */
     public function get_form_default($data, $unilabel) {
         global $DB;
-        $config = get_config('unilabeltype_collapsedtext');
         $prefix = 'unilabeltype_collapsedtext_';
 
         if (!$unilabletyperecord = $this->load_unilabeltype_record($unilabel)) {
             $data[$prefix.'title'] = '';
-            $data[$prefix.'useanimation'] = $config->useanimation;
-            $data[$prefix.'presentation'] = $config->presentation;
+            $data[$prefix.'useanimation'] = $this->config->useanimation;
+            $data[$prefix.'presentation'] = $this->config->presentation;
         } else {
             $data[$prefix.'title'] = $unilabletyperecord->title;
             $data[$prefix.'useanimation'] = $unilabletyperecord->useanimation;
@@ -208,8 +214,7 @@ class content_type extends \mod_unilabel\content_type {
      */
     public function get_useanimation($unilabel) {
         if (empty($this->unilabeltyperecord)) {
-            $config = get_config('unilabeltype_collapsedtext');
-            return $config->useanimation;
+            return $this->config->useanimation;
         }
         $this->load_unilabeltype_record($unilabel);
 
@@ -229,5 +234,9 @@ class content_type extends \mod_unilabel\content_type {
             $this->unilabeltyperecord = $DB->get_record('unilabeltype_collapsedtext', array('unilabelid' => $unilabel->id));
         }
         return $this->unilabeltyperecord;
+    }
+
+    public function is_active() {
+        return !empty($this->config->active);
     }
 }

@@ -40,6 +40,9 @@ $section = $DB->get_record('course_sections', array('id' => $cm->section));
 $courseformat = course_get_format($course->id);
 
 $unilabeltype = \mod_unilabel\factory::get_plugin($unilabel->unilabeltype);
+if (!$unilabeltype->is_active()) {
+    $unilabeltype = \mod_unilabel\factory::get_plugin('simpletext');
+}
 
 if ($course->id === SITEID) {
     require_login($course, true);
@@ -63,6 +66,10 @@ $PAGE->set_heading($course->fullname);
 if ($switchtype) {
     require_sesskey();
     $unilabeltype = \mod_unilabel\factory::get_plugin($switchtype);
+    if (!$unilabeltype->is_active()) {
+        $unilabeltype = \mod_unilabel\factory::get_plugin('simpletext');
+    }
+
     $DB->set_field('unilabel', 'unilabeltype', $unilabeltype->get_plugintype(), array('id' => $unilabel->id));
     redirect(new \moodle_url($mybaseurl, array('cmid' => $cmid)));
 }

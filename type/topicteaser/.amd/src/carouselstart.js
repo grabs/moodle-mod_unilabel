@@ -1,4 +1,3 @@
-<?php
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -15,16 +14,22 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel type course teaser
+ * unilabel type carousel
+ * This plugin only starts the carousel because in Moodle the start is not really reliable.
  *
- * @package     unilabeltype_courseteaser
+ * @package     unilabeltype_topicteaser
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die;
-
-$plugin->component = 'unilabeltype_courseteaser';
-$plugin->version   = 2019020900;
-$plugin->requires  = 2018050800;
+define(['jquery'], function($) {
+    return {
+        init: function(id) {
+            c = $('#' + id + '.carousel');
+            c.carousel({
+                interval: c.data('interval')
+            });
+        }
+    };
+});

@@ -38,6 +38,13 @@ class content_type extends \mod_unilabel\content_type {
     /** @var \stdClass $unilabeltyperecord */
     private $unilabeltyperecord;
 
+    /** @var \stdClass $config */
+    private $config;
+
+    public function __construct() {
+        $this->config = get_config('unilabeltype_courseteaser');
+    }
+
     /**
      * Add elements to the activity settings form.
      *
@@ -54,7 +61,11 @@ class content_type extends \mod_unilabel\content_type {
         $mform->addElement('header', $prefix.'hdr', $this->get_name());
         $mform->addHelpButton($prefix.'hdr', 'pluginname', 'unilabeltype_courseteaser');
 
-        $mform->addElement('course', $prefix.'courses', get_string('courses', 'unilabeltype_courseteaser'), array('multiple' => true));
+        $mform->addElement('course',
+            $prefix.'courses',
+            get_string('courses',
+            'unilabeltype_courseteaser'),
+            array('multiple' => true));
         $mform->addRule($prefix.'courses', get_string('required'), 'required', null, 'client');
 
         $select = array(
@@ -74,12 +85,11 @@ class content_type extends \mod_unilabel\content_type {
      */
     public function get_form_default($data, $unilabel) {
         global $DB;
-        $config = get_config('unilabeltype_courseteaser');
         $prefix = 'unilabeltype_courseteaser_';
 
         if (!$unilabeltyperecord = $this->load_unilabeltype_record($unilabel->id)) {
-            $data[$prefix.'presentation'] = $config->presentation;
-            $data[$prefix.'showintro'] = $config->showintro;
+            $data[$prefix.'presentation'] = $this->config->presentation;
+            $data[$prefix.'showintro'] = $this->config->showintro;
         } else {
             $data[$prefix.'presentation'] = $unilabeltyperecord->presentation;
             $data[$prefix.'showintro'] = $unilabeltyperecord->showintro;
@@ -107,7 +117,6 @@ class content_type extends \mod_unilabel\content_type {
      * @return string
      */
     public function get_content($unilabel, $cm, \plugin_renderer_base $renderer) {
-        $config = get_config('unilabeltype_courseteaser');
 
         if (!$unilabeltyperecord = $this->load_unilabeltype_record($unilabel->id)) {
             $content = [
@@ -122,7 +131,7 @@ class content_type extends \mod_unilabel\content_type {
             $content = [
                 'showintro' => $showintro,
                 'intro' => $showintro ? $intro : '',
-                'interval' => $config->carouselinterval,
+                'interval' => $this->config->carouselinterval,
                 'height' => 300,
                 'items' => array_values($items),
                 'hasitems' => count($items) > 0,
@@ -131,6 +140,14 @@ class content_type extends \mod_unilabel\content_type {
             switch ($unilabeltyperecord->presentation) {
                 case 'carousel':
                     $template = 'carousel';
+                    if (!empty($this->config->custombutton)) {
+                        $content['custombuttons'] = 1;
+                        $content['plugin'] = 'unilabeltype_courseteaser';
+                        $content['fontawesomenext'] =
+                            \mod_unilabel\setting_configselect_button::$buttonlist[$this->config->custombutton]['next'];
+                        $content['fontawesomeprev'] =
+                            \mod_unilabel\setting_configselect_button::$buttonlist[$this->config->custombutton]['prev'];
+                    }
                     break;
                 case 'grid':
                     $template = 'grid';
@@ -208,7 +225,14 @@ class content_type extends \mod_unilabel\content_type {
     public function get_course_infos($unilabel) {
         global $DB, $CFG;
 
-        require_once($CFG->libdir.'/coursecatlib.php');
+        if (class_exists('\\core_course_list_element')) {
+            $useautoload = true;
+            $courselistelementclass = '\\core_course_list_element';
+        } else {
+            $useautoload = false;
+            require_once($CFG->libdir.'/coursecatlib.php');
+            $courselistelementclass = '\\course_in_list';
+        }
 
         $unilabeltyperecord = $this->load_unilabeltype_record($unilabel->id);
 
@@ -223,7 +247,7 @@ class content_type extends \mod_unilabel\content_type {
             if (!$course = $DB->get_record('course', array('id' => $id))) {
                 continue;
             }
-            $cil = new \course_in_list($course); // Special core object with some nice methods.
+            $cil = new $courselistelementclass($course); // Special core object with some nice methods.
             $item = new \stdClass();
 
             $item->courseid = $course->id;
@@ -253,5 +277,9 @@ class content_type extends \mod_unilabel\content_type {
             $items[] = $item;
         }
         return $items;
+    }
+
+    public function is_active() {
+        return !empty($this->config->active);
     }
 }

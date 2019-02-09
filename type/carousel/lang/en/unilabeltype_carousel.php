@@ -31,6 +31,7 @@ $string['background'] = 'Background';
 $string['caption'] = 'Caption';
 $string['caption_help'] = 'The caption is shown in addition to the defined image. It is also shown if no image is defined.';
 $string['carouselinterval'] = 'Interval';
+$string['custombutton'] = 'Custom button';
 $string['default_carouselinterval'] = 'Default interval';
 $string['default_height'] = 'Default height';
 $string['default_showintro'] = 'Default show unilabel text';

@@ -64,58 +64,67 @@
     {{{intro}}}
 {{/showintro}}
 {{#hasslides}}
-<div id="unilabeltype-carousel-{{cmid}}" class="carousel slide my-2" data-ride="carousel" data-interval="{{interval}}000">
+    {{#custombuttons}}
+        {{>mod_unilabel/carousel_button_style}}
+    {{/custombuttons}}
+    <div id="{{plugin}}-{{cmid}}" class="{{plugin}} carousel slide my-2" data-ride="carousel" data-interval="{{interval}}000">
 
-    <!-- Indicators -->
-    <ul class="carousel-indicators">
-        {{#slides}}
-            <li data-target="#unilabeltype-carousel-{{cmid}}" data-slide-to="{{nr}}"{{^nr}} class="active"{{/nr}}></li>
-        {{/slides}}
-    </ul>
+        <!-- Indicators -->
+        <ul class="carousel-indicators">
+            {{#slides}}
+                <li data-target="#unilabeltype-carousel-{{cmid}}" data-slide-to="{{nr}}"{{^nr}} class="active"{{/nr}}></li>
+            {{/slides}}
+        </ul>
 
-    <!-- The slideshow -->
-    <div class="carousel-inner" style="background-color:{{background}};">
-        {{#slides}}
-            <div class="carousel-item text-center py-4{{^nr}} active{{/nr}}">
-                {{#url}}
-                    <!-- The overlay is used as button to show the modal dialog -->
-                    <a href="{{{url}}}">
-                        <div class="unilabel-overlay-effect bg-primary h-100 w-100"></div>
-                    </a>
-                {{/url}}
-                {{^autoheight}}<div style="height:{{{height}}}px;width:100%;">{{/autoheight}}
+        <!-- The slideshow -->
+        <div class="carousel-inner" style="background-color:{{background}};">
+            {{#slides}}
+                <div class="carousel-item text-center py-4{{^nr}} active{{/nr}}">
+                    {{#url}}
+                        <!-- The overlay is used as button to show the modal dialog -->
+                        <a href="{{{url}}}">
+                            <div class="unilabel-overlay-effect bg-primary h-100 w-100"></div>
+                        </a>
+                    {{/url}}
+                    {{^autoheight}}<div style="height:{{{height}}}px;width:100%;">{{/autoheight}}
 
-                {{#imagemobileurl}}
-                    <img class="img-fluid d-none d-md-inline" src="{{{imageurl}}}"{{^autoheight}} style="height:100%;object-fit:contain;"{{/autoheight}}/>
-                    <img class="img-fluid d-inline d-md-none" src="{{{imagemobileurl}}}"{{^autoheight}} style="height:100%;object-fit:contain;"{{/autoheight}}/>
-                {{/imagemobileurl}}
-                {{^imagemobileurl}}
-                    <img class="img-fluid" src="{{{imageurl}}}"{{^autoheight}} style="height:100%;object-fit:contain;"{{/autoheight}}/>
-                {{/imagemobileurl}}
+                    {{#imagemobileurl}}
+                        <img class="img-fluid d-none d-md-inline" src="{{{imageurl}}}"{{^autoheight}} style="height:100%;object-fit:contain;"{{/autoheight}}/>
+                        <img class="img-fluid d-inline d-md-none" src="{{{imagemobileurl}}}"{{^autoheight}} style="height:100%;object-fit:contain;"{{/autoheight}}/>
+                    {{/imagemobileurl}}
+                    {{^imagemobileurl}}
+                        <img class="img-fluid" src="{{{imageurl}}}"{{^autoheight}} style="height:100%;object-fit:contain;"{{/autoheight}}/>
+                    {{/imagemobileurl}}
 
-                {{^autoheight}}</div>{{/autoheight}}
+                    {{^autoheight}}</div>{{/autoheight}}
 
-                {{#caption}}
-                    <div class="carousel-caption">
-                        {{{caption}}}
-                    </div>
-                {{/caption}}
+                    {{#caption}}
+                        <div class="carousel-caption">
+                            {{{caption}}}
+                        </div>
+                    {{/caption}}
 
-            </div>
-        {{/slides}}
+                </div>
+            {{/slides}}
+        </div>
+
+        <!-- Left and right controls -->
+        <a class="carousel-control-prev" href="#unilabeltype-carousel-{{cmid}}" data-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </a>
+        <a class="carousel-control-next" href="#unilabeltype-carousel-{{cmid}}" data-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </a>
     </div>
-
-    <!-- Left and right controls -->
-    <a class="carousel-control-prev" href="#unilabeltype-carousel-{{cmid}}" data-slide="prev">
-        <span class="carousel-control-prev-icon"></span>
-        {{! <i class="fa fa-angle-left" style="color:#000000;font-size:40px;font-weight:bold;"> </i> }}
-    </a>
-    <a class="carousel-control-next" href="#unilabeltype-carousel-{{cmid}}" data-slide="next">
-        <span class="carousel-control-next-icon"></span>
-        {{! <i class="fa fa-angle-right" style="color:#000000;font-size:40px;font-weight:bold;"> </i> }}
-    </a>
-</div>
 {{/hasslides}}
 {{^hasslides}}
-<span>{{#str}} nocontent , unilabeltype_carousel {{/str}}</span>
+    <span>{{#str}} nocontent , unilabeltype_carousel {{/str}}</span>
 {{/hasslides}}
+{{#js}}
+require(['theme_boost/loader']);
+require(['theme_boost/carousel']);
+require(['mod_unilabel/carouselstart'], function(mod) {
+    mod.init('{{plugin}}-{{cmid}}');
+});
+
+{{/js}}
