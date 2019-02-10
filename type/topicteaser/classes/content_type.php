@@ -213,8 +213,8 @@ class content_type extends \mod_unilabel\content_type {
         $unilabletyperecord->showintro = $formdata->{$prefix.'showintro'};
         $unilabletyperecord->showcoursetitle = $formdata->{$prefix.'showcoursetitle'};
         $course = 0;
-        if (is_array($formdata->{$prefix.'course'})) {
-            $course = (int) array_shift($formdata->{$prefix.'course'});
+        if (is_numeric($formdata->{$prefix.'course'})) {
+            $course = (int) $formdata->{$prefix.'course'};
         }
         $unilabletyperecord->course = $course;
 

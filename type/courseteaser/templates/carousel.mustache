@@ -56,7 +56,7 @@
         <!-- Indicators -->
         <ul class="carousel-indicators">
             {{#items}}
-                <li data-target="#unilabeltype-courseteaser-{{cmid}}" data-slide-to="{{nr}}"{{#first}} class="active"{{/first}}></li>
+                <li data-target="#{{plugin}}-{{cmid}}" data-slide-to="{{nr}}"{{#first}} class="active"{{/first}}></li>
             {{/items}}
         </ul>
 
@@ -81,10 +81,10 @@
         </div>
 
         <!-- Left and right controls -->
-        <a class="carousel-control-prev" href="#unilabeltype-courseteaser-{{cmid}}" data-slide="prev">
+        <a class="carousel-control-prev" href="#{{plugin}}-{{cmid}}" data-slide="prev">
             <span class="carousel-control-prev-icon"></span>
         </a>
-        <a class="carousel-control-next" href="#unilabeltype-courseteaser-{{cmid}}" data-slide="next">
+        <a class="carousel-control-next" href="#{{plugin}}-{{cmid}}" data-slide="next">
             <span class="carousel-control-next-icon"></span>
         </a>
     </div>
