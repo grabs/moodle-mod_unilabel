@@ -32,7 +32,7 @@
                 "title": "Title 1",
                 "url": "",
                 "content": "<p>fdsafsdf<br><\/p>",
-                "imageurl": "",
+                "imageurl": "https://url-to-image",
                 "imagemobileurl": "",
                 "nr": 0
             },
@@ -42,7 +42,7 @@
                 "title": "Title 2",
                 "url": "",
                 "content": "<p>fdfdfdfdf<br><\/p>",
-                "imageurl": "",
+                "imageurl": "https://url-to-image",
                 "imagemobileurl": "",
                 "nr": 1
             }
@@ -75,11 +75,11 @@
                 {{^autoheight}}<div style="height:{{{height}}}px;width:100%;">{{/autoheight}}
 
                 {{#imagemobileurl}}
-                    <img class="img-fluid d-none d-md-inline" src="{{{imageurl}}}"{{^autoheight}} style="height:100%;object-fit:contain;"{{/autoheight}}/>
-                    <img class="img-fluid d-inline d-md-none" src="{{{imagemobileurl}}}"{{^autoheight}} style="height:100%;object-fit:contain;"{{/autoheight}}/>
+                    <img class="img-fluid d-none d-md-inline" alt="{{title}}" src="{{{imageurl}}}"{{^autoheight}} style="height:100%;object-fit:contain;"{{/autoheight}}/>
+                    <img class="img-fluid d-inline d-md-none" alt="{{title}}" src="{{{imagemobileurl}}}"{{^autoheight}} style="height:100%;object-fit:contain;"{{/autoheight}}/>
                 {{/imagemobileurl}}
                 {{^imagemobileurl}}
-                    <img class="img-fluid" src="{{{imageurl}}}"{{^autoheight}} style="height:100%;object-fit:contain;"{{/autoheight}}/>
+                    <img class="img-fluid" alt="{{title}}" src="{{{imageurl}}}"{{^autoheight}} style="height:100%;object-fit:contain;"{{/autoheight}}/>
                 {{/imagemobileurl}}
 
                 {{^autoheight}}</div>{{/autoheight}}

@@ -26,7 +26,7 @@
 define(['jquery'], function($) {
     return {
         init: function(id) {
-            c = $('#' + id + '.carousel');
+            var c = $('#' + id + '.carousel');
             c.carousel({
                 interval: c.data('interval')
             });

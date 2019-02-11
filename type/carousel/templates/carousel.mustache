@@ -32,7 +32,7 @@
                 "carouselid": "1",
                 "url": "",
                 "caption": "<p>Slide 1<br><\/p>",
-                "imageurl": "",
+                "imageurl": "https://url-to-image",
                 "imagemobileurl": "",
                 "nr": 0
             },
@@ -41,7 +41,7 @@
                 "carouselid": "1",
                 "url": "",
                 "caption": "<p>Slide 2<br><\/p>",
-                "imageurl": "",
+                "imageurl": "https://url-to-image",
                 "imagemobileurl": "",
                 "nr": 1
             },
@@ -50,7 +50,7 @@
                 "carouselid": "1",
                 "url": "",
                 "caption": "<p>Slide 3<br><\/p>",
-                "imageurl": "",
+                "imageurl": "https://url-to-image",
                 "imagemobileurl": "",
                 "nr": 2
             }
@@ -89,11 +89,11 @@
                     {{^autoheight}}<div style="height:{{{height}}}px;width:100%;">{{/autoheight}}
 
                     {{#imagemobileurl}}
-                        <img class="img-fluid d-none d-md-inline" src="{{{imageurl}}}"{{^autoheight}} style="height:100%;object-fit:contain;"{{/autoheight}}/>
-                        <img class="img-fluid d-inline d-md-none" src="{{{imagemobileurl}}}"{{^autoheight}} style="height:100%;object-fit:contain;"{{/autoheight}}/>
+                        <img class="img-fluid d-none d-md-inline" alt="{{caption}}" src="{{{imageurl}}}"{{^autoheight}} style="height:100%;object-fit:contain;"{{/autoheight}}/>
+                        <img class="img-fluid d-inline d-md-none" alt="{{caption}}" src="{{{imagemobileurl}}}"{{^autoheight}} style="height:100%;object-fit:contain;"{{/autoheight}}/>
                     {{/imagemobileurl}}
                     {{^imagemobileurl}}
-                        <img class="img-fluid" src="{{{imageurl}}}"{{^autoheight}} style="height:100%;object-fit:contain;"{{/autoheight}}/>
+                        <img class="img-fluid" alt="{{caption}}" src="{{{imageurl}}}"{{^autoheight}} style="height:100%;object-fit:contain;"{{/autoheight}}/>
                     {{/imagemobileurl}}
 
                     {{^autoheight}}</div>{{/autoheight}}

@@ -40,10 +40,6 @@ class backup_unilabel_activity_structure_step extends backup_activity_structure_
      * @return void
      */
     protected function define_structure() {
-
-        // To know if we are including userinfo.
-        $userinfo = $this->get_setting_value('userinfo');
-
         // Define each element separated.
         $unilabel = new backup_nested_element('unilabel', array('id'), array(
             'name', 'intro', 'introformat', 'unilabeltype', 'timemodified'));
