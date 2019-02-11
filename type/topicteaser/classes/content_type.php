@@ -167,6 +167,10 @@ class content_type extends \mod_unilabel\content_type {
                             \mod_unilabel\setting_configselect_button::$buttonlist[$this->config->custombutton]['next'];
                         $content['fontawesomeprev'] =
                             \mod_unilabel\setting_configselect_button::$buttonlist[$this->config->custombutton]['prev'];
+
+                        // To make sure we have clean html we have to put the carousel css into the <head> by using javascript.
+                        $cssstring = $renderer->render_from_template('mod_unilabel/carousel_button_style', $content);
+                        $content['cssjsonstring'] = json_encode($cssstring);
                     }
                     break;
                 case 'grid':

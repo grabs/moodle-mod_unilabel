@@ -132,6 +132,10 @@ class setting_configselect_button extends \admin_setting {
             'currentvalue' => $currentvalue,
         ];
 
+        // To make sure we have clean html we have to put the carousel css into the <head> by using javascript.
+        $cssstring = $OUTPUT->render_from_template('mod_unilabel/setting_configselect_style', $context);
+        $context->cssjsonstring = json_encode($cssstring);
+
         $element = $OUTPUT->render_from_template('mod_unilabel/setting_configselect', $context);
 
         return format_admin_setting($this, $this->visiblename, $element, $this->description, true, '', $defaultinfo, $query);

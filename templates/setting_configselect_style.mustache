@@ -22,7 +22,6 @@
     Example context (json):
     {
         "id": "idjjfldsfxy_fjsdlf",
-        "name": "fjlsdjflsdf",
         "values": [
             {
                 "value": 0,
@@ -61,33 +60,41 @@
                 "value": 8,
                 "title": "\\f18e"
             }
-        ],
-        "cssjsonstring": '"css-selector {\n overflow: hidden;\n}"',
-        "currentvalue": 4
+        ]
     }
 }}
-<div class="dropdown">
-    <button type="button" id="btn-{{id}}" class="btn py-0 my-0 pr-2 border dropdown-toggle" data-toggle="dropdown">
-        <span class="button-{{currentvalue}}"></span>
-    </button>
-    <div id="dd-{{id}}" class="dropdown-menu">
-        {{#values}}
-            <div class="dropdown-item px-2{{#checked}} checked{{/checked}}">
-                <input class="d-none" type="radio" id="{{name}}_{{value}}" name="{{name}}" value="{{value}}"{{#checked}} checked="checked"{{/checked}}>
-                <label class="w-100" for="{{name}}_{{value}}">
-                    <span class="button-{{value}}"></span>
-                </label>
-            </div>
-        {{/values}}
-    </div>
-</div>
 
-{{#js}}
-    require(['mod_unilabel/add_css'], function(mod) {
-        // To make sure we have clean html we have to put the css into the <head> by using javascript.
-        mod.init({{{cssjsonstring}}});
-    });
-    require(['mod_unilabel/dropdown_radio'], function(mod) {
-        mod.init("{{id}}");
-    });
-{{/js}}
+button#btn-{{id}} {
+    overflow: hidden;
+}
+div#dd-{{id}} {
+    min-width: 0;
+}
+
+div#dd-{{id}} .dropdown-item input[type="radio"] + label {
+    margin-bottom: 0;
+}
+
+div#dd-{{id}} .dropdown-item.checked,
+div#dd-{{id}} .dropdown-item:hover,
+div#dd-{{id}} .dropdown-item:focus {
+    background-color: #0078D7;
+    color: #ffffff;
+}
+div#dd-{{id}} label span::after {
+    font-family: FontAwesome;
+    font-weight: normal;
+    font-size: 15px;
+}
+
+#btn-{{id}} span::after {
+    font-family: FontAwesome;
+    font-weight: normal;
+    font-size: 25px;
+}
+{{#values}}
+    div#dd-{{id}} label span.button-{{value}}::after,
+    #btn-{{id}} span.button-{{value}}::after {
+        content:"{{title}}";
+    }
+{{/values}}
