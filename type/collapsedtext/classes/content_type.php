@@ -41,6 +41,11 @@ class content_type extends \mod_unilabel\content_type {
     /** @var \stdClass $config */
     private $config;
 
+    /**
+     * Constructor
+     *
+     * @return void
+     */
     public function __construct() {
         $this->config = get_config('unilabeltype_collapsedtext');
     }
@@ -224,7 +229,7 @@ class content_type extends \mod_unilabel\content_type {
     /**
      * Load and cache the unilabel record
      *
-     * @param int $unilabelid
+     * @param \stdClass $unilabel
      * @return \stdClass
      */
     private function load_unilabeltype_record($unilabel) {
@@ -236,6 +241,11 @@ class content_type extends \mod_unilabel\content_type {
         return $this->unilabeltyperecord;
     }
 
+    /**
+     * Check that this plugin is activated on config settings.
+     *
+     * @return boolean
+     */
     public function is_active() {
         return !empty($this->config->active);
     }

@@ -50,6 +50,11 @@ class content_type extends \mod_unilabel\content_type {
     /** @var \stdClass $config */
     private $config;
 
+    /**
+     * Constructor
+     *
+     * @return void
+     */
     public function __construct() {
         $this->config = get_config('unilabeltype_grid');
     }
@@ -567,6 +572,11 @@ class content_type extends \mod_unilabel\content_type {
         return trim(format_text($content, FORMAT_HTML, $options, null));
     }
 
+    /**
+     * Check that this plugin is activated on config settings.
+     *
+     * @return boolean
+     */
     public function is_active() {
         return !empty($this->config->active);
     }

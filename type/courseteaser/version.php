@@ -26,5 +26,5 @@
 defined('MOODLE_INTERNAL') || die;
 
 $plugin->component = 'unilabeltype_courseteaser';
-$plugin->version   = 2019030701;
+$plugin->version   = 2019030702;
 $plugin->requires  = 2018050800;

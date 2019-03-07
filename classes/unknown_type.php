@@ -117,6 +117,11 @@ class unknown_type extends \mod_unilabel\content_type {
         return true;
     }
 
+    /**
+     * Check that this plugin is activated on config settings.
+     *
+     * @return boolean
+     */
     public function is_active() {
         return true;
     }

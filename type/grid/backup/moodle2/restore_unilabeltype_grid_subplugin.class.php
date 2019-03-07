@@ -72,6 +72,7 @@ class restore_unilabeltype_grid_subplugin extends restore_subplugin {
 
     /**
      * Processes the unilabeltype_grid_tile element
+     * @param array $data
      */
     public function process_unilabeltype_grid_tile($data) {
         global $DB;

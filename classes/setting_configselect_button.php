@@ -17,7 +17,7 @@
 /**
  * unilabel type carousel
  *
- * @package     unilabeltype_carousel
+ * @package     mod_unilabel
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -30,14 +30,24 @@ require_once($CFG->libdir.'/adminlib.php');
 
 /**
  * Content type definition
- * @package     unilabeltype_carousel
+ * @package     mod_unilabel
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class setting_configselect_button extends \admin_setting {
+    /**
+     * Options used in select box and also in css templates
+     *
+     * @var array
+     */
     private $options;
 
+    /**
+     * List of css codes for fontawesome
+     *
+     * @var array
+     */
     public static $buttonlist = array(
         '1' => ['next' => '\f105', 'prev' => '\f104'],
         '2' => ['next' => '\f101', 'prev' => '\f100'],
@@ -55,8 +65,7 @@ class setting_configselect_button extends \admin_setting {
      * @param string $visiblename localised
      * @param string $description long localised info
      * @param string $defaultsetting
-     * @param string $yes value used when checked
-     * @param string $no value used when not checked
+     * @return void
      */
     public function __construct($name, $visiblename, $description, $defaultsetting) {
         $this->options = array(0 => 0);

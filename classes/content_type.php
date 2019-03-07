@@ -29,7 +29,9 @@ defined('MOODLE_INTERNAL') || die();
 
 /**
  * General class to define a content type.
+ *
  * This class is used in all sub plugins "unilabeltype".
+ *
  * @package     mod_unilabel
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}

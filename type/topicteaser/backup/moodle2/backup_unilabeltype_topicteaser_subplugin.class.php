@@ -44,7 +44,7 @@ class backup_unilabeltype_topicteaser_subplugin extends backup_subplugin {
         $subplugin = $this->get_subplugin_element();
         $subpluginwrapper = new backup_nested_element($this->get_recommended_name());
         $subplugintopicteaser = new backup_nested_element('unilabeltype_topicteaser', array('id'), array(
-            'course', 'presentation', 'showintro', 'showcoursetitle'));
+            'course', 'presentation', 'columns', 'showintro', 'showcoursetitle'));
 
         // Connect XML elements into the tree.
         $subplugin->add_child($subpluginwrapper);

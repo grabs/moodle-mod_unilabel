@@ -41,6 +41,11 @@ class content_type extends \mod_unilabel\content_type {
     /** @var \stdClass $config */
     private $config;
 
+    /**
+     * Constructor
+     *
+     * @return void
+     */
     public function __construct() {
         $this->config = get_config('unilabeltype_courseteaser');
         if (empty($this->config->columns)) {
@@ -296,6 +301,11 @@ class content_type extends \mod_unilabel\content_type {
         return $items;
     }
 
+    /**
+     * Check that this plugin is activated on config settings.
+     *
+     * @return boolean
+     */
     public function is_active() {
         return !empty($this->config->active);
     }

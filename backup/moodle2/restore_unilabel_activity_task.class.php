@@ -28,8 +28,9 @@ defined('MOODLE_INTERNAL') || die();
 require_once($CFG->dirroot . '/mod/unilabel/backup/moodle2/restore_unilabel_stepslib.php'); // Because it exists (must).
 
 /**
- * Unilabel restore task that provides all the settings and steps to perform one
- * complete restore of the activity
+ * Unilabel restore task class
+ *
+ * This class provides all the settings and steps to perform one complete restore of the activity
  * @package     mod_unilabel
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}

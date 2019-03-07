@@ -29,8 +29,10 @@ defined('MOODLE_INTERNAL') || die();
 
 /**
  * The unilabel renderer class.
+ *
  * There is nothing special implemented yet.
  * But it can already be overridden in themes.
+ *
  * @package     mod_unilabel
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}

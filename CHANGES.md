@@ -21,3 +21,8 @@ it is in it by its self.
 ### Version 2019030701
 
 * no features but optimized code
+
+### Version 2019030702
+
+* missing field "column" in backup for course and topic teaser
+* optimize phpdoc comments

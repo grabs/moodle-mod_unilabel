@@ -72,6 +72,7 @@ class restore_unilabeltype_carousel_subplugin extends restore_subplugin {
 
     /**
      * Processes the unilabeltype_carousel_slide element
+     * @param array $data
      * @return void
      */
     public function process_unilabeltype_carousel_slide($data) {
