@@ -42,6 +42,14 @@ $courseteasersettings[] = new admin_setting_configselect('unilabeltype_coursetea
     $numbers
 );
 
+$numbers = array_combine(range(1, 6), range(1, 6));
+$courseteasersettings[] = new admin_setting_configselect('unilabeltype_courseteaser/columns',
+    get_string('default_columns', 'unilabeltype_courseteaser'),
+    get_string('columns_help', 'unilabeltype_courseteaser'),
+    4,
+    $numbers
+);
+
 $select = array(
     'carousel' => get_string('carousel', 'unilabeltype_courseteaser'),
     'grid' => get_string('grid', 'unilabeltype_courseteaser'),

@@ -55,7 +55,7 @@
 {{#hasitems}}
     <div class="row mx-0">
         {{#items}}
-            <div class="text-center col-md-4 col-sm-6 col-12">
+            <div class="text-center {{{colclasses}}}">
                 <!-- The overlay is used as button to show the modal dialog -->
                 <a href="{{{viewurl}}}"{{#openmodal}} data-toggle="modal" data-target="#topicteaser-modal-{{cmid}}-{{nr}}"{{/openmodal}}>
                     <div class="unilabel-overlay-effect bg-primary h-100 w-100"></div>
@@ -77,3 +77,63 @@
 {{^hasitems}}
     <span>{{#str}} nocontent , unilabeltype_topicteaser {{/str}}</span>
 {{/hasitems}}
+
+{{#extracss}}
+<style type="text/css">
+/***********************************************/
+/*
+ This is a workaround for a five-column grid.
+ We have to put it here because in <plugin>/styles.css it is loaded before bootstrap and overriden.
+*/
+.col-2dot4,
+.col-sm-2dot4,
+.col-md-2dot4,
+.col-lg-2dot4,
+.col-xl-2dot4 {
+    position: relative;
+    width: 100%;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+.col-2dot4 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 20%;
+    flex: 0 0 20%;
+    max-width: 20%;
+}
+@media (min-width: 576px) {
+    .col-sm-2dot4 {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 20%;
+        flex: 0 0 20%;
+        max-width: 20%;
+    }
+}
+@media (min-width: 768px) {
+    .col-md-2dot4 {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 20%;
+        flex: 0 0 20%;
+        max-width: 20%;
+    }
+}
+@media (min-width: 992px) {
+    .col-lg-2dot4 {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 20%;
+        flex: 0 0 20%;
+        max-width: 20%;
+    }
+}
+@media (min-width: 1200px) {
+    .col-xl-2dot4 {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 20%;
+        flex: 0 0 20%;
+        max-width: 20%;
+    }
+}
+/***********************************************/
+</style>
+{{/extracss}}

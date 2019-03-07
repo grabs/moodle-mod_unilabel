@@ -43,6 +43,9 @@ class content_type extends \mod_unilabel\content_type {
 
     public function __construct() {
         $this->config = get_config('unilabeltype_topicteaser');
+        if (empty($this->config->columns)) {
+            $this->config->columns = 4;
+        }
     }
 
     /**
@@ -71,6 +74,10 @@ class content_type extends \mod_unilabel\content_type {
         );
         $mform->addElement('select', $prefix.'presentation', get_string('presentation', 'unilabeltype_topicteaser'), $select);
 
+        $numbers = array_combine(range(1, 6), range(1, 6));
+        $mform->addElement('select', $prefix.'columns', get_string('columns', 'unilabeltype_topicteaser'), $numbers);
+        $mform->disabledIf($prefix.'columns', $prefix.'presentation', 'ne', 'grid');
+
         $select = array(
             'opendialog' => get_string('opendialog', 'unilabeltype_topicteaser'),
             'opencourseurl' => get_string('opencourseurl', 'unilabeltype_topicteaser'),
@@ -91,11 +98,13 @@ class content_type extends \mod_unilabel\content_type {
 
         if (!$unilabeltyperecord = $this->load_unilabeltype_record($unilabel->id)) {
             $data[$prefix.'presentation'] = $this->config->presentation;
+            $data[$prefix.'columns'] = $this->config->columns;
             $data[$prefix.'clickaction'] = $this->config->clickaction;
             $data[$prefix.'showintro'] = $this->config->showintro;
             $data[$prefix.'showcoursetitle'] = $this->config->showcoursetitle;
         } else {
             $data[$prefix.'presentation'] = $unilabeltyperecord->presentation;
+            $data[$prefix.'columns'] = $unilabeltyperecord->columns;
             $data[$prefix.'clickaction'] = $unilabeltyperecord->clickaction;
             $data[$prefix.'showintro'] = $unilabeltyperecord->showintro;
             $data[$prefix.'showcoursetitle'] = $unilabeltyperecord->showcoursetitle;
@@ -175,6 +184,8 @@ class content_type extends \mod_unilabel\content_type {
                     break;
                 case 'grid':
                     $template = 'grid';
+                    $content['extracss'] = ($unilabeltyperecord->columns == 5);
+                    $content += $this->get_bootstrap_cols($unilabeltyperecord->columns);
                     break;
                 default:
                     $template = 'default';
@@ -213,6 +224,7 @@ class content_type extends \mod_unilabel\content_type {
         $prefix = 'unilabeltype_topicteaser_';
 
         $unilabletyperecord->presentation = $formdata->{$prefix.'presentation'};
+        $unilabletyperecord->columns = !empty($formdata->{$prefix.'columns'}) ? $formdata->{$prefix.'columns'} : 0;
         $unilabletyperecord->clickaction = $formdata->{$prefix.'clickaction'};
         $unilabletyperecord->showintro = $formdata->{$prefix.'showintro'};
         $unilabletyperecord->showcoursetitle = $formdata->{$prefix.'showcoursetitle'};
@@ -232,6 +244,42 @@ class content_type extends \mod_unilabel\content_type {
     }
 
     /**
+     * Get the bootstrap definition for the col settings
+     * It depends on the choosen count of columns in the settings
+     *
+     * @param int $columns
+     * @return array
+     */
+    private function get_bootstrap_cols($columns) {
+        /*
+        count tiles lg    count tiles md    count tiles sm
+        1 col-lg-12         1 col-md-12     1 col-sm-12
+        2 col-lg-6          1 col-md-12     1 col-sm-12
+        3 col-lg-4          2 col-md-6      1 col-sm-12
+        4 col-lg-3          2 col-md-6      1 col-sm-12
+        5 col-lg-2dot4      3 col-md-4      1 col-sm-12
+        6 col-lg-2          3 col-md-4      1 col-sm-12
+        */
+
+        switch ($columns) {
+            case 1:
+                return ['colclasses' => 'col-12'];
+            case 2:
+                return ['colclasses' => 'col-lg-6 col-md-12'];
+            case 3:
+                return ['colclasses' => 'col-lg-4 col-md-6 col-sm-12'];
+            case 4:
+                return ['colclasses' => 'col-lg-3 col-md-6 col-sm-12'];
+            case 5:
+                return ['colclasses' => 'col-lg-2dot4 col-md-4 col-sm-12'];
+            case 6:
+                return ['colclasses' => 'col-lg-2 col-md-4 col-sm-12'];
+            default:
+                return ['colclasses' => 'col-lg-12 col-md-12 col-sm-12'];
+        }
+    }
+
+    /**
      * Load and cache the unilabel record
      *
      * @param int $unilabelid
@@ -242,7 +290,6 @@ class content_type extends \mod_unilabel\content_type {
 
         if (empty($this->unilabeltyperecord)) {
             $this->unilabeltyperecord = $DB->get_record('unilabeltype_topicteaser', array('unilabelid' => $unilabelid));
-            return $this->unilabeltyperecord;
         }
         return $this->unilabeltyperecord;
     }
@@ -282,6 +329,10 @@ class content_type extends \mod_unilabel\content_type {
      */
     public function get_sections_html($courseid) {
         global $DB, $PAGE;
+        if ($PAGE->course->id == $courseid) {
+            $mycm = get_coursemodule_from_instance('unilabel', $this->unilabeltyperecord->unilabelid);
+            $mysection = $DB->get_record('course_sections', array('id' => $mycm->section));
+        }
 
         if (!$course = $DB->get_record('course', array('id' => $courseid))) {
             return array();
@@ -293,6 +344,11 @@ class content_type extends \mod_unilabel\content_type {
         $courserenderer = $PAGE->get_renderer('core', 'course');
         $counter = 0;
         foreach ($sections as $s) {
+            if (!empty($mysection)) {
+                if ($mysection->id == $s->id) {
+                    continue;
+                }
+            }
             $section = new \stdClass();
             $section->name = get_section_name($course, $s);
             $section->section = $s->section;

@@ -42,6 +42,15 @@ $topicteasersettings[] = new admin_setting_configselect('unilabeltype_topictease
     $numbers
 );
 
+
+$numbers = array_combine(range(1, 6), range(1, 6));
+$topicteasersettings[] = new admin_setting_configselect('unilabeltype_topicteaser/columns',
+    get_string('default_columns', 'unilabeltype_topicteaser'),
+    get_string('columns_help', 'unilabeltype_topicteaser'),
+    4,
+    $numbers
+);
+
 $select = array(
     'carousel' => get_string('carousel', 'unilabeltype_topicteaser'),
     'grid' => get_string('grid', 'unilabeltype_topicteaser'),

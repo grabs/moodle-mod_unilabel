@@ -27,8 +27,11 @@ defined('MOODLE_INTERNAL') || die;
 
 $string['carousel'] = 'Carousel';
 $string['courses'] = 'Courses';
+$string['columns'] = 'Columns';
+$string['columns_help'] = 'This setting is only used if the presentation is "carousel"';
 $string['custombutton'] = 'Custom button';
 $string['default_carouselinterval'] = 'Default interval';
+$string['default_columns'] = 'Default columns';
 $string['default_showintro'] = 'Default show unilabel text';
 $string['default_presentation'] = 'Default presentation';
 $string['grid'] = 'Grid';

@@ -23,8 +23,33 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die;
+defined('MOODLE_INTERNAL') || die();
 
-$plugin->component = 'unilabeltype_courseteaser';
-$plugin->version   = 2019030700;
-$plugin->requires  = 2018050800;
+/**
+ * Upgrade hook for this plugin
+ *
+ * @param int $oldversion
+ * @return bool
+ */
+function xmldb_unilabeltype_courseteaser_upgrade($oldversion) {
+    global $CFG, $DB;
+
+    $dbman = $DB->get_manager();
+
+    if ($oldversion < 2019030700) {
+
+        // Define field columns to be added to unilabeltype_courseteaser.
+        $table = new xmldb_table('unilabeltype_courseteaser');
+        $field = new xmldb_field('columns', XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'presentation');
+
+        // Conditionally launch add field columns.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Courseteaser savepoint reached.
+        upgrade_plugin_savepoint(true, 2019030700, 'unilabeltype', 'courseteaser');
+    }
+
+    return true;
+}
