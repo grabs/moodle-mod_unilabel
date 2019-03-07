@@ -244,42 +244,6 @@ class content_type extends \mod_unilabel\content_type {
     }
 
     /**
-     * Get the bootstrap definition for the col settings
-     * It depends on the choosen count of columns in the settings
-     *
-     * @param int $columns
-     * @return array
-     */
-    private function get_bootstrap_cols($columns) {
-        /*
-        count tiles lg    count tiles md    count tiles sm
-        1 col-lg-12         1 col-md-12     1 col-sm-12
-        2 col-lg-6          1 col-md-12     1 col-sm-12
-        3 col-lg-4          2 col-md-6      1 col-sm-12
-        4 col-lg-3          2 col-md-6      1 col-sm-12
-        5 col-lg-2dot4      3 col-md-4      1 col-sm-12
-        6 col-lg-2          3 col-md-4      1 col-sm-12
-        */
-
-        switch ($columns) {
-            case 1:
-                return ['colclasses' => 'col-12'];
-            case 2:
-                return ['colclasses' => 'col-lg-6 col-md-12'];
-            case 3:
-                return ['colclasses' => 'col-lg-4 col-md-6 col-sm-12'];
-            case 4:
-                return ['colclasses' => 'col-lg-3 col-md-6 col-sm-12'];
-            case 5:
-                return ['colclasses' => 'col-lg-2dot4 col-md-4 col-sm-12'];
-            case 6:
-                return ['colclasses' => 'col-lg-2 col-md-4 col-sm-12'];
-            default:
-                return ['colclasses' => 'col-lg-12 col-md-12 col-sm-12'];
-        }
-    }
-
-    /**
      * Load and cache the unilabel record
      *
      * @param int $unilabelid

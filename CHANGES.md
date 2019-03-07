@@ -17,3 +17,7 @@
 * Change behaviour. If the unilabel shows a topic teaser of its own course it will ignore the topic
 it is in it by its self.
 * Clean the code to respect the moodle code guidelines
+
+### Version 2019030701
+
+* no features but optimized code
