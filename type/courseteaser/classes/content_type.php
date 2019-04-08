@@ -69,11 +69,14 @@ class content_type extends \mod_unilabel\content_type {
         $mform->addElement('header', $prefix.'hdr', $this->get_name());
         $mform->addHelpButton($prefix.'hdr', 'pluginname', 'unilabeltype_courseteaser');
 
-        $mform->addElement('course',
-            $prefix.'courses',
-            get_string('courses',
-            'unilabeltype_courseteaser'),
-            array('multiple' => true));
+        $courseoptions = array(
+            'multiple' => true,
+            'limittoenrolled' => !is_siteadmin(),
+            'requiredcapabilities' => array(
+                    'moodle/course:manageactivities',
+            ),
+        );
+        $mform->addElement('course', $prefix.'courses', get_string('courses', 'unilabeltype_courseteaser'), $courseoptions);
         $mform->addRule($prefix.'courses', get_string('required'), 'required', null, 'client');
 
         $select = array(

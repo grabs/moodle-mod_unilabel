@@ -71,7 +71,14 @@ class content_type extends \mod_unilabel\content_type {
 
         $mform->addElement('advcheckbox', $prefix.'showcoursetitle', get_string('showcoursetitle', 'unilabeltype_topicteaser'));
 
-        $mform->addElement('course', $prefix.'course', get_string('course'), array('multiple' => false));
+        $courseoptions = array(
+            'multiple' => false,
+            'limittoenrolled' => !is_siteadmin(),
+            'requiredcapabilities' => array(
+                    'moodle/course:manageactivities',
+            ),
+        );
+        $mform->addElement('course', $prefix.'course', get_string('course'), $courseoptions);
 
         $select = array(
             'carousel' => get_string('carousel', 'unilabeltype_topicteaser'),

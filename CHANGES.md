@@ -26,3 +26,6 @@ it is in it by its self.
 
 * missing field "column" in backup for course and topic teaser
 * optimize phpdoc comments
+
+### Version 2019030703
+* add capability check while defining course and topic teaser
