@@ -105,9 +105,9 @@ class factory {
      * @return bool
      */
     public static function save_plugin_content($formdata, $unilabel) {
-        $unilabletype = self::get_plugin($unilabel->unilabeltype);
+        $unilabeltype = self::get_plugin($unilabel->unilabeltype);
 
-        if ($unilabletype->save_content($formdata, $unilabel)) {
+        if ($unilabeltype->save_content($formdata, $unilabel)) {
             return true;
         }
         return false;

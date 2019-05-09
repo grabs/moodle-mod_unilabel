@@ -29,3 +29,8 @@ it is in it by its self.
 
 ### Version 2019030703
 * add capability check while defining course and topic teaser
+
+### Version 2019050900
+* set default capability mod/unilabel:edit for managers to allow
+* add new option to define the carousel interval for course and topic teaser per instance
+* fix small typos

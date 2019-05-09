@@ -25,7 +25,7 @@
 define(['jquery'], function($) {
     return {
         'init': function(id) {
-            $('#dd-' + id + ' .dropdown-item input[type="radio"] + label').click(function(){
+            $('#dd-' + id + ' .dropdown-item input[type="radio"] + label').click(function() {
                 $('#dd-' + id + ' .dropdown-item').removeClass('checked');
                 $("#btn-" + id).html($(this).html());
                 $(this).parent().addClass('checked');

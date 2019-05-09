@@ -81,5 +81,30 @@ function xmldb_unilabeltype_topicteaser_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2019030700, 'unilabeltype', 'topicteaser');
     }
 
+    if ($oldversion < 2019050900) {
+
+        // Define field carouselinterval to be added to unilabeltype_topicteaser.
+        $table = new xmldb_table('unilabeltype_topicteaser');
+        $field = new xmldb_field('carouselinterval', XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'columns');
+
+        // Conditionally launch add field carouselinterval.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Add the default carouselinterval to the instances.
+        $cfg = get_config('unilabeltype_topicteaser');
+
+        if ($records = $DB->get_records('unilabeltype_topicteaser', null)) {
+            foreach ($records as $r) {
+                $r->carouselinterval = $cfg->carouselinterval;
+                $DB->update_record('unilabeltype_topicteaser', $r);
+            }
+        }
+
+        // Topicteaser savepoint reached.
+        upgrade_plugin_savepoint(true, 2019050900, 'unilabeltype', 'topicteaser');
+    }
+
     return true;
 }

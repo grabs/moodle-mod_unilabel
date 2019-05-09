@@ -90,6 +90,15 @@ class content_type extends \mod_unilabel\content_type {
         $mform->addElement('select', $prefix.'columns', get_string('columns', 'unilabeltype_topicteaser'), $numbers);
         $mform->disabledIf($prefix.'columns', $prefix.'presentation', 'ne', 'grid');
 
+        $numbers = array_combine(range(1, 10), range(1, 10));
+        $mform->addElement(
+            'select',
+            $prefix.'carouselinterval',
+            get_string('carouselinterval', 'unilabeltype_topicteaser'),
+            $numbers
+        );
+        $mform->disabledIf($prefix.'carouselinterval', $prefix.'presentation', 'ne', 'carousel');
+
         $select = array(
             'opendialog' => get_string('opendialog', 'unilabeltype_topicteaser'),
             'opencourseurl' => get_string('opencourseurl', 'unilabeltype_topicteaser'),
@@ -111,12 +120,14 @@ class content_type extends \mod_unilabel\content_type {
         if (!$unilabeltyperecord = $this->load_unilabeltype_record($unilabel->id)) {
             $data[$prefix.'presentation'] = $this->config->presentation;
             $data[$prefix.'columns'] = $this->config->columns;
+            $data[$prefix.'carouselinterval'] = $this->config->carouselinterval;
             $data[$prefix.'clickaction'] = $this->config->clickaction;
             $data[$prefix.'showintro'] = $this->config->showintro;
             $data[$prefix.'showcoursetitle'] = $this->config->showcoursetitle;
         } else {
             $data[$prefix.'presentation'] = $unilabeltyperecord->presentation;
             $data[$prefix.'columns'] = $unilabeltyperecord->columns;
+            $data[$prefix.'carouselinterval'] = $unilabeltyperecord->carouselinterval;
             $data[$prefix.'clickaction'] = $unilabeltyperecord->clickaction;
             $data[$prefix.'showintro'] = $unilabeltyperecord->showintro;
             $data[$prefix.'showcoursetitle'] = $unilabeltyperecord->showcoursetitle;
@@ -169,7 +180,7 @@ class content_type extends \mod_unilabel\content_type {
                 'title' => $title,
                 'showintro' => $showintro,
                 'intro' => $showintro ? $intro : '',
-                'interval' => $this->config->carouselinterval,
+                'interval' => $unilabeltyperecord->carouselinterval,
                 'height' => 300,
                 'items' => array_values($items),
                 'hasitems' => count($items) > 0,
@@ -229,30 +240,31 @@ class content_type extends \mod_unilabel\content_type {
     public function save_content($formdata, $unilabel) {
         global $DB;
 
-        if (!$unilabletyperecord = $this->load_unilabeltype_record($unilabel->id)) {
-            $unilabletyperecord = new \stdClass();
-            $unilabletyperecord->unilabelid = $unilabel->id;
+        if (!$unilabeltyperecord = $this->load_unilabeltype_record($unilabel->id)) {
+            $unilabeltyperecord = new \stdClass();
+            $unilabeltyperecord->unilabelid = $unilabel->id;
         }
         $prefix = 'unilabeltype_topicteaser_';
 
-        $unilabletyperecord->presentation = $formdata->{$prefix.'presentation'};
-        $unilabletyperecord->columns = !empty($formdata->{$prefix.'columns'}) ? $formdata->{$prefix.'columns'} : 0;
-        $unilabletyperecord->clickaction = $formdata->{$prefix.'clickaction'};
-        $unilabletyperecord->showintro = $formdata->{$prefix.'showintro'};
-        $unilabletyperecord->showcoursetitle = $formdata->{$prefix.'showcoursetitle'};
+        $unilabeltyperecord->presentation = $formdata->{$prefix.'presentation'};
+        $unilabeltyperecord->columns = !empty($formdata->{$prefix.'columns'}) ? $formdata->{$prefix.'columns'} : 0;
+        $unilabeltyperecord->carouselinterval = $formdata->{$prefix.'carouselinterval'};
+        $unilabeltyperecord->clickaction = $formdata->{$prefix.'clickaction'};
+        $unilabeltyperecord->showintro = $formdata->{$prefix.'showintro'};
+        $unilabeltyperecord->showcoursetitle = $formdata->{$prefix.'showcoursetitle'};
         $course = 0;
         if (is_numeric($formdata->{$prefix.'course'})) {
             $course = (int) $formdata->{$prefix.'course'};
         }
-        $unilabletyperecord->course = $course;
+        $unilabeltyperecord->course = $course;
 
-        if (empty($unilabletyperecord->id)) {
-            $unilabletyperecord->id = $DB->insert_record('unilabeltype_topicteaser', $unilabletyperecord);
+        if (empty($unilabeltyperecord->id)) {
+            $unilabeltyperecord->id = $DB->insert_record('unilabeltype_topicteaser', $unilabeltyperecord);
         } else {
-            $DB->update_record('unilabeltype_topicteaser', $unilabletyperecord);
+            $DB->update_record('unilabeltype_topicteaser', $unilabeltyperecord);
         }
 
-        return !empty($unilabletyperecord->id);
+        return !empty($unilabeltyperecord->id);
     }
 
     /**

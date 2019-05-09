@@ -28,7 +28,7 @@ define(function() {
             var head = document.head || document.getElementsByTagName('head')[0];
             var mystyle = document.createElement('style');
 
-            if (mystyle.styleSheet){
+            if (mystyle.styleSheet) {
                 mystyle.styleSheet.cssText = css; // This is required for IE8 and below.
             } else {
                 mystyle.appendChild(document.createTextNode(css));

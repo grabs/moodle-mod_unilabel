@@ -89,14 +89,14 @@ class content_type extends \mod_unilabel\content_type {
         global $DB;
         $prefix = 'unilabeltype_collapsedtext_';
 
-        if (!$unilabletyperecord = $this->load_unilabeltype_record($unilabel)) {
+        if (!$unilabeltyperecord = $this->load_unilabeltype_record($unilabel)) {
             $data[$prefix.'title'] = '';
             $data[$prefix.'useanimation'] = $this->config->useanimation;
             $data[$prefix.'presentation'] = $this->config->presentation;
         } else {
-            $data[$prefix.'title'] = $unilabletyperecord->title;
-            $data[$prefix.'useanimation'] = $unilabletyperecord->useanimation;
-            $data[$prefix.'presentation'] = $unilabletyperecord->presentation;
+            $data[$prefix.'title'] = $unilabeltyperecord->title;
+            $data[$prefix.'useanimation'] = $unilabeltyperecord->useanimation;
+            $data[$prefix.'presentation'] = $unilabeltyperecord->presentation;
         }
         return $data;
     }
@@ -176,24 +176,24 @@ class content_type extends \mod_unilabel\content_type {
      */
     public function save_content($formdata, $unilabel) {
         global $DB;
-        if (!$unilabletyperecord = $this->load_unilabeltype_record($unilabel)) {
-            $unilabletyperecord = new \stdClass();
-            $unilabletyperecord->unilabelid = $unilabel->id;
+        if (!$unilabeltyperecord = $this->load_unilabeltype_record($unilabel)) {
+            $unilabeltyperecord = new \stdClass();
+            $unilabeltyperecord->unilabelid = $unilabel->id;
         }
 
         $prefix = 'unilabeltype_collapsedtext_';
 
-        $unilabletyperecord->title = $formdata->{$prefix.'title'};
-        $unilabletyperecord->useanimation = !empty($formdata->{$prefix.'useanimation'});
-        $unilabletyperecord->presentation = $formdata->{$prefix.'presentation'};
+        $unilabeltyperecord->title = $formdata->{$prefix.'title'};
+        $unilabeltyperecord->useanimation = !empty($formdata->{$prefix.'useanimation'});
+        $unilabeltyperecord->presentation = $formdata->{$prefix.'presentation'};
 
-        if (empty($unilabletyperecord->id)) {
-            $unilabletyperecord->id = $DB->insert_record('unilabeltype_collapsedtext', $unilabletyperecord);
+        if (empty($unilabeltyperecord->id)) {
+            $unilabeltyperecord->id = $DB->insert_record('unilabeltype_collapsedtext', $unilabeltyperecord);
         } else {
-            $DB->update_record('unilabeltype_collapsedtext', $unilabletyperecord);
+            $DB->update_record('unilabeltype_collapsedtext', $unilabeltyperecord);
         }
 
-        return !empty($unilabletyperecord->id);
+        return !empty($unilabeltyperecord->id);
     }
 
     /**

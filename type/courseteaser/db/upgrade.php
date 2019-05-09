@@ -51,5 +51,30 @@ function xmldb_unilabeltype_courseteaser_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2019030700, 'unilabeltype', 'courseteaser');
     }
 
+    if ($oldversion < 2019050900) {
+
+        // Define field carouselinterval to be added to unilabeltype_courseteaser.
+        $table = new xmldb_table('unilabeltype_courseteaser');
+        $field = new xmldb_field('carouselinterval', XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'columns');
+
+        // Conditionally launch add field carouselinterval.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Add the default carouselinterval to the instances.
+        $cfg = get_config('unilabeltype_courseteaser');
+
+        if ($records = $DB->get_records('unilabeltype_courseteaser', null)) {
+            foreach ($records as $r) {
+                $r->carouselinterval = $cfg->carouselinterval;
+                $DB->update_record('unilabeltype_courseteaser', $r);
+            }
+        }
+
+        // Topicteaser savepoint reached.
+        upgrade_plugin_savepoint(true, 2019050900, 'unilabeltype', 'courseteaser');
+    }
+
     return true;
 }

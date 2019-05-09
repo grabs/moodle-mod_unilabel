@@ -26,6 +26,7 @@
 defined('MOODLE_INTERNAL') || die;
 
 $string['carousel'] = 'Carousel';
+$string['carouselinterval'] = 'Interval';
 $string['courses'] = 'Courses';
 $string['columns'] = 'Columns';
 $string['columns_help'] = 'This setting is only used if the presentation is "carousel"';
