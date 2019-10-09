@@ -10,6 +10,12 @@
     margin-bottom: 1rem;
 }
 
+/* If the carousel item is a link it overlaps the controls */
+.unilabel .carousel .carousel-control-prev,
+.unilabel .carousel .carousel-control-next {
+    z-index: 1000;
+}
+
 /* Nice overlay effect which can be used in subplugins */
 .unilabel-overlay-effect:hover {
     opacity: 0.3;

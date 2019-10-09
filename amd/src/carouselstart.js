@@ -23,9 +23,12 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-define(['jquery'], function($) {
+define(['jquery', 'theme_boost/carousel'], function($, carousel) {
     return {
         init: function(id) {
+            if (!carousel) {
+                return;
+            }
             var c = $('#' + id + '.carousel');
             c.carousel({
                 interval: c.data('interval')

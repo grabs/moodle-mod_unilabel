@@ -187,6 +187,7 @@ class content_type extends \mod_unilabel\content_type {
                 'openmodal' => ($unilabeltyperecord->clickaction == 'opendialog'),
                 'opencourseurl' => ($unilabeltyperecord->clickaction == 'opencourseurl'),
                 'cmid' => $cm->id,
+                'plugin' => 'unilabeltype_topicteaser',
             ];
             switch ($unilabeltyperecord->presentation) {
                 case 'carousel':
@@ -194,7 +195,6 @@ class content_type extends \mod_unilabel\content_type {
                     $template = 'carousel';
                     if (!empty($this->config->custombutton)) {
                         $content['custombuttons'] = 1;
-                        $content['plugin'] = 'unilabeltype_topicteaser';
                         $content['fontawesomenext'] =
                             \mod_unilabel\setting_configselect_button::$buttonlist[$this->config->custombutton]['next'];
                         $content['fontawesomeprev'] =

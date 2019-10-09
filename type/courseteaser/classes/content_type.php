@@ -164,13 +164,13 @@ class content_type extends \mod_unilabel\content_type {
                 'items' => array_values($items),
                 'hasitems' => count($items) > 0,
                 'cmid' => $cm->id,
+                'plugin' => 'unilabeltype_courseteaser',
             ];
             switch ($unilabeltyperecord->presentation) {
                 case 'carousel':
                     $template = 'carousel';
                     if (!empty($this->config->custombutton)) {
                         $content['custombuttons'] = 1;
-                        $content['plugin'] = 'unilabeltype_courseteaser';
                         $content['fontawesomenext'] =
                             \mod_unilabel\setting_configselect_button::$buttonlist[$this->config->custombutton]['next'];
                         $content['fontawesomeprev'] =

@@ -269,11 +269,11 @@ class content_type extends \mod_unilabel\content_type {
                 'slides' => array_values($this->slides),
                 'hasslides' => count($this->slides) > 0,
                 'cmid' => $cm->id,
+                'plugin' => 'unilabeltype_carousel',
             ];
 
             if (!empty($this->config->custombutton)) {
                 $content['custombuttons'] = 1;
-                $content['plugin'] = 'unilabeltype_carousel';
                 $content['fontawesomenext'] =
                     \mod_unilabel\setting_configselect_button::$buttonlist[$this->config->custombutton]['next'];
                 $content['fontawesomeprev'] =
