@@ -80,6 +80,37 @@ class content_type extends \mod_unilabel\content_type {
         $numbers = array_combine(range(1, 6), range(1, 6));
         $mform->addElement('select', $prefix.'columns', get_string('columns', 'unilabeltype_grid'), $numbers);
 
+        // In all smaller displays we can not use 5 columns. It is not supported by bootstrap and css injection will not work here.
+        $numbers = array(1 => 1, 2 => 2, 3 => 3, 4 => 4, 6 => 6);
+        $strdefaultcol = get_string('default_columns', 'unilabeltype_grid');
+        $columnsmiddle = $mform->createElement('select', $prefix.'columnsmiddle', '', $numbers);
+        $defaultmiddle = $mform->createElement('advcheckbox', $prefix.'defaultmiddle', $strdefaultcol);
+        $mform->addGroup(
+            array(
+                $columnsmiddle,
+                $defaultmiddle,
+            ),
+            $prefix.'group_middle',
+            get_string('columnsmiddle', 'unilabeltype_grid'),
+            array(' '),
+            false
+        );
+        $mform->disabledIf($prefix.'columnsmiddle', $prefix.'defaultmiddle', 'checked');
+
+        $columnssmall = $mform->createElement('select', $prefix.'columnssmall', '', $numbers);
+        $defaultsmall = $mform->createElement('advcheckbox', $prefix.'defaultsmall', $strdefaultcol);
+        $mform->addGroup(
+            array(
+                $columnssmall,
+                $defaultsmall,
+            ),
+            $prefix.'group_small',
+            get_string('columnssmall', 'unilabeltype_grid'),
+            array(' '),
+            false
+        );
+        $mform->disabledIf($prefix.'columnssmall', $prefix.'defaultsmall', 'checked');
+
         $numbers = array_combine(range(100, 600, 50), range(100, 600, 50));
         $numbers = [0 => get_string('autoheight', 'unilabeltype_grid')] + $numbers;
         $mform->addElement('select', $prefix.'height', get_string('height', 'unilabeltype_grid'), $numbers);
@@ -186,6 +217,10 @@ class content_type extends \mod_unilabel\content_type {
         // Set default data for the grid in generel.
         if (!$unilabeltyperecord = $this->load_unilabeltype_record($unilabel->id)) {
             $data[$prefix.'columns'] = $this->config->columns;
+            $data[$prefix.'columnsmiddle'] = $this->get_default_col_middle($this->config->columns);
+            $data[$prefix.'defaultmiddle'] = true;
+            $data[$prefix.'columnssmall'] = $this->get_default_col_small();
+            $data[$prefix.'defaultsmall'] = true;
             $data[$prefix.'height'] = $this->config->height;
             $data[$prefix.'showintro'] = !empty($this->config->showintro);
             $data[$prefix.'usemobile'] = !empty($this->config->usemobile);
@@ -193,6 +228,21 @@ class content_type extends \mod_unilabel\content_type {
         }
 
         $data[$prefix.'columns'] = $unilabeltyperecord->columns;
+        if (empty($unilabeltyperecord->columnsmiddle)) {
+            $data[$prefix.'columnsmiddle'] = $this->get_default_col_middle($unilabeltyperecord->columns);
+            $data[$prefix.'defaultmiddle'] = true;
+        } else {
+            $data[$prefix.'columnsmiddle'] = $unilabeltyperecord->columnsmiddle;
+            $data[$prefix.'defaultmiddle'] = false;
+        }
+        if (empty($unilabeltyperecord->columnssmall)) {
+            $data[$prefix.'columnssmall'] = $this->get_default_col_small();
+            $data[$prefix.'defaultsmall'] = true;
+        } else {
+            $data[$prefix.'columnssmall'] = $unilabeltyperecord->columnssmall;
+            $data[$prefix.'defaultsmall'] = false;
+        }
+
         $data[$prefix.'height'] = $unilabeltyperecord->height;
         $data[$prefix.'showintro'] = $unilabeltyperecord->showintro;
         $data[$prefix.'usemobile'] = $unilabeltyperecord->usemobile;
@@ -287,10 +337,15 @@ class content_type extends \mod_unilabel\content_type {
                 'hastiles' => count($this->tiles) > 0,
                 'cmid' => $cm->id,
                 // If columns = 5 we need extra css because bootstrap does not support this.
-                'extracss' => ($unilabeltyperecord->columns == 5),
+                'fivecolcss' => true,
             ];
-            $content += $this->get_bootstrap_cols($unilabeltyperecord->columns);
+            $content['colclasses'] = $this->get_bootstrap_cols(
+                $unilabeltyperecord->columns,
+                $unilabeltyperecord->columnsmiddle,
+                $unilabeltyperecord->columnssmall
+            );
         }
+
         $content = $renderer->render_from_template('unilabeltype_grid/grid', $content);
 
         return $content;
@@ -337,7 +392,13 @@ class content_type extends \mod_unilabel\content_type {
             $unilabeltyperecord->id = $DB->insert_record('unilabeltype_grid', $unilabeltyperecord);
         }
 
-        $unilabeltyperecord->columns = $formdata->{$prefix.'columns'};
+        $columns = !empty($formdata->{$prefix.'columns'}) ? $formdata->{$prefix.'columns'} : 0;
+        $unilabeltyperecord->columns = $columns;
+        $columnsmiddle = !empty($formdata->{$prefix.'defaultmiddle'}) ? null : $formdata->{$prefix.'columnsmiddle'};
+        $unilabeltyperecord->columnsmiddle = $columnsmiddle;
+        $columnssmall = !empty($formdata->{$prefix.'defaultsmall'}) ? null : $formdata->{$prefix.'columnssmall'};
+        $unilabeltyperecord->columnssmall = $columnssmall;
+
         $unilabeltyperecord->height = $formdata->{$prefix.'height'};
         $unilabeltyperecord->showintro = $formdata->{$prefix.'showintro'};
         $unilabeltyperecord->usemobile = !empty($formdata->{$prefix.'usemobile'});

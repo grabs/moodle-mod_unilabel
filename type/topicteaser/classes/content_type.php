@@ -90,6 +90,39 @@ class content_type extends \mod_unilabel\content_type {
         $mform->addElement('select', $prefix.'columns', get_string('columns', 'unilabeltype_topicteaser'), $numbers);
         $mform->disabledIf($prefix.'columns', $prefix.'presentation', 'ne', 'grid');
 
+        // In all smaller displays we can not use 5 columns. It is not supported by bootstrap and css injection will not work here.
+        $numbers = array(1 => 1, 2 => 2, 3 => 3, 4 => 4, 6 => 6);
+        $strdefaultcol = get_string('default_columns', 'unilabeltype_topicteaser');
+        $columnsmiddle = $mform->createElement('select', $prefix.'columnsmiddle', '', $numbers);
+        $defaultmiddle = $mform->createElement('advcheckbox', $prefix.'defaultmiddle', $strdefaultcol);
+        $mform->addGroup(
+            array(
+                $columnsmiddle,
+                $defaultmiddle,
+            ),
+            $prefix.'group_middle',
+            get_string('columnsmiddle', 'unilabeltype_topicteaser'),
+            array(' '),
+            false
+        );
+        $mform->disabledIf($prefix.'columnsmiddle', $prefix.'defaultmiddle', 'checked');
+        $mform->disabledIf($prefix.'group_middle', $prefix.'presentation', 'ne', 'grid');
+
+        $columnssmall = $mform->createElement('select', $prefix.'columnssmall', '', $numbers);
+        $defaultsmall = $mform->createElement('advcheckbox', $prefix.'defaultsmall', $strdefaultcol);
+        $mform->addGroup(
+            array(
+                $columnssmall,
+                $defaultsmall,
+            ),
+            $prefix.'group_small',
+            get_string('columnssmall', 'unilabeltype_topicteaser'),
+            array(' '),
+            false
+        );
+        $mform->disabledIf($prefix.'columnssmall', $prefix.'defaultsmall', 'checked');
+        $mform->disabledIf($prefix.'group_small', $prefix.'presentation', 'ne', 'grid');
+
         $numbers = array_combine(range(1, 10), range(1, 10));
         $mform->addElement(
             'select',
@@ -120,6 +153,10 @@ class content_type extends \mod_unilabel\content_type {
         if (!$unilabeltyperecord = $this->load_unilabeltype_record($unilabel->id)) {
             $data[$prefix.'presentation'] = $this->config->presentation;
             $data[$prefix.'columns'] = $this->config->columns;
+            $data[$prefix.'columnsmiddle'] = $this->get_default_col_middle($this->config->columns);
+            $data[$prefix.'defaultmiddle'] = true;
+            $data[$prefix.'columnssmall'] = $this->get_default_col_small();
+            $data[$prefix.'defaultsmall'] = true;
             $data[$prefix.'carouselinterval'] = $this->config->carouselinterval;
             $data[$prefix.'clickaction'] = $this->config->clickaction;
             $data[$prefix.'showintro'] = $this->config->showintro;
@@ -127,6 +164,21 @@ class content_type extends \mod_unilabel\content_type {
         } else {
             $data[$prefix.'presentation'] = $unilabeltyperecord->presentation;
             $data[$prefix.'columns'] = $unilabeltyperecord->columns;
+            if (empty($unilabeltyperecord->columnsmiddle)) {
+                $data[$prefix.'columnsmiddle'] = $this->get_default_col_middle($unilabeltyperecord->columns);
+                $data[$prefix.'defaultmiddle'] = true;
+            } else {
+                $data[$prefix.'columnsmiddle'] = $unilabeltyperecord->columnsmiddle;
+                $data[$prefix.'defaultmiddle'] = false;
+            }
+            if (empty($unilabeltyperecord->columnssmall)) {
+                $data[$prefix.'columnssmall'] = $this->get_default_col_small();
+                $data[$prefix.'defaultsmall'] = true;
+            } else {
+                $data[$prefix.'columnssmall'] = $unilabeltyperecord->columnssmall;
+                $data[$prefix.'defaultsmall'] = false;
+            }
+
             $data[$prefix.'carouselinterval'] = $unilabeltyperecord->carouselinterval;
             $data[$prefix.'clickaction'] = $unilabeltyperecord->clickaction;
             $data[$prefix.'showintro'] = $unilabeltyperecord->showintro;
@@ -207,8 +259,12 @@ class content_type extends \mod_unilabel\content_type {
                     break;
                 case 'grid':
                     $template = 'grid';
-                    $content['extracss'] = ($unilabeltyperecord->columns == 5);
-                    $content += $this->get_bootstrap_cols($unilabeltyperecord->columns);
+                    $content['fivecolcss'] = true;
+                    $content['colclasses'] = $this->get_bootstrap_cols(
+                        $unilabeltyperecord->columns,
+                        $unilabeltyperecord->columnsmiddle,
+                        $unilabeltyperecord->columnssmall
+                    );
                     break;
                 default:
                     $template = 'default';
@@ -247,7 +303,13 @@ class content_type extends \mod_unilabel\content_type {
         $prefix = 'unilabeltype_topicteaser_';
 
         $unilabeltyperecord->presentation = $formdata->{$prefix.'presentation'};
-        $unilabeltyperecord->columns = !empty($formdata->{$prefix.'columns'}) ? $formdata->{$prefix.'columns'} : 0;
+        $columns = !empty($formdata->{$prefix.'columns'}) ? $formdata->{$prefix.'columns'} : 0;
+        $unilabeltyperecord->columns = $columns;
+        $columnsmiddle = !empty($formdata->{$prefix.'defaultmiddle'}) ? null : $formdata->{$prefix.'columnsmiddle'};
+        $unilabeltyperecord->columnsmiddle = $columnsmiddle;
+        $columnssmall = !empty($formdata->{$prefix.'defaultsmall'}) ? null : $formdata->{$prefix.'columnssmall'};
+        $unilabeltyperecord->columnssmall = $columnssmall;
+
         $unilabeltyperecord->carouselinterval = $formdata->{$prefix.'carouselinterval'};
         $unilabeltyperecord->clickaction = $formdata->{$prefix.'clickaction'};
         $unilabeltyperecord->showintro = $formdata->{$prefix.'showintro'};

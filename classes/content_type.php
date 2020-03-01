@@ -141,11 +141,57 @@ abstract class content_type {
     /**
      * Get the bootstrap definition for the col settings
      * It depends on the choosen count of columns in the settings
+     * The result is the 'colclasses' array with the string 'col-lg-xy col-md-xy col-sm-xy'.
      *
      * @param int $columns
+     * @param int $columnsmiddle
+     * @param int $columnssmall
      * @return array
      */
-    public function get_bootstrap_cols($columns) {
+    public function get_bootstrap_cols($columns, $columnsmiddle = null, $columnssmall = null) {
+
+        $columnslg = $this->get_bootstrap_col($columns, 'lg');
+
+        if (empty($columnsmiddle)) {
+            $columnsmd = $this->get_bootstrap_col($this->get_default_col_middle($columns), 'md');
+        } else {
+            $columnsmd = $this->get_bootstrap_col($columnsmiddle, 'md');
+        }
+
+        if (empty($columnssmall)) {
+            $columnssm = $this->get_bootstrap_col($this->get_default_col_small(), 'sm');
+        } else {
+            $columnssm = $this->get_bootstrap_col($columnssmall, 'sm');
+        }
+
+        $colstrings = array();
+        $colstrings[] = $columnslg;
+        $colstrings[] = $columnsmd;
+        $colstrings[] = $columnssm;
+
+        return implode(' ', $colstrings);
+    }
+
+    public function get_bootstrap_col($columns, $breakpoint) {
+        switch ($columns) {
+            case 1:
+                return 'col-'.$breakpoint.'-12';
+            case 2:
+                return 'col-'.$breakpoint.'-6';
+            case 3:
+                return 'col-'.$breakpoint.'-4';
+            case 4:
+                return 'col-'.$breakpoint.'-3';
+            case 5:
+                return 'col-'.$breakpoint.'-2dot4';
+            case 6:
+                return 'col-'.$breakpoint.'-2';
+            default:
+                return 'col-'.$breakpoint.'-12';
+        }
+    }
+
+    public function get_default_col_middle($columns) {
         /*
         count tiles lg    count tiles md    count tiles sm
         1 col-lg-12         1 col-md-12     1 col-sm-12
@@ -158,20 +204,21 @@ abstract class content_type {
 
         switch ($columns) {
             case 1:
-                return ['colclasses' => 'col-12'];
             case 2:
-                return ['colclasses' => 'col-lg-6 col-md-12'];
+                return 1;
             case 3:
-                return ['colclasses' => 'col-lg-4 col-md-6 col-sm-12'];
             case 4:
-                return ['colclasses' => 'col-lg-3 col-md-6 col-sm-12'];
+                return 2;
             case 5:
-                return ['colclasses' => 'col-lg-2dot4 col-md-4 col-sm-12'];
             case 6:
-                return ['colclasses' => 'col-lg-2 col-md-4 col-sm-12'];
+                return 3;
             default:
-                return ['colclasses' => 'col-lg-12 col-md-12 col-sm-12'];
+                return 1;
         }
+    }
+
+    public function get_default_col_small() {
+        return 1;
     }
 
 }

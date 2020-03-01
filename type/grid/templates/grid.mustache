@@ -49,7 +49,7 @@
         ],
         "hastiles": true,
         "cmid": "55",
-        "extracss": false,
+        "fivecolcss": false,
         "colclasses": "col-lg-3 col-md-6 col-sm-12"
     }
 }}
@@ -75,11 +75,15 @@
                 {{^autoheight}}<div style="height:{{{height}}}px;width:100%;">{{/autoheight}}
 
                 {{#imagemobileurl}}
-                    <img class="img-fluid d-none d-md-inline" alt="{{title}}" src="{{{imageurl}}}"{{^autoheight}} style="height:100%;object-fit:contain;"{{/autoheight}}/>
+                    {{#imageurl}}
+                        <img class="img-fluid d-none d-md-inline" alt="{{title}}" src="{{{imageurl}}}"{{^autoheight}} style="height:100%;object-fit:contain;"{{/autoheight}}/>
+                    {{/imageurl}}
                     <img class="img-fluid d-inline d-md-none" alt="{{title}}" src="{{{imagemobileurl}}}"{{^autoheight}} style="height:100%;object-fit:contain;"{{/autoheight}}/>
                 {{/imagemobileurl}}
                 {{^imagemobileurl}}
-                    <img class="img-fluid" alt="{{title}}" src="{{{imageurl}}}"{{^autoheight}} style="height:100%;object-fit:contain;"{{/autoheight}}/>
+                    {{#imageurl}}
+                        <img class="img-fluid" alt="{{title}}" src="{{{imageurl}}}"{{^autoheight}} style="height:100%;object-fit:contain;"{{/autoheight}}/>
+                    {{/imageurl}}
                 {{/imagemobileurl}}
 
                 {{^autoheight}}</div>{{/autoheight}}
@@ -98,62 +102,6 @@
 <span>{{#str}} nocontent , unilabeltype_grid {{/str}}</span>
 {{/hastiles}}
 
-{{#extracss}}
-<style type="text/css">
-/***********************************************/
-/*
- This is a workaround for a five-column grid.
- We have to put it here because in <plugin>/styles.css it is loaded before bootstrap and overriden.
-*/
-.col-2dot4,
-.col-sm-2dot4,
-.col-md-2dot4,
-.col-lg-2dot4,
-.col-xl-2dot4 {
-    position: relative;
-    width: 100%;
-    min-height: 1px;
-    padding-right: 15px;
-    padding-left: 15px;
-}
-.col-2dot4 {
-    -webkit-box-flex: 0;
-    -ms-flex: 0 0 20%;
-    flex: 0 0 20%;
-    max-width: 20%;
-}
-@media (min-width: 576px) {
-    .col-sm-2dot4 {
-        -webkit-box-flex: 0;
-        -ms-flex: 0 0 20%;
-        flex: 0 0 20%;
-        max-width: 20%;
-    }
-}
-@media (min-width: 768px) {
-    .col-md-2dot4 {
-        -webkit-box-flex: 0;
-        -ms-flex: 0 0 20%;
-        flex: 0 0 20%;
-        max-width: 20%;
-    }
-}
-@media (min-width: 992px) {
-    .col-lg-2dot4 {
-        -webkit-box-flex: 0;
-        -ms-flex: 0 0 20%;
-        flex: 0 0 20%;
-        max-width: 20%;
-    }
-}
-@media (min-width: 1200px) {
-    .col-xl-2dot4 {
-        -webkit-box-flex: 0;
-        -ms-flex: 0 0 20%;
-        flex: 0 0 20%;
-        max-width: 20%;
-    }
-}
-/***********************************************/
-</style>
-{{/extracss}}
+{{#fivecolcss}}
+    {{> mod_unilabel/fivecolcss }}
+{{/fivecolcss}}

@@ -106,5 +106,29 @@ function xmldb_unilabeltype_topicteaser_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2019050900, 'unilabeltype', 'topicteaser');
     }
 
+    if ($oldversion < 2020022900) {
+
+        // Define field columnsmiddle to be added to unilabeltype_topicteaser.
+        $table = new xmldb_table('unilabeltype_topicteaser');
+        $field = new xmldb_field('columnsmiddle', XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'columns');
+
+        // Conditionally launch add field columnsmiddle.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field columnssmall to be added to unilabeltype_topicteaser.
+        $table = new xmldb_table('unilabeltype_topicteaser');
+        $field = new xmldb_field('columnssmall', XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'columnsmiddle');
+
+        // Conditionally launch add field columnssmall.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Grid savepoint reached.
+        upgrade_plugin_savepoint(true, 2020022900, 'unilabeltype', 'topicteaser');
+    }
+
     return true;
 }

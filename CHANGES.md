@@ -34,3 +34,7 @@ it is in it by its self.
 * set default capability mod/unilabel:edit for managers to allow
 * add new option to define the carousel interval for course and topic teaser per instance
 * fix small typos
+
+### Version 2020022900
+* fix output of images without img source in unilabletype_grid.
+* add new options to define count of columns for normal, middle and small devices separately
