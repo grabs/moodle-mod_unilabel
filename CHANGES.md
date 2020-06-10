@@ -38,3 +38,6 @@ it is in it by its self.
 ### Version 2020022900
 * fix output of images without img source in unilabletype_grid.
 * add new options to define count of columns for normal, middle and small devices separately
+
+### Version 2020061000
+* fix referenced bootstrap javascript pointing to the new postion in Moodle 3.9

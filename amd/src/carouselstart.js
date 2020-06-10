@@ -23,7 +23,7 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-define(['jquery', 'theme_boost/carousel'], function($, carousel) {
+define(['jquery', 'theme_boost/bootstrap/carousel'], function($, carousel) {
     return {
         init: function(id) {
             if (!carousel) {
