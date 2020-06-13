@@ -41,3 +41,6 @@ it is in it by its self.
 
 ### Version 2020061000
 * fix referenced bootstrap javascript pointing to the new postion in Moodle 3.9
+
+### Version 2020061001
+* fix indentation bug
