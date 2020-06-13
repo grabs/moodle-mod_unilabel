@@ -1,4 +1,8 @@
 /* Use the same css like a label */
+.unilabel .mod-indent {
+    float: left;
+    padding-top: 20px;
+}
 .section .unilabel .mod-indent-outer {
     padding-left: 24px;
     display: block;
