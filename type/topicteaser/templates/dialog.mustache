@@ -54,3 +54,11 @@
         </div>
     </div>
 </div>
+
+{{#js}}
+    require(['jquery'], function($) {
+        $('#topicteaser-modal-{{cmid}}-{{nr}}').on('show.bs.modal', function(element) {
+            $('#topicteaser-modal-{{cmid}}-{{nr}}').appendTo('body');
+        });
+    });
+{{/js}}
