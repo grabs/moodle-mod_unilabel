@@ -44,3 +44,6 @@ it is in it by its self.
 
 ### Version 2020061001
 * fix indentation bug
+
+### Version 2020061002
+* fix bug with modal started from another modal e.g. format_grid

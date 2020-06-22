@@ -15,13 +15,11 @@ cache:
     - $HOME/.npm
 
 php:
- - 7.0
- - 7.1
  - 7.2
 
 env:
  global:
-  - MOODLE_BRANCH=MOODLE_35_STABLE
+  - MOODLE_BRANCH=MOODLE_39_STABLE
  matrix:
   - DB=pgsql
   - DB=mysqli
