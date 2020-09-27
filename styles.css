@@ -17,7 +17,7 @@
 /* If the carousel item is a link it overlaps the controls */
 .unilabel .carousel .carousel-control-prev,
 .unilabel .carousel .carousel-control-next {
-    z-index: 1000;
+    z-index: 998;
 }
 
 /* Nice overlay effect which can be used in subplugins */
@@ -33,5 +33,5 @@
     opacity: 0;
     transition: .5s ease;
     overflow: hidden;
-    z-index: 1000;
+    z-index: 998;
 }
