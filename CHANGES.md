@@ -47,3 +47,6 @@ it is in it by its self.
 
 ### Version 2020061002
 * fix bug with modal started from another modal e.g. format_grid
+
+### Version 2020061003
+* fix bug with carousel nav buttons overlapping the nav drawer
