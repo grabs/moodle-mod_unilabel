@@ -336,8 +336,6 @@ class content_type extends \mod_unilabel\content_type {
                 'tiles' => array_values($this->tiles),
                 'hastiles' => count($this->tiles) > 0,
                 'cmid' => $cm->id,
-                // If columns = 5 we need extra css because bootstrap does not support this.
-                'fivecolcss' => true,
             ];
             $content['colclasses'] = $this->get_bootstrap_cols(
                 $unilabeltyperecord->columns,

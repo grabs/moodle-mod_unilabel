@@ -55,7 +55,7 @@
 
 {{#js}}
     require(['jquery'], function($) {
-        $('#grid-modal-{{cmid}}-{{nr}}').on('show.bs.modal', function(element) {
+        $('#grid-modal-{{cmid}}-{{nr}}').on('show.bs.modal', function() {
             $('#grid-modal-{{cmid}}-{{nr}}').appendTo('body');
         });
     });

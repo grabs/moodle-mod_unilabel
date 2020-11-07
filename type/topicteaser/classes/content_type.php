@@ -259,7 +259,6 @@ class content_type extends \mod_unilabel\content_type {
                     break;
                 case 'grid':
                     $template = 'grid';
-                    $content['fivecolcss'] = true;
                     $content['colclasses'] = $this->get_bootstrap_cols(
                         $unilabeltyperecord->columns,
                         $unilabeltyperecord->columnsmiddle,

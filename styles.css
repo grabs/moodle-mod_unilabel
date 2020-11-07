@@ -35,3 +35,62 @@
     overflow: hidden;
     z-index: 998;
 }
+/***********************************************/
+/*
+This is a workaround for a five-column grid.
+We have to put it here because in <plugin>/styles.css it is loaded before bootstrap and overriden.
+*/
+.unilabel-content .col-2dot4,
+.unilabel-content .col-sm-2dot4,
+.unilabel-content .col-md-2dot4,
+.unilabel-content .col-lg-2dot4,
+.unilabel-content .col-xl-2dot4 {
+    position: relative;
+    width: 100%;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+.unilabel-content .col-2dot4 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 20%;
+    flex: 0 0 20%;
+    max-width: 20%;
+}
+
+@media (min-width: 576px) {
+    .unilabel-content .col-sm-2dot4 {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 20%;
+        flex: 0 0 20%;
+        max-width: 20%;
+    }
+}
+
+@media (min-width: 768px) {
+    .unilabel-content .col-md-2dot4 {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 20%;
+        flex: 0 0 20%;
+        max-width: 20%;
+    }
+}
+
+@media (min-width: 992px) {
+    .unilabel-content .col-lg-2dot4 {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 20%;
+        flex: 0 0 20%;
+        max-width: 20%;
+    }
+}
+
+@media (min-width: 1200px) {
+    .unilabel-content .col-xl-2dot4 {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 20%;
+        flex: 0 0 20%;
+        max-width: 20%;
+    }
+}
+/***********************************************/

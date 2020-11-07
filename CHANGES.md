@@ -50,3 +50,7 @@ it is in it by its self.
 
 ### Version 2020061003
 * fix bug with carousel nav buttons overlapping the nav drawer
+
+### Version 2020110703
+* moved fivecolumns css to styles.css
+* small fixes in coding style
