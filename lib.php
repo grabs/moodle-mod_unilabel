@@ -26,14 +26,6 @@
 defined('MOODLE_INTERNAL') || die;
 
 /**
- * Get the name of the given instance.
- * @param \stdClass $unilabel
- * @return string
- */
-function unilabel_get_name($unilabel) {
-    return get_string('pluginname', 'mod_unilabel').'_'.$unilabel->id;
-}
-/**
  * Given an object containing all the necessary data,
  * (defined by the form in mod_form.php) this function
  * will create a new instance and return the id number
@@ -45,11 +37,9 @@ function unilabel_get_name($unilabel) {
 function unilabel_add_instance($unilabel) {
     global $DB;
 
-    $unilabel->name = 'temp';
     $unilabel->timemodified = time();
 
     $unilabel->id = $DB->insert_record('unilabel', $unilabel);
-    $unilabel->name = unilabel_get_name($unilabel);
     $DB->update_record('unilabel', $unilabel);
 
     $completiontimeexpected = !empty($unilabel->completionexpected) ? $unilabel->completionexpected : null;
@@ -71,7 +61,6 @@ function unilabel_update_instance($unilabel) {
 
     $unilabel->timemodified = time();
     $unilabel->id = $unilabel->instance;
-    $unilabel->name = unilabel_get_name($unilabel);
 
     $completiontimeexpected = !empty($unilabel->completionexpected) ? $unilabel->completionexpected : null;
     \core_completion\api::update_completion_date_event($unilabel->coursemodule, 'unilabel', $unilabel->id, $completiontimeexpected);

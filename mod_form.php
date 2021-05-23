@@ -49,6 +49,12 @@ class mod_unilabel_mod_form extends moodleform_mod {
         $mform = $this->_form;
 
         $mform->addElement('header', 'generalhdr', get_string('general'));
+
+        $mform->addElement('text', 'name', get_string('name'), array('size'=>'48'));
+        $mform->setType('name', PARAM_TEXT);
+        $mform->addRule('name', null, 'required', null, 'client');
+        $mform->addRule('name', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');
+
         $this->standard_intro_elements(get_string('unilabeltext', 'mod_unilabel'));
 
         $plugins = \mod_unilabel\factory::get_plugin_list();

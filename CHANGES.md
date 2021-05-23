@@ -54,3 +54,6 @@ it is in it by its self.
 ### Version 2020110703
 * moved fivecolumns css to styles.css
 * small fixes in coding style
+
+### Version 2021052300
+* The internal name can now be edited.
