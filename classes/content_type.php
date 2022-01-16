@@ -152,7 +152,11 @@ class content_type extends \mod_unilabel\content_type {
         $mform->addHelpButton($prefix . 'hdr', 'pluginname', 'unilabeltype_accordion');
 
         $repeatarray = [];
-        $repeatarray[] = $mform->createElement('header', $prefix . 'segment-header', get_string('segment', 'unilabeltype_accordion') . '-{no}');
+        $repeatarray[] = $mform->createElement(
+            'header',
+            $prefix . 'segment-header',
+            get_string('segment', 'unilabeltype_accordion') . '-{no}'
+        );
         $repeatarray[] = $mform->createElement(
             'editor',
             $prefix . 'heading',
