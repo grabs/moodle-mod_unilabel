@@ -148,9 +148,6 @@ class content_type extends \mod_unilabel\content_type {
 
         $mform->addElement('advcheckbox', $prefix . 'showintro', get_string('showunilabeltext', 'unilabeltype_accordion'));
 
-        $mform->addElement('header', $prefix . 'hdr', $this->get_name());
-        $mform->addHelpButton($prefix . 'hdr', 'pluginname', 'unilabeltype_accordion');
-
         $repeatarray = [];
         $repeatarray[] = $mform->createElement(
             'header',
