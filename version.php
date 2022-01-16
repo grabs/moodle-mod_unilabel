@@ -29,3 +29,4 @@ $plugin->version   = 2022011601;
 $plugin->requires  = 2019111200;
 $plugin->release = '0.1';
 $plugin->maturity = MATURITY_BETA;
+$plugin->dependencies = ['mod_unilabel' => 2021052300];
