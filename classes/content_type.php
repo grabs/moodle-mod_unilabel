@@ -152,18 +152,18 @@ class content_type extends \mod_unilabel\content_type {
         $repeatarray[] = $mform->createElement(
             'header',
             $prefix . 'segment-header',
-            get_string('segment', 'unilabeltype_accordion') . '-{no}'
+            get_string('segment', 'unilabeltype_accordion') . ' {no}'
         );
         $repeatarray[] = $mform->createElement(
             'editor',
             $prefix . 'heading',
-            get_string('heading', 'unilabeltype_accordion') . '-{no}',
+            get_string('heading', 'unilabeltype_accordion'),
             array('rows' => 2)
         );
         $repeatarray[] = $mform->createElement(
             'editor',
             $prefix . 'content',
-            get_string('content', 'unilabeltype_accordion') . '-{no}',
+            get_string('content', 'unilabeltype_accordion'),
             array('rows' => 10)
         );
         $repeatedoptions = [];
