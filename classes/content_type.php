@@ -102,7 +102,9 @@ class content_type extends \mod_unilabel\content_type {
             $content = [
                 'showintro' => $showintro,
                 'intro' => $showintro ? $intro : '',
-                'segments' => array_values($this->segments),
+                'segments' => array_filter(array_values($this->segments), function($v) {
+                    return $v->heading != '' && $v->content != '';
+                }),
                 'cmid' => $cm->id,
                 'plugin' => 'unilabeltype_accordion',
             ];
