@@ -174,7 +174,7 @@ class content_type extends \mod_unilabel\content_type {
         $repeatedoptions[$prefix . 'content']['helpbutton'] = array('content', 'unilabeltype_accordion');
 
         $defaultrepeatcount = 3; // The default count for segments.
-        $repeatcount = max((count($this->segments) % $defaultrepeatcount) * $defaultrepeatcount, $defaultrepeatcount);
+        $repeatcount = max((count($this->segments) / $defaultrepeatcount) * $defaultrepeatcount, $defaultrepeatcount);
         $form->repeat_elements(
             $repeatarray,
             $repeatcount,
