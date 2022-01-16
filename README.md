@@ -28,6 +28,7 @@ to complete the installation from the command line.
 ## License ##
 
 2021 Stefan Hanauska <stefan.hanauska@altmuehlnet.de>
+
 This plugin reuses parts of the code from mod_unilabel by Andreas Grabs.
 
 This program is free software: you can redistribute it and/or modify it under
