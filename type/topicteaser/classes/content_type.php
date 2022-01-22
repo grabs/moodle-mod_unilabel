@@ -393,6 +393,7 @@ class content_type extends \mod_unilabel\content_type {
      */
     public function get_sections_html($courseid) {
         global $DB, $PAGE;
+
         if ($PAGE->course->id == $courseid) {
             $mycm = get_coursemodule_from_instance('unilabel', $this->unilabeltyperecord->unilabelid);
             $mysection = $DB->get_record('course_sections', array('id' => $mycm->section));
@@ -401,11 +402,15 @@ class content_type extends \mod_unilabel\content_type {
         if (!$course = $DB->get_record('course', array('id' => $courseid))) {
             return array();
         }
+
+        /** @var \core_course_renderer $courserenderer */
+        $courserenderer = $PAGE->get_renderer('core', 'course');
+
         $sections = $this->get_sections_from_course($courseid);
         $courseformat = course_get_format($course->id);
+        $modinfo = $courseformat->get_modinfo();
 
         $sectionsoutput = array();
-        $courserenderer = $PAGE->get_renderer('core', 'course');
         $counter = 0;
         foreach ($sections as $s) {
             if (!empty($mysection)) {
@@ -429,8 +434,13 @@ class content_type extends \mod_unilabel\content_type {
             $options->overflowdiv = true;
 
             $section->summary = format_text($summarytext, $s->summaryformat, $options);
+            $sectioninfo = $modinfo->get_section_info($section->section);
+            $cmlist = new \core_courseformat\output\local\content\section\cmlist($courseformat, $sectioninfo);
+            $section->cmlist = $courserenderer->render_from_template(
+                'core_courseformat/local/content/section/cmlist',
+                $cmlist->export_for_template($courserenderer)
+            );
 
-            $section->cmlist = $courserenderer->course_section_cm_list($course, $s->section);
             $section->nr = $counter;
 
             if ($counter == 0) {

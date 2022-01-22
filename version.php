@@ -29,6 +29,6 @@ $plugin->version   = 2022030200;     // The current module version (Date: YYYYMM
 $plugin->release = '3.11.5 (Build: 2022030200)';
 $plugin->maturity = MATURITY_STABLE;
 
-$plugin->requires  = 2019111200;     // Requires this Moodle version.
+$plugin->requires  = 2022012100;     // Requires this Moodle version.
 $plugin->component = 'mod_unilabel'; // Full name of the plugin (used for diagnostics).
 $plugin->cron      = 0;
