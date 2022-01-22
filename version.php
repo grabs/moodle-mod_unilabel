@@ -25,10 +25,10 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2022012200;     // The current module version (Date: YYYYMMDDXX).
+$plugin->version   = 2022012300;     // The current module version (Date: YYYYMMDDXX).
 $plugin->release = '3.11';
 $plugin->maturity = MATURITY_STABLE;
 
-$plugin->requires  = 2019111200;     // Requires this Moodle version.
+$plugin->requires  = 2022012100;     // Requires this Moodle version.
 $plugin->component = 'mod_unilabel'; // Full name of the plugin (used for diagnostics).
 $plugin->cron      = 0;
