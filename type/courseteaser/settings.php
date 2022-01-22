@@ -32,7 +32,14 @@ $courseteasersettings = array();
 $courseteasersettings[] = new admin_setting_configcheckbox('unilabeltype_courseteaser/active',
     get_string('active'),
     '',
-    true);
+    true
+);
+
+$courseteasersettings[] = new admin_setting_configcheckbox('unilabeltype_courseteaser/autorun',
+    get_string('autorun', 'mod_unilabel'),
+    '',
+    true
+);
 
 $numbers = array_combine(range(1, 10), range(1, 10));
 $courseteasersettings[] = new admin_setting_configselect('unilabeltype_courseteaser/carouselinterval',

@@ -34,6 +34,12 @@ $carouselsettings[] = new admin_setting_configcheckbox('unilabeltype_carousel/ac
     '',
     true);
 
+$carouselsettings[] = new admin_setting_configcheckbox('unilabeltype_carousel/autorun',
+    get_string('autorun', 'mod_unilabel'),
+    '',
+    true
+);
+
 $numbers = array_combine(range(1, 10), range(1, 10));
 $carouselsettings[] = new admin_setting_configselect('unilabeltype_carousel/carouselinterval',
     get_string('default_carouselinterval', 'unilabeltype_carousel'),

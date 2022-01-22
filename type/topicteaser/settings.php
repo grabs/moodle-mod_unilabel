@@ -32,7 +32,14 @@ $topicteasersettings = array();
 $topicteasersettings[] = new admin_setting_configcheckbox('unilabeltype_topicteaser/active',
     get_string('active'),
     '',
-    true);
+    true
+);
+
+$topicteasersettings[] = new admin_setting_configcheckbox('unilabeltype_topicteaser/autorun',
+    get_string('autorun', 'mod_unilabel'),
+    '',
+    true
+);
 
 $numbers = array_combine(range(1, 10), range(1, 10));
 $topicteasersettings[] = new admin_setting_configselect('unilabeltype_topicteaser/carouselinterval',
@@ -41,7 +48,6 @@ $topicteasersettings[] = new admin_setting_configselect('unilabeltype_topictease
     5,
     $numbers
 );
-
 
 $numbers = array_combine(range(1, 6), range(1, 6));
 $topicteasersettings[] = new admin_setting_configselect('unilabeltype_topicteaser/columns',

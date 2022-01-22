@@ -71,7 +71,7 @@
 
 {{> unilabeltype_topicteaser/intro }}
 {{#hasitems}}
-    <div id="{{plugin}}-{{cmid}}" class="{{plugin}} carousel slide my-2" data-ride="carousel" data-interval="{{interval}}000">
+    <div id="{{plugin}}-{{cmid}}" class="{{plugin}} carousel slide my-2" data-ride="carousel" data-interval="{{#interval}}{{.}}000{{/interval}}{{^interval}}false{{/interval}}">
 
         <!-- Indicators -->
         <ul class="carousel-indicators">
@@ -116,9 +116,11 @@
 {{#js}}
     require(['theme_boost/loader']);
     require(['theme_boost/bootstrap/carousel']);
+    {{#interval}}
     require(['mod_unilabel/carouselstart'], function(mod) {
         mod.init('{{plugin}}-{{cmid}}');
     });
+    {{/interval}}
 
     {{#hasitems}}
         {{#custombuttons}}

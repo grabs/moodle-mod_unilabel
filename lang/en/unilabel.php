@@ -23,6 +23,7 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+$string['autorun'] = 'Run automatically';
 $string['contentplugins'] = 'Content plugins';
 $string['editcontent'] = 'Edit content';
 $string['generalsettings'] = 'General settings';

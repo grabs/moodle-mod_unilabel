@@ -57,3 +57,6 @@ it is in it by its self.
 
 ### Version 2021052300
 * The internal name can now be edited.
+
+### Version 2022012200
+* All types using carousel have a new option to run the carousel automatically or not.

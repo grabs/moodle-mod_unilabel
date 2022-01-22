@@ -78,8 +78,18 @@ class content_type extends \mod_unilabel\content_type {
         $mform->addElement('header', $prefix.'hdr', $this->get_name());
         $mform->addHelpButton($prefix.'hdr', 'pluginname', 'unilabeltype_carousel');
 
+        $mform->addElement(
+            'checkbox',
+            $prefix.'autorun',
+            get_string('autorun', 'mod_unilabel'),
+            ''
+        );
+        $autorundefault = !empty($this->config->autorun);
+        $mform->setDefault($prefix.'autorun', $autorundefault);
+
         $numbers = array_combine(range(1, 10), range(1, 10));
         $mform->addElement('select', $prefix.'carouselinterval', get_string('carouselinterval', 'unilabeltype_carousel'), $numbers);
+        $mform->hideIf($prefix.'carouselinterval', $prefix.'autorun', 'notchecked');
 
         $numbers = array_combine(range(100, 600, 50), range(100, 600, 50));
         $numbers = array(0 => get_string('autoheight', 'unilabeltype_carousel')) + $numbers;
@@ -183,6 +193,7 @@ class content_type extends \mod_unilabel\content_type {
         // Set default data for the carousel in generel.
         if (!$unilabeltyperecord = $this->load_unilabeltype_record($unilabel->id)) {
             $data[$prefix.'carouselinterval'] = $this->config->carouselinterval;
+            $data[$prefix.'autorun'] = $this->config->autorun;
             $data[$prefix.'height'] = $this->config->height;
             $data[$prefix.'background'] = '#ffffff';
             $data[$prefix.'showintro'] = !empty($this->config->showintro);
@@ -191,6 +202,7 @@ class content_type extends \mod_unilabel\content_type {
         }
 
         $data[$prefix.'carouselinterval'] = $unilabeltyperecord->carouselinterval;
+        $data[$prefix.'autorun'] = boolval(!empty($unilabeltyperecord->carouselinterval));
         $data[$prefix.'height'] = $unilabeltyperecord->height;
         $data[$prefix.'background'] = $unilabeltyperecord->background;
         $data[$prefix.'showintro'] = $unilabeltyperecord->showintro;
@@ -331,7 +343,11 @@ class content_type extends \mod_unilabel\content_type {
             $unilabeltyperecord->id = $DB->insert_record('unilabeltype_carousel', $unilabeltyperecord);
         }
 
-        $unilabeltyperecord->carouselinterval = $formdata->{$prefix.'carouselinterval'};
+        if (!empty($formdata->{$prefix.'autorun'})) {
+            $unilabeltyperecord->carouselinterval = $formdata->{$prefix.'carouselinterval'};
+        } else {
+            $unilabeltyperecord->carouselinterval = 0;
+        }
         $unilabeltyperecord->height = $formdata->{$prefix.'height'};
         $unilabeltyperecord->background = $formdata->{$prefix.'background'};
         $unilabeltyperecord->showintro = $formdata->{$prefix.'showintro'};

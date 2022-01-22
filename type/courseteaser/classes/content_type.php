@@ -123,6 +123,16 @@ class content_type extends \mod_unilabel\content_type {
         $mform->disabledIf($prefix.'columnssmall', $prefix.'defaultsmall', 'checked');
         $mform->disabledIf($prefix.'group_small', $prefix.'presentation', 'ne', 'grid');
 
+        $mform->addElement(
+            'checkbox',
+            $prefix.'autorun',
+            get_string('autorun', 'mod_unilabel'),
+            ''
+        );
+        $autorundefault = !empty($this->config->autorun);
+        $mform->setDefault($prefix.'autorun', $autorundefault);
+        $mform->disabledIf($prefix.'autorun', $prefix.'presentation', 'ne', 'carousel');
+
         $numbers = array_combine(range(1, 10), range(1, 10));
         $mform->addElement(
             'select',
@@ -131,6 +141,7 @@ class content_type extends \mod_unilabel\content_type {
             $numbers
         );
         $mform->disabledIf($prefix.'carouselinterval', $prefix.'presentation', 'ne', 'carousel');
+        $mform->hideIf($prefix.'carouselinterval', $prefix.'autorun', 'notchecked');
     }
 
     /**
@@ -152,6 +163,7 @@ class content_type extends \mod_unilabel\content_type {
             $data[$prefix.'columnssmall'] = $this->get_default_col_small();
             $data[$prefix.'defaultsmall'] = true;
             $data[$prefix.'carouselinterval'] = $this->config->carouselinterval;
+            $data[$prefix.'autorun'] = $this->config->autorun;
             $data[$prefix.'showintro'] = $this->config->showintro;
         } else {
             $data[$prefix.'presentation'] = $unilabeltyperecord->presentation;
@@ -172,6 +184,7 @@ class content_type extends \mod_unilabel\content_type {
             }
 
             $data[$prefix.'carouselinterval'] = $unilabeltyperecord->carouselinterval;
+            $data[$prefix.'autorun'] = boolval(!empty($unilabeltyperecord->carouselinterval));
             $data[$prefix.'showintro'] = $unilabeltyperecord->showintro;
             $data[$prefix.'courses'] = explode(',', $unilabeltyperecord->courses);
         }
@@ -286,7 +299,11 @@ class content_type extends \mod_unilabel\content_type {
         $columnssmall = !empty($formdata->{$prefix.'defaultsmall'}) ? null : $formdata->{$prefix.'columnssmall'};
         $unilabeltyperecord->columnssmall = $columnssmall;
 
-        $unilabeltyperecord->carouselinterval = $formdata->{$prefix.'carouselinterval'};
+        if (!empty($formdata->{$prefix.'autorun'})) {
+            $unilabeltyperecord->carouselinterval = $formdata->{$prefix.'carouselinterval'};
+        } else {
+            $unilabeltyperecord->carouselinterval = 0;
+        }
         $unilabeltyperecord->showintro = $formdata->{$prefix.'showintro'};
         $unilabeltyperecord->courses = implode(',', $formdata->{$prefix.'courses'});
 
