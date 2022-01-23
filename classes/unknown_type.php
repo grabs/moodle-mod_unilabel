@@ -25,8 +25,6 @@
 
 namespace mod_unilabel;
 
-defined('MOODLE_INTERNAL') || die;
-
 /**
  * Placeholder class if an active type is currently not installed or otherwise not available.
  * @package     mod_unilabel

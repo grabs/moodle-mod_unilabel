@@ -25,8 +25,6 @@
 
 namespace mod_unilabel\plugininfo;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Handles information about subplugins
  * @package     mod_unilabel

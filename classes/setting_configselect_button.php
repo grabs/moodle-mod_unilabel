@@ -25,7 +25,8 @@
 
 namespace mod_unilabel;
 
-defined('MOODLE_INTERNAL') || die;
+defined('MOODLE_INTERNAL') or die;
+
 require_once($CFG->libdir.'/adminlib.php');
 
 /**

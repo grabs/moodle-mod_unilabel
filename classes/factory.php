@@ -25,8 +25,6 @@
 
 namespace mod_unilabel;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Create a instance of a content type
  * @package     mod_unilabel

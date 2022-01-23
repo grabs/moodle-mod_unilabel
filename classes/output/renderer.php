@@ -25,8 +25,6 @@
 
 namespace mod_unilabel\output;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * The unilabel renderer class.
  *

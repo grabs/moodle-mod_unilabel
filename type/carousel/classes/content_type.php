@@ -25,8 +25,6 @@
 
 namespace unilabeltype_carousel;
 
-defined('MOODLE_INTERNAL') || die;
-
 /**
  * Content type definition
  * @package     unilabeltype_carousel

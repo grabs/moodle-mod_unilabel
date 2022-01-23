@@ -25,8 +25,6 @@
 
 namespace unilabeltype_grid\privacy;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Privacy api class
  * @package     unilabeltype_grid

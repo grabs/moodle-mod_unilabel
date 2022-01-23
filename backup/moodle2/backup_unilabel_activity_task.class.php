@@ -23,7 +23,7 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die;
+defined('MOODLE_INTERNAL') or die;
 
 require_once($CFG->dirroot . '/mod/unilabel/backup/moodle2/backup_unilabel_stepslib.php');
 
@@ -55,7 +55,7 @@ class backup_unilabel_activity_task extends backup_activity_task {
      * @param string $content some HTML text that eventually contains URLs to the activity instance scripts
      * @return string the same content with no changes
      */
-    static public function encode_content_links($content) {
+    public static function encode_content_links($content) {
         return $content;
     }
 }

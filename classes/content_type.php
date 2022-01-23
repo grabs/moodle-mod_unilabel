@@ -25,8 +25,6 @@
 
 namespace mod_unilabel;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * General class to define a content type.
  *

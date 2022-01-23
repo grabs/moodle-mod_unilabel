@@ -25,8 +25,6 @@
 
 namespace unilabeltype_courseteaser\privacy;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Privacy api class
  * @package     unilabeltype_courseteaser

@@ -23,7 +23,7 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die;
+defined('MOODLE_INTERNAL') or die;
 
 require_once($CFG->dirroot.'/course/moodleform_mod.php');
 
@@ -50,7 +50,7 @@ class mod_unilabel_mod_form extends moodleform_mod {
 
         $mform->addElement('header', 'generalhdr', get_string('general'));
 
-        $mform->addElement('text', 'name', get_string('name'), array('size'=>'48'));
+        $mform->addElement('text', 'name', get_string('name'), array('size' => '48'));
         $mform->setType('name', PARAM_TEXT);
         $mform->addRule('name', null, 'required', null, 'client');
         $mform->addRule('name', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');
