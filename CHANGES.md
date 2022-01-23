@@ -60,3 +60,6 @@ it is in it by its self.
 
 ### Version 2022012200
 * All types using carousel have a new option to run the carousel automatically or not.
+
+### Version 2022012300
+* Start compatibility to Moodle 4.0
