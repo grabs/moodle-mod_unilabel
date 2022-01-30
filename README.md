@@ -27,7 +27,7 @@ to complete the installation from the command line.
 
 ## License ##
 
-2021 Stefan Hanauska <stefan.hanauska@altmuehlnet.de>
+2021 Stefan Hanauska <stefan.hanauska@csg-in.de>
 
 This plugin reuses parts of the code from mod_unilabel by Andreas Grabs.
 
