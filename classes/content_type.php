@@ -16,6 +16,8 @@
 
 namespace unilabeltype_accordion;
 
+use stdClass;
+
 defined('MOODLE_INTERNAL') || die;
 
 /**
@@ -99,6 +101,26 @@ class content_type extends \mod_unilabel\content_type {
         } else {
             $intro = $this->format_intro($unilabel, $cm);
             $showintro = !empty($this->record->showintro);
+            $this->segments = array_values($this->segments);
+            $this->segments = array_map(function($v) {
+                 $v->heading = file_rewrite_pluginfile_urls(
+                     $v->heading,
+                     'pluginfile.php',
+                     $this->context->id,
+                     'unilabeltype_accordion',
+                     'heading',
+                     $v->id
+                 );
+                 $v->content = file_rewrite_pluginfile_urls(
+                     $v->content,
+                     'pluginfile.php',
+                     $this->context->id,
+                     'unilabeltype_accordion',
+                     'content',
+                     $v->id
+                 );
+                 return $v;
+            }, $this->segments);
             $content = [
                 'showintro' => $showintro,
                 'intro' => $showintro ? $intro : '',
@@ -148,6 +170,12 @@ class content_type extends \mod_unilabel\content_type {
 
         $mform->addElement('advcheckbox', $prefix . 'showintro', get_string('showunilabeltext', 'unilabeltype_accordion'));
 
+        $textfieldoptions = [
+            'subdirs' => true,
+            'context' => $context,
+            'maxfiles' => EDITOR_UNLIMITED_FILES
+        ];
+
         $repeatarray = [];
         $repeatarray[] = $mform->createElement(
             'header',
@@ -158,13 +186,15 @@ class content_type extends \mod_unilabel\content_type {
             'editor',
             $prefix . 'heading',
             get_string('heading', 'unilabeltype_accordion'),
-            array('rows' => 2)
+            ['rows' => 2],
+            $textfieldoptions
         );
         $repeatarray[] = $mform->createElement(
             'editor',
             $prefix . 'content',
             get_string('content', 'unilabeltype_accordion'),
-            array('rows' => 10)
+            ['rows' => 10],
+            $textfieldoptions
         );
         $repeatedoptions = [];
         $repeatedoptions[$prefix . 'heading']['type'] = PARAM_RAW;
@@ -220,13 +250,34 @@ class content_type extends \mod_unilabel\content_type {
         foreach ($segments as $segment) {
             // Prepare the heading field.
             $elementname = $prefix . 'heading[' . $index . ']';
-            $data[$elementname]['text'] = $segment->heading;
             $data[$elementname]['format'] = FORMAT_HTML;
+            $draftid = file_get_submitted_draft_itemid($elementname);
+            $data[$elementname]['text'] = file_prepare_draft_area(
+                $draftid,
+                $context->id,
+                'unilabeltype_accordion',
+                'heading',
+                $segment->id,
+                null,
+                $segment->heading
+            );
+            $data[$elementname]['itemid'] = $draftid;
 
             // Prepare the content field.
             $elementname = $prefix . 'content[' . $index . ']';
             $data[$elementname]['text'] = $segment->content;
             $data[$elementname]['format'] = FORMAT_HTML;
+            $draftid = file_get_submitted_draft_itemid($elementname);
+            $data[$elementname]['text'] = file_prepare_draft_area(
+                $draftid,
+                $context->id,
+                'unilabeltype_accordion',
+                'content',
+                $segment->id,
+                null,
+                $segment->content
+            );
+            $data[$elementname]['itemid'] = $draftid;
 
             $index++;
         }
@@ -261,7 +312,9 @@ class content_type extends \mod_unilabel\content_type {
 
         $fs = get_file_storage();
         $context = \context_module::instance($formdata->cmid);
-        $usercontext = \context_user::instance($USER->id);
+
+        $fs->delete_area_files($context->id, 'unilabeltype_accordion', 'heading');
+        $fs->delete_area_files($context->id, 'unilabeltype_accordion', 'content');
 
         $DB->delete_records('unilabeltype_accordion_seg', array('accordionid' => $record->id));
 
@@ -272,10 +325,29 @@ class content_type extends \mod_unilabel\content_type {
 
             $segmentrecord = new \stdClass();
             $segmentrecord->accordionid = $record->id;
-            $segmentrecord->heading = $heading;
-            $segmentrecord->content = $content;
+
+            $segmentrecord->heading = file_rewrite_urls_to_pluginfile($heading, $formdata->{$prefix . 'heading'}[$i]['itemid']);
+            $segmentrecord->content = file_rewrite_urls_to_pluginfile($content, $formdata->{$prefix . 'content'}[$i]['itemid']);
 
             $segmentrecord->id = $DB->insert_record('unilabeltype_accordion_seg', $segmentrecord);
+
+            file_save_draft_area_files(
+                $formdata->{$prefix . 'heading'}[$i]['itemid'],
+                $context->id,
+                'unilabeltype_accordion',
+                'heading',
+                $segmentrecord->id,
+                null
+            );
+
+            file_save_draft_area_files(
+                $formdata->{$prefix . 'content'}[$i]['itemid'],
+                $context->id,
+                'unilabeltype_accordion',
+                'content',
+                $segmentrecord->id,
+                null
+            );
         }
 
         $transaction->allow_commit();

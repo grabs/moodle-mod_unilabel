@@ -34,7 +34,7 @@ class backup_unilabeltype_accordion_subplugin extends backup_subplugin {
         $subplugin = $this->get_subplugin_element();
         $subpluginwrapper = new backup_nested_element($this->get_recommended_name());
         $subpluginaccordion = new backup_nested_element('unilabeltype_accordion', ['id'], ['showintro']);
-        $subpluginsegment = new backup_nested_element('unilabeltype_accordion_segment',
+        $subpluginsegment = new backup_nested_element('unilabeltype_accordion_seg',
             ['id'],
             ['heading', 'content']
         );
@@ -47,6 +47,10 @@ class backup_unilabeltype_accordion_subplugin extends backup_subplugin {
         // Set source to populate the data.
         $subpluginaccordion->set_source_table('unilabeltype_accordion', array('unilabelid' => backup::VAR_ACTIVITYID));
         $subpluginsegment->set_source_table('unilabeltype_accordion_seg', array('accordionid' => backup::VAR_PARENTID));
+
+        // Annotate files.
+        $subpluginsegment->annotate_files('unilabeltype_accordion', 'heading', 'id');
+        $subpluginsegment->annotate_files('unilabeltype_accordion', 'content', 'id');
 
         return $subplugin;
     }

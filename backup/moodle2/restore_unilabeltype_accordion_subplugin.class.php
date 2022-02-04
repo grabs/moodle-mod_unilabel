@@ -37,7 +37,7 @@ class restore_unilabeltype_accordion_subplugin extends restore_subplugin {
         $paths[] = new restore_path_element($elename, $elepath);
 
         $elename = $this->get_namefor('segment');
-        $elepath = $this->get_pathfor('/unilabeltype_accordion/unilabeltype_accordion_segment');
+        $elepath = $this->get_pathfor('/unilabeltype_accordion/unilabeltype_accordion_seg');
         $paths[] = new restore_path_element($elename, $elepath);
 
         return $paths; // And we return the interesting paths.
@@ -73,6 +73,10 @@ class restore_unilabeltype_accordion_subplugin extends restore_subplugin {
         $data->accordionid = $this->get_new_parentid($this->get_namefor());
         $newitemid = $DB->insert_record('unilabeltype_accordion_seg', $data);
         $this->set_mapping($this->get_namefor('segment'), $oldid, $newitemid, true);
+
+        // Restore files.
+        $this->add_related_files('unilabeltype_accordion', 'heading', 'unilabeltype_accordion_segment');
+        $this->add_related_files('unilabeltype_accordion', 'content', 'unilabeltype_accordion_segment');
     }
 
 }
