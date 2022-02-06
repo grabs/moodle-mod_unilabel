@@ -88,11 +88,15 @@
                     {{^autoheight}}<div style="height:{{{height}}}px;width:100%;">{{/autoheight}}
 
                     {{#imagemobileurl}}
-                        <img class="img-fluid d-none d-md-inline" alt="{{caption}}" src="{{{imageurl}}}"{{^autoheight}} style="height:100%;object-fit:contain;"{{/autoheight}}/>
-                        <img class="img-fluid d-inline d-md-none" alt="{{caption}}" src="{{{imagemobileurl}}}"{{^autoheight}} style="height:100%;object-fit:contain;"{{/autoheight}}/>
+                        {{#imageurl}}
+                        <img class="img-fluid d-none d-md-inline" alt="{{captionplain}}" src="{{{imageurl}}}"{{^autoheight}} style="height:100%;object-fit:contain;"{{/autoheight}}/>
+                        {{/imageurl}}
+                        <img class="img-fluid d-inline d-md-none" alt="{{captionplain}}" src="{{{imagemobileurl}}}"{{^autoheight}} style="height:100%;object-fit:contain;"{{/autoheight}}/>
                     {{/imagemobileurl}}
                     {{^imagemobileurl}}
-                        <img class="img-fluid" alt="{{caption}}" src="{{{imageurl}}}"{{^autoheight}} style="height:100%;object-fit:contain;"{{/autoheight}}/>
+                        {{#imageurl}}
+                        <img class="img-fluid" alt="{{captionplain}}" src="{{{imageurl}}}"{{^autoheight}} style="height:100%;object-fit:contain;"{{/autoheight}}/>
+                        {{/imageurl}}
                     {{/imagemobileurl}}
 
                     {{^autoheight}}</div>{{/autoheight}}
