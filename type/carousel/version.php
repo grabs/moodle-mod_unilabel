@@ -26,5 +26,5 @@
 defined('MOODLE_INTERNAL') || die;
 
 $plugin->component = 'unilabeltype_carousel';
-$plugin->version   = 2022012200;
+$plugin->version   = 2022012201;
 $plugin->requires  = 2019111200;
