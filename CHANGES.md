@@ -63,3 +63,6 @@ it is in it by its self.
 
 ### Version 2022012300
 * Start compatibility to Moodle 4.0
+
+### Version 2022012301
+* MBS-6088 (Stefan Hanauska): Fix behaviour for slides without images in type carousel and fix alt-attribute containing in type carousel
