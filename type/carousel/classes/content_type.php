@@ -171,7 +171,7 @@ class content_type extends \mod_unilabel\content_type {
             $prefix.'add_more_slides_btn',
             $defaultrepeatcount, // Each time we add 3 elements.
             get_string('addmoreslides', 'unilabeltype_carousel'),
-            true
+            false
         );
     }
 
