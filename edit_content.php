@@ -61,6 +61,7 @@ $strtitle = $course->shortname.': '. $unilabeltype->get_name(). ' - ' .$unilabel
 /** @var \moodle_page $PAGE */
 $PAGE->set_url($myurl);
 $PAGE->set_title($strtitle);
+$PAGE->set_pagelayout('course'); // This pagelayout is also needed on behat. Without this I had an error.
 $PAGE->set_heading($course->fullname);
 
 if ($switchtype) {

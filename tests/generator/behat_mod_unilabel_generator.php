@@ -15,20 +15,32 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel module
+ * Behat data generator for mod_unilabel.
  *
  * @package     mod_unilabel
+ * @category    test
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+class behat_mod_unilabel_generator extends behat_generator_base {
 
-defined('MOODLE_INTERNAL') || die();
+    /**
+     * Get a list of the entities that Behat can create using the generator step.
+     *
+     * @return array
+     */
+    protected function get_creatable_entities(): array {
+        return array();
+    }
 
-$plugin->version   = 2022012202;     // The current module version (Date: YYYYMMDDXX).
-$plugin->release = '3.11.4 (Build: 20220216)';
-$plugin->maturity = MATURITY_STABLE;
-
-$plugin->requires  = 2019111200;     // Requires this Moodle version.
-$plugin->component = 'mod_unilabel'; // Full name of the plugin (used for diagnostics).
-$plugin->cron      = 0;
+    /**
+     * Get the assignment CMID using an activity idnumber.
+     *
+     * @param string $idnumber
+     * @return int The cmid
+     */
+    protected function get_unilabel_id(string $idnumber): int {
+        return $this->get_activity_id($idnumber);
+    }
+}

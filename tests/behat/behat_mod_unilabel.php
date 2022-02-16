@@ -15,20 +15,28 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel module
+ * Steps definitions related to mod_unilabel.
  *
  * @package     mod_unilabel
+ * @category    test
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+// NOTE: no MOODLE_INTERNAL test here, this file may be required by behat before including /config.php.
 
-$plugin->version   = 2022012202;     // The current module version (Date: YYYYMMDDXX).
-$plugin->release = '3.11.4 (Build: 20220216)';
-$plugin->maturity = MATURITY_STABLE;
+require_once(__DIR__ . '/../../../../lib/behat/behat_base.php');
 
-$plugin->requires  = 2019111200;     // Requires this Moodle version.
-$plugin->component = 'mod_unilabel'; // Full name of the plugin (used for diagnostics).
-$plugin->cron      = 0;
+use Behat\Gherkin\Node\TableNode as TableNode,
+    Behat\Mink\Exception\ExpectationException as ExpectationException;
+
+/**
+ * Steps definitions related to mod_feedback.
+ *
+ * @copyright 2022 Andreas Grabs
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class behat_mod_unilabel extends behat_base {
+
+}
