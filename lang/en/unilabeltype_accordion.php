@@ -25,11 +25,12 @@
 defined('MOODLE_INTERNAL') || die;
 
 $string['addmoresegments'] = 'Add more segments';
-$string['heading'] = 'Heading';
-$string['heading_help'] = 'Users have to click on the heading to expand the corresponding accordion segment.';
 $string['content'] = 'Content';
 $string['content_help'] = 'The content of the segment, visible if users click on the heading.';
 $string['default_showintro'] = 'Default show unilabel text';
+$string['delete_segment'] = 'Delete segment';
+$string['heading'] = 'Heading';
+$string['heading_help'] = 'Users have to click on the heading to expand the corresponding accordion segment.';
 $string['nocontent'] = 'No content';
 $string['pluginname'] = 'Accordion';
 $string['pluginname_help'] = 'With the accordion content type you can define collapsed segments which can be expanded by the users (one at the same time).';

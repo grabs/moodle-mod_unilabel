@@ -196,12 +196,20 @@ class content_type extends \mod_unilabel\content_type {
             ['rows' => 10],
             $textfieldoptions
         );
+        $repeatarray[] = $mform->createElement(
+            'submit',
+            $prefix . 'delete_segment',
+            get_string('delete_segment', 'unilabeltype_accordion'),
+            0
+        );
+        $mform->registerNoSubmitButton($prefix . 'delete_segment');
+
         $repeatedoptions = [];
         $repeatedoptions[$prefix . 'heading']['type'] = PARAM_RAW;
         $repeatedoptions[$prefix . 'content']['type'] = PARAM_RAW;
         // Adding the help buttons.
-        $repeatedoptions[$prefix . 'heading']['helpbutton'] = array('heading', 'unilabeltype_accordion');
-        $repeatedoptions[$prefix . 'content']['helpbutton'] = array('content', 'unilabeltype_accordion');
+        $repeatedoptions[$prefix . 'heading']['helpbutton'] = ['heading', 'unilabeltype_accordion', '', true];
+        $repeatedoptions[$prefix . 'content']['helpbutton'] = ['content', 'unilabeltype_accordion', '', true];
 
         $defaultrepeatcount = 3; // The default count for segments.
         $repeatcount = max((count($this->segments) / $defaultrepeatcount) * $defaultrepeatcount, $defaultrepeatcount);
@@ -213,7 +221,8 @@ class content_type extends \mod_unilabel\content_type {
             $prefix . 'add_more_segments_btn',
             $defaultrepeatcount,
             get_string('addmoresegments', 'unilabeltype_accordion'),
-            true
+            false,
+            $prefix . 'delete_segment'
         );
     }
 
@@ -320,6 +329,9 @@ class content_type extends \mod_unilabel\content_type {
 
         $potentialsegmentcount = $formdata->{$prefix . 'chosen_segments_count'};
         for ($i = 0; $i < $potentialsegmentcount; $i++) {
+            if (!isset($formdata->{$prefix . 'heading'}[$i])) {
+                continue;
+            }
             $heading = $formdata->{$prefix . 'heading'}[$i]['text'];
             $content = $formdata->{$prefix . 'content'}[$i]['text'];
 
