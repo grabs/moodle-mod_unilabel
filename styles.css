@@ -18,6 +18,7 @@
 .unilabel .carousel .carousel-control-prev,
 .unilabel .carousel .carousel-control-next {
     z-index: 998;
+    mix-blend-mode: difference;
 }
 
 /* Nice overlay effect which can be used in subplugins */
