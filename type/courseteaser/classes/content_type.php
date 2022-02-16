@@ -25,8 +25,6 @@
 
 namespace unilabeltype_courseteaser;
 
-defined('MOODLE_INTERNAL') || die;
-
 /**
  * Content type definition
  * @package     unilabeltype_courseteaser

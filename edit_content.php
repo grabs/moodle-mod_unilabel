@@ -30,7 +30,7 @@ $cmid = required_param('cmid', PARAM_INT);   // The course module id.
 $switchtype = optional_param('switchtype', false, PARAM_COMPONENT);
 
 if (!$cm = get_coursemodule_from_id('unilabel', $cmid)) {
-    print_error('invalidcoursemodule');
+    throw new \moodle_exception('invalidcoursemodule');
 }
 
 $unilabel = $DB->get_record('unilabel', array('id' => $cm->instance), '*', MUST_EXIST);

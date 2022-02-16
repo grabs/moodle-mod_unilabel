@@ -25,32 +25,32 @@
 
 require_once('../../config.php');
 
-$id = optional_param('id', 0, PARAM_INT);    // Course Module ID, or
+$id = optional_param('id', 0, PARAM_INT);    // Course Module ID.
 $l = optional_param('l', 0, PARAM_INT);     // The unilabel ID.
 
 if ($id) {
     $PAGE->set_url('/mod/unilabel/index.php', ['id' => $id]);
     if (!$cm = get_coursemodule_from_id('unilabel', $id)) {
-        print_error('invalidcoursemodule');
+        throw new \moodle_exception('invalidcoursemodule');
     }
 
     if (!$course = $DB->get_record('course', ['id' => $cm->course])) {
-        print_error('coursemisconf');
+        throw new \moodle_exception('coursemisconf');
     }
 
     if (!$unilabel = $DB->get_record('unilabel', ['id' => $cm->instance])) {
-        print_error('invalidcoursemodule');
+        throw new \moodle_exception('invalidcoursemodule');
     }
 } else {
     $PAGE->set_url('/mod/unilabel/index.php', ['l' => $l]);
     if (!$unilabel = $DB->get_record('unilabel', ['id' => $l])) {
-        print_error('invalidcoursemodule');
+        throw new \moodle_exception('invalidcoursemodule');
     }
     if (!$course = $DB->get_record('course', ['id' => $unilabel->course])) {
-        print_error('coursemisconf');
+        throw new \moodle_exception('coursemisconf');
     }
     if (!$cm = get_coursemodule_from_instance('unilabel', $unilabel->id, $course->id)) {
-        print_error('invalidcoursemodule');
+        throw new \moodle_exception('invalidcoursemodule');
     }
 }
 

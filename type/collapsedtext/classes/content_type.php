@@ -25,8 +25,6 @@
 
 namespace unilabeltype_collapsedtext;
 
-defined('MOODLE_INTERNAL') || die;
-
 /**
  * Content type definition
  * @package     unilabeltype_collapsedtext

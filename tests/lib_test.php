@@ -25,8 +25,6 @@
  */
 namespace mod_unilabel;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Unit tests for general unilabel features.
  *

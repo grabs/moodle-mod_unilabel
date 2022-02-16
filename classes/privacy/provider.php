@@ -25,8 +25,6 @@
 
 namespace mod_unilabel\privacy;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Privacy api class
  * @package     mod_unilabel

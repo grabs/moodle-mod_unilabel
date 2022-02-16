@@ -25,8 +25,6 @@
 
 namespace unilabeltype_grid;
 
-defined('MOODLE_INTERNAL') || die;
-
 /**
  * Content type definition
  * @package     unilabeltype_grid

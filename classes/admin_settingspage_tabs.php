@@ -25,7 +25,6 @@
 
 namespace mod_unilabel;
 
-defined('MOODLE_INTERNAL') || die();
 /**
  * Settings page providing a tabbed view.
  * @package     mod_unilabel

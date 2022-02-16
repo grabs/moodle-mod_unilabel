@@ -25,8 +25,6 @@
 
 namespace unilabeltype_topicteaser;
 
-defined('MOODLE_INTERNAL') || die;
-
 /**
  * Content type definition
  * @package     unilabeltype_topicteaser

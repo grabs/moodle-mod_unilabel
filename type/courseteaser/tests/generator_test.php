@@ -25,8 +25,6 @@
  */
 namespace unilabeltype_courseteaser;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Unit tests for generating instances.
  *
@@ -49,11 +47,11 @@ class generator_test extends \advanced_testcase {
         $unilabel = $this->getDataGenerator()->create_module(
             'unilabel',
             array(
-                'course' => $course,
-                'idnumber' =>  'mh1',
-                'name' =>  'testlabel',
-                'intro' =>  'Hello label',
-                'unilabeltype' =>  'courseteaser',
+                'course'       => $course,
+                'idnumber'     => 'mh1',
+                'name'         => 'testlabel',
+                'intro'        => 'Hello label',
+                'unilabeltype' => 'courseteaser',
             )
         );
         $records = $DB->get_records('unilabel', array('course' => $course->id, 'unilabeltype' => 'courseteaser'), 'id');
@@ -61,11 +59,11 @@ class generator_test extends \advanced_testcase {
         $this->assertTrue(array_key_exists($unilabel->id, $records));
 
         $params = array(
-            'course' => $course->id,
-            'idnumber' =>  'mh2',
-            'name' =>  'testlabel2',
-            'intro' =>  'Hello label-2',
-            'unilabeltype' =>  'courseteaser',
+            'course'       => $course->id,
+            'idnumber'     => 'mh2',
+            'name'         => 'testlabel2',
+            'intro'        => 'Hello label-2',
+            'unilabeltype' => 'courseteaser',
         );
         $unilabel = $this->getDataGenerator()->create_module('unilabel', $params);
         $records = $DB->get_records('unilabel', array('course' => $course->id, 'unilabeltype' => 'courseteaser'), 'id');
