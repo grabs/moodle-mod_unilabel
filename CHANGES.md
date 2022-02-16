@@ -67,3 +67,4 @@ it is in it by its self.
 ### Version 2022012202
 * MBS-6151 (Stefan Hanuska): Make adding new slides consistent to grid
 * Add phpunit test and behat acceptance test
+* Add github actions as replacement for travis ci
