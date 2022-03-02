@@ -68,3 +68,7 @@ it is in it by its self.
 * MBS-6151 (Stefan Hanuska): Make adding new slides consistent to grid
 * Add phpunit test and behat acceptance test
 * Add github actions as replacement for travis ci
+
+### Version 2022030200
+* Integrated a new type "Accordion" (Thanks to Stefan Hanuska)
+* Add phpunit test and behat acceptance test to unilabeltype_accordion
