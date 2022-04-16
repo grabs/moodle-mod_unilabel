@@ -18,8 +18,6 @@ namespace unilabeltype_accordion;
 
 use stdClass;
 
-defined('MOODLE_INTERNAL') || die;
-
 /**
  * Class defining the accordion content type
  *
