@@ -38,7 +38,7 @@
 
 {{#useanimation}}
     <div class="unilabeltype-collapsed">
-        <a class="unilabel-title{{^openonstart}} collapsed{{/openonstart}}"
+        <a id="unilabel-button-{{cmid}}" class="unilabel-title{{^openonstart}} collapsed{{/openonstart}}"
                 data-toggle="collapse"
                 href="#unilabeltype-collapsed-{{cmid}}"
                 role="button"
@@ -52,3 +52,12 @@
         </div>
     </div>
 {{/useanimation}}
+{{#js}}
+{{#useanimation}}
+    $("#unilabel-button-{{cmid}}").click(function(event) {
+        event.stopPropagation(); // Since Moodle 4.0 the course topics are collapsable too and should not be triggered.
+        event.preventDefault();
+        $("#unilabeltype-collapsed-{{cmid}}").collapse("toggle");
+    });
+{{/useanimation}}
+{{/js}}

@@ -63,6 +63,7 @@ $PAGE->set_url($myurl);
 $PAGE->set_title($strtitle);
 $PAGE->set_pagelayout('course'); // This pagelayout is also needed on behat. Without this I had an error.
 $PAGE->set_heading($course->fullname);
+$PAGE->add_body_class('limitedwidth');
 
 if ($switchtype) {
     require_sesskey();
@@ -114,6 +115,7 @@ if ($formdata = $form->get_data()) {
     redirect($returnurl, $msg, null, $msgtype);
 }
 
+/** @var \mod_unilabel\output\renderer $renderer */
 $renderer = $PAGE->get_renderer('mod_unilabel');
 
 $plugins = \mod_unilabel\factory::get_plugin_list();

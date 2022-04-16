@@ -71,21 +71,15 @@
                         {{/imageurl}}
                     </a>
 
-                    <div class="carousel-caption">
-                        <a href="{{{courseurl}}}">{{title}}</a>
-                    </div>
+                    {{> unilabeltype_courseteaser/carousel_caption }}
 
                 </div>
             {{/items}}
         </div>
 
         <!-- Left and right controls -->
-        <a class="carousel-control-prev" href="#{{plugin}}-{{cmid}}" data-slide="prev">
-            <span class="carousel-control-prev-icon"></span>
-        </a>
-        <a class="carousel-control-next" href="#{{plugin}}-{{cmid}}" data-slide="next">
-            <span class="carousel-control-next-icon"></span>
-        </a>
+        {{< unilabeltype_courseteaser/carousel_control}} {{$direction}}next{{/direction}} {{/ unilabeltype_courseteaser/carousel_control}}
+        {{< unilabeltype_courseteaser/carousel_control}} {{$direction}}prev{{/direction}} {{/ unilabeltype_courseteaser/carousel_control}}
     </div>
 {{/hasitems}}
 {{^hasitems}}

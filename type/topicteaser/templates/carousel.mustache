@@ -95,12 +95,8 @@
         </div>
 
         <!-- Left and right controls -->
-        <a class="carousel-control-prev" href="#{{plugin}}-{{cmid}}" data-slide="prev">
-            <span class="carousel-control-prev-icon"></span>
-        </a>
-        <a class="carousel-control-next" href="#{{plugin}}-{{cmid}}" data-slide="next">
-            <span class="carousel-control-next-icon"></span>
-        </a>
+        {{< unilabeltype_topicteaser/carousel_control}} {{$direction}}next{{/direction}} {{/ unilabeltype_topicteaser/carousel_control}}
+        {{< unilabeltype_topicteaser/carousel_control}} {{$direction}}prev{{/direction}} {{/ unilabeltype_topicteaser/carousel_control}}
     </div>
 
     {{#openmodal}}

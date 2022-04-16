@@ -36,6 +36,12 @@ namespace mod_unilabel;
  */
 class lib_test extends \advanced_testcase {
 
+    /**
+     * Test create an instance
+     *
+     * @covers \mod_unilabel\factory
+     * @return void
+     */
     public function test_get_only_active_unilabeltypes() {
         global $DB;
         $this->resetAfterTest();

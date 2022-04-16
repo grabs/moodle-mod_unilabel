@@ -16,8 +16,6 @@
 
 namespace unilabeltype_accordion\privacy;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * privacy provider for unilabel type accordion
  *

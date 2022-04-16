@@ -102,9 +102,7 @@
                     {{^autoheight}}</div>{{/autoheight}}
 
                     {{#caption}}
-                        <div class="carousel-caption">
-                            {{{caption}}}
-                        </div>
+                        {{> unilabeltype_carousel/carousel_caption }}
                     {{/caption}}
 
                 </div>
@@ -112,12 +110,8 @@
         </div>
 
         <!-- Left and right controls -->
-        <a class="carousel-control-prev" href="#{{plugin}}-{{cmid}}" data-slide="prev">
-            <span class="carousel-control-prev-icon"></span>
-        </a>
-        <a class="carousel-control-next" href="#{{plugin}}-{{cmid}}" data-slide="next">
-            <span class="carousel-control-next-icon"></span>
-        </a>
+        {{< unilabeltype_carousel/carousel_control}} {{$direction}}next{{/direction}} {{/ unilabeltype_carousel/carousel_control}}
+        {{< unilabeltype_carousel/carousel_control}} {{$direction}}prev{{/direction}} {{/ unilabeltype_carousel/carousel_control}}
     </div>
 {{/hasslides}}
 {{^hasslides}}

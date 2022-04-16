@@ -36,6 +36,12 @@ namespace unilabeltype_grid;
  */
 class generator_test extends \advanced_testcase {
 
+    /**
+     * Test create an instance
+     *
+     * @covers ::unilabel_add_instance()
+     * @return void
+     */
     public function test_create_instance() {
         global $DB;
         $this->resetAfterTest();
