@@ -25,9 +25,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2022041600;     // The current module version (Date: YYYYMMDDXX).
-$plugin->release = '4.0.0 (Build: 2022041600)';
-$plugin->maturity = MATURITY_STABLE;
+$plugin->version   = 2022041601;     // The current module version (Date: YYYYMMDDXX).
+$plugin->release   = '4.0.1 (Build: 2022041800)';
+$plugin->maturity  = MATURITY_STABLE;
 
 $plugin->requires  = 2022041200;     // Requires this Moodle version.
 $plugin->component = 'mod_unilabel'; // Full name of the plugin (used for diagnostics).
