@@ -72,3 +72,9 @@ it is in it by its self.
 ### Version 2022030200
 * Integrated a new type "Accordion" (Thanks to Stefan Hanuska)
 * Add phpunit test and behat acceptance test to unilabeltype_accordion
+
+### Version 2022041601
+* Compatibility to Moodle 4
+
+### Version 2022041601 Release 4.0.2 (Build: 2022050900)
+* MBS-6386 (Stefan Hanuska): Fix redirect in view.php
