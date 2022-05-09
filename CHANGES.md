@@ -72,3 +72,6 @@ it is in it by its self.
 ### Version 2022030200
 * Integrated a new type "Accordion" (Thanks to Stefan Hanuska)
 * Add phpunit test and behat acceptance test to unilabeltype_accordion
+
+### Version 2022030200 Release 3.11.6 (Build: 2022050900)
+* MBS-6386 (Stefan Hanuska): Fix redirect in view.php
