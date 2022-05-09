@@ -30,7 +30,7 @@ $l = optional_param('l', 0, PARAM_INT);     // The unilabel ID.
 
 if ($id) {
     $PAGE->set_url('/mod/unilabel/index.php', ['id' => $id]);
-    if (!$cm = get_coursemodule_from_id('unilabel', $id)) {
+    if (!$cm = get_coursemodule_from_id('unilabel', $id, 0, true)) {
         throw new \moodle_exception('invalidcoursemodule');
     }
 
@@ -49,11 +49,12 @@ if ($id) {
     if (!$course = $DB->get_record('course', ['id' => $unilabel->course])) {
         throw new \moodle_exception('coursemisconf');
     }
-    if (!$cm = get_coursemodule_from_instance('unilabel', $unilabel->id, $course->id)) {
+    if (!$cm = get_coursemodule_from_instance('unilabel', $unilabel->id, $course->id, true)) {
         throw new \moodle_exception('invalidcoursemodule');
     }
 }
 
 require_login($course, true, $cm);
 
-redirect("$CFG->wwwroot/course/view.php?id=$course->id");
+$url = new \moodle_url('/course/view.php', array('id' => $course->id, 'section' => $cm->sectionnum), 'module-' . $id);
+redirect($url);
