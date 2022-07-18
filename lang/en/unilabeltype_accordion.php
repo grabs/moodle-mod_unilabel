@@ -25,6 +25,7 @@
 defined('MOODLE_INTERNAL') || die;
 
 $string['addmoresegments'] = 'Add more segments';
+$string['collapse'] = 'Allow to open multiple segments simultaneously';
 $string['content'] = 'Content';
 $string['content_help'] = 'The content of the segment, visible if users click on the heading.';
 $string['default_showintro'] = 'Default show unilabel text';

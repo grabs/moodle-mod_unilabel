@@ -127,8 +127,10 @@ class content_type extends \mod_unilabel\content_type {
                 }),
                 'cmid' => $cm->id,
                 'plugin' => 'unilabeltype_accordion',
+                'collapse' => $this->record->type == 1
             ];
         }
+
         $accordion = $renderer->render_from_template('unilabeltype_accordion/accordion', $content);
 
         return $accordion;
@@ -167,6 +169,8 @@ class content_type extends \mod_unilabel\content_type {
         $prefix = 'unilabeltype_accordion_';
 
         $mform->addElement('advcheckbox', $prefix . 'showintro', get_string('showunilabeltext', 'unilabeltype_accordion'));
+
+        $mform->addElement('advcheckbox', $prefix . 'type', get_string('collapse', 'unilabeltype_accordion'));
 
         $textfieldoptions = [
             'subdirs' => true,
@@ -244,6 +248,7 @@ class content_type extends \mod_unilabel\content_type {
             return $data;
         }
         $data[$prefix . 'showintro'] = $this->record->showintro;
+        $data[$prefix . 'type'] = $this->record->type;
 
         if (!$segments = $DB->get_records(
             'unilabeltype_accordion_seg',
@@ -314,6 +319,7 @@ class content_type extends \mod_unilabel\content_type {
         }
 
         $record->showintro = $formdata->{$prefix . 'showintro'};
+        $record->type = $formdata->{$prefix . 'type'};
 
         $DB->update_record('unilabeltype_accordion', $record);
 
