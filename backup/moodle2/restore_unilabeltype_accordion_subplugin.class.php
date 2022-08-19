@@ -77,4 +77,16 @@ class restore_unilabeltype_accordion_subplugin extends restore_subplugin {
         $this->add_related_files('unilabeltype_accordion', 'content', 'unilabeltype_accordion_segment');
     }
 
+    /**
+     * Define the contents in the plugin that must be
+     * processed by the link decoder
+     */
+    public static function define_decode_contents() {
+        $contents = array();
+
+        $contents[] = new restore_decode_content('unilabeltype_accordion_seg', array('heading', 'content'), 'unilabeltype_accordion_segment');
+
+        return $contents;
+    }
+
 }
