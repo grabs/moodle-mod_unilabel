@@ -62,3 +62,10 @@
         });
     {{/js}}
 {{/openonstart}}
+{{#js}}
+    require(['jquery'], function($) {
+        $('#unilabeltype-collapsed-dialog-{{cmid}}').on('show.bs.modal', function() {
+            $(this).appendTo('body');
+        });
+    });
+{{/js}}
