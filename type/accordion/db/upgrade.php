@@ -33,7 +33,7 @@ function xmldb_unilabeltype_accordion_upgrade($oldversion) {
 
     $dbman = $DB->get_manager();
 
-    if ($oldversion < 2022071703) {
+    if ($oldversion < 2022041602) {
         $table = new xmldb_table('unilabeltype_accordion');
         $field = $table->add_field('type', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
 
@@ -41,7 +41,7 @@ function xmldb_unilabeltype_accordion_upgrade($oldversion) {
             $dbman->add_field($table, $field);
         }
 
-        upgrade_plugin_savepoint(true, 2022071703, 'unilabeltype', 'accordion');
+        upgrade_plugin_savepoint(true, 2022041602, 'unilabeltype', 'accordion');
     }
 
     return true;
