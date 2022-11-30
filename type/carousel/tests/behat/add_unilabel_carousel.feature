@@ -34,7 +34,7 @@ Feature: Modify content of the unilabeltype carousel
     And I should see "Edit content"
     And I click on "Edit content" "link" in the "#section-1" "css_element"
     # Open the Carousel section.
-    And I click on "#id_unilabeltype_carousel_hdr legend div.ftoggler > a" "css_element"
+    And I click on "#id_unilabeltype_carousel_hdr div.ftoggler > a" "css_element"
     # Activate autorun.
     And I should see "Run automatically"
     And I set the field "Run automatically" to "1"
@@ -52,12 +52,12 @@ Feature: Modify content of the unilabeltype carousel
     # Set the Caption for the first two slides to Slide-1 and Slide-2.
     # Both are defined by the css-id id_unilabeltype_carousel_slidehdr_0 and ..._1.
     # Click on the toggle "Slide-1" and open the element
-    And I click on "#id_unilabeltype_carousel_slidehdr_0 legend div.ftoggler > a" "css_element"
+    And I click on "#id_unilabeltype_carousel_slidehdr_0 div.ftoggler > a" "css_element"
     And I should see "Caption-1"
     And I set the field "unilabeltype_carousel_caption[0][text]" to "Slide-1"
     And I upload "mod/unilabel/tests/fixtures/gradient-blue.png" file to "Image-1" filemanager
     # Click on the toggle "Slide-2" and open the element
-    And I click on "#id_unilabeltype_carousel_slidehdr_1 legend div.ftoggler > a" "css_element"
+    And I click on "#id_unilabeltype_carousel_slidehdr_1 div.ftoggler > a" "css_element"
     And I should see "Caption-2"
     And I set the field "unilabeltype_carousel_caption[1][text]" to "Slide-2"
     # And I upload "mod/unilabel/tests/fixtures/gradient-red.png" file to "Image-2" filemanager
@@ -86,7 +86,7 @@ Feature: Modify content of the unilabeltype carousel
     And I should see "Edit content"
     And I click on "Edit content" "link" in the "#section-1" "css_element"
     # Open the Carousel section.
-    And I click on "#id_unilabeltype_carousel_hdr legend div.ftoggler > a" "css_element"
+    And I click on "#id_unilabeltype_carousel_hdr div.ftoggler > a" "css_element"
     # Dectivate autorun.
     And I should see "Run automatically"
     And I set the field "Run automatically" to "0"
@@ -102,12 +102,12 @@ Feature: Modify content of the unilabeltype carousel
     # Set the Caption for the first two slides to Slide-1 and Slide-2.
     # Both are defined by the css-id id_unilabeltype_carousel_slidehdr_0 and ..._1.
     # Click on the toggle "Slide-1" and open the element
-    And I click on "#id_unilabeltype_carousel_slidehdr_0 legend div.ftoggler > a" "css_element"
+    And I click on "#id_unilabeltype_carousel_slidehdr_0 div.ftoggler > a" "css_element"
     And I should see "Caption-1"
     And I set the field "unilabeltype_carousel_caption[0][text]" to "Slide-1"
     And I upload "mod/unilabel/tests/fixtures/gradient-blue.png" file to "Image-1" filemanager
     # Click on the toggle "Slide-2" and open the element
-    And I click on "#id_unilabeltype_carousel_slidehdr_1 legend div.ftoggler > a" "css_element"
+    And I click on "#id_unilabeltype_carousel_slidehdr_1 div.ftoggler > a" "css_element"
     And I should see "Caption-2"
     And I set the field "unilabeltype_carousel_caption[1][text]" to "Slide-2"
     # And I upload "mod/unilabel/tests/fixtures/gradient-red.png" file to "Image-2" filemanager
@@ -139,7 +139,7 @@ Feature: Modify content of the unilabeltype carousel
     And I should see "Edit content"
     And I click on "Edit content" "link" in the "#section-1" "css_element"
     # Open the Carousel section.
-    And I click on "#id_unilabeltype_carousel_hdr legend div.ftoggler > a" "css_element"
+    And I click on "#id_unilabeltype_carousel_hdr div.ftoggler > a" "css_element"
     # Activate autorun.
     And I should see "Run automatically"
     And I set the field "Run automatically" to "1"
@@ -157,12 +157,12 @@ Feature: Modify content of the unilabeltype carousel
     # Set the Caption for the first two slides to Slide-1 and Slide-2.
     # Both are defined by the css-id id_unilabeltype_carousel_slidehdr_0 and ..._1.
     # Click on the toggle "Slide-1" and open the element
-    And I click on "#id_unilabeltype_carousel_slidehdr_0 legend div.ftoggler > a" "css_element"
+    And I click on "#id_unilabeltype_carousel_slidehdr_0 div.ftoggler > a" "css_element"
     And I should see "Caption-1"
     And I set the field "unilabeltype_carousel_caption[0][text]" to "Slide-1"
     And I upload "mod/unilabel/tests/fixtures/gradient-blue.png" file to "Image-1" filemanager
     # Click on the toggle "Slide-2" and open the element
-    And I click on "#id_unilabeltype_carousel_slidehdr_1 legend div.ftoggler > a" "css_element"
+    And I click on "#id_unilabeltype_carousel_slidehdr_1 div.ftoggler > a" "css_element"
     And I should see "Caption-2"
     And I set the field "unilabeltype_carousel_caption[1][text]" to "Slide-2"
     And I press "Add more slides"

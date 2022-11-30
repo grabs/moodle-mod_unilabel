@@ -430,7 +430,7 @@ class content_type extends \mod_unilabel\content_type {
             // We only create a record if we have at least a title, a file or a content.
             $title = $formdata->{$prefix.'title'}[$i];
             $content = $formdata->{$prefix.'content'}[$i]['text'];
-            if (empty($title) and $fileinfo['filecount'] < 1 and !$this->html_has_content($content)) {
+            if (empty($title) && $fileinfo['filecount'] < 1 && !$this->html_has_content($content)) {
                 continue;
             }
 

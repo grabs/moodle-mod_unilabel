@@ -170,6 +170,13 @@ abstract class content_type {
         return implode(' ', $colstrings);
     }
 
+    /**
+     * Get the bootstrap grid col class depending on the number of columns.
+     *
+     * @param int $columns
+     * @param string $breakpoint
+     * @return string
+     */
     public function get_bootstrap_col($columns, $breakpoint) {
         switch ($columns) {
             case 1:
@@ -189,6 +196,12 @@ abstract class content_type {
         }
     }
 
+    /**
+     * Get the default col value depending on the amount of columns
+     *
+     * @param int $columns
+     * @return int
+     */
     public function get_default_col_middle($columns) {
         /*
         count tiles lg    count tiles md    count tiles sm
@@ -215,6 +228,11 @@ abstract class content_type {
         }
     }
 
+    /**
+     * Get the default col value for small screens. This can be overriden.
+     *
+     * @return int
+     */
     public function get_default_col_small() {
         return 1;
     }

@@ -16,7 +16,6 @@
 /**
  * unilabel type carousel
  *
- * @package     unilabeltype_carousel
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later

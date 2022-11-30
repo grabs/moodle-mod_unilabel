@@ -66,12 +66,12 @@
     {{{intro}}}
 {{/showintro}}
 {{#hasslides}}
-    <div id="{{plugin}}-{{cmid}}" class="{{plugin}} carousel slide my-2" data-ride="carousel" data-interval="{{#interval}}{{.}}000{{/interval}}{{^interval}}false{{/interval}}">
+    <div id="{{plugin}}-{{uniqid}}" class="{{plugin}} carousel slide my-2" data-ride="carousel" data-interval="{{#interval}}{{.}}000{{/interval}}{{^interval}}false{{/interval}}">
 
         <!-- Indicators -->
         <ul class="carousel-indicators">
             {{#slides}}
-                <li data-target="#{{plugin}}-{{cmid}}" data-slide-to="{{nr}}"{{^nr}} class="active"{{/nr}}></li>
+                <li data-target="#{{plugin}}-{{uniqid}}" data-slide-to="{{nr}}"{{^nr}} class="active"{{/nr}}></li>
             {{/slides}}
         </ul>
 
@@ -122,7 +122,7 @@
     require(['theme_boost/bootstrap/carousel']);
     {{#interval}}
     require(['mod_unilabel/carouselstart'], function(mod) {
-        mod.init('{{plugin}}-{{cmid}}');
+        mod.init('{{plugin}}-{{uniqid}}');
     });
     {{/interval}}
 

@@ -36,7 +36,7 @@ Feature: Modify content of the unilabeltype grid
     And I should see "Edit content"
     And I click on "Edit content" "link" in the "#section-1" "css_element"
     # Open the grid section.
-    And I click on "#id_unilabeltype_grid_hdr legend div.ftoggler > a" "css_element"
+    And I click on "#id_unilabeltype_grid_hdr div.ftoggler > a" "css_element"
     # Activate autorun.
     And I should see "Columns"
     And I set the field "Columns" to "4"
@@ -47,26 +47,26 @@ Feature: Modify content of the unilabeltype grid
     # Set the Caption for the four tiles.
     # Both are defined by the css-id id_unilabeltype_grid_tilehdr_0 and ..._1.
     # Click on the toggle "Tile-1" and open the element
-    And I click on "#id_unilabeltype_grid_tilehdr_0 legend div.ftoggler > a" "css_element"
+    And I click on "#id_unilabeltype_grid_tilehdr_0 div.ftoggler > a" "css_element"
     And I should see "Title-1"
     And I set the field "Title-1" to "Title-Element-1"
     And I should see "Content-1"
     And I set the field "unilabeltype_grid_content[0][text]" to "Content-Element-1"
     And I upload "mod/unilabel/tests/fixtures/gradient-blue.png" file to "Image-1" filemanager
     # Click on the toggle "Tile-2" and open the element
-    And I click on "#id_unilabeltype_grid_tilehdr_1 legend div.ftoggler > a" "css_element"
+    And I click on "#id_unilabeltype_grid_tilehdr_1 div.ftoggler > a" "css_element"
     And I should see "Title-2"
     And I set the field "Title-2" to "Title-Element-2"
     And I should see "Content-2"
     And I set the field "unilabeltype_grid_content[1][text]" to "Content-Element-2"
     # Click on the toggle "Tile-3" and open the element
-    And I click on "#id_unilabeltype_grid_tilehdr_2 legend div.ftoggler > a" "css_element"
+    And I click on "#id_unilabeltype_grid_tilehdr_2 div.ftoggler > a" "css_element"
     And I should see "Title-3"
     And I set the field "Title-3" to "Title-Element-3"
     And I should see "Content-3"
     And I set the field "unilabeltype_grid_content[2][text]" to "Content-Element-3"
     # Click on the toggle "Tile-4" and open the element
-    And I click on "#id_unilabeltype_grid_tilehdr_3 legend div.ftoggler > a" "css_element"
+    And I click on "#id_unilabeltype_grid_tilehdr_3 div.ftoggler > a" "css_element"
     And I should see "Title-4"
     And I set the field "Title-4" to "Title-Element-4"
     And I should see "Content-4"
@@ -98,7 +98,7 @@ Feature: Modify content of the unilabeltype grid
     And I should see "Edit content"
     And I click on "Edit content" "link" in the "#section-1" "css_element"
     # Open the grid section.
-    And I click on "#id_unilabeltype_grid_hdr legend div.ftoggler > a" "css_element"
+    And I click on "#id_unilabeltype_grid_hdr div.ftoggler > a" "css_element"
     # Activate autorun.
     And I should see "Columns"
     And I set the field "Columns" to "4"
@@ -109,26 +109,26 @@ Feature: Modify content of the unilabeltype grid
     # Set the Caption for the four tiles.
     # Both are defined by the css-id id_unilabeltype_grid_tilehdr_0 and ..._1.
     # Click on the toggle "Tile-1" and open the element
-    And I click on "#id_unilabeltype_grid_tilehdr_0 legend div.ftoggler > a" "css_element"
+    And I click on "#id_unilabeltype_grid_tilehdr_0 div.ftoggler > a" "css_element"
     And I should see "Title-1"
     And I set the field "Title-1" to "Title-Element-1"
     And I should see "Content-1"
     And I set the field "unilabeltype_grid_content[0][text]" to "Content-Element-1"
     And I upload "mod/unilabel/tests/fixtures/gradient-blue.png" file to "Image-1" filemanager
     # Click on the toggle "Tile-2" and open the element
-    And I click on "#id_unilabeltype_grid_tilehdr_1 legend div.ftoggler > a" "css_element"
+    And I click on "#id_unilabeltype_grid_tilehdr_1 div.ftoggler > a" "css_element"
     And I should see "Title-2"
     And I set the field "Title-2" to "Title-Element-2"
     And I should see "Content-2"
     And I set the field "unilabeltype_grid_content[1][text]" to "Content-Element-2"
     # Click on the toggle "Tile-3" and open the element
-    And I click on "#id_unilabeltype_grid_tilehdr_2 legend div.ftoggler > a" "css_element"
+    And I click on "#id_unilabeltype_grid_tilehdr_2 div.ftoggler > a" "css_element"
     And I should see "Title-3"
     And I set the field "Title-3" to "Title-Element-3"
     And I should see "Content-3"
     And I set the field "unilabeltype_grid_content[2][text]" to "Content-Element-3"
     # Click on the toggle "Tile-4" and open the element
-    And I click on "#id_unilabeltype_grid_tilehdr_3 legend div.ftoggler > a" "css_element"
+    And I click on "#id_unilabeltype_grid_tilehdr_3 div.ftoggler > a" "css_element"
     And I should see "Title-4"
     And I set the field "Title-4" to "Title-Element-4"
     And I should see "Content-4"

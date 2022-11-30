@@ -1,4 +1,3 @@
-<?php
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -15,16 +14,21 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel type course teaser
+ * unilabel click helper
  *
- * @package     unilabeltype_courseteaser
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die;
-
-$plugin->component = 'unilabeltype_courseteaser';
-$plugin->version   = 2022042000;
-$plugin->requires  = 2022041200;
+define(['jquery'], function($) {
+    return {
+        'init': function(clickselector) {
+            $(clickselector).click(function(event) {
+                event.stopPropagation(); // Since Moodle 4.0 the course topics are collapsable too and should not be triggered.
+                event.preventDefault();
+                $($(this).data('target')).collapse("toggle");
+            });
+        }
+    };
+});

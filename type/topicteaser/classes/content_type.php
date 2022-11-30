@@ -40,6 +40,33 @@ class content_type extends \mod_unilabel\content_type {
     private $config;
 
     /**
+     * Get the content of a section. This method is used by the fragment api to load this content by ajax.
+     *
+     * @param int $courseid
+     * @param int $sectionnumber
+     * @return string
+     */
+    public static function get_sections_content($courseid, $sectionnumber) {
+        global $DB, $PAGE;
+
+        if (!$course = $DB->get_record('course', array('id' => $courseid))) {
+            return '';
+        }
+
+        /** @var \core_course_renderer $courserenderer */
+        $courserenderer = $PAGE->get_renderer('core', 'course');
+        $courseformat = course_get_format($course->id);
+
+        $modinfo = $courseformat->get_modinfo();
+        $sectioninfo = $modinfo->get_section_info($sectionnumber);
+        $cmlist = new \core_courseformat\output\local\content\section\cmlist($courseformat, $sectioninfo);
+        $output = $courserenderer->render_from_template(
+            'core_courseformat/local/content/section/cmlist',
+            $cmlist->export_for_template($courserenderer)
+        );
+        return $output;
+    }
+    /**
      * Constructor
      *
      * @return void
@@ -394,8 +421,8 @@ class content_type extends \mod_unilabel\content_type {
     public function get_sections_html($courseid) {
         global $DB, $PAGE;
 
+        $mycm = get_coursemodule_from_instance('unilabel', $this->unilabeltyperecord->unilabelid);
         if ($PAGE->course->id == $courseid) {
-            $mycm = get_coursemodule_from_instance('unilabel', $this->unilabeltyperecord->unilabelid);
             $mysection = $DB->get_record('course_sections', array('id' => $mycm->section));
         }
 
@@ -434,12 +461,7 @@ class content_type extends \mod_unilabel\content_type {
             $options->overflowdiv = true;
 
             $section->summary = format_text($summarytext, $s->summaryformat, $options);
-            $sectioninfo = $modinfo->get_section_info($section->section);
-            $cmlist = new \core_courseformat\output\local\content\section\cmlist($courseformat, $sectioninfo);
-            $section->cmlist = $courserenderer->render_from_template(
-                'core_courseformat/local/content/section/cmlist',
-                $cmlist->export_for_template($courserenderer)
-            );
+            $section->contextid = $context->id;
 
             $section->nr = $counter;
 
@@ -448,8 +470,26 @@ class content_type extends \mod_unilabel\content_type {
             }
 
             $sectionsoutput[] = $section;
-            $counter++;
 
+            // Prepare js for this section.
+            $serviceparams = new \stdClass();
+            $serviceparams->sectionid = $s->id;
+            $contentcontainerselector = '#section-content-'.$mycm->id.'-'.$counter;
+            $fragmentcall = 'section';
+            $contextid = $context->id;
+            $triggerselector = '#topicteaser-modal-'.$mycm->id.'-'.$counter;
+            $triggerevent = 'show.bs.modal';
+            $amdparams = array(
+                $contentcontainerselector,
+                $fragmentcall,
+                $serviceparams,
+                $contextid,
+                $triggerselector,
+                $triggerevent,
+            );
+            $PAGE->requires->js_call_amd('unilabeltype_topicteaser/content_loader', 'init', $amdparams);
+
+            $counter++;
         }
 
         return $sectionsoutput;

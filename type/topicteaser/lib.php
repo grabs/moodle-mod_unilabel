@@ -42,12 +42,38 @@ function unilabeltype_topicteaser_pluginfile($course, $cm, $context, $filearea, 
     $fullpath = "/{$context->id}/course/$filearea/{$itemid}/$relativepath";
 
     $fs = get_file_storage();
+    if ($file = $fs->get_file_by_hash(sha1($fullpath))) {
+        if (!$file->is_directory()) {
+            send_stored_file($file, 0, 0, true); // Download MUST be forced - security!
+        }
+    }
+    return false;
+}
 
-    if (!$file = $fs->get_file_by_hash(sha1($fullpath)) or $file->is_directory()) {
-        return false;
+/**
+ * Fragment api hook to load the section content by ajax.
+ *
+ * @throws \moodle_exception
+ * @param object|array $args
+ * @return string The html output of the section.
+ */
+function unilabeltype_topicteaser_output_fragment_section($args) {
+    global $DB;
+    $args = (object) $args;
+    /** @var \context $context */
+    $context = $args->context;
+    if (!has_capability('mod/unilabel:view', $context)) {
+        return '';
+    }
+    if ($context->contextlevel != CONTEXT_COURSE) {
+        throw new \moodle_exception('wrong context');
+    }
+    if (empty($args->sectionid)) {
+        throw new \moodle_exception('missing sectionid');
+    }
+    if (!$section = $DB->get_record('course_sections', array('id' => $args->sectionid))) {
+        throw new \moodle_exception('wrong sectionid');
     }
 
-    // Finally send the file.
-    send_stored_file($file, 0, 0, true);
-    return false;
+    return \unilabeltype_topicteaser\content_type::get_sections_content($context->instanceid, $section->section);
 }

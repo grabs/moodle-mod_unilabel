@@ -379,7 +379,7 @@ class content_type extends \mod_unilabel\content_type {
 
             // We only create a record if we have at least a file or a caption.
             $caption = $formdata->{$prefix.'caption'}[$i]['text'];
-            if ($fileinfo['filecount'] < 1 AND !$this->html_has_content($caption)) {
+            if ($fileinfo['filecount'] < 1 && !$this->html_has_content($caption)) {
                 continue;
             }
 

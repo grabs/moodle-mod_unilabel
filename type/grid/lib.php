@@ -44,7 +44,7 @@ function unilabeltype_grid_pluginfile($course, $cm, $context, $filearea, $args, 
         return false;
     }
 
-    if (($filearea !== 'image') AND ($filearea !== 'image_mobile') AND ($filearea !== 'content')) {
+    if (($filearea !== 'image') && ($filearea !== 'image_mobile') && ($filearea !== 'content')) {
         return false;
     }
 
@@ -52,10 +52,10 @@ function unilabeltype_grid_pluginfile($course, $cm, $context, $filearea, $args, 
     $fullpath = '/'.$context->id.'/unilabeltype_grid/'.$filearea.'/'.$relativepath;
 
     $fs = get_file_storage();
-    if (!$file = $fs->get_file_by_hash(sha1($fullpath)) or $file->is_directory()) {
-        return false;
+    if ($file = $fs->get_file_by_hash(sha1($fullpath))) {
+        if (!$file->is_directory()) {
+            send_stored_file($file, 0, 0, true); // Download MUST be forced - security!
+        }
     }
-
-    send_stored_file($file, 0, 0, true); // Download MUST be forced - security!
-
+    return false;
 }

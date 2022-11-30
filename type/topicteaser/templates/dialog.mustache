@@ -43,9 +43,7 @@
             <!-- Modal body -->
             <div class="modal-body">
                 {{{summary}}}
-                <div class="activity-list">
-                    {{{cmlist}}}
-                </div>
+                <div id="section-content-{{cmid}}-{{nr}}" class="activity-list"></div>
             </div>
             <!-- Modal footer -->
             <div class="modal-footer">
@@ -56,9 +54,7 @@
 </div>
 
 {{#js}}
-    require(['jquery'], function($) {
-        $('#topicteaser-modal-{{cmid}}-{{nr}}').on('show.bs.modal', function() {
-            $('#topicteaser-modal-{{cmid}}-{{nr}}').appendTo('body');
-        });
+    require(['mod_unilabel/modal_helper'], function(modalhelper) {
+        modalhelper.init('#topicteaser-modal-{{cmid}}-{{nr}}');
     });
 {{/js}}

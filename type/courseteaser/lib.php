@@ -42,12 +42,10 @@ function unilabeltype_courseteaser_pluginfile($course, $cm, $context, $filearea,
     $fullpath = "/{$context->id}/course/$filearea/{$itemid}/$relativepath";
 
     $fs = get_file_storage();
-
-    if (!$file = $fs->get_file_by_hash(sha1($fullpath)) or $file->is_directory()) {
-        return false;
+    if ($file = $fs->get_file_by_hash(sha1($fullpath))) {
+        if (!$file->is_directory()) {
+            send_stored_file($file, 0, 0, true); // Download MUST be forced - security!
+        }
     }
-
-    // Finally send the file.
-    send_stored_file($file, 0, 0, true);
     return false;
 }
