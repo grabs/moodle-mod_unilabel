@@ -51,15 +51,15 @@ along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 {{#showintro}}
     {{{intro}}}
 {{/showintro}}
-<div class="accordion" id="accordion-{{cmid}}">
+<div class="accordion" id="accordion-{{uniqid}}">
 {{#segments}}
-    <div class="card" id="accordion-{{cmid}}-{{id}}">
-        <div class="card-header" id="accordion-heading-{{cmid}}-{{id}}">
-            <button id="unilabel-button-{{cmid}}-{{id}}" class="btn btn-link btn-block collapsed" type="button" data-toggle="collapse" data-target="#accordion-segment-{{cmid}}-{{id}}" aria-expanded="false" aria-controls="accordion-segment-{{cmid}}-{{id}}">
+    <div class="card" id="accordion-{{uniqid}}-{{id}}">
+        <div class="card-header" id="accordion-heading-{{uniqid}}-{{id}}">
+            <button id="unilabel-button-{{uniqid}}-{{id}}" class="btn btn-link btn-block collapsed" type="button" data-toggle="collapse" data-target="#accordion-segment-{{uniqid}}-{{id}}" aria-expanded="false" aria-controls="accordion-segment-{{uniqid}}-{{id}}">
                 {{{ heading }}}
             </button>
         </div>
-        <div id="accordion-segment-{{cmid}}-{{id}}" class="collapse" aria-labelledby="accordion-heading-{{cmid}}-{{id}}" {{^collapse}}data-parent="#accordion-{{cmid}}"{{/collapse}}>
+        <div id="accordion-segment-{{uniqid}}-{{id}}" class="collapse" aria-labelledby="accordion-heading-{{uniqid}}-{{id}}" {{^collapse}}data-parent="#accordion-{{uniqid}}"{{/collapse}}>
             <div class="card-body">
                 {{{ content }}}
             </div>
@@ -68,9 +68,7 @@ along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 {{/segments}}
 </div>
 {{#js}}
-    $("#accordion-{{cmid}} .card .card-header button").click(function(event) {
-        event.stopPropagation(); // Since Moodle 4.0 the course topics are collapsable too and should not be triggered.
-        event.preventDefault();
-        $($(this).data('target')).collapse("toggle");
+    require(['mod_unilabel/collapse_helper'], function(collapsehelper) {
+        collapsehelper.init("#accordion-{{uniqid}} .card .card-header button");
     });
 {{/js}}

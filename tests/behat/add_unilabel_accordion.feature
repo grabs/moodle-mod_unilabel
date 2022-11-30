@@ -34,32 +34,32 @@ Feature: Modify content of the unilabeltype accordion
     And I should see "Edit content"
     And I click on "Edit content" "link" in the "#section-1" "css_element"
     # Click on the toggle "Segment 1" and open the element
-    And I click on "#id_unilabeltype_accordion_segment-header_0 legend div.ftoggler > a" "css_element"
+    And I click on "#id_unilabeltype_accordion_segment-header_0 div.ftoggler > a" "css_element"
     And I should see "Heading"
     And I should see "Content"
     # Fill out the heading for segment 1.
     And I set the field "unilabeltype_accordion_heading[0][text]" to "Heading-1"
     And I set the field "unilabeltype_accordion_content[0][text]" to "Content-1"
     # Click on the toggle "Segment 1" and close the element
-    And I click on "#id_unilabeltype_accordion_segment-header_0 legend div.ftoggler > a" "css_element"
+    And I click on "#id_unilabeltype_accordion_segment-header_0 div.ftoggler > a" "css_element"
     # Click on the toggle "Segment 2" and open the element
-    And I click on "#id_unilabeltype_accordion_segment-header_1 legend div.ftoggler > a" "css_element"
+    And I click on "#id_unilabeltype_accordion_segment-header_1 div.ftoggler > a" "css_element"
     And I should see "Heading"
     And I should see "Content"
     # Fill out the heading for segment 2.
     And I set the field "unilabeltype_accordion_heading[1][text]" to "Heading-2"
     And I set the field "unilabeltype_accordion_content[1][text]" to "Content-2"
     # Click on the toggle "Segment 2" and close the element
-    And I click on "#id_unilabeltype_accordion_segment-header_1 legend div.ftoggler > a" "css_element"
+    And I click on "#id_unilabeltype_accordion_segment-header_1 div.ftoggler > a" "css_element"
     # Click on the toggle "Segment 3" and open the element
-    And I click on "#id_unilabeltype_accordion_segment-header_2 legend div.ftoggler > a" "css_element"
+    And I click on "#id_unilabeltype_accordion_segment-header_2 div.ftoggler > a" "css_element"
     And I should see "Heading"
     And I should see "Content"
     # Fill out the heading for segment 3.
     And I set the field "unilabeltype_accordion_heading[2][text]" to "Heading-3"
     And I set the field "unilabeltype_accordion_content[2][text]" to "Content-3"
     # Click on the toggle "Segment 3" and close the element
-    And I click on "#id_unilabeltype_accordion_segment-header_2 legend div.ftoggler > a" "css_element"
+    And I click on "#id_unilabeltype_accordion_segment-header_2 div.ftoggler > a" "css_element"
     # Save the changes.
     And I press "Save changes"
 
@@ -98,32 +98,32 @@ Feature: Modify content of the unilabeltype accordion
     And I should see "Edit content"
     And I click on "Edit content" "link" in the "#section-1" "css_element"
     # Click on the toggle "Segment 1" and open the element
-    And I click on "#id_unilabeltype_accordion_segment-header_0 legend div.ftoggler > a" "css_element"
+    And I click on "#id_unilabeltype_accordion_segment-header_0 div.ftoggler > a" "css_element"
     And I should see "Heading"
     And I should see "Content"
     # Fill out the heading for segment 1.
     And I set the field "unilabeltype_accordion_heading[0][text]" to "Heading-1"
     And I set the field "unilabeltype_accordion_content[0][text]" to "Content-1"
     # Click on the toggle "Segment 1" and close the element
-    And I click on "#id_unilabeltype_accordion_segment-header_0 legend div.ftoggler > a" "css_element"
+    And I click on "#id_unilabeltype_accordion_segment-header_0 div.ftoggler > a" "css_element"
     # Click on the toggle "Segment 2" and open the element
-    And I click on "#id_unilabeltype_accordion_segment-header_1 legend div.ftoggler > a" "css_element"
+    And I click on "#id_unilabeltype_accordion_segment-header_1 div.ftoggler > a" "css_element"
     And I should see "Heading"
     And I should see "Content"
     # Fill out the heading for segment 2.
     And I set the field "unilabeltype_accordion_heading[1][text]" to "Heading-2"
     And I set the field "unilabeltype_accordion_content[1][text]" to "Content-2"
     # Click on the toggle "Segment 2" and close the element
-    And I click on "#id_unilabeltype_accordion_segment-header_1 legend div.ftoggler > a" "css_element"
+    And I click on "#id_unilabeltype_accordion_segment-header_1 div.ftoggler > a" "css_element"
     # Click on the toggle "Segment 3" and open the element
-    And I click on "#id_unilabeltype_accordion_segment-header_2 legend div.ftoggler > a" "css_element"
+    And I click on "#id_unilabeltype_accordion_segment-header_2 div.ftoggler > a" "css_element"
     And I should see "Heading"
     And I should see "Content"
     # Fill out the heading for segment 3.
     And I set the field "unilabeltype_accordion_heading[2][text]" to "Heading-3"
     And I set the field "unilabeltype_accordion_content[2][text]" to "Content-3"
     # Click on the toggle "Segment 3" and close the element
-    And I click on "#id_unilabeltype_accordion_segment-header_2 legend div.ftoggler > a" "css_element"
+    And I click on "#id_unilabeltype_accordion_segment-header_2 div.ftoggler > a" "css_element"
     And I press "Add more segments"
 
     Then I should see "Segment 4"

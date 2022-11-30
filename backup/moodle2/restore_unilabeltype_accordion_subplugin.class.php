@@ -84,7 +84,11 @@ class restore_unilabeltype_accordion_subplugin extends restore_subplugin {
     public static function define_decode_contents() {
         $contents = array();
 
-        $contents[] = new restore_decode_content('unilabeltype_accordion_seg', array('heading', 'content'), 'unilabeltype_accordion_segment');
+        $contents[] = new restore_decode_content(
+            'unilabeltype_accordion_seg',
+            array('heading', 'content'),
+            'unilabeltype_accordion_segment'
+        );
 
         return $contents;
     }
