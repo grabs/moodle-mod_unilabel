@@ -51,7 +51,7 @@ along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 {{#showintro}}
     {{{intro}}}
 {{/showintro}}
-<div class="accordion" id="accordion-{{uniqid}}">
+<div class="accordion" id="accordion-wrapper-{{uniqid}}-{{cmid}}">
 {{#segments}}
     <div class="card" id="accordion-{{uniqid}}-{{id}}">
         <div class="card-header" id="accordion-heading-{{uniqid}}-{{id}}">
@@ -59,7 +59,7 @@ along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
                 {{{ heading }}}
             </button>
         </div>
-        <div id="accordion-segment-{{uniqid}}-{{id}}" class="collapse" aria-labelledby="accordion-heading-{{uniqid}}-{{id}}" {{^collapse}}data-parent="#accordion-{{uniqid}}"{{/collapse}}>
+        <div id="accordion-segment-{{uniqid}}-{{id}}" class="collapse" aria-labelledby="accordion-heading-{{uniqid}}-{{id}}" {{^collapse}}data-parent="#accordion-wrapper-{{uniqid}}-{{cmid}}"{{/collapse}}>
             <div class="card-body">
                 {{{ content }}}
             </div>
@@ -69,6 +69,6 @@ along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 </div>
 {{#js}}
     require(['mod_unilabel/collapse_helper'], function(collapsehelper) {
-        collapsehelper.init("#accordion-{{uniqid}} .card .card-header button");
+        collapsehelper.init("#accordion-wrapper-{{uniqid}}-{{cmid}} .card .card-header button");
     });
 {{/js}}
