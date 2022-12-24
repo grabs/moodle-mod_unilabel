@@ -1,5 +1,8 @@
 ## Release notes
 
+### Version 2022042000 Release 4.1.1 (Build: 2022122400)
+* Add cmid to "uniqid" to avoid conflicts with multiple instances
+
 ### Version 2022042000 Release 4.1.0 (Build: 2022113000)
 * Compatibility improvements for Moodle 4.0 and 4.1
 * New amd modules for better handling cascaded elements in topicteaser.
