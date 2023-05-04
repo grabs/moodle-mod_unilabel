@@ -1,5 +1,11 @@
 ## Release notes
 
+### Release 4.2.1
+* Compatibility to Font Awesome 6 Free
+
+### Release 4.2.0
+* Compatibility to Moodle 4.2
+
 ### Version 2022042000 Release 4.1.1 (Build: 2022122400)
 * Add cmid to "uniqid" to avoid conflicts with multiple instances
 

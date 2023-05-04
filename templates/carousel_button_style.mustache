@@ -20,9 +20,7 @@
 
     Example context (json):
     {
-        "plugin": "unilabeltype_carousel",
-        "fontawesomenext": "\\f18e",
-        "fontawesomeprev": "\\f190"
+        "plugin": "unilabeltype_carousel"
     }
 }}
 
@@ -32,15 +30,8 @@
 }
 .{{plugin}} .carousel-control-prev-icon::after,
 .{{plugin}} .carousel-control-next-icon::after {
-    font: normal normal normal 14px/1 FontAwesome;
+    font: normal normal normal 14px/1 "Font Awesome 6 Free";
     font-size: 30px;
     color: #ffffff;
     text-shadow: 2px 2px rgba(0,0,0,0.8);
-}
-
-.{{plugin}} .carousel-control-next-icon::after {
-    content: "{{{fontawesomenext}}}";
-}
-.{{plugin}} .carousel-control-prev-icon::after {
-    content: "{{{fontawesomeprev}}}";
 }

@@ -49,14 +49,14 @@ class setting_configselect_button extends \admin_setting {
      * @var array
      */
     public static $buttonlist = array(
-        '1' => ['next' => '\f105', 'prev' => '\f104'],
-        '2' => ['next' => '\f101', 'prev' => '\f100'],
-        '3' => ['next' => '\f04e', 'prev' => '\f04a'],
-        '4' => ['next' => '\f0da', 'prev' => '\f0d9'],
-        '5' => ['next' => '\f0a4', 'prev' => '\f0a5'],
-        '6' => ['next' => '\f061', 'prev' => '\f060'],
-        '7' => ['next' => '\f0a9', 'prev' => '\f0a8'],
-        '8' => ['next' => '\f18e', 'prev' => '\f190'],
+        '1' => ['next' => 'fa-solid fa-angle-right fa-xl',  'prev' => 'fa-solid fa-angle-left fa-xl'],
+        '2' => ['next' => 'fa-solid fa-angles-right fa-xl', 'prev' => 'fa-solid fa-angles-left fa-xl'],
+        '3' => ['next' => 'fa-solid fa-forward',            'prev' => 'fa-solid fa-backward'],
+        '4' => ['next' => 'fa-solid fa-caret-right fa-xl',  'prev' => 'fa-solid fa-caret-left fa-xl'],
+        '5' => ['next' => 'fa-regular fa-hand-point-right', 'prev' => 'fa-regular fa-hand-point-left'],
+        '6' => ['next' => 'fa-solid fa-arrow-right fa-xl',  'prev' => 'fa-solid fa-arrow-left fa-xl'],
+        '7' => ['next' => 'fa-regular fa-circle-right',     'prev' => 'fa-regular fa-circle-left'],
+        '8' => ['next' => 'fa-solid fa-circle-arrow-right', 'prev' => 'fa-solid fa-circle-arrow-left'],
     );
 
     /**
@@ -129,6 +129,7 @@ class setting_configselect_button extends \admin_setting {
             }
             if ($key == 0) {
                 $value->title = $defaultinfo;
+                $value->istext = 1;
             }
             $values[] = $value;
 
@@ -138,8 +139,12 @@ class setting_configselect_button extends \admin_setting {
             'id' => $this->get_id(),
             'name' => $this->get_full_name(),
             'values' => $values,
-            'currentvalue' => $currentvalue,
+            'currentvalue' => $this->options[$currentvalue],
         ];
+        if ($currentvalue == 0) {
+            $context->currentvalue = $defaultinfo;
+            $context->currentvalueistext = 1;
+        }
 
         // To make sure we have clean html we have to put the carousel css into the <head> by using javascript.
         $cssstring = $OUTPUT->render_from_template('mod_unilabel/setting_configselect_style', $context);

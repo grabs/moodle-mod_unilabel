@@ -295,6 +295,7 @@ class content_type extends \mod_unilabel\content_type {
             }
 
         }
+
         $content = $renderer->render_from_template('unilabeltype_carousel/carousel', $content);
 
         return $content;

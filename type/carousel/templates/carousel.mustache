@@ -26,6 +26,8 @@
         "height": "300",
         "autoheight": false,
         "background": "#A0E2FD",
+        "fontawesomeprev": "fa-solid fa-forward",
+        "fontawesomenext": "fa-solid fa-forward",
         "slides": [
             {
                 "id": "4",
@@ -110,8 +112,14 @@
         </div>
 
         <!-- Left and right controls -->
-        {{< unilabeltype_carousel/carousel_control}} {{$direction}}next{{/direction}} {{/ unilabeltype_carousel/carousel_control}}
-        {{< unilabeltype_carousel/carousel_control}} {{$direction}}prev{{/direction}} {{/ unilabeltype_carousel/carousel_control}}
+        {{< unilabeltype_carousel/carousel_control}}{{!
+            }} {{$direction}}next{{/direction}}{{!
+            }} {{$icon}}{{#fontawesomenext}}{{.}}{{/fontawesomenext}}{{^fontawesomenext}}d-none{{/fontawesomenext}}{{/icon}}{{!
+            }} {{/ unilabeltype_carousel/carousel_control}}
+        {{< unilabeltype_carousel/carousel_control}}{{!
+            }} {{$direction}}prev{{/direction}}{{!
+            }} {{$icon}}{{#fontawesomeprev}}{{.}}{{/fontawesomeprev}}{{^fontawesomeprev}}d-none{{/fontawesomeprev}}{{/icon}}{{!
+            }} {{/ unilabeltype_carousel/carousel_control}}
     </div>
 {{/hasslides}}
 {{^hasslides}}

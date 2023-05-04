@@ -20,21 +20,7 @@
 
     Example context (json):
     {
-        "id": "unilabel-setting-button",
-        "values": [
-            {
-                "value": 0,
-                "title": "Design"
-            },
-            {
-                "value": 7,
-                "title": "arrow-left-icon"
-            },
-            {
-                "value": 8,
-                "title": "hand-left-icon"
-            }
-        ]
+        "id": "unilabel-setting-button"
     }
 }}
 
@@ -56,19 +42,13 @@ div#dd-{{id}} .dropdown-item:focus {
     color: #ffffff;
 }
 div#dd-{{id}} label span::after {
-    font-family: FontAwesome;
+    font-family: "Font Awesome 6 Free";
     font-weight: normal;
     font-size: 15px;
 }
 
 #btn-{{id}} span::after {
-    font-family: FontAwesome;
+    font-family: "Font Awesome 6 Free";
     font-weight: normal;
     font-size: 25px;
 }
-{{#values}}
-    div#dd-{{id}} label span.button-{{value}}::after,
-    #btn-{{id}} span.button-{{value}}::after {
-        content:"{{title}}";
-    }
-{{/values}}
