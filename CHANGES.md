@@ -1,5 +1,8 @@
 ## Release notes
 
+### Release 4.2.2
+* Fix new Font Awesome caret in collapsed text
+
 ### Release 4.2.1
 * Compatibility to Font Awesome 6 Free
 
