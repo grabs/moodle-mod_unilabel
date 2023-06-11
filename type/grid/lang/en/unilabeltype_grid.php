@@ -25,6 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die;
 
+$string['activatedropdownlabel'] = 'Activitydropdown for input URL';
 $string['addmoretiles'] = 'Add more tiles';
 $string['autoheight'] = 'Auto height';
 $string['background'] = 'Background';
@@ -42,6 +43,9 @@ $string['height_help'] = 'If your pictures are of a different size, use the fixe
 $string['image'] = 'Image';
 $string['image_mobile'] = 'Image mobile';
 $string['image_mobile_help'] = 'Mobile images will be shown on screens smaller than 768px. If you do not define a mobile image the general image is shown on all screens.';
+$string['indicatorvisible'] = '';
+$string['indicatorhidden'] = '(not accessible)';
+$string['indicatorisstealth'] = '(stealth)';
 $string['nocontent'] = 'No content';
 $string['pluginname'] = 'Grid';
 $string['pluginname_help'] = 'This plugin type creates a grid consisting of pictures. A click on the image opens a modal dialog field or brings the user to a defined url.';
@@ -53,5 +57,7 @@ $string['tiles'] = 'Tiles';
 $string['title'] = 'Title';
 $string['url'] = 'Url';
 $string['url_help'] = 'By defining a url the whole slide becomes a clickable button linked to the defined url.';
+$string['url2'] = 'URL';
+$string['url2_help'] = 'By selecting an activity the url to that activity will be stored and the whole slide becomes a clickable button linked to the defined activity/url. Indicators: hidden=(not accessible), hiddenbutavailable=(stealth)';
 $string['use_mobile_images'] = 'Use mobile images';
 $string['use_mobile_images_help'] = 'If you activate the usage of mobile images you can upload a mobile image in addition to standard one for every slide. The mobile image will be displayed on screens smaller than 768px.';

@@ -140,6 +140,47 @@ class content_type extends \mod_unilabel\content_type {
                                 get_string('url', 'unilabeltype_grid').'-{no}',
                                 ['size' => 50]
         );
+        // Instead of a textfield to input an url now usw a dropdown that shows a list of all activitys in a course.
+        $activitys = [];
+        $activitys[] = '';
+        $course = $form->get_course();
+        $info = get_fast_modinfo($course);
+        $coursemodules = $info->get_cms();
+        foreach ($coursemodules as $coursemodule) {
+            if (!$coursemodule->has_view()) {
+                continue;
+            }
+            // Check accessibility.
+            $visibilityindicator = '';
+            if ($coursemodule->is_stealth()) {
+                $visibilityindicator = get_string('indicatorisstealth', 'unilabeltype_grid');
+            } else {
+                if ($coursemodule->visible == 1) {
+                    // Visible means accessible.
+                    $visibilityindicator = get_string('indicatorvisible', 'unilabeltype_grid');
+                } else {
+                    // Not visible means not accessible.
+                    $visibilityindicator = get_string('indicatorhidden', 'unilabeltype_grid');;
+                }
+            }
+
+            $key = $coursemodule->name . ' ' . $visibilityindicator;
+            // Check if user has capability viewhiddenactivities if activity is not visible
+            if ($coursemodule->visible == 1 ||
+                ($coursemodule->visible == 0 && has_capability('moodle/course:viewhiddenactivities', \context_course::instance($course->id)))
+            ) {
+                $activitys[$coursemodule->url->out()] = $key;
+            }
+        }
+        $repeatarray[] = $mform->createElement('select', $prefix . 'url2', get_string('url2', 'unilabeltype_grid') . '-{no} dropdown', $activitys);
+
+        // Checkbox to chose if a dropdownmenu with a list of activitys in the course should be displayed.
+        $repeatarray[] = $mform->createElement(
+            'checkbox',
+            $prefix . 'activatedropdown',
+            get_string('activatedropdownlabel', 'unilabeltype_grid') . '-{no}',
+        );
+
         $repeatarray[] = $mform->createElement(
             'filemanager',
             $prefix.'image',
@@ -175,6 +216,11 @@ class content_type extends \mod_unilabel\content_type {
         $repeatedoptions[$prefix.'content']['helpbutton'] = ['content', 'unilabeltype_grid'];
         $repeatedoptions[$prefix.'url']['helpbutton'] = ['url', 'unilabeltype_grid'];
         $repeatedoptions[$prefix.'image_mobile']['helpbutton'] = ['image_mobile', 'unilabeltype_grid'];
+        $repeatedoptions[$prefix.'url2']['helpbutton'] = ['url2', 'unilabeltype_grid'];
+        // Adding hideif functionality.
+        $repeatedoptions[$prefix.'url2']['type'] = PARAM_URL;
+        $repeatedoptions[$prefix.'url']['hideif'] = [$prefix . 'activatedropdown', 'checked'];
+        $repeatedoptions[$prefix.'url2']['hideif'] = [$prefix . 'activatedropdown', 'notchecked'];
 
         $defaultrepeatcount = 4; // The default count for tiles.
         $repeatcount = count($this->tiles);
@@ -437,7 +483,13 @@ class content_type extends \mod_unilabel\content_type {
             $tilerecord = new \stdClass();
             $tilerecord->gridid = $unilabeltyperecord->id;
             $tilerecord->title = $title;
-            $tilerecord->url = $formdata->{$prefix.'url'}[$i];
+
+            // If an activity was selected then url2 is not empty and so url2 should be stored.
+            if (!empty($formdata->{$prefix . 'url2'}[$i])) {
+                $tilerecord->url = $formdata->{$prefix.'url2'}[$i];
+            } else {
+                $tilerecord->url = $formdata->{$prefix.'url'}[$i];
+            }
 
             $tilerecord->content = ''; // Dummy content.
             $tilerecord->id = $DB->insert_record('unilabeltype_grid_tile', $tilerecord);
