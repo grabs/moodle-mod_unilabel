@@ -87,4 +87,20 @@ class restore_unilabeltype_carousel_subplugin extends restore_subplugin {
         $this->add_related_files('unilabeltype_carousel', 'image_mobile', 'unilabeltype_carousel_slide');
     }
 
+    /**
+     * Define the contents in the unilabeltype that must be
+     * processed by the link decoder
+     */
+    public static function define_decode_contents() {
+        $contents = array();
+
+        $contents[] = new restore_decode_content(
+            'unilabeltype_carousel_slide',
+            array('url', 'caption'),
+            'unilabeltype_carousel_slide'
+        );
+
+        return $contents;
+    }
+
 }
