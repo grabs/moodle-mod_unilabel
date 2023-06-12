@@ -87,4 +87,16 @@ class restore_unilabeltype_grid_subplugin extends restore_subplugin {
         $this->add_related_files('unilabeltype_grid', 'content', 'unilabeltype_grid_tile');
     }
 
+    /**
+     * Define the contents in the unilabeltype that must be
+     * processed by the link decoder
+     */
+    public static function define_decode_contents() {
+        $contents = array();
+
+        $contents[] = new restore_decode_content('unilabeltype_grid_tile', array('url', 'content'), 'unilabeltype_grid_tile');
+
+        return $contents;
+    }
+
 }
