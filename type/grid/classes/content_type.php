@@ -65,6 +65,8 @@ class content_type extends \mod_unilabel\content_type {
      * @return void
      */
     public function add_form_fragment(\mod_unilabel\edit_content_form $form, \context $context) {
+        global $OUTPUT;
+
         $unilabeltyperecord = $this->load_unilabeltype_record($form->unilabel->id);
 
         $mform = $form->get_mform();
@@ -117,6 +119,14 @@ class content_type extends \mod_unilabel\content_type {
         $mform->addElement('advcheckbox', $prefix.'usemobile', get_string('use_mobile_images', 'unilabeltype_grid'));
         $mform->addHelpButton($prefix.'usemobile', 'use_mobile_images', 'unilabeltype_grid');
 
+        // Prepare the activity url picker.
+        $formid = $mform->getAttribute('id');
+        $course = $form->get_course();
+        $picker = new \mod_unilabel\output\component\activity_picker($course, $formid);
+        $inputidbase = 'id_'.$prefix.'url_';
+        $pickerbutton = new \mod_unilabel\output\component\activity_picker_button($formid, $inputidbase);
+        $mform->addElement('html', $OUTPUT->render($picker));
+
         $repeatarray = [];
         // If we want each repeated elment in a numbered group we add a header with '{no}' in its label.
         // This is replaced by the number of element.
@@ -139,6 +149,13 @@ class content_type extends \mod_unilabel\content_type {
                                 $prefix.'url',
                                 get_string('url', 'unilabeltype_grid').'-{no}',
                                 ['size' => 50]
+        );
+        $repeatarray[] = $mform->createElement(
+                                'static',
+                                $prefix.'activitypickerbutton',
+                                '',
+                                $OUTPUT->render($pickerbutton)
+
         );
         $repeatarray[] = $mform->createElement(
             'filemanager',
