@@ -1,5 +1,9 @@
 ## Release notes
 
+### Release 4.1.3
+* Fix restore of internal urls in grid and carousel
+* Add activity picker to choose an activity url in grid and carousel (Thanks to Andreas Schenkel for this really good idea!)
+
 ### Version 2022042000 Release 4.1.1 (Build: 2022122400)
 * Add cmid to "uniqid" to avoid conflicts with multiple instances
 

@@ -1,4 +1,3 @@
-<?php
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -15,16 +14,25 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel type collapsed text
+ * unilabel helper for activity picker button
  *
- * @package     unilabeltype_collapsedtext
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die;
+define(['jquery'], function($) {
+    return {
+        'init': function(formid, inputidbase) {
+            $('[data-button="' + formid + '"]').on('click', function(event) {
+                event.preventDefault();
+                // Get the id (repeat number) from parent element.
+                var id = $(this).parent().parent().parent().attr('id').split("_").slice(-1);
+                var currentinput = inputidbase + id;
 
-$plugin->component = 'unilabeltype_collapsedtext';
-$plugin->version   = 2023042302;
-$plugin->requires  = 2022111800;
+                $('#unilabel-modal-activity-picker-' + formid).attr('data-inputid', currentinput);
+                $('#unilabel-modal-activity-picker-' + formid).modal('show');
+            });
+        }
+    };
+});

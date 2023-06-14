@@ -24,6 +24,7 @@
  */
 
 $string['autorun'] = 'Run automatically';
+$string['chooseurlfromactivity'] = 'Choose url from activity';
 $string['contentplugins'] = 'Content plugins';
 $string['editcontent'] = 'Edit content';
 $string['generalsettings'] = 'General settings';

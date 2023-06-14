@@ -170,3 +170,37 @@ Feature: Modify content of the unilabeltype carousel
     Then I should see "Slide-4"
     And I should see "Slide-5"
     And I should see "Slide-6"
+
+  @javascript @_file_upload
+  Scenario: Pick a url from activity picker
+    # Set up a unilabel and two pages.
+    Given the following "activity" exists:
+      | activity     | unilabel    |
+      | course       | C1          |
+      | idnumber     | mh1         |
+      | name         | Testlabel   |
+      | intro        | Hello label |
+      | section      | 1           |
+      | unilabeltype | carousel    |
+    And the following "activities" exist:
+      | activity | name       | intro      | course | idnumber |
+      | page     | PageName1  | PageDesc1  | C1     | PAGE1    |
+      | page     | PageName2  | PageDesc2  | C1     | PAGE2    |
+
+    When I log in as "teacher1"
+    And I am on "Course 1" course homepage with editing mode on
+    # Edit the unilabel instance.
+    And I should see "Edit content"
+    And I click on "Edit content" "link" in the "#section-1" "css_element"
+    # Open the Slide-1 section.
+    And I click on "#id_unilabeltype_carousel_slidehdr_0 div.ftoggler > a" "css_element"
+    # Open the modal with the activity picker.
+    And I should see "Choose url from activity..."
+    And I click on "Choose url from activity..." "link" in the "#fitem_id_unilabeltype_carousel_activitypickerbutton_0" "css_element"
+    And I wait "1" seconds
+    And I should see "PageName1"
+    And I should see "PageName2"
+    # Click on a page link to insert its url into the url element in the formular.
+    And I click on "PageName1" "link" in the "#unilabel-activity-picker-list" "css_element"
+    And the focused element is "Url-1" "field"
+    Then the "value" attribute of "Url-1" "field" should contain "mod/page/view.php"

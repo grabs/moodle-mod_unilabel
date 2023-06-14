@@ -62,6 +62,19 @@ class restore_unilabel_activity_task extends restore_activity_task {
 
         $contents[] = new restore_decode_content('unilabel', array('intro'), 'unilabel');
 
+        // Go through all subplugins and add their settings pages.
+        $plugins = \core_component::get_plugin_list_with_file('unilabeltype', 'settings.php', false);
+        foreach ($plugins as $plugin => $settingspath) {
+            $restorescript = dirname($settingspath).'/backup/moodle2/restore_unilabeltype_'.$plugin.'_subplugin.class.php';
+            if (is_file($restorescript)) {
+                require_once($restorescript);
+            }
+            $classname = 'restore_unilabeltype_'.$plugin.'_subplugin';
+            if (method_exists($classname, 'define_decode_contents')) {
+                $contents = array_merge($contents, $classname::define_decode_contents());
+            }
+        }
+
         return $contents;
     }
 
