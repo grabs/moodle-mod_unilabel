@@ -1,5 +1,9 @@
 ## Release notes
 
+### Release 4.2.3
+* Fix restore of internal urls in grid and carousel
+* Add activity picker to choose an activity url in grid and carousel (Thanks to Andreas Schenkel for this really good idea!)
+
 ### Release 4.2.2
 * Fix new Font Awesome caret in collapsed text
 
