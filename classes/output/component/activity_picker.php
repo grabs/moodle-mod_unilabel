@@ -43,11 +43,14 @@ class activity_picker implements \renderable, \templatable {
      * @param string $formid
      */
     public function __construct(\stdClass $course, $formid) {
+        global $OUTPUT;
+
         $this->data = array();
         $activities = array();
         $info = get_fast_modinfo($course);
         $strstealthinfo = get_string('hiddenoncoursepage');
         $strhiddeninfo = get_string('hiddenfromstudents');
+        $courseformat = course_get_format($course); // Is needed to get a cmdata component object.
 
         if ($coursemodules = $info->get_cms()) {
             foreach ($coursemodules as $cm) {
@@ -60,13 +63,20 @@ class activity_picker implements \renderable, \templatable {
                 $activityinfo->url = $cm->get_url();
                 $activityinfo->modstealth = $cm->is_stealth();
                 $activityinfo->stealthinfo = $strstealthinfo;
+
+                $cmwidget = new \core_courseformat\output\local\content\cm($courseformat, $cm->get_section_info(), $cm);
+                $cmdata = $cmwidget->export_for_template($OUTPUT);
+                if (!empty($cmdata->modavailability->hasmodavailability)) {
+                    $activityinfo->availableinfo = $cmdata->modavailability->info;
+                    $activityinfo->hasavailabilityinfo = 1;
+                }
                 $activityinfo->hidden = (!$cm->visible) || $cm->is_stealth();
-                $activityinfo->hiddeninfo = $strhiddeninfo;
-                $activityinfo->availability = $cm->availableinfo;
+                $activityinfo->hiddeninfo = (!$cm->visible) ? $strhiddeninfo : '';
+
                 $activityinfo->icon = $cm->get_icon_url();
                 $activityinfo->module = $cm->modname;
                 $activityinfo->modulename = $cm->get_module_type_name();
-                $activityinfo->purpose = $purpose = plugin_supports('mod', $cm->modname, FEATURE_MOD_PURPOSE, 'none');
+                $activityinfo->purpose = plugin_supports('mod', $cm->modname, FEATURE_MOD_PURPOSE, 'none');
                 $activityinfo->filterstring = $cm->get_name() . ' ' . $cm->get_module_type_name();
                 $activities[] = $activityinfo;
             }

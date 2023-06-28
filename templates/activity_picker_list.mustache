@@ -32,8 +32,12 @@
                 "icon": "https://example.com/img.png",
                 "purpose": "content",
                 "filterstring": "Forum Announcements",
-                "hidden": "",
-                "availability": "",
+                "hasavailabilityinfo": 1,
+                "availableinfo": [
+                    {
+                        "text": "Not available unless: ..."
+                    }
+                ],
                 "modstealth": "",
                 "stealthinfo": "",
                 "hidden": "1",
@@ -48,8 +52,8 @@
                 "icon": "https://example.com/img.png",
                 "purpose": "content",
                 "filterstring": "Page Text of something",
-                "hidden": "1",
-                "availability": "",
+                "hasavailabilityinfo": "",
+                "availableinfo": "",
                 "modstealth": 1,
                 "stealthinfo": "Hidden but available",
                 "hidden": "",
@@ -77,10 +81,27 @@
                                 </div>
                                 <div class="activityname">
                                     <a class="aalink stretched-link activity-picker-link text-decoration-none" href="{{{url}}}">
-                                    {{activityname}}{{#availability}}<br>
-                                    ({{{.}}}){{/availability}}{{#modstealth}}<br>
-                                    ({{stealthinfo}}){{/modstealth}}{{#hidden}}<br>
-                                    ({{hiddeninfo}}){{/hidden}}
+                                    {{activityname}}{{#availableinfo}}
+                                        <div class="description">
+                                            <div class="course-description-item description-inner my-0 py-0">
+                                            {{{text}}}
+                                            </div>
+                                        </div>
+                                    {{/availableinfo}}
+                                    {{#modstealth}}
+                                        <div class="description">
+                                            <div class="course-description-item description-inner my-0 py-0">
+                                                ({{stealthinfo}})
+                                            </div>
+                                        </div>
+                                    {{/modstealth}}
+                                    {{#hiddeninfo}}
+                                        <div class="description">
+                                            <div class="course-description-item description-inner my-0 py-0">
+                                                ({{.}})
+                                            </div>
+                                        </div>
+                                    {{/hiddeninfo}}
                                     </a>
                                 </div>
                             </div>
