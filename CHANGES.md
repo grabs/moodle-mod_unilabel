@@ -1,5 +1,8 @@
 ## Release notes
 
+### Release 4.1.4
+* Fix multiple availability infos (#34)
+
 ### Release 4.1.3
 * Fix restore of internal urls in grid and carousel
 * Add activity picker to choose an activity url in grid and carousel (Thanks to Andreas Schenkel for this really good idea!)
