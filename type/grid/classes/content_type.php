@@ -150,12 +150,29 @@ class content_type extends \mod_unilabel\content_type {
                                 get_string('url', 'unilabeltype_grid').'-{no}',
                                 ['size' => 50]
         );
+
+        // Element to show the name of an activity if url fits to an activity in this course.
+        $repeatarray[] = $mform->createElement(
+            'static',
+            $prefix.'activityname',
+            get_string('activityname', 'unilabeltype_grid'),
+            ['size' => 50]
+        );
+
+        // Element to be able to hide or show the activityname.
+        /*
+         $repeatarray[] = $mform->createElement(
+            'hidden',
+            $prefix . 'activityfound',
+            'false',
+        );
+        */
+
         $repeatarray[] = $mform->createElement(
                                 'static',
                                 $prefix.'activitypickerbutton',
                                 '',
                                 $OUTPUT->render($pickerbutton)
-
         );
         $repeatarray[] = $mform->createElement(
             'filemanager',
@@ -193,6 +210,11 @@ class content_type extends \mod_unilabel\content_type {
         $repeatedoptions[$prefix.'url']['helpbutton'] = ['url', 'unilabeltype_grid'];
         $repeatedoptions[$prefix.'image_mobile']['helpbutton'] = ['image_mobile', 'unilabeltype_grid'];
 
+        // Element to show the name of an activity.
+        $repeatedoptions[$prefix.'activityname']['type'] = PARAM_TEXT;
+        //$repeatedoptions[$prefix.'activityname']['hideif'] = [$prefix.'activityfound', 'eq', 'false'];
+        //$repeatedoptions[$prefix.'activityname']['disabledif'] = [$prefix.'activityfound', 'eq', 'true'];
+
         $defaultrepeatcount = 4; // The default count for tiles.
         $repeatcount = count($this->tiles);
         if ($rest = count($this->tiles) % $defaultrepeatcount) {
@@ -212,6 +234,48 @@ class content_type extends \mod_unilabel\content_type {
             get_string('addmoretiles', 'unilabeltype_grid'),
             false
         );
+    }
+
+    /**
+     * Get an array of all activities in the course that have a view and can be accessed by an url.
+     *
+     * @param $course
+     * @return array
+     * @throws \coding_exception
+     * @throws \moodle_exception
+     */
+    public function get_linkable_activitys($course): array {
+        // Instead of a textfield to input an url now usw a dropdown that shows a list of all activitys in a course.
+        $activitys = [];
+        $info = get_fast_modinfo($course);
+        $coursemodules = $info->get_cms();
+        foreach ($coursemodules as $coursemodule) {
+            if (!$coursemodule->has_view()) {
+                continue;
+            }
+            // Check accessibility.
+            // ToDo: Optimize this check.
+            $visibilityindicator = '';
+            if ($coursemodule->is_stealth()) {
+                $visibilityindicator = get_string('indicatorisstealth', 'unilabeltype_grid');
+            } else {
+                if ($coursemodule->visible == 1) {
+                    // Visible means accessible.
+                    $visibilityindicator = get_string('indicatorvisible', 'unilabeltype_grid');
+                } else {
+                    // Not visible means not accessible.
+                    $visibilityindicator = get_string('indicatorhidden', 'unilabeltype_grid');;
+                }
+            }
+            $key = $coursemodule->name . ' ' . $visibilityindicator;
+            // Check if user has capability viewhiddenactivities if activity is not visible
+            if ($coursemodule->visible == 1 ||
+                ($coursemodule->visible == 0 && has_capability('moodle/course:viewhiddenactivities', \context_course::instance($course->id)))
+            ) {
+                $activitys[$coursemodule->url->out()] = $key;
+            }
+        }
+        return $activitys;
     }
 
     /**
@@ -270,7 +334,7 @@ class content_type extends \mod_unilabel\content_type {
         )) {
             return $data;
         }
-
+        $activitys = $this->get_linkable_activitys(get_course($cm->course));
         $index = 0;
         foreach ($tiles as $tile) {
             // Prepare the title field.
@@ -280,6 +344,22 @@ class content_type extends \mod_unilabel\content_type {
             // Prepare the url field.
             $elementname = $prefix.'url['.$index.']';
             $data[$elementname] = $tile->url;
+            // Check, if url is a link to an existing activity array.
+            $elementname = $prefix . 'activityname[' . $index . ']';
+            $data[$elementname] = get_string('noactivity', 'unilabeltype_grid');
+            //$elementname = $prefix . 'activityfound[' . $index . ']';
+            //$data[$elementname] = 'false';
+            foreach ($activitys as $key => $activity) {
+                if ($tile->url == $key) {
+                    // To be able to use hideif
+                    //$elementname = $prefix . 'activityfound[' . $index . ']';
+                    //$data[$elementname] = 'true';
+
+                    $elementname = $prefix . 'activityname[' . $index . ']';
+                    $data[$elementname] = $activity;
+                    break;
+                }
+            }
 
             // Prepare the content field.
             $elementname = $prefix.'content['.$index.']';
@@ -455,6 +535,7 @@ class content_type extends \mod_unilabel\content_type {
             $tilerecord->gridid = $unilabeltyperecord->id;
             $tilerecord->title = $title;
             $tilerecord->url = $formdata->{$prefix.'url'}[$i];
+            // bei speichern nicht notwendig $tilerecord->url = $formdata->{$prefix.'activityname'}[$i];
 
             $tilerecord->content = ''; // Dummy content.
             $tilerecord->id = $DB->insert_record('unilabeltype_grid_tile', $tilerecord);

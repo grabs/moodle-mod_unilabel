@@ -25,6 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die;
 
+$string['activityname'] = 'Name of the activity';
 $string['addmoretiles'] = 'Add more tiles';
 $string['autoheight'] = 'Auto height';
 $string['background'] = 'Background';
@@ -42,6 +43,10 @@ $string['height_help'] = 'If your pictures are of a different size, use the fixe
 $string['image'] = 'Image';
 $string['image_mobile'] = 'Image mobile';
 $string['image_mobile_help'] = 'Mobile images will be shown on screens smaller than 768px. If you do not define a mobile image the general image is shown on all screens.';
+$string['indicatorisstealth'] = '(stealth - available but hidden)';
+$string['indicatorvisible'] = '(visible)';
+$string['indicatorhidden'] = '(hidden - not accessable)';
+$string['noactivity'] = '...';
 $string['nocontent'] = 'No content';
 $string['pluginname'] = 'Grid';
 $string['pluginname_help'] = 'This plugin type creates a grid consisting of pictures. A click on the image opens a modal dialog field or brings the user to a defined url.';
