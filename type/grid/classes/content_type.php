@@ -159,15 +159,6 @@ class content_type extends \mod_unilabel\content_type {
             ['size' => 50]
         );
 
-        // Element to be able to hide or show the activityname.
-        /*
-         $repeatarray[] = $mform->createElement(
-            'hidden',
-            $prefix . 'activityfound',
-            'false',
-        );
-        */
-
         $repeatarray[] = $mform->createElement(
                                 'static',
                                 $prefix.'activitypickerbutton',
@@ -212,8 +203,6 @@ class content_type extends \mod_unilabel\content_type {
 
         // Element to show the name of an activity.
         $repeatedoptions[$prefix.'activityname']['type'] = PARAM_TEXT;
-        //$repeatedoptions[$prefix.'activityname']['hideif'] = [$prefix.'activityfound', 'eq', 'false'];
-        //$repeatedoptions[$prefix.'activityname']['disabledif'] = [$prefix.'activityfound', 'eq', 'true'];
 
         $defaultrepeatcount = 4; // The default count for tiles.
         $repeatcount = count($this->tiles);
@@ -347,14 +336,8 @@ class content_type extends \mod_unilabel\content_type {
             // Check, if url is a link to an existing activity array.
             $elementname = $prefix . 'activityname[' . $index . ']';
             $data[$elementname] = get_string('noactivity', 'unilabeltype_grid');
-            //$elementname = $prefix . 'activityfound[' . $index . ']';
-            //$data[$elementname] = 'false';
             foreach ($activitys as $key => $activity) {
                 if ($tile->url == $key) {
-                    // To be able to use hideif
-                    //$elementname = $prefix . 'activityfound[' . $index . ']';
-                    //$data[$elementname] = 'true';
-
                     $elementname = $prefix . 'activityname[' . $index . ']';
                     $data[$elementname] = $activity;
                     break;
