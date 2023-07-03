@@ -26,6 +26,7 @@
 defined('MOODLE_INTERNAL') || die;
 
 $string['activityname'] = 'Name of the activity';
+$string['activityname_help'] = 'If the URL belongs to an activity in this course then the activity name will be shown below the URL.';
 $string['addmoretiles'] = 'Add more tiles';
 $string['autoheight'] = 'Auto height';
 $string['background'] = 'Background';
@@ -46,7 +47,7 @@ $string['image_mobile_help'] = 'Mobile images will be shown on screens smaller t
 $string['indicatorisstealth'] = '(stealth - available but hidden)';
 $string['indicatorvisible'] = '(visible)';
 $string['indicatorhidden'] = '(hidden - not accessable)';
-$string['noactivity'] = '...';
+$string['noactivity'] = '';
 $string['nocontent'] = 'No content';
 $string['pluginname'] = 'Grid';
 $string['pluginname_help'] = 'This plugin type creates a grid consisting of pictures. A click on the image opens a modal dialog field or brings the user to a defined url.';

@@ -156,7 +156,7 @@ class content_type extends \mod_unilabel\content_type {
             'static',
             $prefix.'activityname',
             get_string('activityname', 'unilabeltype_grid'),
-            ['size' => 50]
+            get_string('noactivity', 'unilabeltype_grid'),
         );
 
         $repeatarray[] = $mform->createElement(
@@ -203,6 +203,7 @@ class content_type extends \mod_unilabel\content_type {
 
         // Element to show the name of an activity.
         $repeatedoptions[$prefix.'activityname']['type'] = PARAM_TEXT;
+        $repeatedoptions[$prefix.'activityname']['helpbutton'] = ['activityname', 'unilabeltype_grid'];
 
         $defaultrepeatcount = 4; // The default count for tiles.
         $repeatcount = count($this->tiles);
@@ -518,7 +519,6 @@ class content_type extends \mod_unilabel\content_type {
             $tilerecord->gridid = $unilabeltyperecord->id;
             $tilerecord->title = $title;
             $tilerecord->url = $formdata->{$prefix.'url'}[$i];
-            // bei speichern nicht notwendig $tilerecord->url = $formdata->{$prefix.'activityname'}[$i];
 
             $tilerecord->content = ''; // Dummy content.
             $tilerecord->id = $DB->insert_record('unilabeltype_grid_tile', $tilerecord);
