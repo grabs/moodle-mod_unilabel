@@ -64,6 +64,7 @@ $PAGE->set_title($strtitle);
 $PAGE->set_pagelayout('course'); // This pagelayout is also needed on behat. Without this I had an error.
 $PAGE->set_heading($course->fullname);
 $PAGE->add_body_class('limitedwidth');
+$PAGE->activityheader->disable();
 
 if ($switchtype) {
     require_sesskey();
