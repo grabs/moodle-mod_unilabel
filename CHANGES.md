@@ -1,5 +1,8 @@
 ## Release notes
 
+### Release 4.1.5
+* Fix conflict with mod folder (#36)
+
 ### Release 4.1.4
 * Fix multiple availability infos (#34)
 
