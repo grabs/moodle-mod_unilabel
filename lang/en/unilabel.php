@@ -28,6 +28,7 @@ $string['chooseurlfromactivity'] = 'Choose url from activity';
 $string['contentplugins'] = 'Content plugins';
 $string['editcontent'] = 'Edit content';
 $string['generalsettings'] = 'General settings';
+$string['invalidvalue'] = 'Invalid value';
 $string['labeltype'] = 'Label type';
 $string['labeltype_help'] = 'The label type defines the appearance of the content. Each type has an own configuration page.';
 $string['modulename'] = 'Unilabel';

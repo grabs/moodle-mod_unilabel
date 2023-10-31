@@ -37,8 +37,16 @@ require_once($CFG->libdir.'/formslib.php');
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class edit_content_form extends \moodleform {
-    /** @var \stdClass $_course */
+    /** @var \stdClass */
     private $_course;
+    /** @var content_type */
+    protected $unilabeltype;
+    /** @var \stdClass */
+    protected $cm;
+    /** @var \context */
+    public $context;
+    /** @var \stdClass */
+    public $unilabel;
 
     /**
      * Get an options array to use files in the editor.
