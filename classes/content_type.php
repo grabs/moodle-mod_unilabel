@@ -237,4 +237,30 @@ abstract class content_type {
         return 1;
     }
 
+    /**
+     * Add a colourpicker element into the settings form.
+     *
+     * @param \MoodleQuickForm $mform
+     * @param string $name
+     * @param string $label
+     * @param string $defaultvalue
+     * @return void
+     */
+    public function add_colourpicker($mform, $name, $label, $defaultvalue) {
+        global $PAGE;
+        $renderer = $PAGE->get_renderer('mod_unilabel');
+        $colourpickercontent = new \stdClass();
+        $colourpickercontent->iconurl = $renderer->image_url('i/colourpicker');
+        $colourpickercontent->inputname = $name.'_hidden';
+        $colourpickercontent->inputid = 'id_'.$name.'_colourpicker';
+        $colourpickercontent->hiddeninputid = 'id_'.$name.'_colourpicker_hidden';
+        $colourpickercontent->label = $label;
+        $colourpickercontent->defaultvalue = $defaultvalue;
+        $colourpickerhtml = $renderer->render_from_template('mod_unilabel/colourpicker', $colourpickercontent);
+        $mform->addElement('html', $colourpickerhtml);
+        $mform->addElement('text', $name, '', array('id' => $colourpickercontent->inputid));
+        $mform->setType($name, PARAM_TEXT);
+        $PAGE->requires->js_init_call('M.util.init_colour_picker', array($colourpickercontent->hiddeninputid, null));
+    }
+
 }

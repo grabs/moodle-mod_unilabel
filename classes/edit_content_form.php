@@ -39,14 +39,14 @@ require_once($CFG->libdir.'/formslib.php');
 class edit_content_form extends \moodleform {
     /** @var \stdClass */
     private $_course;
+    /** @var content_type */
+    protected $unilabeltype;
     /** @var \stdClass */
-    public $unilabel;
-    /** @var \mod_unilabel\content_type */
-    public $unilabeltype;
-    /** @var \stdClass */
-    public $cm;
+    protected $cm;
     /** @var \context */
     public $context;
+    /** @var \stdClass */
+    public $unilabel;
 
     /**
      * Get an options array to use files in the editor.
