@@ -65,14 +65,6 @@
     {{#showintro}}
         {{{intro}}}
     {{/showintro}}
-    <div class="unilabeltype-imageboard-controllbuttons">
-        {{#capababilityforgrid}}
-            <i class="fa fa-th fa-fw"></i>
-            <a href="#" id="unilabeltype-imageboard-gridtoggler-{{cmid}}">
-                {{#str}} buttonlabelhelpergridshow, unilabeltype_imageboard {{/str}}
-            </a>
-        {{/capababilityforgrid}}
-    </div>
 
     <div id="unilabeltype-imageboard-{{cmid}}"
          class="unilabeltype-imageboard"
@@ -93,9 +85,18 @@
 
     <!-- List the used images or text -->
 
-    {{#hasimages}}
-        {{> unilabeltype_imageboard/imagelist }}
-    {{/hasimages}}
+    <div class="unilabeltype-imageboard-controllbuttons d-flex flex-column mt-2">
+        {{#capababilityforgrid}}
+            <div class="unilabel-imageboard-gridtoggler">
+                <a class="unilabeltype-imageboard-controllbutton" href="#" id="unilabeltype-imageboard-gridtoggler-{{cmid}}">
+                    <i class="fa fa-th fa-fw"></i> <span class="unilabeltype-imageboard-toggle-text">{{#str}} buttonlabelhelpergridshow, unilabeltype_imageboard {{/str}}</span>
+                </a>
+            </div>
+        {{/capababilityforgrid}}
+        {{#hasimages}}
+            {{> unilabeltype_imageboard/imagelist }}
+        {{/hasimages}}
+    </div>
 </div>
 {{#js}}
     require(['unilabeltype_imageboard/imageboardrenderer'], function(imageboardrenderer) {

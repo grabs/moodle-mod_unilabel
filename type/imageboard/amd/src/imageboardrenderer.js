@@ -34,19 +34,20 @@ export const init = (cmid, canvaswidth, canvasheight, autoscale, showgrid) => {
     }
 
     const gridtoggler = document.getElementById("unilabeltype-imageboard-gridtoggler-" + cmid);
+    const togglerText = gridtoggler.querySelector('.unilabeltype-imageboard-toggle-text');
     const helpergrid = document.getElementById("unilabeltype-imageboard-helpergrid-" + cmid);
 
     if (showgrid === true) {
-        showGrid(gridtoggler, helpergrid);
+        showGrid(togglerText, helpergrid);
     }
 
     gridtoggler.addEventListener("click", function(event) {
         event.stopPropagation();
         event.preventDefault();
         if (helpergrid.classList.contains("hidden")) {
-            showGrid(gridtoggler, helpergrid);
+            showGrid(togglerText, helpergrid);
         } else {
-            hideGrid(gridtoggler, helpergrid);
+            hideGrid(togglerText, helpergrid);
         }
     });
 

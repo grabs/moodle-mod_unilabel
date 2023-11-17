@@ -38,32 +38,32 @@
     }
 }}
 <div class="unilabel-imageboard-list">
-    <p class="unilabel-imageboard-list-button">
-        <a href="#" data-toggle="collapse" data-target="#unilabel-imageboard-list{{cmid}}"
-                aria-expanded="false" aria-controls="unilabel-imageboard-list{{cmid}}">
-            <i class="fa fa-bars"></i> {{#str}} imagelist, unilabeltype_imageboard {{/str}}
-        </a>
-    </p>
-    <div class="collapse unilabel-imageboard-list-collapsable" id="unilabel-imageboard-list{{cmid}}">
-        <div class="card card-body">
+    <a class="unilabeltype-imageboard-controllbutton" href="#" data-toggle="collapse" data-target="#unilabel-imageboard-list{{cmid}}"
+            aria-expanded="false" aria-controls="unilabel-imageboard-list{{cmid}}">
+        <i class="fa fa-list fa-fw"></i> {{#str}} imagelist, unilabeltype_imageboard {{/str}}
+    </a>
+    <div class="collapse unilabel-imageboard-list-collapsable mt-2" id="unilabel-imageboard-list{{cmid}}">
+        <ul class="list-group">
             {{#images}}
-                <div class="row" style="margin-left:20px; max-width: 500px;">
-                    <div class="unilabel-imageboard-list-nr">
-                        {{nr}}
+                <li class="list-group-item list-group-item-action">
+                    <div class="d-flex">
+                        <div class="unilabel-imageboard-list-nr">
+                            {{nr}}
+                        </div>
+                        <div{{^imageurl}} class="text-muted"{{/imageurl}}>
+                            {{#imageurl}}
+                                <img class="rounded mr-2" src="{{{imageurl}}}" width="40" alt="{{title}}">
+                            {{/imageurl}}
+                            {{^imageurl}}
+                                <i style="width: 40px" class="fa fa-picture-o fa-lg fa-fw mr-2"></i>
+                            {{/imageurl}}
+                            {{#url}}<a href="{{{.}}}">{{/url}}
+                                {{title}}
+                            {{#url}}</a>{{/url}}
+                        </div>
                     </div>
-                    <div{{^imageurl}} class="text-muted"{{/imageurl}}>
-                        {{#imageurl}}
-                            <img class="rounded" src="{{{imageurl}}}" width="40" style="margin-right: 5px;" alt="{{title}}">
-                        {{/imageurl}}
-                        {{^imageurl}}
-                            <i style="width: 40px;margin-right: 5px;" class="fa fa-picture-o fa-lg fa-fw"></i>
-                        {{/imageurl}}
-                        {{#url}}<a href="{{{.}}}">{{/url}}
-                            {{title}}
-                        {{#url}}</a>{{/url}}
-                    </div>
-                </div>
+                </li>
             {{/images}}
-        </div>
+        </ul>
     </div>
 </div>
