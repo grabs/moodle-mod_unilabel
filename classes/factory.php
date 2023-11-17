@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel module
+ * unilabel module.
  *
  * @package     mod_unilabel
  * @author      Andreas Grabs <info@grabs-edv.de>
@@ -26,14 +26,13 @@
 namespace mod_unilabel;
 
 /**
- * Create a instance of a content type
+ * Create a instance of a content type.
  * @package     mod_unilabel
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class factory {
-
     /**
      * Get a list of names from all content type plugins.
      *
@@ -42,22 +41,23 @@ class factory {
     public static function get_plugin_list() {
         $plugins = self::get_plugins();
 
-        $return = array();
+        $return = [];
         foreach ($plugins as $name => $plugin) {
             $return[$name] = $plugin->get_name();
         }
+
         return $return;
     }
 
     /**
-     * Get all content type plugins
+     * Get all content type plugins.
      *
      * @return array
      */
     public static function get_plugins() {
         $plugins = \core_component::get_plugin_list('unilabeltype');
 
-        $return = array();
+        $return = [];
         foreach ($plugins as $name => $notused) {
             $plugin = self::get_plugin($name);
             if (!$plugin->is_active()) {
@@ -65,27 +65,29 @@ class factory {
             }
             $return[$name] = $plugin;
         }
+
         return $return;
     }
 
     /**
      * Get a content type plugin by a given name.
      *
-     * @param string $name
+     * @param  string       $name
      * @return content_type
      */
-    public static function get_plugin($name) : content_type {
-        $classname = '\\unilabeltype_'.$name.'\\content_type';
+    public static function get_plugin($name): content_type {
+        $classname = '\\unilabeltype_' . $name . '\\content_type';
         if (!class_exists($classname)) {
             $classname = '\mod_unilabel\unknown_type';
         }
+
         return new $classname();
     }
 
     /**
      * Delete the content of the current content type.
      *
-     * @param int $unilabelid
+     * @param  int  $unilabelid
      * @return void
      */
     public static function delete_plugin_content($unilabelid) {
@@ -96,10 +98,10 @@ class factory {
     }
 
     /**
-     * Save the content for the current content type plugin
+     * Save the content for the current content type plugin.
      *
-     * @param \stdClass $formdata
-     * @param \stdClass $unilabel
+     * @param  \stdClass $formdata
+     * @param  \stdClass $unilabel
      * @return bool
      */
     public static function save_plugin_content($formdata, $unilabel) {
@@ -108,6 +110,7 @@ class factory {
         if ($unilabeltype->save_content($formdata, $unilabel)) {
             return true;
         }
+
         return false;
     }
 }

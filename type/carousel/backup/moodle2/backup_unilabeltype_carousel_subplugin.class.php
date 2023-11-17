@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Unilabel type carousel
+ * Unilabel type carousel.
  *
  * @package     unilabeltype_carousel
  * @author      Andreas Grabs <info@grabs-edv.de>
@@ -24,28 +24,35 @@
  */
 
 /**
- * Backup definition for this content type
+ * Backup definition for this content type.
  * @package     unilabeltype_carousel
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class backup_unilabeltype_carousel_subplugin extends backup_subplugin {
-
     /**
-     * Returns the nested structure of this content type
+     * Returns the nested structure of this content type.
      * @return \backup_subplugin_element
      */
     protected function define_unilabel_subplugin_structure() {
-
         // XML nodes declaration.
-        $subplugin = $this->get_subplugin_element();
-        $subpluginwrapper = new backup_nested_element($this->get_recommended_name());
-        $subplugincarousel = new backup_nested_element('unilabeltype_carousel', array('id'), array(
-            'carouselinterval', 'height', 'background', 'showintro', 'usemobile'));
+        $subplugin         = $this->get_subplugin_element();
+        $subpluginwrapper  = new backup_nested_element($this->get_recommended_name());
+        $subplugincarousel = new backup_nested_element(
+            'unilabeltype_carousel',
+            ['id'],
+            [
+                'carouselinterval',
+                'height',
+                'background',
+                'showintro',
+                'usemobile',
+            ]
+        );
         $subpluginslide = new backup_nested_element('unilabeltype_carousel_slide',
-            array('id'),
-            array('url', 'caption')
+            ['id'],
+            ['url', 'caption']
         );
 
         // Connect XML elements into the tree.
@@ -54,8 +61,8 @@ class backup_unilabeltype_carousel_subplugin extends backup_subplugin {
         $subplugincarousel->add_child($subpluginslide);
 
         // Set source to populate the data.
-        $subplugincarousel->set_source_table('unilabeltype_carousel', array('unilabelid' => backup::VAR_ACTIVITYID));
-        $subpluginslide->set_source_table('unilabeltype_carousel_slide', array('carouselid' => backup::VAR_PARENTID));
+        $subplugincarousel->set_source_table('unilabeltype_carousel', ['unilabelid' => backup::VAR_ACTIVITYID]);
+        $subpluginslide->set_source_table('unilabeltype_carousel_slide', ['carouselid' => backup::VAR_PARENTID]);
 
         // File annotations.
         $subpluginslide->annotate_files('unilabeltype_carousel', 'image', 'id');

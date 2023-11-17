@@ -15,12 +15,13 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel module
+ * unilabel module.
  *
  * @package     mod_unilabel
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @param mixed $unilabel
  */
 
 /**
@@ -29,7 +30,7 @@
  * will create a new instance and return the id number
  * of the new instance.
  *
- * @param \stdClass $unilabel
+ * @param  \stdClass $unilabel
  * @return bool|int
  */
 function unilabel_add_instance($unilabel) {
@@ -51,14 +52,14 @@ function unilabel_add_instance($unilabel) {
  * (defined by the form in mod_form.php) this function
  * will update an existing instance with new data.
  *
- * @param \stdClass $unilabel
+ * @param  \stdClass $unilabel
  * @return bool
  */
 function unilabel_update_instance($unilabel) {
     global $DB;
 
     $unilabel->timemodified = time();
-    $unilabel->id = $unilabel->instance;
+    $unilabel->id           = $unilabel->instance;
 
     $completiontimeexpected = !empty($unilabel->completionexpected) ? $unilabel->completionexpected : null;
     \core_completion\api::update_completion_date_event($unilabel->coursemodule, 'unilabel', $unilabel->id, $completiontimeexpected);
@@ -71,7 +72,7 @@ function unilabel_update_instance($unilabel) {
  * this function will permanently delete the instance
  * and any data that depends on it.
  *
- * @param int $id
+ * @param  int  $id
  * @return bool
  */
 function unilabel_delete_instance($id) {
@@ -100,9 +101,9 @@ function unilabel_delete_instance($id) {
  * Given a course_module object, this function returns any
  * "extra" information that may be needed when printing
  * this activity in a course listing.
- * See get_array_of_activities() in course/lib.php
+ * See get_array_of_activities() in course/lib.php.
  *
- * @param \stdClass $coursemodule
+ * @param  \stdClass           $coursemodule
  * @return cached_cm_info|null
  */
 function unilabel_get_coursemodule_info($coursemodule) {
@@ -114,24 +115,25 @@ function unilabel_get_coursemodule_info($coursemodule) {
         $info = new cached_cm_info();
         // No filtering here because this info is cached and filtered later.
         $info->content = $content;
-        $info->name = $unilabel->name;
+        $info->name    = $unilabel->name;
+
         return $info;
-    } else {
-        return null;
     }
+
+    return null;
 }
 
 /**
  * Set the content for the course page to show there.
  *
- * @param \cm_info $cm
+ * @param  \cm_info $cm
  * @return void
  */
-function unilabel_cm_info_view(\cm_info $cm) {
+function unilabel_cm_info_view(cm_info $cm) {
     global $DB, $PAGE;
 
-    $renderer = $PAGE->get_renderer('mod_unilabel');
-    $unilabel = $DB->get_record('unilabel', ['id' => $cm->instance], 'id, course, name, intro, introformat, unilabeltype');
+    $renderer     = $PAGE->get_renderer('mod_unilabel');
+    $unilabel     = $DB->get_record('unilabel', ['id' => $cm->instance], 'id, course, name, intro, introformat, unilabeltype');
     $unilabeltype = \mod_unilabel\factory::get_plugin($unilabel->unilabeltype);
     if (!$unilabeltype->is_active()) {
         $unilabeltype = \mod_unilabel\factory::get_plugin('simpletext');
@@ -142,9 +144,9 @@ function unilabel_cm_info_view(\cm_info $cm) {
     // Add the edit link if needed.
     if ($PAGE->user_is_editing()) {
         if (has_capability('mod/unilabel:edit', $cm->context)) {
-            $editlink = new \stdClass();
-            $editlink->title = get_string('editcontent', 'mod_unilabel');
-            $editlink->url = new \moodle_url('/mod/unilabel/edit_content.php', ['cmid' => $cm->id]);
+            $editlink            = new \stdClass();
+            $editlink->title     = get_string('editcontent', 'mod_unilabel');
+            $editlink->url       = new \moodle_url('/mod/unilabel/edit_content.php', ['cmid' => $cm->id]);
             $content['editlink'] = $editlink;
         }
     }
@@ -157,11 +159,10 @@ function unilabel_cm_info_view(\cm_info $cm) {
 /**
  * This function is used by the reset_course_userdata function in moodlelib.
  *
- * @param \stdClass $data the data submitted from the reset course.
- * @return array status array
+ * @param  \stdClass $data the data submitted from the reset course
+ * @return array     status array
  */
 function unilabel_reset_userdata($data) {
-
     // Any changes to the list of dates that needs to be rolled should be same during course restore and course reset.
     // See MDL-9367.
 
@@ -169,7 +170,7 @@ function unilabel_reset_userdata($data) {
 }
 
 /**
- * Returns all other caps used in module
+ * Returns all other caps used in module.
  *
  * @return array
  */
@@ -186,7 +187,7 @@ function unilabel_get_extra_capabilities() {
  * @uses FEATURE_COMPLETION_TRACKS_VIEWS
  * @uses FEATURE_GRADE_HAS_GRADE
  * @uses FEATURE_GRADE_OUTCOMES
- * @param string $feature FEATURE_xx constant for requested feature
+ * @param  string    $feature FEATURE_xx constant for requested feature
  * @return bool|null True if module supports feature, false if not, null if doesn't know
  */
 function unilabel_supports($feature) {
@@ -221,13 +222,14 @@ function unilabel_supports($feature) {
 /**
  * Check if the module has any update that affects the current user since a given time.
  *
- * @param  cm_info $cm course module data
- * @param  int $from the time to check updates from
- * @param  array $filter  if we need to check only specific updates
+ * @param  cm_info  $cm     course module data
+ * @param  int      $from   the time to check updates from
+ * @param  array    $filter if we need to check only specific updates
  * @return stdClass an object with the different type of areas indicating if they were updated or not
  * @since Moodle 3.2
  */
 function unilabel_check_updates_since(cm_info $cm, $from, $filter = []) {
     $updates = course_check_module_updates_since($cm, $from, [], $filter);
+
     return $updates;
 }

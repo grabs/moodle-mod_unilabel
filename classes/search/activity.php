@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel module
+ * unilabel module.
  *
  * @package     mod_unilabel
  * @author      Andreas Grabs <info@grabs-edv.de>
@@ -36,7 +36,6 @@ namespace mod_unilabel\search;
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class activity extends \core_search\base_activity {
-
     /**
      * Returns true if this area uses file indexing.
      *
@@ -49,29 +48,28 @@ class activity extends \core_search\base_activity {
     /**
      * Overwritten as unilabels are displayed in-course.
      *
-     * @param \core_search\document $doc
+     * @param  \core_search\document $doc
      * @return \moodle_url
      */
     public function get_doc_url(\core_search\document $doc) {
         // Get correct URL to section that contains unilabel, from course format.
-        $cminfo = $this->get_cm($this->get_module_name(), strval($doc->get('itemid')), $doc->get('courseid'));
+        $cminfo = $this->get_cm($this->get_module_name(), (string) $doc->get('itemid'), $doc->get('courseid'));
         $format = course_get_format($cminfo->get_course());
-        $url = $format->get_view_url($cminfo->sectionnum);
+        $url    = $format->get_view_url($cminfo->sectionnum);
 
         // Add the ID of the unilabel to the section URL.
         $url->set_anchor('module-' . $cminfo->id);
+
         return $url;
     }
 
     /**
      * Overwritten as unilabels are displayed in-course. Link to the course.
      *
-     * @param \core_search\document $doc
+     * @param  \core_search\document $doc
      * @return \moodle_url
      */
     public function get_context_url(\core_search\document $doc) {
-        return new \moodle_url('/course/view.php', array('id' => $doc->get('courseid')));
-
+        return new \moodle_url('/course/view.php', ['id' => $doc->get('courseid')]);
     }
-
 }

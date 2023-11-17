@@ -15,23 +15,29 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel type carousel
+ * unilabel type carousel.
  *
  * @package     unilabeltype_carousel
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @param mixed $course
+ * @param mixed $cm
+ * @param mixed $context
+ * @param mixed $filearea
+ * @param mixed $args
+ * @param mixed $forcedownload
  */
 
 /**
- * Send files provided by this plugin
+ * Send files provided by this plugin.
  *
- * @param \stdClass $course
- * @param \stdClass $cm
- * @param \context $context
- * @param string $filearea
- * @param array $args
- * @param bool $forcedownload
+ * @param  \stdClass $course
+ * @param  \stdClass $cm
+ * @param  \context  $context
+ * @param  string    $filearea
+ * @param  array     $args
+ * @param  bool      $forcedownload
  * @return bool
  */
 function unilabeltype_carousel_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload) {
@@ -49,7 +55,7 @@ function unilabeltype_carousel_pluginfile($course, $cm, $context, $filearea, $ar
     }
 
     $relativepath = implode('/', $args);
-    $fullpath = '/'.$context->id.'/unilabeltype_carousel/'.$filearea.'/'.$relativepath;
+    $fullpath     = '/' . $context->id . '/unilabeltype_carousel/' . $filearea . '/' . $relativepath;
 
     $fs = get_file_storage();
     if ($file = $fs->get_file_by_hash(sha1($fullpath))) {
@@ -57,5 +63,6 @@ function unilabeltype_carousel_pluginfile($course, $cm, $context, $filearea, $ar
             send_stored_file($file, 0, 0, true); // Download MUST be forced - security!
         }
     }
+
     return false;
 }

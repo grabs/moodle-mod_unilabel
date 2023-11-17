@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Unilabel type carousel
+ * Unilabel type carousel.
  *
  * @package     unilabeltype_carousel
  * @author      Andreas Grabs <info@grabs-edv.de>
@@ -24,21 +24,19 @@
  */
 
 /**
- * Restore definition of this content type
+ * Restore definition of this content type.
  * @package     unilabeltype_carousel
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class restore_unilabeltype_carousel_subplugin extends restore_subplugin {
-
     /**
-     * Returns the paths to be handled by the subplugin at unilabel level
+     * Returns the paths to be handled by the subplugin at unilabel level.
      * @return array
      */
     protected function define_unilabel_subplugin_structure() {
-
-        $paths = array();
+        $paths = [];
 
         $elename = $this->get_namefor();
         $elepath = $this->get_pathfor('/unilabeltype_carousel');
@@ -52,14 +50,14 @@ class restore_unilabeltype_carousel_subplugin extends restore_subplugin {
     }
 
     /**
-     * Processes the element
-     * @param array $data
+     * Processes the element.
+     * @param  array $data
      * @return void
      */
     public function process_unilabeltype_carousel($data) {
         global $DB;
 
-        $data = (object)$data;
+        $data  = (object) $data;
         $oldid = $data->id;
 
         $data->unilabelid = $this->get_new_parentid('unilabel');
@@ -69,17 +67,17 @@ class restore_unilabeltype_carousel_subplugin extends restore_subplugin {
     }
 
     /**
-     * Processes the unilabeltype_carousel_slide element
-     * @param array $data
+     * Processes the unilabeltype_carousel_slide element.
+     * @param  array $data
      * @return void
      */
     public function process_unilabeltype_carousel_slide($data) {
         global $DB;
 
-        $data = (object)$data;
-        $oldid = $data->id;
+        $data             = (object) $data;
+        $oldid            = $data->id;
         $data->carouselid = $this->get_new_parentid($this->get_namefor());
-        $newitemid = $DB->insert_record('unilabeltype_carousel_slide', $data);
+        $newitemid        = $DB->insert_record('unilabeltype_carousel_slide', $data);
         $this->set_mapping($this->get_namefor('slide'), $oldid, $newitemid, true);
 
         // Process files.
@@ -89,18 +87,17 @@ class restore_unilabeltype_carousel_subplugin extends restore_subplugin {
 
     /**
      * Define the contents in the unilabeltype that must be
-     * processed by the link decoder
+     * processed by the link decoder.
      */
     public static function define_decode_contents() {
-        $contents = array();
+        $contents = [];
 
         $contents[] = new restore_decode_content(
             'unilabeltype_carousel_slide',
-            array('url', 'caption'),
+            ['url', 'caption'],
             'unilabeltype_carousel_slide'
         );
 
         return $contents;
     }
-
 }

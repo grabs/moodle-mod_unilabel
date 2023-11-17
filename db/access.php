@@ -15,47 +15,45 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel module
+ * unilabel module.
  *
  * @package     mod_unilabel
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+defined('MOODLE_INTERNAL') || die;
 
-defined('MOODLE_INTERNAL') || die();
-
-$capabilities = array(
-
-    'mod/unilabel:addinstance' => array(
+$capabilities = [
+    'mod/unilabel:addinstance' => [
         'riskbitmask' => RISK_XSS,
 
-        'captype' => 'write',
+        'captype'      => 'write',
         'contextlevel' => CONTEXT_COURSE,
-        'archetypes' => array(
+        'archetypes'   => [
             'editingteacher' => CAP_ALLOW,
-            'manager' => CAP_ALLOW
-        ),
-        'clonepermissionsfrom' => 'moodle/course:manageactivities'
-    ),
+            'manager'        => CAP_ALLOW,
+        ],
+        'clonepermissionsfrom' => 'moodle/course:manageactivities',
+    ],
 
-    'mod/unilabel:edit' => array(
+    'mod/unilabel:edit' => [
         'riskbitmask' => RISK_XSS,
 
-        'captype' => 'write',
+        'captype'      => 'write',
         'contextlevel' => CONTEXT_MODULE,
-        'archetypes' => array(
+        'archetypes'   => [
             'editingteacher' => CAP_ALLOW,
-            'manager' => CAP_ALLOW
-        )
-    ),
+            'manager'        => CAP_ALLOW,
+        ],
+    ],
 
-    'mod/unilabel:view' => array(
-        'captype' => 'read',
+    'mod/unilabel:view' => [
+        'captype'      => 'read',
         'contextlevel' => CONTEXT_MODULE,
-        'archetypes' => array(
-            'user' => CAP_ALLOW,
-            'guest' => CAP_ALLOW
-        )
-    ),
-);
+        'archetypes'   => [
+            'user'  => CAP_ALLOW,
+            'guest' => CAP_ALLOW,
+        ],
+    ],
+];

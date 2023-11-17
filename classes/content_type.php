@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel module
+ * unilabel module.
  *
  * @package     mod_unilabel
  * @author      Andreas Grabs <info@grabs-edv.de>
@@ -44,11 +44,11 @@ abstract class content_type {
     abstract public function get_namespace();
 
     /**
-     * Get the html output of the content type
+     * Get the html output of the content type.
      *
-     * @param \stdClass $unilabel
-     * @param \stdClass $cm
-     * @param \plugin_renderer_base $renderer
+     * @param  \stdClass             $unilabel
+     * @param  \stdClass             $cm
+     * @param  \plugin_renderer_base $renderer
      * @return string
      */
     abstract public function get_content($unilabel, $cm, \plugin_renderer_base $renderer);
@@ -56,7 +56,7 @@ abstract class content_type {
     /**
      * Delete the content from database.
      *
-     * @param int $unilabelid
+     * @param  int  $unilabelid
      * @return void
      */
     abstract public function delete_content($unilabelid);
@@ -64,8 +64,8 @@ abstract class content_type {
     /**
      * Add form elements needed by the content type class.
      *
-     * @param edit_content_form $form
-     * @param \context $context
+     * @param  edit_content_form $form
+     * @param  \context          $context
      * @return void
      */
     abstract public function add_form_fragment(edit_content_form $form, \context $context);
@@ -73,8 +73,8 @@ abstract class content_type {
     /**
      * Get all default values for the content type used in the settings form.
      *
-     * @param array $data
-     * @param \stdClass $unilabel
+     * @param  array     $data
+     * @param  \stdClass $unilabel
      * @return array
      */
     abstract public function get_form_default($data, $unilabel);
@@ -82,8 +82,8 @@ abstract class content_type {
     /**
      * Save the content into the database.
      *
-     * @param \stdClass $formdata
-     * @param \stdClass $unilabel
+     * @param  \stdClass $formdata
+     * @param  \stdClass $unilabel
      * @return bool
      */
     abstract public function save_content($formdata, $unilabel);
@@ -91,8 +91,8 @@ abstract class content_type {
     /**
      * Get the formated intro text of the module instance.
      *
-     * @param \stdClass $unilabel
-     * @param \stdClass $cm
+     * @param  \stdClass $unilabel
+     * @param  \stdClass $cm
      * @return string
      */
     public function format_intro($unilabel, $cm) {
@@ -121,16 +121,16 @@ abstract class content_type {
      * Validate all form values given in $data and returns an array with errors.
      * It does the same as the validation method in moodle forms.
      *
-     * @param array $errors
-     * @param array $data
-     * @param array $files
+     * @param  array $errors
+     * @param  array $data
+     * @param  array $files
      * @return array
      */
     public function form_validation($errors, $data, $files) {
         return $errors;
     }
 
-    /** Get the configuration setting "active" to this plugin
+    /** Get the configuration setting "active" to this plugin.
      *
      * @return bool
      */
@@ -141,13 +141,12 @@ abstract class content_type {
      * It depends on the choosen count of columns in the settings
      * The result is the 'colclasses' array with the string 'col-lg-xy col-md-xy col-sm-xy'.
      *
-     * @param int $columns
-     * @param int $columnsmiddle
-     * @param int $columnssmall
+     * @param  int   $columns
+     * @param  int   $columnsmiddle
+     * @param  int   $columnssmall
      * @return array
      */
     public function get_bootstrap_cols($columns, $columnsmiddle = null, $columnssmall = null) {
-
         $columnslg = $this->get_bootstrap_col($columns, 'lg');
 
         if (empty($columnsmiddle)) {
@@ -162,7 +161,7 @@ abstract class content_type {
             $columnssm = $this->get_bootstrap_col($columnssmall, 'sm');
         }
 
-        $colstrings = array();
+        $colstrings   = [];
         $colstrings[] = $columnslg;
         $colstrings[] = $columnsmd;
         $colstrings[] = $columnssm;
@@ -173,33 +172,33 @@ abstract class content_type {
     /**
      * Get the bootstrap grid col class depending on the number of columns.
      *
-     * @param int $columns
-     * @param string $breakpoint
+     * @param  int    $columns
+     * @param  string $breakpoint
      * @return string
      */
     public function get_bootstrap_col($columns, $breakpoint) {
         switch ($columns) {
             case 1:
-                return 'col-'.$breakpoint.'-12';
+                return 'col-' . $breakpoint . '-12';
             case 2:
-                return 'col-'.$breakpoint.'-6';
+                return 'col-' . $breakpoint . '-6';
             case 3:
-                return 'col-'.$breakpoint.'-4';
+                return 'col-' . $breakpoint . '-4';
             case 4:
-                return 'col-'.$breakpoint.'-3';
+                return 'col-' . $breakpoint . '-3';
             case 5:
-                return 'col-'.$breakpoint.'-2dot4';
+                return 'col-' . $breakpoint . '-2dot4';
             case 6:
-                return 'col-'.$breakpoint.'-2';
+                return 'col-' . $breakpoint . '-2';
             default:
-                return 'col-'.$breakpoint.'-12';
+                return 'col-' . $breakpoint . '-12';
         }
     }
 
     /**
-     * Get the default col value depending on the amount of columns
+     * Get the default col value depending on the amount of columns.
      *
-     * @param int $columns
+     * @param  int $columns
      * @return int
      */
     public function get_default_col_middle($columns) {
@@ -240,27 +239,26 @@ abstract class content_type {
     /**
      * Add a colourpicker element into the settings form.
      *
-     * @param \MoodleQuickForm $mform
-     * @param string $name
-     * @param string $label
-     * @param string $defaultvalue
+     * @param  \MoodleQuickForm $mform
+     * @param  string           $name
+     * @param  string           $label
+     * @param  string           $defaultvalue
      * @return void
      */
     public function add_colourpicker($mform, $name, $label, $defaultvalue) {
         global $PAGE;
-        $renderer = $PAGE->get_renderer('mod_unilabel');
-        $colourpickercontent = new \stdClass();
-        $colourpickercontent->iconurl = $renderer->image_url('i/colourpicker');
-        $colourpickercontent->inputname = $name.'_hidden';
-        $colourpickercontent->inputid = 'id_'.$name.'_colourpicker';
-        $colourpickercontent->hiddeninputid = 'id_'.$name.'_colourpicker_hidden';
-        $colourpickercontent->label = $label;
-        $colourpickercontent->defaultvalue = $defaultvalue;
-        $colourpickerhtml = $renderer->render_from_template('mod_unilabel/colourpicker', $colourpickercontent);
+        $renderer                           = $PAGE->get_renderer('mod_unilabel');
+        $colourpickercontent                = new \stdClass();
+        $colourpickercontent->iconurl       = $renderer->image_url('i/colourpicker');
+        $colourpickercontent->inputname     = $name . '_hidden';
+        $colourpickercontent->inputid       = 'id_' . $name . '_colourpicker';
+        $colourpickercontent->hiddeninputid = 'id_' . $name . '_colourpicker_hidden';
+        $colourpickercontent->label         = $label;
+        $colourpickercontent->defaultvalue  = $defaultvalue;
+        $colourpickerhtml                   = $renderer->render_from_template('mod_unilabel/colourpicker', $colourpickercontent);
         $mform->addElement('html', $colourpickerhtml);
-        $mform->addElement('text', $name, '', array('id' => $colourpickercontent->inputid));
+        $mform->addElement('text', $name, '', ['id' => $colourpickercontent->inputid]);
         $mform->setType($name, PARAM_TEXT);
-        $PAGE->requires->js_init_call('M.util.init_colour_picker', array($colourpickercontent->hiddeninputid, null));
+        $PAGE->requires->js_init_call('M.util.init_colour_picker', [$colourpickercontent->hiddeninputid, null]);
     }
-
 }

@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel module
+ * unilabel module.
  *
  * @package     mod_unilabel
  * @author      Andreas Grabs <info@grabs-edv.de>
@@ -26,7 +26,7 @@
 namespace mod_unilabel\plugininfo;
 
 /**
- * Handles information about subplugins
+ * Handles information about subplugins.
  * @package     mod_unilabel
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
@@ -36,7 +36,7 @@ class unilabeltype extends \core\plugininfo\base {
     /**
      * Can the subplugin be uninstalled.
      *
-     * @return boolean
+     * @return bool
      */
     public function is_uninstall_allowed() {
         return true;

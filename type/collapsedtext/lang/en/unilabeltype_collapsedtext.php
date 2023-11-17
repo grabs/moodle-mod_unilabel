@@ -15,23 +15,22 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel type collapsed text
+ * unilabel type collapsed text.
  *
  * @package     unilabeltype_collapsedtext
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 defined('MOODLE_INTERNAL') || die;
 
-$string['collapsed'] = 'Collapsed';
+$string['collapsed']            = 'Collapsed';
 $string['default_presentation'] = 'Default presentation';
-$string['dialog'] = 'Modal dialog';
-$string['notitle'] = 'No title';
-$string['pluginname'] = 'Collapsed text';
-$string['pluginname_help'] = 'This content type shows you the content in a collapsed form or in a modal dialog. You have to define a title where the user can click on.';
-$string['presentation'] = 'Presentation';
-$string['privacy:metadata'] = 'The unilabel type Collapsed text does not store any personal data.';
-$string['title'] = 'Title';
-$string['useanimation'] = 'Use animation';
+$string['dialog']               = 'Modal dialog';
+$string['notitle']              = 'No title';
+$string['pluginname']           = 'Collapsed text';
+$string['pluginname_help']      = 'This content type shows you the content in a collapsed form or in a modal dialog. You have to define a title where the user can click on.';
+$string['presentation']         = 'Presentation';
+$string['privacy:metadata']     = 'The unilabel type Collapsed text does not store any personal data.';
+$string['title']                = 'Title';
+$string['useanimation']         = 'Use animation';

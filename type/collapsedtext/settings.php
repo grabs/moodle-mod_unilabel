@@ -15,19 +15,18 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel type collapsed text
+ * unilabel type collapsed text.
  *
  * @package     unilabeltype_collapsedtext
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 defined('MOODLE_INTERNAL') || die;
 
 $page = new admin_settingpage('unilabeltype_collapsedtext', get_string('pluginname', 'unilabeltype_collapsedtext'));
 
-$collapsedtextsettings = array();
+$collapsedtextsettings = [];
 
 $collapsedtextsettings[] = new admin_setting_configcheckbox('unilabeltype_collapsedtext/active',
     get_string('active'),
@@ -41,10 +40,10 @@ $collapsedtextsettings[] = new admin_setting_configcheckbox(
     1
 );
 
-$select = array(
+$select = [
     'collapsed' => get_string('collapsed', 'unilabeltype_collapsedtext'),
-    'dialog' => get_string('dialog', 'unilabeltype_collapsedtext'),
-);
+    'dialog'    => get_string('dialog', 'unilabeltype_collapsedtext'),
+];
 $collapsedtextsettings[] = new admin_setting_configselect(
     'unilabeltype_collapsedtext/presentation',
     get_string('default_presentation', 'unilabeltype_collapsedtext'),
@@ -58,4 +57,3 @@ foreach ($collapsedtextsettings as $setting) {
 }
 
 $settingscategory->add($page);
-

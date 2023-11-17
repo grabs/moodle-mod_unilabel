@@ -15,26 +15,25 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel type grid
+ * unilabel type grid.
  *
  * @package     unilabeltype_grid
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 defined('MOODLE_INTERNAL') || die;
 
 $page = new admin_settingpage('unilabeltype_grid', get_string('pluginname', 'unilabeltype_grid'));
 
-$gridsettings = array();
+$gridsettings = [];
 
 $gridsettings[] = new admin_setting_configcheckbox('unilabeltype_grid/active',
     get_string('active'),
     '',
     true);
 
-$numbers = array_combine(range(1, 6), range(1, 6));
+$numbers        = array_combine(range(1, 6), range(1, 6));
 $gridsettings[] = new admin_setting_configselect('unilabeltype_grid/columns',
     get_string('default_columns', 'unilabeltype_grid'),
     '',
@@ -42,8 +41,8 @@ $gridsettings[] = new admin_setting_configselect('unilabeltype_grid/columns',
     $numbers
 );
 
-$numbers = array_combine(range(100, 600, 50), range(100, 600, 50));
-$numbers = array(0 => get_string('autoheight', 'unilabeltype_grid')) + $numbers;
+$numbers        = array_combine(range(100, 600, 50), range(100, 600, 50));
+$numbers        = [0 => get_string('autoheight', 'unilabeltype_grid')] + $numbers;
 $gridsettings[] = new admin_setting_configselect('unilabeltype_grid/height',
     get_string('default_height', 'unilabeltype_grid'),
     get_string('height_help', 'unilabeltype_grid'),

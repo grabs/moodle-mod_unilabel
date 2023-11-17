@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel module data generator class
+ * unilabel module data generator class.
  *
  * @package     mod_unilabel
  * @category    test
@@ -25,7 +25,7 @@
  */
 
 /**
- * unilabel module data generator class
+ * unilabel module data generator class.
  *
  * @package     mod_unilabel
  * @category    test
@@ -34,17 +34,16 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class mod_unilabel_generator extends testing_module_generator {
-
     /**
      * Create a new instance of the assignment activity.
      *
-     * @param array|stdClass|null $record
-     * @param array|null $options
+     * @param  array|stdClass|null $record
+     * @param  array|null          $options
      * @return stdClass
      */
-    public function create_instance($record = null, array $options = null) {
-        $record = (object)(array)$record;
+    public function create_instance($record = null, ?array $options = null) {
+        $record = (object) (array) $record;
 
-        return parent::create_instance($record, (array)$options);
+        return parent::create_instance($record, (array) $options);
     }
 }

@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel type carousel
+ * unilabel type carousel.
  *
- * @package     unilabeltype_carousel
+ * @package     mod_unilabel
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -26,20 +26,28 @@
 namespace mod_unilabel;
 
 defined('MOODLE_INTERNAL') || die;
-require_once($CFG->libdir.'/adminlib.php');
+require_once($CFG->libdir . '/adminlib.php');
 
 /**
  * Class to check color values.
- * We use the admin_setting_configcolourpicker class to use its method to check the color.
  *
- * @package     unilabeltype_carousel
+ * We only use the admin_setting_configcolourpicker class to use its method to check the color.
+ *
+ * @package     mod_unilabel
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class configcolourpicker_validation extends \admin_setting_configcolourpicker {
+    /**
+     * Validates the colour that was entered by the user.
+     *
+     * @param  string       $data
+     * @return string|false
+     */
     public static function validate_colourdata($data) {
         $instance = new parent('dummy', 'dummy', '', '');
+
         return $instance->validate($data);
     }
 }

@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel module
+ * unilabel module.
  *
  * @package     mod_unilabel
  * @author      Andreas Grabs <info@grabs-edv.de>
@@ -33,30 +33,30 @@ namespace mod_unilabel;
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class admin_settingspage_tabs extends \admin_settingpage {
-
-    /** @var array $tabs The tabs of this page */
-    protected $tabs = array();
-    /** @var string $description The description of this page */
+    /** @var array The tabs of this page */
+    protected $tabs = [];
+    /** @var string The description of this page */
     private $description = '';
 
     /**
      * Add a tab.
      *
-     * @param admin_settingpage $tab A tab.
+     * @param  admin_settingpage $tab a tab
      * @return bool
      */
     public function add_tab(\admin_settingpage $tab) {
         foreach ($tab->settings as $setting) {
-            $this->settings->{$setting->plugin.$setting->name} = $setting;
+            $this->settings->{$setting->plugin . $setting->name} = $setting;
         }
         $this->tabs[] = $tab;
+
         return true;
     }
 
     /**
      * Add a setting page as new tab.
      *
-     * @param \admin_settingpage $tab
+     * @param  \admin_settingpage $tab
      * @return bool
      */
     public function add($tab) {
@@ -66,7 +66,7 @@ class admin_settingspage_tabs extends \admin_settingpage {
     /**
      * Set a description of this setting page.
      *
-     * @param string $description
+     * @param  string $description
      * @return void
      */
     public function set_description($description) {
@@ -90,8 +90,8 @@ class admin_settingspage_tabs extends \admin_settingpage {
     public function output_html() {
         global $OUTPUT;
 
-        $activetab = optional_param('activetab', '', PARAM_TEXT);
-        $context = array('tabs' => array());
+        $activetab     = optional_param('activetab', '', PARAM_TEXT);
+        $context       = ['tabs' => []];
         $havesetactive = false;
 
         foreach ($this->get_tabs() as $tab) {
@@ -99,18 +99,18 @@ class admin_settingspage_tabs extends \admin_settingpage {
 
             // Default to first tab it not told otherwise.
             if (empty($activetab) && !$havesetactive) {
-                $active = true;
+                $active        = true;
                 $havesetactive = true;
             } else if ($activetab === $tab->name) {
                 $active = true;
             }
 
-            $context['tabs'][] = array(
-                'name' => $tab->name,
+            $context['tabs'][] = [
+                'name'        => $tab->name,
                 'displayname' => $tab->visiblename,
-                'html' => $tab->output_html(),
-                'active' => $active,
-            );
+                'html'        => $tab->output_html(),
+                'active'      => $active,
+            ];
         }
 
         if (!empty($context['tabs'])) {
@@ -120,6 +120,4 @@ class admin_settingspage_tabs extends \admin_settingpage {
 
         return $OUTPUT->render_from_template('mod_unilabel/admin_setting_tabs', $context);
     }
-
 }
-

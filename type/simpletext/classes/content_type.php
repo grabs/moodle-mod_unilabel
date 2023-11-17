@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel type simple text
+ * unilabel type simple text.
  *
  * @package     unilabeltype_simpletext
  * @author      Andreas Grabs <info@grabs-edv.de>
@@ -26,7 +26,7 @@
 namespace unilabeltype_simpletext;
 
 /**
- * Content type definition
+ * Content type definition.
  * @package     unilabeltype_simpletext
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
@@ -36,8 +36,8 @@ class content_type extends \mod_unilabel\content_type {
     /**
      * Add elements to the activity settings form.
      *
-     * @param \mod_unilabel\edit_content_form $form
-     * @param \context $context
+     * @param  \mod_unilabel\edit_content_form $form
+     * @param  \context                        $context
      * @return void
      */
     public function add_form_fragment(\mod_unilabel\edit_content_form $form, \context $context) {
@@ -45,10 +45,10 @@ class content_type extends \mod_unilabel\content_type {
     }
 
     /**
-     * Get the default values for the settings form
+     * Get the default values for the settings form.
      *
-     * @param array $data
-     * @param \stdClass $unilabel
+     * @param  array     $data
+     * @param  \stdClass $unilabel
      * @return array
      */
     public function get_form_default($data, $unilabel) {
@@ -56,7 +56,7 @@ class content_type extends \mod_unilabel\content_type {
     }
 
     /**
-     * Get the namespace of this content type
+     * Get the namespace of this content type.
      *
      * @return string
      */
@@ -67,9 +67,9 @@ class content_type extends \mod_unilabel\content_type {
     /**
      * Get the html formated content for this type.
      *
-     * @param \stdClass $unilabel
-     * @param \stdClass $cm
-     * @param \plugin_renderer_base $renderer
+     * @param  \stdClass             $unilabel
+     * @param  \stdClass             $cm
+     * @param  \plugin_renderer_base $renderer
      * @return string
      */
     public function get_content($unilabel, $cm, \plugin_renderer_base $renderer) {
@@ -77,9 +77,9 @@ class content_type extends \mod_unilabel\content_type {
     }
 
     /**
-     * Delete the content of this type
+     * Delete the content of this type.
      *
-     * @param int $unilabelid
+     * @param  int  $unilabelid
      * @return void
      */
     public function delete_content($unilabelid) {
@@ -87,10 +87,10 @@ class content_type extends \mod_unilabel\content_type {
     }
 
     /**
-     * Save the content from settings page
+     * Save the content from settings page.
      *
-     * @param \stdClass $formdata
-     * @param \stdClass $unilabel
+     * @param  \stdClass $formdata
+     * @param  \stdClass $unilabel
      * @return bool
      */
     public function save_content($formdata, $unilabel) {
@@ -100,7 +100,7 @@ class content_type extends \mod_unilabel\content_type {
     /**
      * Check that this plugin is activated on config settings.
      *
-     * @return boolean
+     * @return bool
      */
     public function is_active() {
         return true;

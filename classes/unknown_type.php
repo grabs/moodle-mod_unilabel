@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel module
+ * unilabel module.
  *
  * @package     mod_unilabel
  * @author      Andreas Grabs <info@grabs-edv.de>
@@ -34,21 +34,21 @@ namespace mod_unilabel;
  */
 class unknown_type extends \mod_unilabel\content_type {
     /**
-     * Dummy method to add form elements
+     * Dummy method to add form elements.
      *
-     * @param \mod_unilabel\edit_content_form $form
-     * @param \context $context
+     * @param  \mod_unilabel\edit_content_form $form
+     * @param  \context                        $context
      * @return void
      */
-    public function add_form_fragment(\mod_unilabel\edit_content_form $form, \context $context) {
+    public function add_form_fragment(edit_content_form $form, \context $context) {
         return null;
     }
 
     /**
-     * Dummy method to get default data
+     * Dummy method to get default data.
      *
-     * @param array $data
-     * @param \stdClass $unilabel
+     * @param  array     $data
+     * @param  \stdClass $unilabel
      * @return array
      */
     public function get_form_default($data, $unilabel) {
@@ -56,7 +56,7 @@ class unknown_type extends \mod_unilabel\content_type {
     }
 
     /**
-     * Get the namespace of this type
+     * Get the namespace of this type.
      *
      * @return string
      */
@@ -65,7 +65,7 @@ class unknown_type extends \mod_unilabel\content_type {
     }
 
     /**
-     * Get the localised name of this content type
+     * Get the localised name of this content type.
      *
      * @return string
      */
@@ -74,7 +74,7 @@ class unknown_type extends \mod_unilabel\content_type {
     }
 
     /**
-     * Get the internal name of this content type
+     * Get the internal name of this content type.
      *
      * @return string
      */
@@ -83,11 +83,11 @@ class unknown_type extends \mod_unilabel\content_type {
     }
 
     /**
-     * Get the content for this content type
+     * Get the content for this content type.
      *
-     * @param \stdClass $unilabel
-     * @param \stdClass $cm
-     * @param \plugin_renderer_base $renderer
+     * @param  \stdClass             $unilabel
+     * @param  \stdClass             $cm
+     * @param  \plugin_renderer_base $renderer
      * @return string
      */
     public function get_content($unilabel, $cm, \plugin_renderer_base $renderer) {
@@ -95,9 +95,9 @@ class unknown_type extends \mod_unilabel\content_type {
     }
 
     /**
-     * Dummy method to delete the content of this content type
+     * Dummy method to delete the content of this content type.
      *
-     * @param int $unilabelid
+     * @param  int  $unilabelid
      * @return bool
      */
     public function delete_content($unilabelid) {
@@ -105,10 +105,10 @@ class unknown_type extends \mod_unilabel\content_type {
     }
 
     /**
-     * Dummy method to save the content of this content type
+     * Dummy method to save the content of this content type.
      *
-     * @param \stdClass $formdata
-     * @param \stdClass $unilabel
+     * @param  \stdClass $formdata
+     * @param  \stdClass $unilabel
      * @return bool
      */
     public function save_content($formdata, $unilabel) {
@@ -118,7 +118,7 @@ class unknown_type extends \mod_unilabel\content_type {
     /**
      * Check that this plugin is activated on config settings.
      *
-     * @return boolean
+     * @return bool
      */
     public function is_active() {
         return true;

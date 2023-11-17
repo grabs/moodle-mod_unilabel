@@ -15,17 +15,16 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel type simple text
+ * unilabel type simple text.
  *
  * @package     unilabeltype_simpletext
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 defined('MOODLE_INTERNAL') || die;
 
-$string['filteractive'] = 'Activate filter';
-$string['pluginname'] = 'Simple text';
-$string['pluginname_help'] = 'Prints a simple text element';
+$string['filteractive']     = 'Activate filter';
+$string['pluginname']       = 'Simple text';
+$string['pluginname_help']  = 'Prints a simple text element';
 $string['privacy:metadata'] = 'The unilabel type Simple text does not store any personal data.';

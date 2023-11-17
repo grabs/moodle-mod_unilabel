@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel type topic teaser
+ * unilabel type topic teaser.
  *
  * @package     unilabeltype_topicteaser
  * @author      Andreas Grabs <info@grabs-edv.de>
@@ -24,21 +24,19 @@
  */
 
 /**
- * Restore definition of this content type
+ * Restore definition of this content type.
  * @package     unilabeltype_topicteaser
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class restore_unilabeltype_topicteaser_subplugin extends restore_subplugin {
-
     /**
-     * Returns the paths to be handled by the subplugin at unilabel level
+     * Returns the paths to be handled by the subplugin at unilabel level.
      * @return array
      */
     protected function define_unilabel_subplugin_structure() {
-
-        $paths = array();
+        $paths = [];
 
         $elename = $this->get_namefor();
         $elepath = $this->get_pathfor('/unilabeltype_topicteaser');
@@ -48,16 +46,16 @@ class restore_unilabeltype_topicteaser_subplugin extends restore_subplugin {
     }
 
     /**
-     * Processes the element
-     * @param array $data
+     * Processes the element.
+     * @param  array $data
      * @return void
      */
     public function process_unilabeltype_topicteaser($data) {
         global $DB;
 
-        $data = (object)$data;
+        $data = (object) $data;
 
-        $restoreid = $this->get_restoreid();
+        $restoreid  = $this->get_restoreid();
         $controller = restore_controller::load_controller($restoreid);
         if (!$controller->is_samesite()) {
             $data->course = 0;

@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel type topic teaser
+ * unilabel type topic teaser.
  *
  * @package     unilabeltype_topicteaser
  * @author      Andreas Grabs <info@grabs-edv.de>
@@ -24,32 +24,40 @@
  */
 
 /**
- * Backup definition for this content type
+ * Backup definition for this content type.
  * @package     unilabeltype_topicteaser
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class backup_unilabeltype_topicteaser_subplugin extends backup_subplugin {
-
     /**
-     * Returns the assessment form definition to attach to 'unilabel' XML element
+     * Returns the assessment form definition to attach to 'unilabel' XML element.
      * @return \backup_subplugin_element
      */
     protected function define_unilabel_subplugin_structure() {
-
         // XML nodes declaration.
-        $subplugin = $this->get_subplugin_element();
-        $subpluginwrapper = new backup_nested_element($this->get_recommended_name());
-        $subplugintopicteaser = new backup_nested_element('unilabeltype_topicteaser', array('id'), array(
-            'course', 'presentation', 'columns', 'carouselinterval', 'showintro', 'showcoursetitle'));
+        $subplugin            = $this->get_subplugin_element();
+        $subpluginwrapper     = new backup_nested_element($this->get_recommended_name());
+        $subplugintopicteaser = new backup_nested_element(
+            'unilabeltype_topicteaser',
+            ['id'],
+            [
+                'course',
+                'presentation',
+                'columns',
+                'carouselinterval',
+                'showintro',
+                'showcoursetitle',
+            ]
+        );
 
         // Connect XML elements into the tree.
         $subplugin->add_child($subpluginwrapper);
         $subpluginwrapper->add_child($subplugintopicteaser);
 
         // Set source to populate the data.
-        $subplugintopicteaser->set_source_table('unilabeltype_topicteaser', array('unilabelid' => backup::VAR_ACTIVITYID));
+        $subplugintopicteaser->set_source_table('unilabeltype_topicteaser', ['unilabelid' => backup::VAR_ACTIVITYID]);
 
         return $subplugin;
     }

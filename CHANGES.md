@@ -1,5 +1,9 @@
 ## Release notes
 
+### Release 4.3.0
+* Apply new coding style rules
+* Optimize colourpicker
+
 ### Release 4.2.5
 * Fix conflict with mod folder (#36)
 

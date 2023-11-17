@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel module
+ * unilabel module.
  *
  * @package     mod_unilabel
  * @author      Andreas Grabs <info@grabs-edv.de>
@@ -25,9 +25,9 @@
 
 namespace mod_unilabel;
 
-defined('MOODLE_INTERNAL') || die();
+defined('MOODLE_INTERNAL') || die;
 
-require_once($CFG->libdir.'/formslib.php');
+require_once($CFG->libdir . '/formslib.php');
 
 /**
  * Build a moodle form and uses the form elements given by the used content type.
@@ -51,15 +51,16 @@ class edit_content_form extends \moodleform {
     /**
      * Get an options array to use files in the editor.
      *
-     * @param \context $context
+     * @param  \context $context
      * @return array
      */
     public static function editor_options($context) {
-        return array(
+        return [
             'maxfiles' => EDITOR_UNLIMITED_FILES,
-            'noclean' => true,
-            'context' => $context,
-            'subdirs' => true);
+            'noclean'  => true,
+            'context'  => $context,
+            'subdirs'  => true,
+        ];
     }
 
     /**
@@ -69,12 +70,12 @@ class edit_content_form extends \moodleform {
      * @return void
      */
     public function definition() {
-        $mform = $this->_form;
-        $this->unilabel = $this->_customdata['unilabel'];
+        $mform              = $this->_form;
+        $this->unilabel     = $this->_customdata['unilabel'];
         $this->unilabeltype = $this->_customdata['unilabeltype'];
-        $this->cm = $this->_customdata['cm'];
-        $this->context = \context_module::instance($this->cm->id);
-        $this->_course = get_course($this->cm->course);
+        $this->cm           = $this->_customdata['cm'];
+        $this->context      = \context_module::instance($this->cm->id);
+        $this->_course      = get_course($this->cm->course);
 
         $mform->addElement('hidden', 'cmid');
         $mform->setType('cmid', PARAM_INT);
@@ -95,13 +96,14 @@ class edit_content_form extends \moodleform {
     /**
      * Does the validation of the submitted values.
      *
-     * @param array $data
-     * @param array $files
+     * @param  array $data
+     * @param  array $files
      * @return array
      */
     public function validation($data, $files) {
         $errors = parent::validation($data, $files);
         $errors = $this->unilabeltype->form_validation($errors, $data, $files);
+
         return $errors;
     }
 
@@ -115,7 +117,7 @@ class edit_content_form extends \moodleform {
         $mform->addElement('editor',
             'introeditor',
             get_string('unilabeltext', 'mod_unilabel'),
-            array('rows' => 10),
+            ['rows' => 10],
             self::editor_options($this->context)
         );
         $mform->setType('introeditor', PARAM_RAW); // No XSS prevention here, users must be trusted.
@@ -124,27 +126,25 @@ class edit_content_form extends \moodleform {
     /**
      * Set all default data while loading the form.
      *
-     * @param array $defaultvalues
+     * @param  array $defaultvalues
      * @return void
      */
     public function set_data($defaultvalues) {
-
         $defaultvalues['cmid'] = $this->cm->id;
 
         $plugindefaultvalues = $this->get_plugin_defaultvalues();
 
-        $defaultvalues = $defaultvalues + $plugindefaultvalues;
+        $defaultvalues += $plugindefaultvalues;
 
         $draftitemid = file_get_submitted_draft_itemid('introeditor');
 
-        $defaultvalues['introeditor']['text'] =
-                                file_prepare_draft_area($draftitemid,
-                                $this->context->id,
-                                'mod_unilabel',
-                                'intro',
-                                false,
-                                array('subdirs' => true),
-                                $defaultvalues['intro']);
+        $defaultvalues['introeditor']['text'] = file_prepare_draft_area($draftitemid,
+                                    $this->context->id,
+                                    'mod_unilabel',
+                                    'intro',
+                                    false,
+                                    ['subdirs' => true],
+                                    $defaultvalues['intro']);
         $defaultvalues['introeditor']['format'] = $defaultvalues['introformat'];
         $defaultvalues['introeditor']['itemid'] = $draftitemid;
 
@@ -166,9 +166,10 @@ class edit_content_form extends \moodleform {
      * @return array
      */
     private function get_plugin_defaultvalues() {
-        $data = array();
+        $data = [];
 
         $data = $this->unilabeltype->get_form_default($data, $this->unilabel);
+
         return $data;
     }
 
