@@ -15,15 +15,14 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel type accordion
+ * unilabel type accordion.
  *
  * @package     unilabeltype_accordion
  * @copyright   2022 Stefan Hanauska <stefan.hanauska@csg-in.de>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 defined('MOODLE_INTERNAL') || die;
 
 $plugin->component = 'unilabeltype_accordion';
-$plugin->version   = 2023061400;
-$plugin->requires  = 2023041800;
+$plugin->version   = 2023111600;
+$plugin->requires  = 2022111800;

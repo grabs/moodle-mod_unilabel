@@ -15,24 +15,22 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Backup definition for this content type
+ * Backup definition for this content type.
  * @package     unilabeltype_accordion
  * @copyright   2022 Stefan Hanauska <stefan.hanauska@csg-in.de>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class backup_unilabeltype_accordion_subplugin extends backup_subplugin {
-
     /**
-     * Returns the nested structure of this content type
+     * Returns the nested structure of this content type.
      * @return \backup_subplugin_element
      */
     protected function define_unilabel_subplugin_structure() {
-
         // XML nodes declaration.
-        $subplugin = $this->get_subplugin_element();
-        $subpluginwrapper = new backup_nested_element($this->get_recommended_name());
+        $subplugin          = $this->get_subplugin_element();
+        $subpluginwrapper   = new backup_nested_element($this->get_recommended_name());
         $subpluginaccordion = new backup_nested_element('unilabeltype_accordion', ['id'], ['showintro', 'type']);
-        $subpluginsegment = new backup_nested_element('unilabeltype_accordion_seg',
+        $subpluginsegment   = new backup_nested_element('unilabeltype_accordion_seg',
             ['id'],
             ['heading', 'content']
         );
@@ -43,8 +41,8 @@ class backup_unilabeltype_accordion_subplugin extends backup_subplugin {
         $subpluginaccordion->add_child($subpluginsegment);
 
         // Set source to populate the data.
-        $subpluginaccordion->set_source_table('unilabeltype_accordion', array('unilabelid' => backup::VAR_ACTIVITYID));
-        $subpluginsegment->set_source_table('unilabeltype_accordion_seg', array('accordionid' => backup::VAR_PARENTID));
+        $subpluginaccordion->set_source_table('unilabeltype_accordion', ['unilabelid' => backup::VAR_ACTIVITYID]);
+        $subpluginsegment->set_source_table('unilabeltype_accordion_seg', ['accordionid' => backup::VAR_PARENTID]);
 
         // Annotate files.
         $subpluginsegment->annotate_files('unilabeltype_accordion', 'heading', 'id');

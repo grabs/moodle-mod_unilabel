@@ -15,22 +15,28 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel type accordion
+ * unilabel type accordion.
  *
  * @package     unilabeltype_accordion
  * @copyright   2022 Stefan Hanauska <stefan.hanauska@csg-in.de>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @param mixed $course
+ * @param mixed $cm
+ * @param mixed $context
+ * @param mixed $filearea
+ * @param mixed $args
+ * @param mixed $forcedownload
  */
 
 /**
- * Send files provided by this plugin
+ * Send files provided by this plugin.
  *
- * @param \stdClass $course
- * @param \stdClass $cm
- * @param \context $context
- * @param string $filearea
- * @param array $args
- * @param bool $forcedownload
+ * @param  \stdClass $course
+ * @param  \stdClass $cm
+ * @param  \context  $context
+ * @param  string    $filearea
+ * @param  array     $args
+ * @param  bool      $forcedownload
  * @return bool
  */
 function unilabeltype_accordion_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload) {
@@ -44,7 +50,7 @@ function unilabeltype_accordion_pluginfile($course, $cm, $context, $filearea, $a
     }
 
     $relativepath = implode('/', $args);
-    $fullpath = '/' . $context->id . '/unilabeltype_accordion/' . $filearea . '/' . $relativepath;
+    $fullpath     = '/' . $context->id . '/unilabeltype_accordion/' . $filearea . '/' . $relativepath;
 
     $fs = get_file_storage();
     if ($file = $fs->get_file_by_hash(sha1($fullpath))) {
@@ -52,5 +58,6 @@ function unilabeltype_accordion_pluginfile($course, $cm, $context, $filearea, $a
             send_stored_file($file, 0, 0, true); // Download MUST be forced - security!
         }
     }
+
     return false;
 }
