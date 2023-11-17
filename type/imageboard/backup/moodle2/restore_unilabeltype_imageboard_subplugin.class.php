@@ -45,7 +45,7 @@ class restore_unilabeltype_imageboard_subplugin extends restore_subplugin {
         $elepath = $this->get_pathfor('/unilabeltype_imageboard');
         $paths[] = new restore_path_element($elename, $elepath);
 
-        $elename = $this->get_namefor('image');
+        $elename = $this->get_namefor('img');
         $elepath = $this->get_pathfor('/unilabeltype_imageboard/unilabeltype_imageboard_img');
         $paths[] = new restore_path_element($elename, $elepath);
 
@@ -74,14 +74,14 @@ class restore_unilabeltype_imageboard_subplugin extends restore_subplugin {
      * Processes the unilabeltype_imageboard_img element
      * @param array $data
      */
-    public function process_unilabeltype_imageboard_image($data) {
+    public function process_unilabeltype_imageboard_img($data) {
         global $DB;
 
         $data = (object)$data;
         $oldid = $data->id;
         $data->imageboardid = $this->get_new_parentid($this->get_namefor());
         $newitemid = $DB->insert_record('unilabeltype_imageboard_img', $data);
-        $this->set_mapping($this->get_namefor('image'), $oldid, $newitemid, true);
+        $this->set_mapping($this->get_namefor('img'), $oldid, $newitemid, true);
 
         // Process files.
         $this->add_related_files('unilabeltype_imageboard', 'image', 'unilabeltype_imageboard_img');
