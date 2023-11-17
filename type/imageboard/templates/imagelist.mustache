@@ -1,0 +1,69 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template unilabeltype_imageboard/imagelist
+    Template to show a list of all images related to the imageboard.
+
+    Example context (json):
+    {
+        "images": [
+            {
+                "title": "",
+                "url": "http://localhost/mod/forum/view.php?id=136",
+                "imageurl": "http://localhost/image1.png",
+                "nr": 0
+            },
+            {
+                "title": "",
+                "url": "",
+                "imageurl": "http://localhost/image2.png",
+                "nr": 1
+            }
+        ],
+        "cmid": "140"
+    }
+}}
+<div class="unilabel-imageboard-list">
+    <p class="unilabel-imageboard-list-button">
+        <a href="#" data-toggle="collapse" data-target="#unilabel-imageboard-list{{cmid}}"
+                aria-expanded="false" aria-controls="unilabel-imageboard-list{{cmid}}">
+            <i class="fa fa-bars"></i> {{#str}} imagelist, unilabeltype_imageboard {{/str}}
+        </a>
+    </p>
+    <div class="collapse unilabel-imageboard-list-collapsable" id="unilabel-imageboard-list{{cmid}}">
+        <div class="card card-body">
+            {{#images}}
+                <div class="row" style="margin-left:20px; max-width: 500px;">
+                    <div class="unilabel-imageboard-list-nr">
+                        {{nr}}
+                    </div>
+                    <div{{^imageurl}} class="text-muted"{{/imageurl}}>
+                        {{#imageurl}}
+                            <img class="rounded" src="{{{imageurl}}}" width="40" style="margin-right: 5px;" alt="{{title}}">
+                        {{/imageurl}}
+                        {{^imageurl}}
+                            <i style="width: 40px;margin-right: 5px;" class="fa fa-picture-o fa-lg fa-fw"></i>
+                        {{/imageurl}}
+                        {{#url}}<a href="{{{.}}}">{{/url}}
+                            {{title}}
+                        {{#url}}</a>{{/url}}
+                    </div>
+                </div>
+            {{/images}}
+        </div>
+    </div>
+</div>

@@ -1,0 +1,32 @@
+.unilabel-content canvas[id^="unilabeltype-imageboard-canvas"] {
+    margin: 10px;
+    box-shadow: 5px 5px 10px 0 #aaa;
+}
+.unilabel-imageboard-list .row {
+    margin-bottom: 10px;
+}
+.unilabel-imageboard-list-button {
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+.unilabel-imageboard-list-nr,
+.unilabel-imageboard-list-title {
+    margin: auto 10px;
+}
+.unilabeltype-imageboard-controllbuttons {
+    margin-bottom: 38px;
+}
+
+.unilabeltype-imageboard a:hover .unilabel-imageboard-image,
+.unilabeltype-imageboard a:hover .unilabel-imageboard-title {
+    box-shadow: 0 0 13px 0;
+}
+
+.unilabeltype-imageboard {
+    box-shadow: 0 0 10px #aaa;
+}
+
+.unilabeltype-imageboard-container {
+    padding: 10px;
+    overflow: hidden; /* Hide scrollbars */
+}

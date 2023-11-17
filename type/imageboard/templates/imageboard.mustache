@@ -1,0 +1,110 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template unilabeltype_imageboard/imageboard
+    Template to show an imageboard with images.
+
+    Example context (json):
+    {
+        "showintro": false,
+        "intro": "",
+        "images": [
+            {
+                "title": "",
+                "url": "http://localhost/mod/forum/view.php?id=136",
+                "xposition": "150",
+                "yposition": "100",
+                "targetwidth": "80",
+                "targetheight": "0",
+                "fontsize": "12",
+                "imageurl": "http://localhost/image1.png",
+                "nr": 0
+            },
+            {
+                "title": "",
+                "url": "",
+                "xposition": "400",
+                "yposition": "200",
+                "targetwidth": "0",
+                "targetheight": "0",
+                "fontsize": "12",
+                "imageurl": "http://localhost/image2.png",
+                "nr": 1
+            }
+        ],
+        "hasimages": true,
+        "titlecolor": "#00ff00",
+        "titlebackgroundcolor": "#0000ff",
+        "cmid": "140",
+        "canvaswidth": "500",
+        "autoscale": false,
+        "canvasheight": "600",
+        "autocanvasheight": false,
+        "backgroundimage": "",
+        "capababilityforgrid": true,
+        "bordercolor": "#2D57FA",
+        "border": "4",
+        "gridcolor": "#B7009E"
+    }
+}}
+<div id="unilabeltype-imageboard-container-{{cmid}}" class="unilabeltype-imageboard-container">
+    {{#showintro}}
+        {{{intro}}}
+    {{/showintro}}
+    <div class="unilabeltype-imageboard-controllbuttons">
+        {{#capababilityforgrid}}
+            <i class="fa fa-th fa-fw"></i>
+            <a href="#" id="unilabeltype-imageboard-gridtoggler-{{cmid}}">
+                {{#str}} buttonlabelhelpergridshow, unilabeltype_imageboard {{/str}}
+            </a>
+        {{/capababilityforgrid}}
+    </div>
+
+    <div id="unilabeltype-imageboard-{{cmid}}"
+         class="unilabeltype-imageboard"
+         style="position: relative;
+                 background: url('{{backgroundimage}}');
+                 width: {{canvaswidth}}px;
+                 height: {{canvasheight}}px;
+                 background-size: cover;">
+        {{#images}}
+            {{> unilabeltype_imageboard/image }}
+        {{/images}}
+
+        {{#capababilityforgrid}}
+            {{> unilabeltype_imageboard/imagegrid }}
+        {{/capababilityforgrid}}
+
+    </div>
+
+    <!-- List the used images or text -->
+
+    {{#hasimages}}
+        {{> unilabeltype_imageboard/imagelist }}
+    {{/hasimages}}
+</div>
+{{#js}}
+    require(['unilabeltype_imageboard/imageboardrenderer'], function(imageboardrenderer) {
+        imageboardrenderer.init(
+            {{cmid}},
+            {{canvaswidth}},
+            {{canvasheight}},
+            {{#autoscale}}true{{/autoscale}}{{^autoscale}}false{{/autoscale}},
+            {{#editing}}true{{/editing}}{{^editing}}false{{/editing}}
+        );
+    });
+{{/js}}
