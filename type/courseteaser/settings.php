@@ -15,19 +15,18 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel type course teaser
+ * unilabel type course teaser.
  *
  * @package     unilabeltype_courseteaser
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 defined('MOODLE_INTERNAL') || die;
 
 $page = new admin_settingpage('unilabeltype_courseteaser', get_string('pluginname', 'unilabeltype_courseteaser'));
 
-$courseteasersettings = array();
+$courseteasersettings = [];
 
 $courseteasersettings[] = new admin_setting_configcheckbox('unilabeltype_courseteaser/active',
     get_string('active'),
@@ -41,7 +40,7 @@ $courseteasersettings[] = new admin_setting_configcheckbox('unilabeltype_courset
     true
 );
 
-$numbers = array_combine(range(1, 10), range(1, 10));
+$numbers                = array_combine(range(1, 10), range(1, 10));
 $courseteasersettings[] = new admin_setting_configselect('unilabeltype_courseteaser/carouselinterval',
     get_string('default_carouselinterval', 'unilabeltype_courseteaser'),
     '',
@@ -49,7 +48,7 @@ $courseteasersettings[] = new admin_setting_configselect('unilabeltype_coursetea
     $numbers
 );
 
-$numbers = array_combine(range(1, 6), range(1, 6));
+$numbers                = array_combine(range(1, 6), range(1, 6));
 $courseteasersettings[] = new admin_setting_configselect('unilabeltype_courseteaser/columns',
     get_string('default_columns', 'unilabeltype_courseteaser'),
     get_string('columns_help', 'unilabeltype_courseteaser'),
@@ -57,10 +56,10 @@ $courseteasersettings[] = new admin_setting_configselect('unilabeltype_coursetea
     $numbers
 );
 
-$select = array(
+$select = [
     'carousel' => get_string('carousel', 'unilabeltype_courseteaser'),
-    'grid' => get_string('grid', 'unilabeltype_courseteaser'),
-);
+    'grid'     => get_string('grid', 'unilabeltype_courseteaser'),
+];
 $courseteasersettings[] = new admin_setting_configselect(
     'unilabeltype_courseteaser/presentation',
     get_string('default_presentation', 'unilabeltype_courseteaser'),
@@ -86,4 +85,3 @@ foreach ($courseteasersettings as $setting) {
 }
 
 $settingscategory->add($page);
-

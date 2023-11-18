@@ -15,20 +15,19 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel module
+ * unilabel module.
  *
  * @package     mod_unilabel
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
-defined('MOODLE_INTERNAL') || die();
+defined('MOODLE_INTERNAL') || die;
 
 require_once($CFG->dirroot . '/mod/unilabel/backup/moodle2/restore_unilabel_stepslib.php'); // Because it exists (must).
 
 /**
- * Unilabel restore task class
+ * Unilabel restore task class.
  *
  * This class provides all the settings and steps to perform one complete restore of the activity
  * @package     mod_unilabel
@@ -37,16 +36,15 @@ require_once($CFG->dirroot . '/mod/unilabel/backup/moodle2/restore_unilabel_step
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class restore_unilabel_activity_task extends restore_activity_task {
-
     /**
-     * Define (add) particular settings this activity can have
+     * Define (add) particular settings this activity can have.
      */
     protected function define_my_settings() {
         // No particular settings for this activity.
     }
 
     /**
-     * Define (add) particular steps this activity can have
+     * Define (add) particular steps this activity can have.
      */
     protected function define_my_steps() {
         // Unilabel only has one structure step.
@@ -55,21 +53,21 @@ class restore_unilabel_activity_task extends restore_activity_task {
 
     /**
      * Define the contents in the activity that must be
-     * processed by the link decoder
+     * processed by the link decoder.
      */
     public static function define_decode_contents() {
-        $contents = array();
+        $contents = [];
 
-        $contents[] = new restore_decode_content('unilabel', array('intro'), 'unilabel');
+        $contents[] = new restore_decode_content('unilabel', ['intro'], 'unilabel');
 
         // Go through all subplugins and add their settings pages.
         $plugins = \core_component::get_plugin_list_with_file('unilabeltype', 'settings.php', false);
         foreach ($plugins as $plugin => $settingspath) {
-            $restorescript = dirname($settingspath).'/backup/moodle2/restore_unilabeltype_'.$plugin.'_subplugin.class.php';
+            $restorescript = dirname($settingspath) . '/backup/moodle2/restore_unilabeltype_' . $plugin . '_subplugin.class.php';
             if (is_file($restorescript)) {
                 require_once($restorescript);
             }
-            $classname = 'restore_unilabeltype_'.$plugin.'_subplugin';
+            $classname = 'restore_unilabeltype_' . $plugin . '_subplugin';
             if (method_exists($classname, 'define_decode_contents')) {
                 $contents = array_merge($contents, $classname::define_decode_contents());
             }
@@ -80,20 +78,20 @@ class restore_unilabel_activity_task extends restore_activity_task {
 
     /**
      * Define the decoding rules for links belonging
-     * to the activity to be executed by the link decoder
+     * to the activity to be executed by the link decoder.
      */
     public static function define_decode_rules() {
-        return array();
+        return [];
     }
 
     /**
      * Define the restore log rules that will be applied
      * by the {@see restore_logs_processor} when restoring
      * unilabel logs. It must return one array
-     * of {@see restore_log_rule} objects
+     * of {@see restore_log_rule} objects.
      */
     public static function define_restore_log_rules() {
-        $rules = array();
+        $rules = [];
 
         $rules[] = new restore_log_rule('unilabel', 'add', 'view.php?id={course_module}', '{unilabel}');
         $rules[] = new restore_log_rule('unilabel', 'update', 'view.php?id={course_module}', '{unilabel}');
@@ -106,14 +104,14 @@ class restore_unilabel_activity_task extends restore_activity_task {
      * Define the restore log rules that will be applied
      * by the {@see restore_logs_processor} when restoring
      * course logs. It must return one array
-     * of {@see restore_log_rule} objects
+     * of {@see restore_log_rule} objects.
      *
      * Note this rules are applied when restoring course logs
      * by the restore final task, but are defined here at
      * activity level. All them are rules not linked to any module instance (cmid = 0)
      */
     public static function define_restore_log_rules_for_course() {
-        $rules = array();
+        $rules = [];
 
         $rules[] = new restore_log_rule('unilabel', 'view all', 'index.php?id={course}', null);
 

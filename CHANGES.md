@@ -1,14 +1,28 @@
 ## Release notes
 
-### Release 4.1.5
+### Release 4.3.0
+* Add the great new unilabel type imageboard from Andreas Schenkel (https://github.com/andreasschenkel/moodle-unilabeltype_imageboard)
+* Apply new coding style rules
+* Optimize colourpicker
+
+### Release 4.2.5
 * Fix conflict with mod folder (#36)
 
-### Release 4.1.4
+### Release 4.2.4
 * Fix multiple availability infos (#34)
 
-### Release 4.1.3
+### Release 4.2.3
 * Fix restore of internal urls in grid and carousel
 * Add activity picker to choose an activity url in grid and carousel (Thanks to Andreas Schenkel for this really good idea!)
+
+### Release 4.2.2
+* Fix new Font Awesome caret in collapsed text
+
+### Release 4.2.1
+* Compatibility to Font Awesome 6 Free
+
+### Release 4.2.0
+* Compatibility to Moodle 4.2
 
 ### Version 2022042000 Release 4.1.1 (Build: 2022122400)
 * Add cmid to "uniqid" to avoid conflicts with multiple instances

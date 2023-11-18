@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel type grid
+ * unilabel type grid.
  *
  * @package     unilabeltype_grid
  * @author      Andreas Grabs <info@grabs-edv.de>
@@ -24,28 +24,35 @@
  */
 
 /**
- * Backup definition for this content type
+ * Backup definition for this content type.
  * @package     unilabeltype_grid
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class backup_unilabeltype_grid_subplugin extends backup_subplugin {
-
     /**
-     * Returns the assessment form definition to attach to 'unilabel' XML element
+     * Returns the assessment form definition to attach to 'unilabel' XML element.
      * @return \backup_subplugin_element
      */
     protected function define_unilabel_subplugin_structure() {
-
         // XML nodes declaration.
-        $subplugin = $this->get_subplugin_element();
+        $subplugin        = $this->get_subplugin_element();
         $subpluginwrapper = new backup_nested_element($this->get_recommended_name());
-        $subplugingrid = new backup_nested_element('unilabeltype_grid', array('id'), array(
-            'columns', 'height', 'showintro', 'usemobile'));
-        $subplugintile = new backup_nested_element('unilabeltype_grid_tile',
-            array('id'),
-            array('title', 'url', 'content')
+        $subplugingrid    = new backup_nested_element(
+            'unilabeltype_grid',
+            ['id'],
+            [
+                'columns',
+                'height',
+                'showintro',
+                'usemobile',
+            ]
+        );
+        $subplugintile = new backup_nested_element(
+            'unilabeltype_grid_tile',
+            ['id'],
+            ['title', 'url', 'content']
         );
 
         // Connect XML elements into the tree.
@@ -54,8 +61,8 @@ class backup_unilabeltype_grid_subplugin extends backup_subplugin {
         $subplugingrid->add_child($subplugintile);
 
         // Set source to populate the data.
-        $subplugingrid->set_source_table('unilabeltype_grid', array('unilabelid' => backup::VAR_ACTIVITYID));
-        $subplugintile->set_source_table('unilabeltype_grid_tile', array('gridid' => backup::VAR_PARENTID));
+        $subplugingrid->set_source_table('unilabeltype_grid', ['unilabelid' => backup::VAR_ACTIVITYID]);
+        $subplugintile->set_source_table('unilabeltype_grid_tile', ['gridid' => backup::VAR_PARENTID]);
 
         // File annotations.
         $subplugintile->annotate_files('unilabeltype_grid', 'image', 'id');

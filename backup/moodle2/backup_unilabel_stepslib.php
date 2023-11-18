@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel module
+ * unilabel module.
  *
  * @package     mod_unilabel
  * @author      Andreas Grabs <info@grabs-edv.de>
@@ -24,30 +24,38 @@
  */
 
 /**
- * Define all the backup steps that will be used by the backup_unilabel_activity_task
+ * Define all the backup steps that will be used by the backup_unilabel_activity_task.
  * @package     mod_unilabel
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class backup_unilabel_activity_structure_step extends backup_activity_structure_step {
-
     /**
-     * Define the complete unilabel structure for backup, with file and id annotations
+     * Define the complete unilabel structure for backup, with file and id annotations.
      *
      * @return void
      */
     protected function define_structure() {
         // Define each element separated.
-        $unilabel = new backup_nested_element('unilabel', array('id'), array(
-            'name', 'intro', 'introformat', 'unilabeltype', 'timemodified'));
+        $unilabel = new backup_nested_element(
+            'unilabel',
+            ['id'],
+            [
+                'name',
+                'intro',
+                'introformat',
+                'unilabeltype',
+                'timemodified',
+            ]
+        );
 
         $this->add_subplugin_structure('unilabeltype', $unilabel, true);
 
         // Build the tree.
 
         // Define sources.
-        $unilabel->set_source_table('unilabel', array('id' => backup::VAR_ACTIVITYID));
+        $unilabel->set_source_table('unilabel', ['id' => backup::VAR_ACTIVITYID]);
 
         // Define id annotations.
         // Nothing to do here.

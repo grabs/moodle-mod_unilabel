@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * mod_unilabel Activity picker button
+ * mod_unilabel Activity picker button.
  *
  * @package     mod_unilabel
  * @author      Andreas Grabs <info@grabs-edv.de>
@@ -37,14 +37,14 @@ class activity_picker_button implements \renderable, \templatable {
     public $data;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param string $formid
      * @param string $inputidbase
      */
     public function __construct($formid, $inputidbase) {
-        $this->data = array();
-        $this->data['formid'] = $formid;
+        $this->data                = [];
+        $this->data['formid']      = $formid;
         $this->data['inputidbase'] = $inputidbase;
         $this->data['buttontitle'] = get_string('chooseurlfromactivity', 'mod_unilabel');
     }
@@ -52,7 +52,7 @@ class activity_picker_button implements \renderable, \templatable {
     /**
      * Export the data for usage in mustache.
      *
-     * @param \renderer_base $output
+     * @param  \renderer_base $output
      * @return array
      */
     public function export_for_template(\renderer_base $output) {

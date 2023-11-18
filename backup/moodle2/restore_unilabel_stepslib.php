@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel module
+ * unilabel module.
  *
  * @package     mod_unilabel
  * @author      Andreas Grabs <info@grabs-edv.de>
@@ -24,22 +24,20 @@
  */
 
 /**
- * Define all the restore steps that will be used by the restore_url_activity_task
+ * Define all the restore steps that will be used by the restore_url_activity_task.
  * @package     mod_unilabel
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class restore_unilabel_activity_structure_step extends restore_activity_structure_step {
-
     /**
-     * Structure step to restore one unilabel activity
+     * Structure step to restore one unilabel activity.
      */
     protected function define_structure() {
-
-        $paths = array();
+        $paths    = [];
         $unilabel = new restore_path_element('unilabel', '/activity/unilabel');
-        $paths[] = $unilabel;
+        $paths[]  = $unilabel;
 
         $this->add_subplugin_structure('unilabeltype', $unilabel);
 
@@ -48,15 +46,15 @@ class restore_unilabel_activity_structure_step extends restore_activity_structur
     }
 
     /**
-     * Create a new instance of unilabel
+     * Create a new instance of unilabel.
      *
-     * @param \stdClass $data
+     * @param  \stdClass $data
      * @return void
      */
     protected function process_unilabel($data) {
         global $DB;
 
-        $data = (object)$data;
+        $data         = (object) $data;
         $data->course = $this->get_courseid();
 
         // Any changes to the list of dates that needs to be rolled should be same during course restore and course reset.
@@ -76,7 +74,5 @@ class restore_unilabel_activity_structure_step extends restore_activity_structur
     protected function after_execute() {
         // Add unilabel related files, no need to match by itemname (just internally handled context).
         $this->add_related_files('mod_unilabel', 'intro', null);
-
     }
-
 }

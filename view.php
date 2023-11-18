@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel module
+ * unilabel module.
  *
  * @package     mod_unilabel
  * @author      Andreas Grabs <info@grabs-edv.de>
@@ -26,7 +26,7 @@
 require_once('../../config.php');
 
 $id = optional_param('id', 0, PARAM_INT);    // Course Module ID.
-$l = optional_param('l', 0, PARAM_INT);     // The unilabel ID.
+$l  = optional_param('l', 0, PARAM_INT);     // The unilabel ID.
 
 if ($id) {
     $PAGE->set_url('/mod/unilabel/index.php', ['id' => $id]);
@@ -56,5 +56,5 @@ if ($id) {
 
 require_login($course, true, $cm);
 
-$url = new \moodle_url('/course/view.php', array('id' => $course->id, 'section' => $cm->sectionnum), 'module-' . $id);
+$url = new \moodle_url('/course/view.php', ['id' => $course->id, 'section' => $cm->sectionnum], 'module-' . $id);
 redirect($url);

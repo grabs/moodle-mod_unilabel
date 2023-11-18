@@ -15,27 +15,33 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel type course teaser
+ * unilabel type course teaser.
  *
  * @package     unilabeltype_courseteaser
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @param mixed $course
+ * @param mixed $cm
+ * @param mixed $context
+ * @param mixed $filearea
+ * @param mixed $args
+ * @param mixed $forcedownload
  */
 
 /**
- * Send files provided by this plugin
+ * Send files provided by this plugin.
  *
- * @param \stdClass $course
- * @param \stdClass $cm
- * @param \context $context
- * @param string $filearea
- * @param array $args
- * @param bool $forcedownload
+ * @param  \stdClass $course
+ * @param  \stdClass $cm
+ * @param  \context  $context
+ * @param  string    $filearea
+ * @param  array     $args
+ * @param  bool      $forcedownload
  * @return bool
  */
 function unilabeltype_courseteaser_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload) {
-    $itemid = (int)array_shift($args);
+    $itemid       = (int) array_shift($args);
     $relativepath = implode('/', $args);
 
     // We switch the given component "unilabeltype_courseteaser" with the original "course".
@@ -47,5 +53,6 @@ function unilabeltype_courseteaser_pluginfile($course, $cm, $context, $filearea,
             send_stored_file($file, 0, 0, true); // Download MUST be forced - security!
         }
     }
+
     return false;
 }

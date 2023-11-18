@@ -15,32 +15,31 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel type course teaser
+ * unilabel type course teaser.
  *
  * @package     unilabeltype_courseteaser
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 defined('MOODLE_INTERNAL') || die;
 
-$string['carousel'] = 'Carousel';
-$string['carouselinterval'] = 'Interval';
-$string['courses'] = 'Courses';
-$string['columns'] = 'Columns';
-$string['columnsmiddle'] = 'Columns middle';
-$string['columnssmall'] = 'Columns small';
-$string['columns_help'] = 'This setting is only used if the presentation is "carousel"';
-$string['custombutton'] = 'Custom button';
+$string['carousel']                 = 'Carousel';
+$string['carouselinterval']         = 'Interval';
+$string['courses']                  = 'Courses';
+$string['columns']                  = 'Columns';
+$string['columnsmiddle']            = 'Columns middle';
+$string['columnssmall']             = 'Columns small';
+$string['columns_help']             = 'This setting is only used if the presentation is "carousel"';
+$string['custombutton']             = 'Custom button';
 $string['default_carouselinterval'] = 'Default interval';
-$string['default_columns'] = 'Default columns';
-$string['default_showintro'] = 'Default show unilabel text';
-$string['default_presentation'] = 'Default presentation';
-$string['grid'] = 'Grid';
-$string['nocontent'] = 'No content';
-$string['pluginname'] = 'Course teaser';
-$string['pluginname_help'] = 'This content type shows you the image and/or the title of the selected courses. The shown element is a big click button that brings the user to the related course.';
-$string['presentation'] = 'Presentation';
-$string['privacy:metadata'] = 'The unilabel type Course teaser does not store any personal data.';
-$string['showunilabeltext'] = 'Show unilabel text';
+$string['default_columns']          = 'Default columns';
+$string['default_showintro']        = 'Default show unilabel text';
+$string['default_presentation']     = 'Default presentation';
+$string['grid']                     = 'Grid';
+$string['nocontent']                = 'No content';
+$string['pluginname']               = 'Course teaser';
+$string['pluginname_help']          = 'This content type shows you the image and/or the title of the selected courses. The shown element is a big click button that brings the user to the related course.';
+$string['presentation']             = 'Presentation';
+$string['privacy:metadata']         = 'The unilabel type Course teaser does not store any personal data.';
+$string['showunilabeltext']         = 'Show unilabel text';

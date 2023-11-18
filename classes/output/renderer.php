@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel module
+ * unilabel module.
  *
  * @package     mod_unilabel
  * @author      Andreas Grabs <info@grabs-edv.de>
@@ -37,5 +37,4 @@ namespace mod_unilabel\output;
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class renderer extends \plugin_renderer_base {
-
 }

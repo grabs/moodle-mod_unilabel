@@ -15,18 +15,17 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel type accordion
+ * unilabel type accordion.
  *
  * @package     unilabeltype_accordion
  * @copyright   2022 Stefan Hanauska <stefan.hanauska@csg-in.de>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 defined('MOODLE_INTERNAL') || die;
 
 $page = new admin_settingpage('unilabeltype_accordion', get_string('pluginname', 'unilabeltype_accordion'));
 
-$accordionsettings = array();
+$accordionsettings = [];
 
 $accordionsettings[] = new admin_setting_configcheckbox('unilabeltype_accordion/active',
     get_string('active'),

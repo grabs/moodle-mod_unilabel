@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel module
+ * unilabel module.
  *
  * @package     mod_unilabel
  * @author      Andreas Grabs <info@grabs-edv.de>
@@ -23,14 +23,12 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once("../../config.php");
-require_once("lib.php");
+require_once('../../config.php');
+require_once('lib.php');
 
 $id = required_param('id', PARAM_INT); // The course id and not the cmid.
 require_login($id, true);
 
-$PAGE->set_url('/mod/unilabel/index.php', array('id' => $id));
+$PAGE->set_url('/mod/unilabel/index.php', ['id' => $id]);
 
 redirect("$CFG->wwwroot/course/view.php?id=$id");
-
-

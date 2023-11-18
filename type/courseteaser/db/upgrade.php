@@ -15,18 +15,19 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel type course teaser
+ * unilabel type course teaser.
  *
  * @package     unilabeltype_courseteaser
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @param mixed $oldversion
  */
 
 /**
- * Upgrade hook for this plugin
+ * Upgrade hook for this plugin.
  *
- * @param int $oldversion
+ * @param  int  $oldversion
  * @return bool
  */
 function xmldb_unilabeltype_courseteaser_upgrade($oldversion) {
@@ -35,7 +36,6 @@ function xmldb_unilabeltype_courseteaser_upgrade($oldversion) {
     $dbman = $DB->get_manager();
 
     if ($oldversion < 2019030700) {
-
         // Define field columns to be added to unilabeltype_courseteaser.
         $table = new xmldb_table('unilabeltype_courseteaser');
         $field = new xmldb_field('columns', XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'presentation');
@@ -50,7 +50,6 @@ function xmldb_unilabeltype_courseteaser_upgrade($oldversion) {
     }
 
     if ($oldversion < 2019050900) {
-
         // Define field carouselinterval to be added to unilabeltype_courseteaser.
         $table = new xmldb_table('unilabeltype_courseteaser');
         $field = new xmldb_field('carouselinterval', XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'columns');
@@ -75,7 +74,6 @@ function xmldb_unilabeltype_courseteaser_upgrade($oldversion) {
     }
 
     if ($oldversion < 2020022900) {
-
         // Define field columnsmiddle to be added to unilabeltype_courseteaser.
         $table = new xmldb_table('unilabeltype_courseteaser');
         $field = new xmldb_field('columnsmiddle', XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'columns');

@@ -23,6 +23,7 @@
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 namespace mod_unilabel;
 
 /**
@@ -35,9 +36,8 @@ namespace mod_unilabel;
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class lib_test extends \advanced_testcase {
-
     /**
-     * Test create an instance
+     * Test create an instance.
      *
      * @covers \mod_unilabel\factory
      * @return void
@@ -49,16 +49,16 @@ class lib_test extends \advanced_testcase {
 
         // Prepare the settings and activate all unilabeltypes.
         // The unilabeltype "simpletext" is an exception. This type always is active.
-        $plugins = \core_component::get_plugin_list('unilabeltype');
+        $plugins         = \core_component::get_plugin_list('unilabeltype');
         $countallplugins = count($plugins);
         foreach ($plugins as $name => $notused) {
             if ($name == 'simpletext') {
                 continue;
             }
-            set_config('active', true, 'unilabeltype_'.$name);
+            set_config('active', true, 'unilabeltype_' . $name);
         }
 
-        $unilabeltypes = \mod_unilabel\factory::get_plugin_list();
+        $unilabeltypes      = \mod_unilabel\factory::get_plugin_list();
         $countactiveplugins = count($unilabeltypes);
 
         // Do we have found plugins at all?
@@ -85,10 +85,10 @@ class lib_test extends \advanced_testcase {
             if ($name == 'simpletext') {
                 continue;
             }
-            set_config('active', false, 'unilabeltype_'.$name);
+            set_config('active', false, 'unilabeltype_' . $name);
         }
 
-        $unilabeltypes = \mod_unilabel\factory::get_plugin_list();
+        $unilabeltypes      = \mod_unilabel\factory::get_plugin_list();
         $countactiveplugins = count($unilabeltypes);
         $this->assertEquals(1, $countactiveplugins);
     }

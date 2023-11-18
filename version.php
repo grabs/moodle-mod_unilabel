@@ -15,19 +15,18 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel module
+ * unilabel module.
  *
  * @package     mod_unilabel
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+defined('MOODLE_INTERNAL') || die;
 
-defined('MOODLE_INTERNAL') || die();
-
-$plugin->version   = 2023042305;     // The current version.
-$plugin->release   = '4.1.5 (Build: 2023091600)';
-$plugin->maturity  = MATURITY_STABLE;
+$plugin->version  = 2023111600;     // The current version.
+$plugin->release  = '4.3.0 (Build: 2023111600)';
+$plugin->maturity = MATURITY_STABLE;
 
 $plugin->requires  = 2022111800;     // Requires Moodle 4.1.
 $plugin->component = 'mod_unilabel'; // Full name of the plugin (used for diagnostics).

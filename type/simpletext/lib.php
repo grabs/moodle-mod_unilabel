@@ -15,23 +15,29 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel type simple text
+ * unilabel type simple text.
  *
  * @package     unilabeltype_simpletext
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @param mixed $course
+ * @param mixed $cm
+ * @param mixed $context
+ * @param mixed $filearea
+ * @param mixed $args
+ * @param mixed $forcedownload
  */
 
 /**
- * Send files provided by this plugin
+ * Send files provided by this plugin.
  *
- * @param \stdClass $course
- * @param \stdClass $cm
- * @param \context $context
- * @param string $filearea
- * @param array $args
- * @param bool $forcedownload
+ * @param  \stdClass $course
+ * @param  \stdClass $cm
+ * @param  \context  $context
+ * @param  string    $filearea
+ * @param  array     $args
+ * @param  bool      $forcedownload
  * @return bool
  */
 function unilabeltype_simpletext_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload) {

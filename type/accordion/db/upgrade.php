@@ -15,17 +15,18 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel type accordion db upgrade
+ * unilabel type accordion db upgrade.
  *
  * @package     unilabeltype_accordion
  * @copyright   2022 Stefan Hanauska <stefan.hanauska@csg-in.de>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @param mixed $oldversion
  */
 
 /**
- * Upgrade hook for this plugin
+ * Upgrade hook for this plugin.
  *
- * @param int $oldversion
+ * @param  int  $oldversion
  * @return bool
  */
 function xmldb_unilabeltype_accordion_upgrade($oldversion) {

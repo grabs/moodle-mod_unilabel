@@ -16,33 +16,31 @@
 
 namespace unilabeltype_accordion;
 
-use stdClass;
-
 /**
- * Class defining the accordion content type
+ * Class defining the accordion content type.
  *
  * @package     unilabeltype_accordion
  * @copyright   2022 Stefan Hanauska <stefan.hanauska@csg-in.de>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class content_type extends \mod_unilabel\content_type {
-    /** @var \stdClass $record */
+    /** @var \stdClass */
     private $record;
 
-    /** @var array $slides */
+    /** @var array */
     private $segments;
 
-    /** @var \stdClass $cm */
+    /** @var \stdClass */
     private $cm;
 
-    /** @var \context $context */
+    /** @var \context */
     private $context;
 
-    /** @var \stdClass $config */
+    /** @var \stdClass */
     private $config;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @return void
      */
@@ -51,7 +49,7 @@ class content_type extends \mod_unilabel\content_type {
     }
 
     /**
-     * Get the namespace of this content type
+     * Get the namespace of this content type.
      *
      * @return string
      */
@@ -60,9 +58,9 @@ class content_type extends \mod_unilabel\content_type {
     }
 
     /**
-     * Load and cache the unilabel record
+     * Load and cache the unilabel record.
      *
-     * @param int $unilabelid
+     * @param  int       $unilabelid
      * @return \stdClass
      */
     public function load_unilabeltype_record($unilabelid) {
@@ -70,64 +68,67 @@ class content_type extends \mod_unilabel\content_type {
 
         if (empty($this->record)) {
             if (!$this->record = $DB->get_record('unilabeltype_accordion', ['unilabelid' => $unilabelid])) {
-                $this->segments = array();
+                $this->segments = [];
+
                 return;
             }
-            $this->cm = get_coursemodule_from_instance('unilabel', $unilabelid);
+            $this->cm      = get_coursemodule_from_instance('unilabel', $unilabelid);
             $this->context = \context_module::instance($this->cm->id);
 
-            $this->segments = $DB->get_records('unilabeltype_accordion_seg', array('accordionid' => $this->record->id));
+            $this->segments = $DB->get_records('unilabeltype_accordion_seg', ['accordionid' => $this->record->id]);
         }
+
         return $this->record;
     }
 
     /**
      * Get the html formated content for this type.
      *
-     * @param \stdClass $unilabel
-     * @param \stdClass $cm
-     * @param \plugin_renderer_base $renderer
+     * @param  \stdClass             $unilabel
+     * @param  \stdClass             $cm
+     * @param  \plugin_renderer_base $renderer
      * @return string
      */
     public function get_content($unilabel, $cm, \plugin_renderer_base $renderer) {
         if (!$this->load_unilabeltype_record($unilabel->id)) {
             $content = [
-                'intro' => get_string('nocontent', 'unilabeltype_accordion'),
-                'cmid' => $cm->id,
+                'intro'    => get_string('nocontent', 'unilabeltype_accordion'),
+                'cmid'     => $cm->id,
                 'segments' => [],
             ];
         } else {
-            $intro = $this->format_intro($unilabel, $cm);
-            $showintro = !empty($this->record->showintro);
+            $intro          = $this->format_intro($unilabel, $cm);
+            $showintro      = !empty($this->record->showintro);
             $this->segments = array_values($this->segments);
-            $this->segments = array_map(function($v) {
-                 $v->heading = file_rewrite_pluginfile_urls(
-                     $v->heading,
-                     'pluginfile.php',
-                     $this->context->id,
-                     'unilabeltype_accordion',
-                     'heading',
-                     $v->id
-                 );
-                 $v->content = file_rewrite_pluginfile_urls(
-                     $v->content,
-                     'pluginfile.php',
-                     $this->context->id,
-                     'unilabeltype_accordion',
-                     'content',
-                     $v->id
-                 );
-                 return $v;
+            $this->segments = array_map(function ($v) {
+                $v->heading = file_rewrite_pluginfile_urls(
+                    $v->heading,
+                    'pluginfile.php',
+                    $this->context->id,
+                    'unilabeltype_accordion',
+                    'heading',
+                    $v->id
+                );
+                $v->content = file_rewrite_pluginfile_urls(
+                    $v->content,
+                    'pluginfile.php',
+                    $this->context->id,
+                    'unilabeltype_accordion',
+                    'content',
+                    $v->id
+                );
+
+                return $v;
             }, $this->segments);
             $content = [
                 'showintro' => $showintro,
-                'intro' => $showintro ? $intro : '',
-                'segments' => array_filter(array_values($this->segments), function($v) {
+                'intro'     => $showintro ? $intro : '',
+                'segments'  => array_filter(array_values($this->segments), function ($v) {
                     return $v->heading != '' && $v->content != '';
                 }),
-                'cmid' => $cm->id,
-                'plugin' => 'unilabeltype_accordion',
-                'collapse' => $this->record->type == 1
+                'cmid'     => $cm->id,
+                'plugin'   => 'unilabeltype_accordion',
+                'collapse' => $this->record->type == 1,
             ];
         }
 
@@ -137,9 +138,9 @@ class content_type extends \mod_unilabel\content_type {
     }
 
     /**
-     * Delete the content of this type
+     * Delete the content of this type.
      *
-     * @param int $unilabelid
+     * @param  int  $unilabelid
      * @return void
      */
     public function delete_content($unilabelid) {
@@ -158,14 +159,14 @@ class content_type extends \mod_unilabel\content_type {
     /**
      * Add elements to the activity settings form.
      *
-     * @param \mod_unilabel\edit_content_form $form
-     * @param \context $context
+     * @param  \mod_unilabel\edit_content_form $form
+     * @param  \context                        $context
      * @return void
      */
     public function add_form_fragment(\mod_unilabel\edit_content_form $form, \context $context) {
         $this->load_unilabeltype_record($form->unilabel->id);
 
-        $mform = $form->get_mform();
+        $mform  = $form->get_mform();
         $prefix = 'unilabeltype_accordion_';
 
         $mform->addElement('advcheckbox', $prefix . 'showintro', get_string('showunilabeltext', 'unilabeltype_accordion'));
@@ -173,12 +174,12 @@ class content_type extends \mod_unilabel\content_type {
         $mform->addElement('advcheckbox', $prefix . 'type', get_string('collapse', 'unilabeltype_accordion'));
 
         $textfieldoptions = [
-            'subdirs' => true,
-            'context' => $context,
-            'maxfiles' => EDITOR_UNLIMITED_FILES
+            'subdirs'  => true,
+            'context'  => $context,
+            'maxfiles' => EDITOR_UNLIMITED_FILES,
         ];
 
-        $repeatarray = [];
+        $repeatarray   = [];
         $repeatarray[] = $mform->createElement(
             'header',
             $prefix . 'segment-header',
@@ -206,7 +207,7 @@ class content_type extends \mod_unilabel\content_type {
         );
         $mform->registerNoSubmitButton($prefix . 'delete_segment');
 
-        $repeatedoptions = [];
+        $repeatedoptions                              = [];
         $repeatedoptions[$prefix . 'heading']['type'] = PARAM_RAW;
         $repeatedoptions[$prefix . 'content']['type'] = PARAM_RAW;
         // Adding the help buttons.
@@ -214,7 +215,7 @@ class content_type extends \mod_unilabel\content_type {
         $repeatedoptions[$prefix . 'content']['helpbutton'] = ['content', 'unilabeltype_accordion', '', true];
 
         $defaultrepeatcount = 3; // The default count for segments.
-        $repeatcount = max((count($this->segments) / $defaultrepeatcount) * $defaultrepeatcount, $defaultrepeatcount);
+        $repeatcount        = max((count($this->segments) / $defaultrepeatcount) * $defaultrepeatcount, $defaultrepeatcount);
         $form->repeat_elements(
             $repeatarray,
             $repeatcount,
@@ -229,30 +230,31 @@ class content_type extends \mod_unilabel\content_type {
     }
 
     /**
-     * Get the default values for the settings form
+     * Get the default values for the settings form.
      *
-     * @param array $data
-     * @param \stdClass $unilabel
+     * @param  array     $data
+     * @param  \stdClass $unilabel
      * @return array
      */
     public function get_form_default($data, $unilabel) {
         global $DB;
 
-        $cm = get_coursemodule_from_instance('unilabel', $unilabel->id);
+        $cm      = get_coursemodule_from_instance('unilabel', $unilabel->id);
         $context = \context_module::instance($cm->id);
 
         $prefix = 'unilabeltype_accordion_';
 
         if (!$this->load_unilabeltype_record($unilabel->id)) {
             $data[$prefix . 'showintro'] = !empty($this->config->showintro);
+
             return $data;
         }
         $data[$prefix . 'showintro'] = $this->record->showintro;
-        $data[$prefix . 'type'] = $this->record->type;
+        $data[$prefix . 'type']      = $this->record->type;
 
         if (!$segments = $DB->get_records(
             'unilabeltype_accordion_seg',
-            array('accordionid' => $this->record->id),
+            ['accordionid' => $this->record->id],
             'id ASC'
         )) {
             return $data;
@@ -261,10 +263,10 @@ class content_type extends \mod_unilabel\content_type {
         $index = 0;
         foreach ($segments as $segment) {
             // Prepare the heading field.
-            $elementname = $prefix . 'heading[' . $index . ']';
+            $elementname                  = $prefix . 'heading[' . $index . ']';
             $data[$elementname]['format'] = FORMAT_HTML;
-            $draftid = file_get_submitted_draft_itemid($elementname);
-            $data[$elementname]['text'] = file_prepare_draft_area(
+            $draftid                      = file_get_submitted_draft_itemid($elementname);
+            $data[$elementname]['text']   = file_prepare_draft_area(
                 $draftid,
                 $context->id,
                 'unilabeltype_accordion',
@@ -276,11 +278,11 @@ class content_type extends \mod_unilabel\content_type {
             $data[$elementname]['itemid'] = $draftid;
 
             // Prepare the content field.
-            $elementname = $prefix . 'content[' . $index . ']';
-            $data[$elementname]['text'] = $segment->content;
+            $elementname                  = $prefix . 'content[' . $index . ']';
+            $data[$elementname]['text']   = $segment->content;
             $data[$elementname]['format'] = FORMAT_HTML;
-            $draftid = file_get_submitted_draft_itemid($elementname);
-            $data[$elementname]['text'] = file_prepare_draft_area(
+            $draftid                      = file_get_submitted_draft_itemid($elementname);
+            $data[$elementname]['text']   = file_prepare_draft_area(
                 $draftid,
                 $context->id,
                 'unilabeltype_accordion',
@@ -291,17 +293,17 @@ class content_type extends \mod_unilabel\content_type {
             );
             $data[$elementname]['itemid'] = $draftid;
 
-            $index++;
+            ++$index;
         }
 
         return $data;
     }
 
     /**
-     * Save the content from settings page
+     * Save the content from settings page.
      *
-     * @param \stdClass $formdata
-     * @param \stdClass $unilabel
+     * @param  \stdClass $formdata
+     * @param  \stdClass $unilabel
      * @return bool
      */
     public function save_content($formdata, $unilabel) {
@@ -313,33 +315,33 @@ class content_type extends \mod_unilabel\content_type {
 
         // First save the accordion record.
         if (!$record = $DB->get_record('unilabeltype_accordion', ['unilabelid' => $unilabel->id])) {
-            $record = new \stdClass();
+            $record             = new \stdClass();
             $record->unilabelid = $unilabel->id;
-            $record->id = $DB->insert_record('unilabeltype_accordion', $record);
+            $record->id         = $DB->insert_record('unilabeltype_accordion', $record);
         }
 
         $record->showintro = $formdata->{$prefix . 'showintro'};
-        $record->type = $formdata->{$prefix . 'type'};
+        $record->type      = $formdata->{$prefix . 'type'};
 
         $DB->update_record('unilabeltype_accordion', $record);
 
-        $fs = get_file_storage();
+        $fs      = get_file_storage();
         $context = \context_module::instance($formdata->cmid);
 
         $fs->delete_area_files($context->id, 'unilabeltype_accordion', 'heading');
         $fs->delete_area_files($context->id, 'unilabeltype_accordion', 'content');
 
-        $DB->delete_records('unilabeltype_accordion_seg', array('accordionid' => $record->id));
+        $DB->delete_records('unilabeltype_accordion_seg', ['accordionid' => $record->id]);
 
         $potentialsegmentcount = $formdata->{$prefix . 'chosen_segments_count'};
-        for ($i = 0; $i < $potentialsegmentcount; $i++) {
+        for ($i = 0; $i < $potentialsegmentcount; ++$i) {
             if (!isset($formdata->{$prefix . 'heading'}[$i])) {
                 continue;
             }
             $heading = $formdata->{$prefix . 'heading'}[$i]['text'];
             $content = $formdata->{$prefix . 'content'}[$i]['text'];
 
-            $segmentrecord = new \stdClass();
+            $segmentrecord              = new \stdClass();
             $segmentrecord->accordionid = $record->id;
 
             $segmentrecord->heading = file_rewrite_urls_to_pluginfile($heading, $formdata->{$prefix . 'heading'}[$i]['itemid']);
@@ -374,7 +376,7 @@ class content_type extends \mod_unilabel\content_type {
     /**
      * Check that this plugin is activated on config settings.
      *
-     * @return boolean
+     * @return bool
      */
     public function is_active() {
         return !empty($this->config->active);

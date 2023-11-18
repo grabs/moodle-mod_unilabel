@@ -24,6 +24,8 @@
         "intro": "",
         "interval": "5",
         "height": 300,
+        "fontawesomeprev": "fa-solid fa-forward",
+        "fontawesomenext": "fa-solid fa-forward",
         "items": [
             {
                 "courseid": "3",
@@ -78,8 +80,14 @@
         </div>
 
         <!-- Left and right controls -->
-        {{< unilabeltype_courseteaser/carousel_control}} {{$direction}}next{{/direction}} {{/ unilabeltype_courseteaser/carousel_control}}
-        {{< unilabeltype_courseteaser/carousel_control}} {{$direction}}prev{{/direction}} {{/ unilabeltype_courseteaser/carousel_control}}
+        {{< unilabeltype_courseteaser/carousel_control}}{{!
+            }} {{$direction}}next{{/direction}}{{!
+            }} {{$icon}}{{#fontawesomenext}}{{.}}{{/fontawesomenext}}{{^fontawesomenext}}d-none{{/fontawesomenext}}{{/icon}}{{!
+            }} {{/ unilabeltype_courseteaser/carousel_control}}
+        {{< unilabeltype_courseteaser/carousel_control}}{{!
+            }} {{$direction}}prev{{/direction}}{{!
+            }} {{$icon}}{{#fontawesomeprev}}{{.}}{{/fontawesomeprev}}{{^fontawesomeprev}}d-none{{/fontawesomeprev}}{{/icon}}{{!
+            }} {{/ unilabeltype_courseteaser/carousel_control}}
     </div>
 {{/hasitems}}
 {{^hasitems}}

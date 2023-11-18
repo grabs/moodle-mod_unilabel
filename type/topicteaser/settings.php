@@ -15,19 +15,18 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel type topic teaser
+ * unilabel type topic teaser.
  *
  * @package     unilabeltype_topicteaser
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 defined('MOODLE_INTERNAL') || die;
 
 $page = new admin_settingpage('unilabeltype_topicteaser', get_string('pluginname', 'unilabeltype_topicteaser'));
 
-$topicteasersettings = array();
+$topicteasersettings = [];
 
 $topicteasersettings[] = new admin_setting_configcheckbox('unilabeltype_topicteaser/active',
     get_string('active'),
@@ -41,7 +40,7 @@ $topicteasersettings[] = new admin_setting_configcheckbox('unilabeltype_topictea
     true
 );
 
-$numbers = array_combine(range(1, 10), range(1, 10));
+$numbers               = array_combine(range(1, 10), range(1, 10));
 $topicteasersettings[] = new admin_setting_configselect('unilabeltype_topicteaser/carouselinterval',
     get_string('default_carouselinterval', 'unilabeltype_topicteaser'),
     '',
@@ -49,7 +48,7 @@ $topicteasersettings[] = new admin_setting_configselect('unilabeltype_topictease
     $numbers
 );
 
-$numbers = array_combine(range(1, 6), range(1, 6));
+$numbers               = array_combine(range(1, 6), range(1, 6));
 $topicteasersettings[] = new admin_setting_configselect('unilabeltype_topicteaser/columns',
     get_string('default_columns', 'unilabeltype_topicteaser'),
     get_string('columns_help', 'unilabeltype_topicteaser'),
@@ -57,10 +56,10 @@ $topicteasersettings[] = new admin_setting_configselect('unilabeltype_topictease
     $numbers
 );
 
-$select = array(
+$select = [
     'carousel' => get_string('carousel', 'unilabeltype_topicteaser'),
-    'grid' => get_string('grid', 'unilabeltype_topicteaser'),
-);
+    'grid'     => get_string('grid', 'unilabeltype_topicteaser'),
+];
 $topicteasersettings[] = new admin_setting_configselect(
     'unilabeltype_topicteaser/presentation',
     get_string('default_presentation', 'unilabeltype_topicteaser'),
@@ -69,10 +68,10 @@ $topicteasersettings[] = new admin_setting_configselect(
     $select
 );
 
-$select = array(
-    'opendialog' => get_string('opendialog', 'unilabeltype_topicteaser'),
+$select = [
+    'opendialog'    => get_string('opendialog', 'unilabeltype_topicteaser'),
     'opencourseurl' => get_string('opencourseurl', 'unilabeltype_topicteaser'),
-);
+];
 $topicteasersettings[] = new admin_setting_configselect(
     'unilabeltype_topicteaser/clickaction',
     get_string('default_clickaction', 'unilabeltype_topicteaser'),
@@ -104,4 +103,3 @@ foreach ($topicteasersettings as $setting) {
 }
 
 $settingscategory->add($page);
-

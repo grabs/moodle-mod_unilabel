@@ -15,19 +15,18 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel type carousel
+ * unilabel type carousel.
  *
  * @package     unilabeltype_carousel
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 defined('MOODLE_INTERNAL') || die;
 
 $page = new admin_settingpage('unilabeltype_carousel', get_string('pluginname', 'unilabeltype_carousel'));
 
-$carouselsettings = array();
+$carouselsettings = [];
 
 $carouselsettings[] = new admin_setting_configcheckbox('unilabeltype_carousel/active',
     get_string('active'),
@@ -40,7 +39,7 @@ $carouselsettings[] = new admin_setting_configcheckbox('unilabeltype_carousel/au
     true
 );
 
-$numbers = array_combine(range(1, 10), range(1, 10));
+$numbers            = array_combine(range(1, 10), range(1, 10));
 $carouselsettings[] = new admin_setting_configselect('unilabeltype_carousel/carouselinterval',
     get_string('default_carouselinterval', 'unilabeltype_carousel'),
     '',
@@ -48,8 +47,8 @@ $carouselsettings[] = new admin_setting_configselect('unilabeltype_carousel/caro
     $numbers
 );
 
-$numbers = array_combine(range(100, 600, 50), range(100, 600, 50));
-$numbers = array(0 => get_string('autoheight', 'unilabeltype_carousel')) + $numbers;
+$numbers            = array_combine(range(100, 600, 50), range(100, 600, 50));
+$numbers            = [0 => get_string('autoheight', 'unilabeltype_carousel')] + $numbers;
 $carouselsettings[] = new admin_setting_configselect('unilabeltype_carousel/height',
     get_string('default_height', 'unilabeltype_carousel'),
     get_string('height_help', 'unilabeltype_carousel'),

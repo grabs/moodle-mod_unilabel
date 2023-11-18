@@ -26,56 +26,42 @@
         "values": [
             {
                 "value": 0,
-                "title": "Design"
+                "title": "Design",
+                "istext": 1
             },
             {
                 "value": 1,
-                "title": "\\f105"
+                "title": "fa-solid fa-arrow-right"
             },
             {
                 "value": 2,
-                "title": "\\f101"
-            },
-            {
-                "value": 3,
-                "title": "\\f04e"
-            },
-            {
-                "value": 4,
-                "title": "\\f0da",
-                "checked": "checked"
-            },
-            {
-                "value": 5,
-                "title": "\\f0a4"
-            },
-            {
-                "value": 6,
-                "title": "\\f061"
-            },
-            {
-                "value": 7,
-                "title": "\\f0a9"
-            },
-            {
-                "value": 8,
-                "title": "\\f18e"
+                "title": "fa-solid fa-angle-right"
             }
         ],
         "cssjsonstring": "'css-selector {overflow: hidden;}'",
-        "currentvalue": 4
+        "currentvalue": "fa-solid fa-arrow-right"
     }
 }}
 <div class="dropdown">
     <button type="button" id="btn-{{id}}" class="btn py-0 my-0 pr-2 border dropdown-toggle" data-toggle="dropdown">
-        <span class="button-{{currentvalue}}"></span>
+        {{#currentvalueistext}}
+            {{currentvalue}}
+        {{/currentvalueistext}}
+        {{^currentvalueistext}}
+            <i class="{{currentvalue}}"></i>
+        {{/currentvalueistext}}
     </button>
     <div id="dd-{{id}}" class="dropdown-menu">
         {{#values}}
             <div class="dropdown-item px-2{{#checked}} checked{{/checked}}">
                 <input class="d-none" type="radio" id="{{name}}_{{value}}" name="{{name}}" value="{{value}}"{{#checked}} checked="checked"{{/checked}}>
                 <label class="w-100" for="{{name}}_{{value}}">
-                    <span class="button-{{value}}"></span>
+                    {{#istext}}
+                        {{title}}
+                    {{/istext}}
+                    {{^istext}}
+                        <i class="{{title}}"></i>
+                    {{/istext}}
                 </label>
             </div>
         {{/values}}
