@@ -1,5 +1,8 @@
 ## Release notes
 
+### Release 4.3.1
+* mod_unilabel: prevent loading activities like inline folder (#36)
+
 ### Release 4.3.0
 * Add the great new unilabel type imageboard from Andreas Schenkel (https://github.com/andreasschenkel/moodle-unilabeltype_imageboard)
 * Apply new coding style rules
