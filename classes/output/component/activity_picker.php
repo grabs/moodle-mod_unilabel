@@ -61,6 +61,9 @@ class activity_picker implements \renderable, \templatable {
                 $activityinfo               = new \stdClass();
                 $activityinfo->activityname = $cm->get_name();
                 $activityinfo->url          = $cm->get_url();
+                if (empty($activityinfo->url)) { // Remove activities without urls like folder showing their content inline.
+                    continue;
+                }
                 $activityinfo->modstealth   = $cm->is_stealth();
                 $activityinfo->stealthinfo  = $strstealthinfo;
 
