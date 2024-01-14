@@ -60,6 +60,11 @@
     border-width: 2px;
 }
 
+/* Hyphenation to break long words, for example in the grid  */
+.unilabel-hyphens {
+    hyphens: auto;
+}
+
 /***********************************************/
 /*
 This is a workaround for a five-column grid.
