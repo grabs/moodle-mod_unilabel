@@ -36,6 +36,10 @@
     overflow: hidden;
     z-index: 998;
 }
+
+.unilabel-hyphens {
+    hyphens: auto;
+}
 /***********************************************/
 /*
 This is a workaround for a five-column grid.
