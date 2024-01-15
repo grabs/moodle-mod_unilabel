@@ -15,7 +15,7 @@
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
 {{!
-    @template mod_unilabel/setting_configselect
+    @template mod_unilabel/setting_configselect_style
     Template to show a dropdown select box with graphical icons for the custom buttons.
 
     Example context (json):
@@ -42,13 +42,11 @@ div#dd-{{id}} .dropdown-item:focus {
     color: #ffffff;
 }
 div#dd-{{id}} label span::after {
-    font-family: "Font Awesome 6 Free";
     font-weight: normal;
     font-size: 15px;
 }
 
 #btn-{{id}} span::after {
-    font-family: "Font Awesome 6 Free";
     font-weight: normal;
     font-size: 25px;
 }

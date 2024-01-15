@@ -1,5 +1,9 @@
 ## Release notes
 
+### Release 4.3.2
+* Fixed wrong Font Awesome in css
+* Type collapsedtext now use Moodle css classes to show the carets for collapsed and expanded.
+
 ### Release 4.3.1
 * mod_unilabel: prevent loading activities like inline folder (#36)
 

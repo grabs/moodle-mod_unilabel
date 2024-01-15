@@ -38,15 +38,21 @@
 
 {{#useanimation}}
     <div class="unilabeltype-collapsed">
-        <a id="unilabel-button-{{uniqid}}-{{cmid}}" class="unilabel-title{{^openonstart}} collapsed{{/openonstart}}"
-                data-toggle="collapse"
-                data-target="#unilabeltype-collapsed-{{uniqid}}-{{cmid}}"
-                href="#unilabeltype-collapsed-{{uniqid}}-{{cmid}}"
-                role="button"
-                aria-expanded="false"
-                aria-controls="unilabeltype-collapsed-{{uniqid}}-{{cmid}}"
-        >
-            <span class="unilabeltype-collapsed-caret"> </span> {{{title}}}
+        <a data-toggle="collapse"
+           href="#unilabeltype-collapsed-{{uniqid}}-{{cmid}}"
+           class="icons-collapse-expand {{^openonstart}}collapsed{{/openonstart}}"
+           aria-expanded="true"
+           aria-controls="unilabeltype-collapsed-{{uniqid}}-{{cmid}}" tabindex="-1">
+            <span class="collapsed-icon icon-no-margin mr-1" title="{{srtitle_expand}}" tabindex="-1">
+                <span class="dir-rtl-hide" tabindex="-1"><i class="icon fa fa-chevron-right fa-fw " aria-hidden="true" tabindex="-1"></i></span>
+                <span class="dir-ltr-hide" tabindex="-1"><i class="icon fa fa-chevron-left fa-fw " aria-hidden="true" tabindex="-1"></i></span>
+                <span class="sr-only" tabindex="-1">{{srtitle_expand}}</span>
+            </span>
+            <span class="expanded-icon icon-no-margin mr-1" title="{{srtitle_collapse}}" tabindex="-1">
+                <i class="icon fa fa-chevron-down fa-fw " aria-hidden="true" tabindex="-1"></i>
+                <span class="sr-only" tabindex="-1">{{srtitle_collapse}}</span>
+            </span>
+            {{title}}
         </a>
         <div class="collapse{{#openonstart}} show{{/openonstart}}" id="unilabeltype-collapsed-{{uniqid}}-{{cmid}}">
             {{{content}}}
