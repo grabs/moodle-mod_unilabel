@@ -230,12 +230,12 @@ class content_type extends \mod_unilabel\content_type {
 
         // Set default data for the grid in generel.
         if (!$unilabeltyperecord = $this->load_unilabeltype_record($unilabel->id)) {
-            $data[$prefix . 'columns']       = $this->config->columns;
-            $data[$prefix . 'columnsmiddle'] = $this->get_default_col_middle($this->config->columns);
+            $data[$prefix . 'columns']       = $this->config->columns ?? 4;
+            $data[$prefix . 'columnsmiddle'] = $this->get_default_col_middle($this->config->columns ?? 4);
             $data[$prefix . 'defaultmiddle'] = true;
             $data[$prefix . 'columnssmall']  = $this->get_default_col_small();
             $data[$prefix . 'defaultsmall']  = true;
-            $data[$prefix . 'height']        = $this->config->height;
+            $data[$prefix . 'height']        = $this->config->height ?? 300;
             $data[$prefix . 'showintro']     = !empty($this->config->showintro);
             $data[$prefix . 'usemobile']     = !empty($this->config->usemobile);
 
