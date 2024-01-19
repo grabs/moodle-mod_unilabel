@@ -58,5 +58,20 @@ function xmldb_unilabeltype_grid_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2020022900, 'unilabeltype', 'grid');
     }
 
+    if ($oldversion < 2023121501) {
+
+        // Define field sortorder to be added to unilabeltype_grid_tile.
+        $table = new xmldb_table('unilabeltype_grid_tile');
+        $field = new xmldb_field('sortorder', XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'gridid');
+
+        // Conditionally launch add field sortorder.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Grid savepoint reached.
+        upgrade_plugin_savepoint(true, 2023121501, 'unilabeltype', 'grid');
+    }
+
     return true;
 }

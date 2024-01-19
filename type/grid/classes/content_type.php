@@ -65,7 +65,7 @@ class content_type extends \mod_unilabel\content_type {
      * @return void
      */
     public function add_form_fragment(\mod_unilabel\edit_content_form $form, \context $context) {
-        global $OUTPUT;
+        global $PAGE, $OUTPUT;
 
         $unilabeltyperecord = $this->load_unilabeltype_record($form->unilabel->id);
 
@@ -130,7 +130,8 @@ class content_type extends \mod_unilabel\content_type {
         $repeatarray = [];
         // If we want each repeated elment in a numbered group we add a header with '{no}' in its label.
         // This is replaced by the number of element.
-        $repeatarray[] = $mform->createElement('header', $prefix . 'tilehdr', get_string('tile', 'unilabeltype_grid') . '-{no}');
+        $elementheader = $mform->createElement('header', 'singleelementheader', get_string('tile', 'unilabeltype_grid') . '-{no}');
+        $repeatarray[] = $elementheader;
         $repeatarray[] = $mform->createElement(
             'text',
             $prefix . 'title',
@@ -192,25 +193,33 @@ class content_type extends \mod_unilabel\content_type {
         $repeatedoptions[$prefix . 'url']['helpbutton']          = ['url', 'unilabeltype_grid'];
         $repeatedoptions[$prefix . 'image_mobile']['helpbutton'] = ['image_mobile', 'unilabeltype_grid'];
 
-        $defaultrepeatcount = 4; // The default count for tiles.
+        $defaultrepeatcount = 1; // The default count for tiles.
         $repeatcount        = count($this->tiles);
-        if ($rest = count($this->tiles) % $defaultrepeatcount) {
-            $repeatcount = count($this->tiles) + ($defaultrepeatcount - $rest);
-        }
-        if ($repeatcount == 0) {
-            $repeatcount = $defaultrepeatcount;
-        }
+        // if ($rest = count($this->tiles) % $defaultrepeatcount) {
+        //     $repeatcount = count($this->tiles) + ($defaultrepeatcount - $rest);
+        // }
+        // if ($repeatcount == 0) {
+        //     $repeatcount = $defaultrepeatcount;
+        // }
 
         $nextel = $form->repeat_elements(
             $repeatarray,
             $repeatcount,
             $repeatedoptions,
-            $prefix . 'chosen_tiles_count',
-            $prefix . 'add_more_tiles_btn',
+            $prefix . 'chosen_elements_count',
+            $prefix . 'add_more_elements_btn',
             $defaultrepeatcount, // Each time we add 3 elements.
             get_string('addmoretiles', 'unilabeltype_grid'),
             false
         );
+
+        $btn = $OUTPUT->render_from_template('unilabeltype_grid/load_element_button', [
+            'formid' => $formid,
+            'contextid' => $context->id,
+            'courseid' => $course->id,
+            'prefix' => $prefix,
+        ]);
+        $mform->addElement('html', $btn);
     }
 
     /**
@@ -434,7 +443,7 @@ class content_type extends \mod_unilabel\content_type {
 
         // How many tiles could be defined (we have an array here)?
         // They may not all used so some could be left out.
-        $potentialtilecount = $formdata->{$prefix . 'chosen_tiles_count'};
+        $potentialtilecount = $formdata->{$prefix . 'chosen_elements_count'};
         for ($i = 0; $i < $potentialtilecount; ++$i) {
             // Get the draftitemids to identify the submitted files in image, imagemobile and content.
             $draftitemid = $formdata->{$prefix . 'image'}[$i];

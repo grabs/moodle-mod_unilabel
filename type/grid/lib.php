@@ -66,3 +66,46 @@ function unilabeltype_grid_pluginfile($course, $cm, $context, $filearea, $args, 
 
     return false;
 }
+
+/**
+ * Get a html fragment.
+ *
+ * @param  mixed  $args an array or object with context and parameters needed to get the data
+ * @return string The html fragment we want to use by ajax
+ */
+function unilabeltype_grid_output_fragment_get_html($args) {
+    global $CFG, $PAGE, $FULLME, $OUTPUT;
+// return '<h2>Das ist ein Text</h2>';
+    // $editelement = new \unilabeltype_grid\output\edit_element();
+    // return $OUTPUT->render($editelement);
+    // require_once($CFG->libdir . '/formslib.php');
+    // require_once($CFG->libdir . '/form/filemanager.php');
+
+    $PAGE->set_url(new \moodle_url($FULLME));
+    $PAGE->set_context(\context_system::instance());
+
+    $formid = $args['formid'];
+    $context = \context::instance_by_id($args['contextid']);
+    $course = get_course($args['courseid']);
+    $prefix = $args['prefix'];
+    $repeatindex = intval($args['repeatindex']);
+
+    $editelement = new \unilabeltype_grid\output\edit_element(
+        $formid,
+        $context,
+        $course,
+        $prefix,
+        $repeatindex
+    );
+
+    return $OUTPUT->render($editelement);
+
+    // $attributes = [];
+    // $attributes['id'] = '222222';
+    // $attributes['name'] = 'blabblblblblb';
+
+    // $element = new \MoodleQuickForm_filemanager('bla', 'bla-label', $attributes);
+    // $html = $element->toHtml();
+
+    // return $html;
+}
