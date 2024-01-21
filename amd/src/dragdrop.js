@@ -24,6 +24,7 @@ import log from 'core/log';
 import config from 'core/config';
 
 var _formid;
+var _type;
 
 const getDraggableItems = (formid) => {
     let fieldsets = document.querySelectorAll('#' + formid + ' fieldset');
@@ -48,7 +49,7 @@ const resortList = () => {
     log.debug('Changed sortorder');
     document.querySelectorAll('#' + _formid + ' fieldset.draggable').forEach(sortitem => {
         let elementindex = sortitem.dataset.index;
-        let hiddenelement = document.forms[_formid].elements['unilabeltype_grid_sortorder[' + elementindex + ']'];
+        let hiddenelement = document.forms[_formid].elements['unilabeltype_' + _type + '_sortorder[' + elementindex + ']'];
         let oldvalue = hiddenelement.value;
         hiddenelement.value = i + 1;
         log.debug('Element: ' + elementindex + ' - old value: ' + oldvalue + ', new value: ' + hiddenelement.value);
@@ -57,7 +58,8 @@ const resortList = () => {
 };
 
 // Export our init method.
-export const init = (formid) => {
+export const init = (type, formid) => {
+    _type = type;
     _formid = formid;
     const items = getDraggableItems(formid);
     let index = 0;
@@ -80,7 +82,7 @@ export const init = (formid) => {
     });
 
     // Import Sortable from 'js/Sortable.js';
-    return import(config.wwwroot + '/mod/unilabel/type/grid/js/Sortable.min.js').then((Sortable) => {
+    return import(config.wwwroot + '/mod/unilabel/js/Sortable.min.js').then((Sortable) => {
         const mysortablelist = document.querySelector('#' + formid);
         var sortable = Sortable.create(
             mysortablelist,

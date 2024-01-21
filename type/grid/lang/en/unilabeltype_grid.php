@@ -24,7 +24,6 @@
  */
 defined('MOODLE_INTERNAL') || die;
 
-$string['addelement']             = 'Add element';
 $string['addmoretiles']           = 'Add more tiles';
 $string['autoheight']             = 'Auto height';
 $string['background']             = 'Background';
@@ -37,7 +36,6 @@ $string['default_columns']        = 'Default columns';
 $string['default_height']         = 'Default height';
 $string['default_showintro']      = 'Default show unilabel text';
 $string['default_usemobile']      = 'Default use mobile images';
-$string['delete_element_nr']      = 'Delete element {$a}';
 $string['height']                 = 'Height';
 $string['height_help']            = 'If your pictures are of a different size, use the fixed height option. This scales all images to the same height. If your pictures have the same height, you can also use "auto height".';
 $string['image']                  = 'Image';

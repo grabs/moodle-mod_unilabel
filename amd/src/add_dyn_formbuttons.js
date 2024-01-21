@@ -20,20 +20,22 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-import ContentLoader from 'unilabeltype_grid/contentloader';
+import ContentLoader from 'mod_unilabel/contentloader';
 import Templates from 'core/templates';
 import {exception as displayException} from 'core/notification';
 import log from 'core/log';
 
 let _formid;
+let _type;
 
 // Register the del button and get the html from mustache.
-const registerDelButton = (headerelement, index) => {
+const registerActionButtons = (headerelement, index) => {
     const context = {
+        type: _type,
         repeatindex: index,
-        repeatnr: (index + 1)
+        repeatnr: (index + 1),
     };
-    return Templates.renderForPromise('unilabeltype_grid/element_action_buttons', context)
+    return Templates.renderForPromise('mod_unilabel/element_action_buttons', context)
     .then(({html, js}) => {
         headerelement.querySelector('div.d-flex').insertAdjacentHTML(
             'beforeend', html
@@ -45,13 +47,13 @@ const registerDelButton = (headerelement, index) => {
 
 const delElement = (index) => {
     var myelements = [
-        'unilabeltype_grid_title',
-        'unilabeltype_grid_url',
-        'unilabeltype_grid_image',
-        'unilabeltype_grid_image_mobile'
+        'title',
+        'url',
+        'image',
+        'image_mobile'
     ];
     var myeditorelements = [
-        'unilabeltype_grid_content'
+        'content'
     ];
     var headerelement = document.querySelector('#id_singleelementheader_' + index);
     if (headerelement) {
@@ -62,26 +64,33 @@ const delElement = (index) => {
     if (myparent) {
         var newelement;
         myelements.forEach((element) => {
+            let name = 'unilabeltype_' + _type + '_' + element + '[' + index + ']';
             newelement = document.createElement('input');
             newelement.type = 'hidden';
-            newelement.name = element + '[' + index + ']';
+            newelement.name = name;
             newelement.value = '';
             myparent.insertAdjacentElement('afterbegin', newelement);
         });
         myeditorelements.forEach((element) => {
+            let name;
+            name = 'unilabeltype_' + _type + '_' + element + '[' + index + '][text]';
             newelement = document.createElement('input');
             newelement.type = 'hidden';
-            newelement.name = element + '[' + index + '][text]';
+            newelement.name = name;
             newelement.value = '';
             myparent.insertAdjacentElement('afterbegin', newelement);
+
+            name = 'unilabeltype_' + _type + '_' + element + '[' + index + '][format]';
             newelement = document.createElement('input');
             newelement.type = 'hidden';
-            newelement.name = element + '[' + index + '][format]';
+            newelement.name = name;
             newelement.value = 1;
             myparent.insertAdjacentElement('afterbegin', newelement);
+
+            name = 'unilabeltype_' + _type + '_' + element + '[' + index + '][itemid]';
             newelement = document.createElement('input');
             newelement.type = 'hidden';
-            newelement.name = element + '[' + index + '][itemid]';
+            newelement.name = name;
             newelement.value = 0;
             myparent.insertAdjacentElement('afterbegin', newelement);
         });
@@ -91,7 +100,8 @@ const delElement = (index) => {
 };
 
 // Export our init method.
-export const init = (formid, contextid, courseid, prefix) => {
+export const init = (type, formid, contextid, courseid, prefix) => {
+    _type = type;
     _formid = formid;
     // Register a click for the whole form but only applying to the delButtons.
     var thisform = document.querySelector('#' + formid);
@@ -108,7 +118,7 @@ export const init = (formid, contextid, courseid, prefix) => {
     for (var i = 0; i < headerelements.length; i++) {
         var headerelement = headerelements[i];
         log.debug('looking for: ' + headerelement.id);
-        registerDelButton(headerelement, i);
+        registerActionButtons(headerelement, i);
     }
 
     var button = document.querySelector('#button-' + formid);
@@ -121,14 +131,15 @@ export const init = (formid, contextid, courseid, prefix) => {
             var contentcontainerselector = '#addcontent-' + formid;
             var fragmentcall = 'get_html';
             var serviceparams = {
+                'type': type,
                 'contextid': contextid,
                 'formid': formid,
                 'courseid': courseid,
                 'prefix': prefix
             };
 
-            var repeatindex = parseInt(e.target.form.unilabeltype_grid_chosen_elements_count.value);
-            e.target.form.unilabeltype_grid_chosen_elements_count.value = repeatindex + 1;
+            var repeatindex = parseInt(e.target.form.multiple_chosen_elements_count.value);
+            e.target.form.multiple_chosen_elements_count.value = repeatindex + 1;
             serviceparams.repeatindex = repeatindex;
             log.debug(serviceparams);
 

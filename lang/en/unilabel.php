@@ -22,9 +22,11 @@
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+$string['addelement']            = 'Add element';
 $string['autorun']               = 'Run automatically';
 $string['chooseurlfromactivity'] = 'Choose url from activity';
 $string['contentplugins']        = 'Content plugins';
+$string['delete_element_nr']     = 'Delete element {$a}';
 $string['editcontent']           = 'Edit content';
 $string['generalsettings']       = 'General settings';
 $string['invalidvalue']          = 'Invalid value';

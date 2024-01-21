@@ -67,6 +67,7 @@ class edit_element implements \templatable, \renderable {
         $inputidbase  = 'id_' . $prefix . 'url_';
         $pickerbutton = new \mod_unilabel\output\component\activity_picker_button($formid, $inputidbase);
 
+        $this->data->type = 'grid';
         $this->data->formid = $formid;
         $this->data->repeatindex = $repeatindex;
         $this->data->prefix = $prefix;

@@ -55,7 +55,7 @@ define(['jquery', 'core/fragment', 'core/templates', 'core/notification'], funct
             var spinnerhtml = '<div class="text-center" id="myspinner"><i class="fa fa-spinner fa-2x fa-spin"></i></div>';
             $(_this.contentcontainerselector).prepend(spinnerhtml);
         }
-        var fragmentpromise = fragment.loadFragment('unilabeltype_grid', _this.fragmentcall, _this.contextid, _this.serviceparams);
+        var fragmentpromise = fragment.loadFragment('mod_unilabel', _this.fragmentcall, _this.contextid, _this.serviceparams);
         return fragmentpromise.then(function(html, js) {
             var container = document.querySelector(_this.contentcontainerselector);
             container.insertAdjacentHTML(adjacentPosition, html);

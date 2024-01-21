@@ -18,9 +18,9 @@
     <i class="fa fa-arrows fa-fw draghandle"></i>
 </span>
 <a href="#">
-    <i class="fa fa-trash fa-fw text-danger" data-toggle="modal" data-target="#unilabel_grid_confirm-{{repeatindex}}"></i>
+    <i class="fa fa-trash fa-fw text-danger" data-toggle="modal" data-target="#unilabel_{{type}}_confirm_{{repeatindex}}"></i>
 </a>
-<div id="unilabel_grid_confirm-{{repeatindex}}" class="modal" tabindex="-1">
+<div id="unilabel_{{type}}_confirm_{{repeatindex}}" class="modal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -32,7 +32,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                {{#str}} delete_element_nr, unilabeltype_grid, {{repeatnr}} {{/str}}
+                {{#str}} delete_element_nr, mod_unilabel, {{repeatnr}} {{/str}}
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">{{#str}} no {{/str}}</button>

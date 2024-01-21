@@ -17,11 +17,11 @@
 
 <div id="addcontent-{{formid}}"></div>
 <div class="w-100 d-flex">
-    <button type="button" class="btn btn-success ml-auto" id="button-{{formid}}">{{#str}} addelement, unilabeltype_grid {{/str}}</button>
+    <button type="button" class="btn btn-success ml-auto" id="button-{{formid}}">{{#str}} addelement, mod_unilabel {{/str}}</button>
 </div>
 
 {{#js}}
-require(['unilabeltype_grid/add_dyn_formbuttons'], function(add_dyn_formbuttons) {
-    add_dyn_formbuttons.init('{{formid}}', {{contextid}}, {{courseid}}, '{{prefix}}');
+require(['mod_unilabel/add_dyn_formbuttons'], function(add_dyn_formbuttons) {
+    add_dyn_formbuttons.init('{{type}}', '{{formid}}', {{contextid}}, {{courseid}}, '{{prefix}}');
 });
 {{/js}}

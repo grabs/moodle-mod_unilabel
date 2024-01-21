@@ -213,21 +213,22 @@ class content_type extends \mod_unilabel\content_type {
             $repeatarray,
             $repeatcount,
             $repeatedoptions,
-            $prefix . 'chosen_elements_count',
+            'multiple_chosen_elements_count',
             $prefix . 'add_more_elements_btn',
             $defaultrepeatcount, // Each time we add 3 elements.
             get_string('addmoretiles', 'unilabeltype_grid'),
             false
         );
 
-        $btn = $OUTPUT->render_from_template('unilabeltype_grid/load_element_button', [
+        $btn = $OUTPUT->render_from_template('mod_unilabel/load_element_button', [
+            'type' => 'grid',
             'formid' => $formid,
             'contextid' => $context->id,
             'courseid' => $course->id,
             'prefix' => $prefix,
         ]);
         $mform->addElement('html', $btn);
-        $PAGE->requires->js_call_amd('unilabeltype_grid/dragdrop', 'init', [$formid]);
+        $PAGE->requires->js_call_amd('mod_unilabel/dragdrop', 'init', ['grid', $formid]);
     }
 
     /**
@@ -456,7 +457,7 @@ class content_type extends \mod_unilabel\content_type {
 
         // How many tiles could be defined (we have an array here)?
         // They may not all used so some could be left out.
-        $potentialtilecount = $formdata->{$prefix . 'chosen_elements_count'};
+        $potentialtilecount = $formdata->multiple_chosen_elements_count;
         for ($i = 0; $i < $potentialtilecount; ++$i) {
             // Get the draftitemids to identify the submitted files in image, imagemobile and content.
             $draftitemid = $formdata->{$prefix . 'image'}[$i];
