@@ -49,6 +49,7 @@ class edit_element implements \templatable, \renderable {
         require_once($CFG->libdir . '/form/filemanager.php');
         require_once($CFG->libdir . '/form/editor.php');
         require_once($CFG->libdir . '/form/text.php');
+        require_once($CFG->libdir . '/form/hidden.php');
         require_once($CFG->libdir . '/form/header.php');
         require_once($CFG->libdir . '/form/static.php');
 
@@ -65,7 +66,7 @@ class edit_element implements \templatable, \renderable {
         // $picker       = new \mod_unilabel\output\component\activity_picker($course, $formid);
         $inputidbase  = 'id_' . $prefix . 'url_';
         $pickerbutton = new \mod_unilabel\output\component\activity_picker_button($formid, $inputidbase);
-        // $this->data->pickerpart1 = $OUTPUT->render($picker);
+
         $this->data->formid = $formid;
         $this->data->repeatindex = $repeatindex;
         $this->data->prefix = $prefix;
@@ -76,6 +77,7 @@ class edit_element implements \templatable, \renderable {
         $this->data->contentelement = $this->get_editor('content');
         $this->data->imageelement = $this->get_filemanager('image');
         $this->data->imagemobileelement = $this->get_filemanager('image_mobile');
+        $this->data->sortorderelement = $this->get_hidden('sortorder');
 
     }
 
@@ -153,6 +155,17 @@ class edit_element implements \templatable, \renderable {
         $element = new \MoodleQuickForm_text($elementname, $label, $attributes);
         // return $element->toHtml();
         return $this->output->mform_element($element, false, false, '', false);
+    }
+
+    protected function get_hidden(string $name) {
+
+        $elementname = $this->prefix . $name . '[' . $this->repeatindex . ']';
+        $attributes = [];
+        $attributes['name'] = $elementname;
+
+        $element = new \MoodleQuickForm_hidden($elementname, $this->repeatindex, $attributes);
+        // return $this->output->mform_element($element, false, false, '', false);
+        return $element->toHtml();
     }
 
     protected function get_static($html) {

@@ -15,7 +15,7 @@
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
 
-<fieldset class="clearfix collapsible" id="id_singleelementheader_{{repeatindex}}"><legend class="sr-only">blablabla</legend>
+<fieldset class="clearfix collapsible collapsed" id="id_singleelementheader_{{repeatindex}}"><legend class="sr-only">blablabla</legend>
     <div class="d-flex align-items-center mb-2">
         <div class="position-relative d-flex ftoggler align-items-center position-relative mr-1">
                 <a data-toggle="collapse" href="#header-{{formid}}-{{repeatindex}}container" role="button" aria-expanded="true" aria-controls="header-{{formid}}-{{repeatindex}}container" class="btn btn-icon mr-1 icons-collapse-expand stretched-link fheader collapsed">
@@ -32,7 +32,7 @@
                 {{#str}} tile, unilabeltype_grid {{/str}}-{{repeatnr}}
             </h3>
         </div>
-        {{> unilabeltype_grid/delete_element_button }}
+        {{> unilabeltype_grid/element_action_buttons }}
     </div>
     <div id="header-{{formid}}-{{repeatindex}}container" class="collapse">
         <div>
@@ -52,6 +52,9 @@
         </div>
         <div>
             {{{imagemobileelement}}}
+        </div>
+        <div class="d-none">
+            {{{sortorderelement}}}
         </div>
     </div>
 </fieldset>

@@ -132,6 +132,12 @@ class content_type extends \mod_unilabel\content_type {
         // This is replaced by the number of element.
         $elementheader = $mform->createElement('header', 'singleelementheader', get_string('tile', 'unilabeltype_grid') . '-{no}');
         $repeatarray[] = $elementheader;
+
+        $repeatarray[] = $mform->createElement(
+            'hidden',
+            $prefix . 'sortorder'
+        );
+
         $repeatarray[] = $mform->createElement(
             'text',
             $prefix . 'title',
@@ -183,6 +189,7 @@ class content_type extends \mod_unilabel\content_type {
         );
 
         $repeatedoptions                                   = [];
+        $repeatedoptions[$prefix . 'sortorder']['type']    = PARAM_INT;
         $repeatedoptions[$prefix . 'title']['type']        = PARAM_TEXT;
         $repeatedoptions[$prefix . 'url']['type']          = PARAM_URL;
         $repeatedoptions[$prefix . 'content']['type']      = PARAM_RAW;
@@ -220,6 +227,7 @@ class content_type extends \mod_unilabel\content_type {
             'prefix' => $prefix,
         ]);
         $mform->addElement('html', $btn);
+        $PAGE->requires->js_call_amd('unilabeltype_grid/dragdrop', 'init', [$formid]);
     }
 
     /**
@@ -275,7 +283,7 @@ class content_type extends \mod_unilabel\content_type {
         if (!$tiles = $DB->get_records(
             'unilabeltype_grid_tile',
             ['gridid' => $unilabeltyperecord->id],
-            'id ASC'
+            'sortorder ASC'
         )) {
             return $data;
         }
@@ -317,6 +325,11 @@ class content_type extends \mod_unilabel\content_type {
             file_prepare_draft_area($draftitemidimagemobile, $context->id, 'unilabeltype_grid', 'image_mobile', $tile->id);
             $elementname        = $prefix . 'image_mobile[' . $index . ']';
             $data[$elementname] = $draftitemidimagemobile;
+
+            // Prepare the sortorder field.
+            $elementname        = $prefix . 'sortorder[' . $index . ']';
+            $data[$elementname] = $tile->sortorder ?? 0;
+
             ++$index;
         }
 
@@ -456,15 +469,17 @@ class content_type extends \mod_unilabel\content_type {
             $fileinfo = file_get_draft_area_info($draftitemid);
             // We only create a record if we have at least a title, a file or a content.
             $title   = $formdata->{$prefix . 'title'}[$i];
+            $sortorder = $formdata->{$prefix . 'sortorder'}[$i];
             $content = $formdata->{$prefix . 'content'}[$i]['text'];
             if (empty($title) && $fileinfo['filecount'] < 1 && !$this->html_has_content($content)) {
                 continue;
             }
 
-            $tilerecord         = new \stdClass();
-            $tilerecord->gridid = $unilabeltyperecord->id;
-            $tilerecord->title  = $title;
-            $tilerecord->url    = $formdata->{$prefix . 'url'}[$i];
+            $tilerecord            = new \stdClass();
+            $tilerecord->gridid    = $unilabeltyperecord->id;
+            $tilerecord->title     = $title;
+            $tilerecord->url       = $formdata->{$prefix . 'url'}[$i];
+            $tilerecord->sortorder = $sortorder;
 
             $tilerecord->content = ''; // Dummy content.
             $tilerecord->id      = $DB->insert_record('unilabeltype_grid_tile', $tilerecord);
@@ -515,7 +530,7 @@ class content_type extends \mod_unilabel\content_type {
             $this->cm      = get_coursemodule_from_instance('unilabel', $unilabelid);
             $this->context = \context_module::instance($this->cm->id);
 
-            $tiles = $DB->get_records('unilabeltype_grid_tile', ['gridid' => $this->unilabeltyperecord->id]);
+            $tiles = $DB->get_records('unilabeltype_grid_tile', ['gridid' => $this->unilabeltyperecord->id], 'sortorder ASC');
             $index = 0;
 
             foreach ($tiles as $tile) {

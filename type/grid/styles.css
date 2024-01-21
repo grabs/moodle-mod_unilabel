@@ -1,0 +1,6 @@
+#page-mod-unilabel-edit_content form fieldset.draggable .draghandle {
+    cursor: move;
+}
+#page-mod-unilabel-edit_content form fieldset.draggable.dragging {
+    opacity: 0;
+}

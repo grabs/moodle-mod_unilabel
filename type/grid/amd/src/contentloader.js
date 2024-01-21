@@ -64,7 +64,7 @@ define(['jquery', 'core/fragment', 'core/templates', 'core/notification'], funct
             }
             _this.isshown = true;
             $('#myspinner').remove();
-            return;
+            return true;
         }).fail(notification.exception);
     };
 

@@ -25,13 +25,15 @@ import Templates from 'core/templates';
 import {exception as displayException} from 'core/notification';
 import log from 'core/log';
 
+let _formid;
+
 // Register the del button and get the html from mustache.
 const registerDelButton = (headerelement, index) => {
     const context = {
         repeatindex: index,
         repeatnr: (index + 1)
     };
-    return Templates.renderForPromise('unilabeltype_grid/delete_element_button', context)
+    return Templates.renderForPromise('unilabeltype_grid/element_action_buttons', context)
     .then(({html, js}) => {
         headerelement.querySelector('div.d-flex').insertAdjacentHTML(
             'beforeend', html
@@ -55,6 +57,7 @@ const delElement = (index) => {
     if (headerelement) {
         headerelement.remove();
     }
+    var thisform = document.querySelector('#' + _formid);
     var myparent = document.querySelector('#id_unilabelcontenthdr');
     if (myparent) {
         var newelement;
@@ -82,11 +85,14 @@ const delElement = (index) => {
             newelement.value = 0;
             myparent.insertAdjacentElement('afterbegin', newelement);
         });
+        const myevent = new CustomEvent('itemremoved', {detail: index});
+        thisform.dispatchEvent(myevent);
     }
 };
 
 // Export our init method.
 export const init = (formid, contextid, courseid, prefix) => {
+    _formid = formid;
     // Register a click for the whole form but only applying to the delButtons.
     var thisform = document.querySelector('#' + formid);
     thisform.addEventListener('click', (e) => {
@@ -127,7 +133,11 @@ export const init = (formid, contextid, courseid, prefix) => {
             log.debug(serviceparams);
 
             var contentLoader = new ContentLoader(contentcontainerselector, fragmentcall, serviceparams, contextid);
-            contentLoader.loadContent('beforebegin');
+            contentLoader.loadContent('beforebegin').then(() => {
+                const myevent = new CustomEvent('itemadded', {detail: repeatindex});
+                thisform.dispatchEvent(myevent);
+                return true;
+            }).catch((error) => displayException(error));
         });
     }
 };
