@@ -52,7 +52,7 @@ class backup_unilabeltype_grid_subplugin extends backup_subplugin {
         $subplugintile = new backup_nested_element(
             'unilabeltype_grid_tile',
             ['id'],
-            ['title', 'url', 'content']
+            ['sortorder', 'title', 'url', 'content']
         );
 
         // Connect XML elements into the tree.
