@@ -15,19 +15,19 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel type grid.
+ * unilabel type carousel.
  *
- * @package     unilabeltype_grid
+ * @package     unilabeltype_carousel
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace unilabeltype_grid\output;
+namespace unilabeltype_carousel\output;
 
 /**
  * Content type definition.
- * @package     unilabeltype_grid
+ * @package     unilabeltype_carousel
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -44,17 +44,15 @@ class edit_element extends \mod_unilabel\output\edit_element_base {
      * @param int $repeatindex
      */
     public function __construct(string $formid, \context $context, \stdClass $course, string $type, int $repeatindex) {
-        global $OUTPUT;
 
         parent::__construct($formid, $context, $course, $type, $repeatindex);
 
         $inputidbase  = 'id_' . $this->prefix . 'url_';
         $pickerbutton = new \mod_unilabel\output\component\activity_picker_button($formid, $inputidbase);
 
-        $this->data->titleelement = $this->get_textfield('title', ['size' => 50]);
-        $this->data->contentelement = $this->get_editor('content', ['rows' => 10], $this->editor_options(), 'content');
+        $this->data->captionelement = $this->get_editor('caption', ['rows' => 4], $this->editor_options(), 'caption');
         $this->data->urlelement = $this->get_textfield('url', ['size' => 50], 'url');
-        $this->data->pickerbutton = $this->get_static('picker', $OUTPUT->render($pickerbutton));
+        $this->data->pickerbutton = $this->get_static('picker', $this->output->render($pickerbutton));
         $this->data->imageelement = $this->get_filemanager('image', [], $this->manager_options());
         $this->data->imagemobileelement = $this->get_filemanager('image_mobile', [], $this->manager_options(), 'image_mobile');
         $this->data->sortorderelement = $this->get_hidden('sortorder');
@@ -98,4 +96,5 @@ class edit_element extends \mod_unilabel\output\edit_element_base {
             'accepted_types' => ['web_image'],
         ];
     }
+
 }

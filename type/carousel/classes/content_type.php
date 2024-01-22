@@ -49,13 +49,21 @@ class content_type extends \mod_unilabel\content_type {
     /** @var \stdClass */
     private $config;
 
+    /** @var string */
+    private $type;
+
+    /** @var string */
+    private $component;
+
     /**
      * Constructor.
      *
      * @return void
      */
     public function __construct() {
-        $this->config = get_config('unilabeltype_carousel');
+        $this->type = 'carousel';
+        $this->component = 'unilabeltype_' . $this->type;
+        $this->config = get_config($this->component);
     }
 
     /**
@@ -66,17 +74,17 @@ class content_type extends \mod_unilabel\content_type {
      * @return void
      */
     public function add_form_fragment(\mod_unilabel\edit_content_form $form, \context $context) {
-        global $OUTPUT;
+        global $PAGE, $OUTPUT;
 
         $unilabeltyperecord = $this->load_unilabeltype_record($form->unilabel->id);
 
         $mform  = $form->get_mform();
-        $prefix = 'unilabeltype_carousel_';
+        $prefix = $this->component . '_';
 
-        $mform->addElement('advcheckbox', $prefix . 'showintro', get_string('showunilabeltext', 'unilabeltype_carousel'));
+        $mform->addElement('advcheckbox', $prefix . 'showintro', get_string('showunilabeltext', $this->component));
 
         $mform->addElement('header', $prefix . 'hdr', $this->get_name());
-        $mform->addHelpButton($prefix . 'hdr', 'pluginname', 'unilabeltype_carousel');
+        $mform->addHelpButton($prefix . 'hdr', 'pluginname', $this->component);
 
         $mform->addElement(
             'checkbox',
@@ -91,24 +99,24 @@ class content_type extends \mod_unilabel\content_type {
         $mform->addElement(
             'select',
             $prefix . 'carouselinterval',
-            get_string('carouselinterval', 'unilabeltype_carousel'),
+            get_string('carouselinterval', $this->component),
             $numbers
         );
         $mform->hideIf($prefix . 'carouselinterval', $prefix . 'autorun', 'notchecked');
 
         $numbers = array_combine(range(100, 600, 50), range(100, 600, 50));
-        $numbers = [0 => get_string('autoheight', 'unilabeltype_carousel')] + $numbers;
-        $mform->addElement('select', $prefix . 'height', get_string('height', 'unilabeltype_carousel'), $numbers);
-        $mform->addHelpButton($prefix . 'height', 'height', 'unilabeltype_carousel');
+        $numbers = [0 => get_string('autoheight', $this->component)] + $numbers;
+        $mform->addElement('select', $prefix . 'height', get_string('height', $this->component), $numbers);
+        $mform->addHelpButton($prefix . 'height', 'height', $this->component);
 
         $backgrounddefault = empty($unilabeltyperecord->background) ? '' : $unilabeltyperecord->background;
         $this->add_colourpicker($mform,
             $prefix . 'background',
-            get_string('background', 'unilabeltype_carousel'),
+            get_string('background', $this->component),
             $backgrounddefault);
 
-        $mform->addElement('advcheckbox', $prefix . 'usemobile', get_string('use_mobile_images', 'unilabeltype_carousel'));
-        $mform->addHelpButton($prefix . 'usemobile', 'use_mobile_images', 'unilabeltype_carousel');
+        $mform->addElement('advcheckbox', $prefix . 'usemobile', get_string('use_mobile_images', $this->component));
+        $mform->addHelpButton($prefix . 'usemobile', 'use_mobile_images', $this->component);
 
         // Prepare the activity url picker.
         $formid       = $mform->getAttribute('id');
@@ -123,19 +131,25 @@ class content_type extends \mod_unilabel\content_type {
         // This is replaced by the number of element.
         $repeatarray[] = $mform->createElement(
             'header',
-            $prefix . 'slidehdr',
-            get_string('slide', 'unilabeltype_carousel') . '-{no}'
+            'singleelementheader',
+            get_string('slide', $this->component) . '-{no}'
         );
+
+        $repeatarray[] = $mform->createElement(
+            'hidden',
+            $prefix . 'sortorder'
+        );
+
         $repeatarray[] = $mform->createElement(
             'editor',
             $prefix . 'caption',
-            get_string('caption', 'unilabeltype_carousel') . '-{no}',
+            get_string('caption', $this->component) . '-{no}',
             ['rows' => 4]
         );
         $repeatarray[] = $mform->createElement(
             'text',
             $prefix . 'url',
-            get_string('url', 'unilabeltype_carousel') . '-{no}',
+            get_string('url', $this->component) . '-{no}',
             ['size' => 50]
         );
         $repeatarray[] = $mform->createElement(
@@ -148,7 +162,7 @@ class content_type extends \mod_unilabel\content_type {
         $repeatarray[] = $mform->createElement(
             'filemanager',
             $prefix . 'image',
-            get_string('image', 'unilabeltype_carousel') . '-{no}',
+            get_string('image', $this->component) . '-{no}',
             null,
             [
                 'maxbytes'       => $form->get_course()->maxbytes,
@@ -160,7 +174,7 @@ class content_type extends \mod_unilabel\content_type {
         $repeatarray[] = $mform->createElement(
             'filemanager',
             $prefix . 'image_mobile',
-            get_string('image_mobile', 'unilabeltype_carousel') . '-{no}',
+            get_string('image_mobile', $this->component) . '-{no}',
             null,
             [
                 'maxbytes'       => $form->get_course()->maxbytes,
@@ -171,33 +185,70 @@ class content_type extends \mod_unilabel\content_type {
         );
 
         $repeatedoptions                                   = [];
+        $repeatedoptions[$prefix . 'sortorder']['type']    = PARAM_INT;
         $repeatedoptions[$prefix . 'url']['type']          = PARAM_URL;
         $repeatedoptions[$prefix . 'caption']['type']      = PARAM_RAW;
         $repeatedoptions[$prefix . 'image']['type']        = PARAM_FILE;
         $repeatedoptions[$prefix . 'image_mobile']['type'] = PARAM_FILE;
         // Adding the help buttons.
-        $repeatedoptions[$prefix . 'caption']['helpbutton']      = ['caption', 'unilabeltype_carousel'];
-        $repeatedoptions[$prefix . 'url']['helpbutton']          = ['url', 'unilabeltype_carousel'];
-        $repeatedoptions[$prefix . 'image_mobile']['helpbutton'] = ['image_mobile', 'unilabeltype_carousel'];
+        $repeatedoptions[$prefix . 'caption']['helpbutton']      = ['caption', $this->component];
+        $repeatedoptions[$prefix . 'url']['helpbutton']          = ['url', $this->component];
+        $repeatedoptions[$prefix . 'image_mobile']['helpbutton'] = ['image_mobile', $this->component];
 
-        $defaultrepeatcount = 3; // The default count for slides.
+        $defaultrepeatcount = 1; // The default count for slides.
         $repeatcount        = count($this->slides);
-        if ($rest = count($this->slides) % $defaultrepeatcount) {
-            $repeatcount = count($this->slides) + ($defaultrepeatcount - $rest);
-        }
-        if ($repeatcount == 0) {
-            $repeatcount = $defaultrepeatcount;
-        }
 
         $nextel = $form->repeat_elements(
             $repeatarray,
             $repeatcount,
             $repeatedoptions,
-            $prefix . 'chosen_slides_count',
-            $prefix . 'add_more_slides_btn',
+            'multiple_chosen_elements_count', // We need a fixed name here to get drag and drop work.
+            $prefix . 'add_more_elements_btn', // This element musst be called so to get removed when dnd is enabled.
             $defaultrepeatcount, // Each time we add 3 elements.
-            get_string('addmoreslides', 'unilabeltype_carousel'),
+            get_string('addmoreslides', $this->component),
             false
+        );
+
+        // This elements are needed by js to set empty hidden fields while deleting an element.
+        $myelements = [
+            'url',
+            'image',
+            'image_mobile',
+        ];
+        $myeditorelements = [
+            'caption',
+        ];
+
+        // Render the button to add elements.
+        $btn = $OUTPUT->render_from_template('mod_unilabel/load_element_button', [
+            'type' => $this->type,
+            'formid' => $formid,
+            'contextid' => $context->id,
+            'courseid' => $course->id,
+            'prefix' => $prefix,
+        ]);
+        $mform->addElement('html', $btn);
+        // Add dynamic buttons like "Add item", "Delete" and "move".
+        $PAGE->requires->js_call_amd(
+            'mod_unilabel/add_dyn_formbuttons',
+            'init',
+            [
+                $this->type,
+                $formid,
+                $context->id,
+                $course->id,
+                $prefix,
+                $myelements,
+                $myeditorelements,
+            ]
+        );
+        $PAGE->requires->js_call_amd(
+            'mod_unilabel/dragdrop',
+            'init',
+            [
+                $this->type,
+                $formid,
+            ]
         );
     }
 
@@ -214,7 +265,7 @@ class content_type extends \mod_unilabel\content_type {
         $cm      = get_coursemodule_from_instance('unilabel', $unilabel->id);
         $context = \context_module::instance($cm->id);
 
-        $prefix = 'unilabeltype_carousel_';
+        $prefix = $this->component . '_';
 
         // Set default data for the carousel in generel.
         if (!$unilabeltyperecord = $this->load_unilabeltype_record($unilabel->id)) {
@@ -236,8 +287,14 @@ class content_type extends \mod_unilabel\content_type {
         $data[$prefix . 'usemobile']        = $unilabeltyperecord->usemobile;
 
         // Set default data for slides.
-        if (!$slides = $DB->get_records('unilabeltype_carousel_slide',
-            ['carouselid' => $unilabeltyperecord->id], 'id ASC')) {
+        $slides = $DB->get_records(
+            'unilabeltype_carousel_slide',
+            [
+                'carouselid' => $unilabeltyperecord->id,
+            ],
+            'sortorder ASC'
+        );
+        if (!$slides) {
             return $data;
         }
 
@@ -255,16 +312,21 @@ class content_type extends \mod_unilabel\content_type {
             // Prepare the images.
             // $draftitemid is set by the function file_prepare_draft_area().
             $draftitemid = 0; // This is needed to create a new draftitemid.
-            file_prepare_draft_area($draftitemid, $context->id, 'unilabeltype_carousel', 'image', $slide->id);
+            file_prepare_draft_area($draftitemid, $context->id, $this->component, 'image', $slide->id);
             $elementname        = $prefix . 'image[' . $index . ']';
             $data[$elementname] = $draftitemid;
 
             // Prepare the mobile images.
             // $draftitemid is set by the function file_prepare_draft_area().
             $draftitemid = 0; // This is needed to create a new draftitemid.
-            file_prepare_draft_area($draftitemid, $context->id, 'unilabeltype_carousel', 'image_mobile', $slide->id);
+            file_prepare_draft_area($draftitemid, $context->id, $this->component, 'image_mobile', $slide->id);
             $elementname        = $prefix . 'image_mobile[' . $index . ']';
             $data[$elementname] = $draftitemid;
+
+            // Prepare the sortorder field.
+            $elementname        = $prefix . 'sortorder[' . $index . ']';
+            $data[$elementname] = $slide->sortorder ?? ($index + 1);
+
             ++$index;
         }
 
@@ -281,7 +343,7 @@ class content_type extends \mod_unilabel\content_type {
      * @return array
      */
     public function form_validation($errors, $data, $files) {
-        $prefix = 'unilabeltype_carousel_';
+        $prefix = $this->component . '_';
         if (!empty($data[$prefix . 'background'])) {
             if (!\mod_unilabel\configcolourpicker_validation::validate_colourdata($data[$prefix . 'background'])) {
                 $errors[$prefix . 'background'] = get_string('invalidvalue', 'mod_unilabel');
@@ -311,7 +373,7 @@ class content_type extends \mod_unilabel\content_type {
     public function get_content($unilabel, $cm, \plugin_renderer_base $renderer) {
         if (!$unilabeltyperecord = $this->load_unilabeltype_record($unilabel->id)) {
             $content = [
-                'intro'     => get_string('nocontent', 'unilabeltype_carousel'),
+                'intro'     => get_string('nocontent', $this->component),
                 'cmid'      => $cm->id,
                 'hasslides' => false,
             ];
@@ -328,7 +390,7 @@ class content_type extends \mod_unilabel\content_type {
                 'slides'     => array_values($this->slides),
                 'hasslides'  => count($this->slides) > 0,
                 'cmid'       => $cm->id,
-                'plugin'     => 'unilabeltype_carousel',
+                'plugin'     => $this->component,
             ];
 
             if (!empty($this->config->custombutton)) {
@@ -380,7 +442,7 @@ class content_type extends \mod_unilabel\content_type {
         // We want to keep the slides consistent so we start a transaction here.
         $transaction = $DB->start_delegated_transaction();
 
-        $prefix = 'unilabeltype_carousel_';
+        $prefix = $this->component . '_';
 
         // First save the carousel record.
         if (!$unilabeltyperecord = $DB->get_record('unilabeltype_carousel', ['unilabelid' => $unilabel->id])) {
@@ -407,15 +469,15 @@ class content_type extends \mod_unilabel\content_type {
 
         // First: remove old slide images.
         // We use the module_context as context and this component as component.
-        $fs->delete_area_files($context->id, 'unilabeltype_carousel', 'image');
-        $fs->delete_area_files($context->id, 'unilabeltype_carousel', 'image_mobile');
+        $fs->delete_area_files($context->id, $this->component, 'image');
+        $fs->delete_area_files($context->id, $this->component, 'image_mobile');
 
         // Second: remove old slide records.
         $DB->delete_records('unilabeltype_carousel_slide', ['carouselid' => $unilabeltyperecord->id]);
 
         // How many slides could be defined (we have an array here)?
         // They may not all used so some could be left out.
-        $potentialslidecount = $formdata->{$prefix . 'chosen_slides_count'};
+        $potentialslidecount = $formdata->multiple_chosen_elements_count;
         for ($i = 0; $i < $potentialslidecount; ++$i) {
             // Get the draftitemid to identify the submitted file.
             $draftitemid = $formdata->{$prefix . 'image'}[$i];
@@ -431,21 +493,26 @@ class content_type extends \mod_unilabel\content_type {
                 continue;
             }
 
+            $sortorder = $formdata->{$prefix . 'sortorder'}[$i];
+
             $sliderecord             = new \stdClass();
             $sliderecord->carouselid = $unilabeltyperecord->id;
             $sliderecord->url        = $formdata->{$prefix . 'url'}[$i];
             $sliderecord->caption    = $caption;
+            $sliderecord->sortorder  = $sortorder;
 
             $sliderecord->id = $DB->insert_record('unilabeltype_carousel_slide', $sliderecord);
 
             // Now we can save our draft files.
-            file_save_draft_area_files($draftitemid, $context->id, 'unilabeltype_carousel', 'image', $sliderecord->id);
+            file_save_draft_area_files($draftitemid, $context->id, $this->component, 'image', $sliderecord->id);
             if (!empty($formdata->{$prefix . 'usemobile'})) {
-                file_save_draft_area_files($draftitemidmobile,
+                file_save_draft_area_files(
+                    $draftitemidmobile,
                     $context->id,
-                    'unilabeltype_carousel',
+                    $this->component,
                     'image_mobile',
-                    $sliderecord->id);
+                    $sliderecord->id
+                );
             }
         }
 
@@ -472,7 +539,13 @@ class content_type extends \mod_unilabel\content_type {
             $this->cm      = get_coursemodule_from_instance('unilabel', $unilabelid);
             $this->context = \context_module::instance($this->cm->id);
 
-            $slides = $DB->get_records('unilabeltype_carousel_slide', ['carouselid' => $this->unilabeltyperecord->id]);
+            $slides = $DB->get_records(
+                'unilabeltype_carousel_slide',
+                [
+                    'carouselid' => $this->unilabeltyperecord->id,
+                ],
+                'sortorder ASC'
+            );
             $index  = 0;
             foreach ($slides as $slide) {
                 $slide->imageurl       = $this->get_image_for_slide($slide);
@@ -496,12 +569,13 @@ class content_type extends \mod_unilabel\content_type {
     private function get_image_for_slide($slide) {
         $fs = get_file_storage();
 
-        $files = $fs->get_area_files($this->context->id, 'unilabeltype_carousel', 'image', $slide->id, '', $includedirs = false);
+        $files = $fs->get_area_files($this->context->id, $this->component, 'image', $slide->id, '', $includedirs = false);
         if (!$file = array_shift($files)) {
             return '';
         }
-        $imageurl = \moodle_url::make_pluginfile_url($this->context->id,
-            'unilabeltype_carousel',
+        $imageurl = \moodle_url::make_pluginfile_url(
+            $this->context->id,
+            $this->component,
             'image',
             $slide->id,
             '/',
@@ -520,17 +594,20 @@ class content_type extends \mod_unilabel\content_type {
     private function get_image_mobile_for_slide($slide) {
         $fs = get_file_storage();
 
-        $files = $fs->get_area_files($this->context->id,
-            'unilabeltype_carousel',
+        $files = $fs->get_area_files(
+            $this->context->id,
+            $this->component,
             'image_mobile',
             $slide->id,
             '',
-            $includedirs = false);
+            false
+        );
         if (!$file = array_shift($files)) {
             return '';
         }
-        $imageurl = \moodle_url::make_pluginfile_url($this->context->id,
-            'unilabeltype_carousel',
+        $imageurl = \moodle_url::make_pluginfile_url(
+            $this->context->id,
+            $this->component,
             'image_mobile',
             $slide->id,
             '/',

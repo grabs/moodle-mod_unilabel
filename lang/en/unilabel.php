@@ -26,6 +26,7 @@ $string['addelement']            = 'Add element';
 $string['autorun']               = 'Run automatically';
 $string['chooseurlfromactivity'] = 'Choose url from activity';
 $string['contentplugins']        = 'Content plugins';
+$string['delete_element']        = 'Delete element';
 $string['delete_element_nr']     = 'Delete element {$a}';
 $string['editcontent']           = 'Edit content';
 $string['generalsettings']       = 'General settings';

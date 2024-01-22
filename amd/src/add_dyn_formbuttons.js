@@ -27,8 +27,16 @@ import log from 'core/log';
 
 let _formid;
 let _type;
+let _elements;
+let _editorelements;
 
-// Register the del button and get the html from mustache.
+/**
+ * Register the del button and get the html from mustache.
+ *
+ * @param {Element} headerelement The draggable header element
+ * @param {Integer} index The index of the headerelement
+ * @returns {Promise}
+ */
 const registerActionButtons = (headerelement, index) => {
     const context = {
         type: _type,
@@ -45,16 +53,12 @@ const registerActionButtons = (headerelement, index) => {
     }).catch((error) => displayException(error));
 };
 
+/**
+ * Delete an element and set dummy hidden elements with "0" value, what is needed by the mform.
+ *
+ * @param {Integer} index The index of the deleted element
+ */
 const delElement = (index) => {
-    var myelements = [
-        'title',
-        'url',
-        'image',
-        'image_mobile'
-    ];
-    var myeditorelements = [
-        'content'
-    ];
     var headerelement = document.querySelector('#id_singleelementheader_' + index);
     if (headerelement) {
         headerelement.remove();
@@ -63,17 +67,19 @@ const delElement = (index) => {
     var myparent = document.querySelector('#id_unilabelcontenthdr');
     if (myparent) {
         var newelement;
-        myelements.forEach((element) => {
+        _elements.forEach((element) => {
             let name = 'unilabeltype_' + _type + '_' + element + '[' + index + ']';
+            log.debug('Set dummy element ' + name);
             newelement = document.createElement('input');
             newelement.type = 'hidden';
             newelement.name = name;
             newelement.value = '';
             myparent.insertAdjacentElement('afterbegin', newelement);
         });
-        myeditorelements.forEach((element) => {
+        _editorelements.forEach((element) => {
             let name;
             name = 'unilabeltype_' + _type + '_' + element + '[' + index + '][text]';
+            log.debug('Set dummy editorelement-text ' + name);
             newelement = document.createElement('input');
             newelement.type = 'hidden';
             newelement.name = name;
@@ -81,6 +87,7 @@ const delElement = (index) => {
             myparent.insertAdjacentElement('afterbegin', newelement);
 
             name = 'unilabeltype_' + _type + '_' + element + '[' + index + '][format]';
+            log.debug('Set dummy editorelement-format ' + name);
             newelement = document.createElement('input');
             newelement.type = 'hidden';
             newelement.name = name;
@@ -88,6 +95,7 @@ const delElement = (index) => {
             myparent.insertAdjacentElement('afterbegin', newelement);
 
             name = 'unilabeltype_' + _type + '_' + element + '[' + index + '][itemid]';
+            log.debug('Set dummy editorelement-itemid ' + name);
             newelement = document.createElement('input');
             newelement.type = 'hidden';
             newelement.name = name;
@@ -99,10 +107,23 @@ const delElement = (index) => {
     }
 };
 
-// Export our init method.
-export const init = (type, formid, contextid, courseid, prefix) => {
+/**
+ * Export our init method.
+ *
+ * @param {string} type The type of unilabeltype e.g.: grid
+ * @param {string} formid The id of the mform the draggable elements are related to
+ * @param {Integer} contextid
+ * @param {Integer} courseid
+ * @param {string} prefix
+ * @param {array} elements The dummy fields we need if we want to delete an element
+ * @param {array} editorelements The same as element but for editor which has subelements like "text", "format" and "itemid"
+ */
+export const init = (type, formid, contextid, courseid, prefix, elements, editorelements) => {
     _type = type;
     _formid = formid;
+    _elements = elements;
+    _editorelements = editorelements;
+
     // Register a click for the whole form but only applying to the delButtons.
     var thisform = document.querySelector('#' + formid);
     thisform.addEventListener('click', (e) => {

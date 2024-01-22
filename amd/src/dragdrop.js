@@ -26,6 +26,12 @@ import config from 'core/config';
 var _formid;
 var _type;
 
+/**
+ * Find the items in our mform we want to be draggable
+ *
+ * @param {string} formid The id of the mform the draggable items are related toHtml
+ * @returns array
+ */
 const getDraggableItems = (formid) => {
     let fieldsets = document.querySelectorAll('#' + formid + ' fieldset');
     const items = [];
@@ -37,18 +43,28 @@ const getDraggableItems = (formid) => {
     return items;
 };
 
+/**
+ * Initialize a draggable item to be ready for drag and drop
+ *
+ * @param {Element} item The draggable item
+ * @param {Integer} index The index of the draggable item
+ */
 const initDragElement = (item, index) => {
     // Add the class "dragging" a little later to get the dragging image visible.
     item.classList.add('draggable');
     item.dataset.index = index;
 };
 
+/**
+ * Set the new sortorder values dependig on the current list order.
+ */
 const resortList = () => {
     // Set the new sortorder;
     let i = 0;
     log.debug('Changed sortorder');
     document.querySelectorAll('#' + _formid + ' fieldset.draggable').forEach(sortitem => {
         let elementindex = sortitem.dataset.index;
+        log.debug('Set sortorder in element: ' + 'unilabeltype_' + _type + '_sortorder[' + elementindex + ']');
         let hiddenelement = document.forms[_formid].elements['unilabeltype_' + _type + '_sortorder[' + elementindex + ']'];
         let oldvalue = hiddenelement.value;
         hiddenelement.value = i + 1;
@@ -57,10 +73,17 @@ const resortList = () => {
     });
 };
 
-// Export our init method.
+/**
+ * Export our init method.
+ *
+ * @param {string} type The type of unilabeltype e.g.: grid
+ * @param {string} formid The id of the mform the draggable elements are related to
+ */
 export const init = (type, formid) => {
     _type = type;
     _formid = formid;
+
+    // Initialize drag and drop.
     const items = getDraggableItems(formid);
     let index = 0;
     items.forEach(item => {
@@ -100,6 +123,5 @@ export const init = (type, formid) => {
         log.debug('Initialized sortable list');
         return sortable;
     });
-
 
 };

@@ -14,14 +14,17 @@
     You should have received a copy of the GNU General Public License
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
+{{!
+    @template mod_unilabel/load_element_button
+    Template to get the button to add a new element in a form with draggable elements.
+
+    Example context (json):
+    {
+        "formid": "mform_jljxaAB"
+    }
+}}
 
 <div id="addcontent-{{formid}}"></div>
 <div class="w-100 d-flex">
-    <button type="button" class="btn btn-success ml-auto" id="button-{{formid}}">{{#str}} addelement, mod_unilabel {{/str}}</button>
+    <button type="button" class="btn btn-success ml-auto" id="button-{{formid}}"><i class="fa fa-plus fa-fw"></i>{{#str}} addelement, mod_unilabel {{/str}}</button>
 </div>
-
-{{#js}}
-require(['mod_unilabel/add_dyn_formbuttons'], function(add_dyn_formbuttons) {
-    add_dyn_formbuttons.init('{{type}}', '{{formid}}', {{contextid}}, {{courseid}}, '{{prefix}}');
-});
-{{/js}}

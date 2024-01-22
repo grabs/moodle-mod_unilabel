@@ -241,7 +241,7 @@ function unilabel_check_updates_since(cm_info $cm, $from, $filter = []) {
  * @return string The html fragment we want to use by ajax
  */
 function mod_unilabel_output_fragment_get_html($args) {
-    global $CFG, $PAGE, $FULLME, $OUTPUT;
+    global $PAGE, $FULLME, $OUTPUT;
 
     $PAGE->set_url(new \moodle_url($FULLME));
     $PAGE->set_context(\context_system::instance());
@@ -250,7 +250,7 @@ function mod_unilabel_output_fragment_get_html($args) {
     if (empty($type)) {
         throw new \moodle_exception('Missing param "type"');
     }
-    $classname = 'unilabeltype_' . $type . '\output\edit_element';
+    $classname = 'unilabeltype_' . $type . '\\output\\edit_element';
     if (!class_exists($classname)) {
         throw new \moodle_exception('Could not find class "' . $classname . '"');
     }
@@ -258,15 +258,13 @@ function mod_unilabel_output_fragment_get_html($args) {
     $formid = $args['formid'];
     $context = \context::instance_by_id($args['contextid']);
     $course = get_course($args['courseid']);
-    $prefix = $args['prefix'];
     $repeatindex = intval($args['repeatindex']);
 
-    // $editelement = new \unilabeltype_grid\output\edit_element(
     $editelement = new $classname(
         $formid,
         $context,
         $course,
-        $prefix,
+        $type,
         $repeatindex
     );
 

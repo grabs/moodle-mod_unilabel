@@ -15,15 +15,40 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel type course teaser.
+ * unilabel module.
  *
- * @package     unilabeltype_courseteaser
+ * @package     unilabeltype_carousel
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @param mixed $oldversion
  */
-defined('MOODLE_INTERNAL') || die;
 
-$plugin->component = 'unilabeltype_courseteaser';
-$plugin->version   = 2024012200;
-$plugin->requires  = 2022111800;
+/**
+ * Upgrade hook for this plugin.
+ *
+ * @param  int  $oldversion
+ * @return bool
+ */
+function xmldb_unilabeltype_carousel_upgrade($oldversion) {
+    global $CFG, $DB;
+
+    $dbman = $DB->get_manager();
+
+    if ($oldversion < 2023121501) {
+
+        // Define field sortorder to be added to unilabeltype_carousel_tile.
+        $table = new xmldb_table('unilabeltype_carousel_slide');
+        $field = new xmldb_field('sortorder', XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'carouselid');
+
+        // Conditionally launch add field sortorder.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Carousel savepoint reached.
+        upgrade_plugin_savepoint(true, 2023121501, 'unilabeltype', 'carousel');
+    }
+
+    return true;
+}

@@ -14,11 +14,25 @@
     You should have received a copy of the GNU General Public License
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
-<span class="ml-auto">
+{{!
+    @template mod_unilabel/element_action_buttons
+    Template to get the action buttons for a draggable element.
+
+    Example context (json):
+    {
+        "type": "grid",
+        "repeatindex": 1,
+        "repeatnr": 2
+    }
+}}
+
+<span class="ml-auto"><!-- A dummy to move the buttons to the right side. --></span>
+<span>
     <i class="fa fa-arrows fa-fw draghandle"></i>
 </span>
-<a href="#">
+<a href="#" class="delete-button">
     <i class="fa fa-trash fa-fw text-danger" data-toggle="modal" data-target="#unilabel_{{type}}_confirm_{{repeatindex}}"></i>
+    <span class="sr-only">{{#str}} delete_element, mod_unilabel {{/str}}-{{repeatnr}}</span>
 </a>
 <div id="unilabel_{{type}}_confirm_{{repeatindex}}" class="modal" tabindex="-1">
     <div class="modal-dialog">
