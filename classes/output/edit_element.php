@@ -48,9 +48,25 @@ class edit_element extends \mod_unilabel\output\edit_element_base {
 
         parent::__construct($formid, $context, $course, $type, $repeatindex);
 
-        $this->data->headingelement = $this->get_editor('heading', ['rows' => 2], $this->editor_options(), 'heading');
-        $this->data->contentelement = $this->get_editor('content', ['rows' => 10], $this->editor_options(), 'content');
-        $this->data->sortorderelement = $this->get_hidden('sortorder');
+        $this->data->headingelement = $this->render_element(
+            $this->get_editor(
+                'heading',
+                ['rows' => 2],
+                $this->editor_options(),
+                'heading'
+            )
+        );
+        $this->data->contentelement = $this->render_element(
+            $this->get_editor(
+                'content',
+                ['rows' => 10],
+                $this->editor_options(),
+                'content'
+            )
+        );
+        $this->data->sortorderelement = $this->render_element(
+            $this->get_hidden('sortorder')
+        );
 
     }
 
