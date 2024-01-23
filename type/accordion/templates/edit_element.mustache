@@ -1,0 +1,48 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+
+<fieldset class="clearfix collapsible collapsed" id="id_singleelementheader_{{repeatindex}}"><legend class="sr-only">{{#str}} segment, unilabeltype_accordion {{/str}}-{{repeatnr}}</legend>
+    <div class="d-flex align-items-center mb-2">
+        <div class="position-relative d-flex ftoggler align-items-center position-relative mr-1">
+                <a data-toggle="collapse" href="#header-{{formid}}-{{repeatindex}}container" role="button" aria-expanded="true" aria-controls="header-{{formid}}-{{repeatindex}}container" class="btn btn-icon mr-1 icons-collapse-expand stretched-link fheader collapsed">
+                    <span class="expanded-icon icon-no-margin p-2" title="Collapse">
+                        <i class="icon fa fa-chevron-down fa-fw " aria-hidden="true"></i>
+                    </span>
+                    <span class="collapsed-icon icon-no-margin p-2" title="Expand">
+                        <span class="dir-rtl-hide"><i class="icon fa fa-chevron-right fa-fw " aria-hidden="true"></i></span>
+                        <span class="dir-ltr-hide"><i class="icon fa fa-chevron-left fa-fw " aria-hidden="true"></i></span>
+                    </span>
+                    <span class="sr-only">{{#str}} segment, unilabeltype_accordion {{/str}}-{{repeatnr}}</span>
+                </a>
+            <h3 class="d-flex align-self-stretch align-items-center mb-0" aria-hidden="true">
+                {{#str}} segment, unilabeltype_accordion {{/str}}-{{repeatnr}}
+            </h3>
+        </div>
+        {{> mod_unilabel/element_action_buttons }}
+    </div>
+    <div id="header-{{formid}}-{{repeatindex}}container" class="collapse">
+        <div>
+            {{{headingelement}}}
+        </div>
+        <div>
+            {{{contentelement}}}
+        </div>
+        <div class="d-none">
+            {{{sortorderelement}}}
+        </div>
+    </div>
+</fieldset>
