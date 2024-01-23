@@ -14,6 +14,23 @@
     You should have received a copy of the GNU General Public License
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
+{{!
+    @template unilabeltype_carousel/edit_element
+    Template to get the form items for a single element
+
+    Example context (json):
+    {
+        "formid": "mform_jflajfldsa",
+        "repeatindex": 1,
+        "repeatnr": 2,
+        "sortorderelement": "<div>Dummy sortorderelement</div>",
+        "captionelement": "<div>Dummy caption</div>",
+        "urlelement": "<div>Dummy url</div>",
+        "pickerbutton": "<div>Dummy pickerbutton</div>",
+        "imageelement": "<div>Dummy image</div>",
+        "imagemobileelement": "<div>Dummy mobile image</div>"
+    }
+}}
 
 <fieldset class="clearfix collapsible collapsed" id="id_singleelementheader_{{repeatindex}}"><legend class="sr-only">{{#str}} slide, unilabeltype_carousel {{/str}}-{{repeatnr}}</legend>
     <div class="d-flex align-items-center mb-2">
