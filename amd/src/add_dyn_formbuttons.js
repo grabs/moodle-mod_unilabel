@@ -117,8 +117,13 @@ const delElement = (index) => {
  * @param {string} prefix
  * @param {array} elements The dummy fields we need if we want to delete an element
  * @param {array} editorelements The same as element but for editor which has subelements like "text", "format" and "itemid"
+ * @param {boolean} useDragdrop The same as element but for editor which has subelements like "text", "format" and "itemid"
  */
-export const init = (type, formid, contextid, courseid, prefix, elements, editorelements) => {
+export const init = async(type, formid, contextid, courseid, prefix, elements, editorelements, useDragdrop) => {
+    // Import the dragdrop module asynchron.
+    const dragDrop = await import('mod_unilabel/dragdrop');
+    dragDrop.init(type, formid, useDragdrop);
+
     _type = type;
     _formid = formid;
     _elements = elements;

@@ -38,8 +38,12 @@
 }
 
 /* Drag and drop style */
-#page-mod-unilabel-edit_content form fieldset.draggable .draghandle {
+#page-mod-unilabel-edit_content form fieldset span .draghandle {
+    display:none;
+}
+#page-mod-unilabel-edit_content form fieldset.draggable span .draghandle {
     cursor: move;
+    display:inline;
 }
 #page-mod-unilabel-edit_content form fieldset.draggable.dragging {
     opacity: 0;

@@ -23,14 +23,15 @@
 import log from 'core/log';
 import config from 'core/config';
 
-var _formid;
-var _type;
+let _formid;
+let _type;
+let _useDragdrop;
 
 /**
  * Find the items in our mform we want to be draggable
  *
  * @param {string} formid The id of the mform the draggable items are related toHtml
- * @returns array
+ * @returns {array}
  */
 const getDraggableItems = (formid) => {
     let fieldsets = document.querySelectorAll('#' + formid + ' fieldset');
@@ -51,7 +52,9 @@ const getDraggableItems = (formid) => {
  */
 const initDragElement = (item, index) => {
     // Add the class "dragging" a little later to get the dragging image visible.
-    item.classList.add('draggable');
+    if (_useDragdrop) {
+        item.classList.add('draggable');
+    }
     item.dataset.index = index;
 };
 
@@ -76,12 +79,14 @@ const resortList = () => {
 /**
  * Export our init method.
  *
- * @param {string} type The type of unilabeltype e.g.: grid
- * @param {string} formid The id of the mform the draggable elements are related to
+ * @param {string}  type The type of unilabeltype e.g.: grid
+ * @param {string}  formid The id of the mform the draggable elements are related to
+ * @param {boolean} useDragdrop If false or not set drag drop is deactivated.
  */
-export const init = (type, formid) => {
+export const init = async(type, formid, useDragdrop) => {
     _type = type;
     _formid = formid;
+    _useDragdrop = useDragdrop;
 
     // Initialize drag and drop.
     const items = getDraggableItems(formid);
@@ -105,23 +110,22 @@ export const init = (type, formid) => {
     });
 
     // Import Sortable from 'js/Sortable.js';
-    return import(config.wwwroot + '/mod/unilabel/js/Sortable.min.js').then((Sortable) => {
-        const mysortablelist = document.querySelector('#' + formid);
-        var sortable = Sortable.create(
-            mysortablelist,
-            {
-                draggable: '.draggable',
-                handle: '.draghandle',
-                animation: 150,
-                swapThreshold: 0.50,
-                onEnd: (e) => {
-                    log.debug(e.item);
-                    resortList();
-                }
+    const Sortable = await import(config.wwwroot + '/mod/unilabel/js/Sortable.min.js');
+    const mysortablelist = document.querySelector('#' + formid);
+    var sortable = Sortable.create(
+        mysortablelist,
+        {
+            draggable: '.draggable',
+            handle: '.draghandle',
+            animation: 150,
+            swapThreshold: 0.5,
+            onEnd: (e) => {
+                log.debug(e.item);
+                resortList();
             }
-        );
-        log.debug('Initialized sortable list');
-        return sortable;
-    });
+        }
+    );
+    log.debug('Initialized sortable list');
+    return sortable;
 
 };

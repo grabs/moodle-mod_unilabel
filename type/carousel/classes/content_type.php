@@ -240,14 +240,7 @@ class content_type extends \mod_unilabel\content_type {
                 $prefix,
                 $myelements,
                 $myeditorelements,
-            ]
-        );
-        $PAGE->requires->js_call_amd(
-            'mod_unilabel/dragdrop',
-            'init',
-            [
-                $this->type,
-                $formid,
+                true, // Use drag and drop.
             ]
         );
     }

@@ -51,13 +51,53 @@ class edit_element extends \mod_unilabel\output\edit_element_base {
         $inputidbase  = 'id_' . $this->prefix . 'url_';
         $pickerbutton = new \mod_unilabel\output\component\activity_picker_button($formid, $inputidbase);
 
-        $this->data->titleelement = $this->get_textfield('title', ['size' => 50]);
-        $this->data->contentelement = $this->get_editor('content', ['rows' => 10], $this->editor_options(), 'content');
-        $this->data->urlelement = $this->get_textfield('url', ['size' => 50], 'url');
-        $this->data->pickerbutton = $this->get_static('picker', $OUTPUT->render($pickerbutton));
-        $this->data->imageelement = $this->get_filemanager('image', [], $this->manager_options());
-        $this->data->imagemobileelement = $this->get_filemanager('image_mobile', [], $this->manager_options(), 'image_mobile');
-        $this->data->sortorderelement = $this->get_hidden('sortorder');
+        $this->data->titleelement = $this->render_element(
+            $this->get_textfield(
+                'title',
+                ['size' => 50]
+            )
+        );
+        $this->data->contentelement = $this->render_element(
+            $this->get_editor(
+                'content',
+                ['rows' => 10],
+                $this->editor_options(),
+                'content'
+            )
+        );
+        $this->data->urlelement = $this->render_element(
+            $this->get_textfield(
+                'url',
+                ['size' => 50],
+                'url'
+            )
+        );
+        $this->data->pickerbutton = $this->render_element(
+            $this->get_static(
+                'picker',
+                $OUTPUT->render(
+                    $pickerbutton
+                )
+            )
+        );
+        $this->data->imageelement = $this->render_element(
+            $this->get_filemanager(
+                'image',
+                [],
+                $this->manager_options()
+            )
+        );
+        $this->data->imagemobileelement = $this->render_element(
+            $this->get_filemanager(
+                'image_mobile',
+                [],
+                $this->manager_options(),
+                'image_mobile'
+            )
+        );
+        $this->data->sortorderelement = $this->render_element(
+            $this->get_hidden('sortorder')
+        );
 
     }
 

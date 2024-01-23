@@ -73,6 +73,7 @@ abstract class edit_element_base implements \templatable, \renderable {
         require_once($CFG->libdir . '/form/hidden.php');
         require_once($CFG->libdir . '/form/header.php');
         require_once($CFG->libdir . '/form/static.php');
+        require_once($CFG->libdir . '/form/group.php');
 
         // Set the global properties.
         $this->output = $OUTPUT;
@@ -95,13 +96,33 @@ abstract class edit_element_base implements \templatable, \renderable {
     }
 
     /**
-     * Get an mform filemanager element as html fragment.
+     * Get the rendered html from the given QuickForm element.
+     *
+     * @param \HTML_QuickForm_element $element
+     * @return void
+     */
+    protected function render_element(\HTML_QuickForm_element $element) {
+        if ($element->getType() == 'hidden') {
+            return $element->toHtml();
+        }
+
+        return $this->output->mform_element(
+            $element,
+            false,
+            false,
+            '',
+            false
+        );
+    }
+
+    /**
+     * Get an mform filemanager element.
      *
      * @param string $name The element name without the prefix.
      * @param array $attributes
      * @param array $options The options for file handling
      * @param string $helpbutton
-     * @return string The html fragment
+     * @return \MoodleQuickForm_filemanager The element
      */
     protected function get_filemanager(string $name, array $attributes = [], array $options = [], $helpbutton = '') {
         $elementname = $this->prefix . $name . '[' . $this->repeatindex . ']';
@@ -115,17 +136,17 @@ abstract class edit_element_base implements \templatable, \renderable {
             $element->_helpbutton = $this->output->help_icon($helpbutton, $this->component);
         }
 
-        return $this->output->mform_element($element, false, false, '', false);
+        return $element;
     }
 
     /**
-     * Get an mform editor element as html fragment.
+     * Get an mform editor element.
      *
      * @param string $name The element name without the prefix.
      * @param array $attributes
      * @param array $options The options for file handling
      * @param boolean $helpbutton
-     * @return string The html fragment
+     * @return \MoodleQuickForm_editor The element
      */
     protected function get_editor(string $name, array $attributes = [], array $options = [], $helpbutton = '') {
         $elementname = $this->prefix . $name . '[' . $this->repeatindex . ']';
@@ -139,16 +160,16 @@ abstract class edit_element_base implements \templatable, \renderable {
             $element->_helpbutton = $this->output->help_icon($helpbutton, $this->component);
         }
 
-        return $this->output->mform_element($element, false, false, '', false);
+        return $element;
     }
 
     /**
-     * Get an mform text element as html fragment.
+     * Get an mform text element.
      *
      * @param string $name The element name without the prefix.
      * @param array $attributes
      * @param boolean $helpbutton
-     * @return string The html fragment
+     * @return \MoodleQuickForm_text The element
      */
     protected function get_textfield(string $name, array $attributes = [], $helpbutton = '') {
         $elementname = $this->prefix . $name . '[' . $this->repeatindex . ']';
@@ -162,14 +183,14 @@ abstract class edit_element_base implements \templatable, \renderable {
             $element->_helpbutton = $this->output->help_icon($helpbutton, $this->component);
         }
 
-        return $this->output->mform_element($element, false, false, '', false);
+        return $element;
     }
 
     /**
-     * Get an mform hidden element as html fragment.
+     * Get an mform hidden element.
      *
      * @param string $name The element name without the prefix.
-     * @return string The html fragment
+     * @return \MoodleQuickForm_hidden The element
      */
     protected function get_hidden(string $name) {
         $elementname = $this->prefix . $name . '[' . $this->repeatindex . ']';
@@ -178,15 +199,15 @@ abstract class edit_element_base implements \templatable, \renderable {
 
         $element = new \MoodleQuickForm_hidden($elementname, $this->repeatindex, $attributes);
 
-        return $element->toHtml();
+        return $element;
     }
 
     /**
-     * Get an mform static element as html fragment.
+     * Get an mform static element.
      *
      * @param string $name The element name without the prefix.
      * @param string $html
-     * @return string The html fragment
+     * @return \MoodleQuickForm_static The element
      */
     protected function get_static(string $name, string $html) {
         $elementname = $this->prefix . $name . '_' . $this->repeatindex;
@@ -197,7 +218,26 @@ abstract class edit_element_base implements \templatable, \renderable {
         $element = new \MoodleQuickForm_static($elementname, '', $html);
         $element->setAttributes($attributes);
 
-        return $this->output->mform_element($element, false, false, '', false);
+        return $element;
 
+    }
+
+    /**
+     * Get an mform group element.
+     *
+     * @param string $name The element name without the prefix.
+     * @param \HTML_QuickForm_element[] $elements
+     * @param string $separator String to seperate elements
+     * @param bool $appendname
+     * @return \MoodleQuickForm_group The group element
+     */
+    protected function get_group(string $name, array $elements, string $separator = null, bool $appendname = false) {
+        $elementname = $this->prefix . $name . '_' . $this->repeatindex;
+
+        $label = get_string($name, $this->component);
+
+        $element = new \MoodleQuickForm_group($elementname, $label, $elements, $separator, $appendname);
+
+        return $element;
     }
 }
