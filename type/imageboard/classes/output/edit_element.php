@@ -76,16 +76,9 @@ class edit_element extends \mod_unilabel\output\edit_element_base {
             'yposition',
             ['size' => 4, 'placeholder' => get_string('placeholder_yposition', $this->component)]
         );
-        // If page is running behat, the group elements are not printed out correctly.
-        // So we print the needed fields as single fields.
-        if (defined('BEHAT_SITE_RUNNING')) {
-            $this->data->positionelement = $this->render_element($xposition) . $this->render_element($yposition);
-        } else {
-            // No behat so we can use groups.
-            $this->data->positionelement = $this->render_element(
-                $this->get_group('position', [$xposition, $yposition], null, false, 'position')
-            );
-        }
+        $this->data->positionelement = $this->render_element(
+            $this->get_group('position', [$xposition, $yposition], null, false, 'position')
+        );
 
         $targetwidth = $this->get_textfield(
             'targetwidth',
@@ -95,16 +88,9 @@ class edit_element extends \mod_unilabel\output\edit_element_base {
             'targetheight',
             ['size' => 4, 'placeholder' => get_string('placeholder_targetheight', $this->component)]
         );
-        // If page is running behat, the group elements are not printed out correctly.
-        // So we print the needed fields as single fields.
-        if (defined('BEHAT_SITE_RUNNING')) {
-            $this->data->targetsizeelement = $this->render_element($targetwidth) . $this->render_element($targetheight);
-        } else {
-            // No behat so we can use groups.
-            $this->data->targetsizeelement = $this->render_element(
-                $this->get_group('targetsize', [$targetwidth, $targetheight], null, false, 'targetsize')
-            );
-        }
+        $this->data->targetsizeelement = $this->render_element(
+            $this->get_group('targetsize', [$targetwidth, $targetheight], null, false, 'targetsize')
+        );
 
         $urlelement = $this->get_textfield(
             'url',
@@ -116,23 +102,16 @@ class edit_element extends \mod_unilabel\output\edit_element_base {
             '',
             get_string('newwindow')
         );
-        // If page is running behat, the group elements are not printed out correctly.
-        // So we print the needed fields as single fields.
-        if (defined('BEHAT_SITE_RUNNING')) {
-            $this->data->urlelement = $this->render_element($urlelement) . $this->render_element($newwindowelement);
-        } else {
-            // No behat so we can use groups.
-            $this->data->urlelement = $this->render_element(
-                $this->get_group(
-                    'urlgroup',
-                    [$urlelement, $newwindowelement],
-                    null,
-                    false,
-                    'url',
-                    get_string('url', $this->component) . '-' . ($this->repeatindex + 1)
-                )
-            );
-        }
+        $this->data->urlelement = $this->render_element(
+            $this->get_group(
+                'urlgroup',
+                [$urlelement, $newwindowelement],
+                null,
+                false,
+                'url',
+                get_string('url', $this->component) . '-' . ($this->repeatindex + 1)
+            )
+        );
 
         $this->data->pickerbutton = $this->render_element(
             $this->get_static(
