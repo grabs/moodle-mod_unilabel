@@ -326,6 +326,7 @@ abstract class edit_element_base implements \templatable, \renderable {
         if ($helpbutton) {
             $element->_helpbutton = $this->output->help_icon($helpbutton, $this->component);
         }
+        $element->setAttributes([]); // The group element has no attributes but it needs at least an empty array!!!
 
         return $element;
     }
