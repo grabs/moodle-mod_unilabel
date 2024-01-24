@@ -65,6 +65,7 @@ class edit_element extends \mod_unilabel\output\edit_element_base {
                 'content'
             )
         );
+
         $urlelement = $this->get_textfield(
             'url',
             ['size' => 50]
@@ -75,16 +76,25 @@ class edit_element extends \mod_unilabel\output\edit_element_base {
             '',
             get_string('newwindow')
         );
-        $this->data->urlelement = $this->render_element(
-            $this->get_group(
-                'urlgroup',
-                [$urlelement, $newwindowelement],
-                null,
-                false,
-                'url',
-                get_string('url', $this->component) . '-' . ($this->repeatindex + 1)
-            )
-        );
+
+        // If page is running behat, the group elements are not printed out correctly.
+        // So we print the needed fields as single fields.
+        if (defined('BEHAT_SITE_RUNNING')) {
+            $this->data->urlelement = $this->render_element($urlelement) . $this->render_element($newwindowelement);
+        } else {
+            // No behat so we can use groups.
+            $this->data->urlelement = $this->render_element(
+                $this->get_group(
+                    'urlgroup',
+                    [$urlelement, $newwindowelement],
+                    null,
+                    false,
+                    'url',
+                    get_string('url', $this->component) . '-' . ($this->repeatindex + 1)
+                )
+            );
+        }
+
         $this->data->pickerbutton = $this->render_element(
             $this->get_static(
                 'picker',
