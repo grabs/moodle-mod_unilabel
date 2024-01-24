@@ -106,7 +106,6 @@ class edit_element extends \mod_unilabel\output\edit_element_base {
             );
         }
 
-
         $urlelement = $this->get_textfield(
             'url',
             ['size' => 50]
