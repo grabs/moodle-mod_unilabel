@@ -6,6 +6,7 @@
 * Introduce Drag-and-Drop for element with items like "accordion", "carousel" and "grid"
 * Introduce adding and removing of elements by ajax
 * New option to open a url in a new window.
+* Fix issue "Always show manual completion" (Thanks to Stefa Hanauska) (#39)
 
 ### Release 4.3.1
 * mod_unilabel: prevent loading activities like inline folder (#36)
