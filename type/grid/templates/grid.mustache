@@ -30,7 +30,8 @@
                 "id": "1",
                 "gridid": "1",
                 "title": "Title 1",
-                "url": "",
+                "url": "https://example.com",
+                "newwindow": 1,
                 "content": "<p>fdsafsdf<br><\/p>",
                 "imageurl": "https://url-to-image",
                 "imagemobileurl": "",
@@ -41,6 +42,7 @@
                 "gridid": "1",
                 "title": "Title 2",
                 "url": "",
+                "newwindow": 1,
                 "content": "<p>fdfdfdfdf<br><\/p>",
                 "imageurl": "https://url-to-image",
                 "imagemobileurl": "",
@@ -62,7 +64,7 @@
             <div class="text-center {{{colclasses}}} py-4">
                 <!-- The overlay is used as button to show the modal dialog -->
                 {{#url}}
-                    <a href="{{{url}}}">
+                    <a href="{{{url}}}"{{#newwindow}} target="_blank"{{/newwindow}}>
                         <div class="unilabel-overlay-effect bg-primary h-100 w-100"></div>
                     </a>
                 {{/url}}

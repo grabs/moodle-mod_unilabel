@@ -74,6 +74,8 @@ abstract class edit_element_base implements \templatable, \renderable {
         require_once($CFG->libdir . '/form/header.php');
         require_once($CFG->libdir . '/form/static.php');
         require_once($CFG->libdir . '/form/group.php');
+        require_once($CFG->libdir . '/form/select.php');
+        require_once($CFG->libdir . '/form/checkbox.php');
 
         // Set the global properties.
         $this->output = $OUTPUT;
@@ -122,14 +124,19 @@ abstract class edit_element_base implements \templatable, \renderable {
      * @param array $attributes
      * @param array $options The options for file handling
      * @param string $helpbutton
+     * @param string $extralabel In from the name independent label.
      * @return \MoodleQuickForm_filemanager The element
      */
-    protected function get_filemanager(string $name, array $attributes = [], array $options = [], $helpbutton = '') {
+    protected function get_filemanager(string $name, array $attributes = [], array $options = [], $helpbutton = '', string $extralabel = '') {
         $elementname = $this->prefix . $name . '[' . $this->repeatindex . ']';
         $attributes['id'] = 'id_' . $this->prefix . $name . '_' . $this->repeatindex;
         $attributes['name'] = $elementname;
 
-        $label = get_string($name, $this->component) . '-' . ($this->repeatindex + 1);
+        if (empty($extralabel)) {
+            $label = get_string($name, $this->component) . '-' . ($this->repeatindex + 1);
+        } else {
+            $label = $extralabel;
+        }
 
         $element = new \MoodleQuickForm_filemanager($elementname, $label, $attributes, $options);
         if ($helpbutton) {
@@ -146,14 +153,19 @@ abstract class edit_element_base implements \templatable, \renderable {
      * @param array $attributes
      * @param array $options The options for file handling
      * @param boolean $helpbutton
+     * @param string $extralabel In from the name independent label.
      * @return \MoodleQuickForm_editor The element
      */
-    protected function get_editor(string $name, array $attributes = [], array $options = [], $helpbutton = '') {
+    protected function get_editor(string $name, array $attributes = [], array $options = [], $helpbutton = '', string $extralabel = '') {
         $elementname = $this->prefix . $name . '[' . $this->repeatindex . ']';
         $attributes['id'] = 'id_' . $this->prefix . $name . '_' . $this->repeatindex;
         $attributes['name'] = $elementname;
 
-        $label = get_string($name, $this->component) . '-' . ($this->repeatindex + 1);
+        if (empty($extralabel)) {
+            $label = get_string($name, $this->component) . '-' . ($this->repeatindex + 1);
+        } else {
+            $label = $extralabel;
+        }
 
         $element = new \MoodleQuickForm_editor($elementname, $label, $attributes, $options);
         if ($helpbutton) {
@@ -169,16 +181,78 @@ abstract class edit_element_base implements \templatable, \renderable {
      * @param string $name The element name without the prefix.
      * @param array $attributes
      * @param boolean $helpbutton
+     * @param string $extralabel In from the name independent label.
      * @return \MoodleQuickForm_text The element
      */
-    protected function get_textfield(string $name, array $attributes = [], $helpbutton = '') {
+    protected function get_textfield(string $name, array $attributes = [], $helpbutton = '', string $extralabel = '') {
         $elementname = $this->prefix . $name . '[' . $this->repeatindex . ']';
         $attributes['id'] = 'id_' . $this->prefix . $name . '_' . $this->repeatindex;
         $attributes['name'] = $elementname;
 
-        $label = get_string($name, $this->component) . '-' . ($this->repeatindex + 1);
+        if (empty($extralabel)) {
+            $label = get_string($name, $this->component) . '-' . ($this->repeatindex + 1);
+        } else {
+            $label = $extralabel;
+        }
 
         $element = new \MoodleQuickForm_text($elementname, $label, $attributes);
+        if ($helpbutton) {
+            $element->_helpbutton = $this->output->help_icon($helpbutton, $this->component);
+        }
+
+        return $element;
+    }
+
+    /**
+     * Get an mform checkbox element.
+     *
+     * @param string $name The element name without the prefix.
+     * @param array $attributes
+     * @param boolean $helpbutton
+     * @param string $extralabel In from the name independent label.
+     * @return \MoodleQuickForm_text The element
+     */
+    protected function get_checkbox(string $name, array $attributes = [], $helpbutton = '', string $extralabel = '') {
+        $elementname = $this->prefix . $name . '[' . $this->repeatindex . ']';
+        $attributes['id'] = 'id_' . $this->prefix . $name . '_' . $this->repeatindex;
+        $attributes['name'] = $elementname;
+
+        if (empty($extralabel)) {
+            $label = get_string($name, $this->component) . '-' . ($this->repeatindex + 1);
+        } else {
+            $label = $extralabel;
+        }
+
+        $element = new \MoodleQuickForm_checkbox($elementname, $label, '', $attributes);
+        if ($helpbutton) {
+            $element->_helpbutton = $this->output->help_icon($helpbutton, $this->component);
+        }
+
+        return $element;
+    }
+
+    /**
+     * Get an mform select element.
+     *
+     * @param string $name The element name without the prefix.
+     * @param array $options
+     * @param array $attributes
+     * @param boolean $helpbutton
+     * @param string $extralabel In from the name independent label.
+     * @return \MoodleQuickForm_text The element
+     */
+    protected function get_select(string $name, array $options, array $attributes = [], $helpbutton = '', string $extralabel = '') {
+        $elementname = $this->prefix . $name . '[' . $this->repeatindex . ']';
+        $attributes['id'] = 'id_' . $this->prefix . $name . '_' . $this->repeatindex;
+        $attributes['name'] = $elementname;
+
+        if (empty($extralabel)) {
+            $label = get_string($name, $this->component) . '-' . ($this->repeatindex + 1);
+        } else {
+            $label = $extralabel;
+        }
+
+        $element = new \MoodleQuickForm_select($elementname, $label, $options, $attributes);
         if ($helpbutton) {
             $element->_helpbutton = $this->output->help_icon($helpbutton, $this->component);
         }
@@ -229,14 +303,25 @@ abstract class edit_element_base implements \templatable, \renderable {
      * @param \HTML_QuickForm_element[] $elements
      * @param string $separator String to seperate elements
      * @param bool $appendname
+     * @param string $helpbutton
+     * @param string $extralabel In from the name independent label.
      * @return \MoodleQuickForm_group The group element
      */
-    protected function get_group(string $name, array $elements, string $separator = null, bool $appendname = false) {
+    protected function get_group(string $name, array $elements, string $separator = null,
+                                    bool $appendname = false, $helpbutton = '', string $extralabel = '') {
+
         $elementname = $this->prefix . $name . '_' . $this->repeatindex;
 
-        $label = get_string($name, $this->component);
+        if (empty($extralabel)) {
+            $label = get_string($name, $this->component) . '-' . ($this->repeatindex + 1);
+        } else {
+            $label = $extralabel;
+        }
 
         $element = new \MoodleQuickForm_group($elementname, $label, $elements, $separator, $appendname);
+        if ($helpbutton) {
+            $element->_helpbutton = $this->output->help_icon($helpbutton, $this->component);
+        }
 
         return $element;
     }

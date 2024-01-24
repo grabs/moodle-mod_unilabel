@@ -65,11 +65,24 @@ class edit_element extends \mod_unilabel\output\edit_element_base {
                 'content'
             )
         );
+        $urlelement = $this->get_textfield(
+            'url',
+            ['size' => 50]
+        );
+        $newwindowelement = $this->get_checkbox(
+            'newwindow',
+            [],
+            '',
+            get_string('newwindow')
+        );
         $this->data->urlelement = $this->render_element(
-            $this->get_textfield(
+            $this->get_group(
+                'urlgroup',
+                [$urlelement, $newwindowelement],
+                null,
+                false,
                 'url',
-                ['size' => 50],
-                'url'
+                get_string('url', $this->component) . '-' . ($this->repeatindex + 1)
             )
         );
         $this->data->pickerbutton = $this->render_element(

@@ -146,11 +146,26 @@ class content_type extends \mod_unilabel\content_type {
             get_string('caption', $this->component) . '-{no}',
             ['rows' => 4]
         );
-        $repeatarray[] = $mform->createElement(
+        $urlelement = $mform->createElement(
             'text',
             $prefix . 'url',
             get_string('url', $this->component) . '-{no}',
             ['size' => 50]
+        );
+        $mform->setType($prefix . 'url', PARAM_URL);
+        $newwindowelement = $mform->createElement(
+            'checkbox',
+            $prefix . 'newwindow',
+            get_string('newwindow')
+
+        );
+        $repeatarray[] = $mform->createElement(
+            'group',
+            $prefix . 'urlgroup',
+            get_string('url', $this->component) . '-{no}',
+            [$urlelement, $newwindowelement],
+            null,
+            false
         );
         $repeatarray[] = $mform->createElement(
             'static',
@@ -192,7 +207,7 @@ class content_type extends \mod_unilabel\content_type {
         $repeatedoptions[$prefix . 'image_mobile']['type'] = PARAM_FILE;
         // Adding the help buttons.
         $repeatedoptions[$prefix . 'caption']['helpbutton']      = ['caption', $this->component];
-        $repeatedoptions[$prefix . 'url']['helpbutton']          = ['url', $this->component];
+        $repeatedoptions[$prefix . 'urlgroup']['helpbutton']     = ['url', $this->component];
         $repeatedoptions[$prefix . 'image_mobile']['helpbutton'] = ['image_mobile', $this->component];
 
         $defaultrepeatcount = 1; // The default count for slides.
@@ -296,6 +311,10 @@ class content_type extends \mod_unilabel\content_type {
             // Prepare the url field.
             $elementname        = $prefix . 'url[' . $index . ']';
             $data[$elementname] = $slide->url;
+
+            // Prepare the newwindow field.
+            $elementname = $prefix . 'newwindow[' . $index . ']';
+            $data[$elementname] = $slide->newwindow;
 
             // Prepare the caption field.
             $elementname                  = $prefix . 'caption[' . $index . ']';
@@ -491,6 +510,7 @@ class content_type extends \mod_unilabel\content_type {
             $sliderecord             = new \stdClass();
             $sliderecord->carouselid = $unilabeltyperecord->id;
             $sliderecord->url        = $formdata->{$prefix . 'url'}[$i];
+            $sliderecord->newwindow = !empty($formdata->{$prefix . 'newwindow'}[$i]);
             $sliderecord->caption    = $caption;
             $sliderecord->sortorder  = $sortorder;
 

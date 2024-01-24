@@ -5,6 +5,7 @@
 * Type collapsedtext now use Moodle css classes to show the carets for collapsed and expanded.
 * Introduce Drag-and-Drop for element with items like "accordion", "carousel" and "grid"
 * Introduce adding and removing of elements by ajax
+* New option to open a url in a new window.
 
 ### Release 4.3.1
 * mod_unilabel: prevent loading activities like inline folder (#36)

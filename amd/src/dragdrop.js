@@ -101,12 +101,16 @@ export const init = async(type, formid, useDragdrop) => {
         log.debug('New element created with index: ' + e.detail);
         var newitem = document.querySelector('#id_singleelementheader_' + e.detail);
         initDragElement(newitem, e.detail);
-        resortList();
+        if (_useDragdrop) {
+            resortList();
+        }
     });
     // Add event listener if item is removed.
     document.querySelector('#' + formid).addEventListener('itemremoved', (e) => {
         log.debug('Element has been deleted: ' + e.detail);
-        resortList();
+        if (_useDragdrop) {
+            resortList();
+        }
     });
 
     // Import Sortable from 'js/Sortable.js';

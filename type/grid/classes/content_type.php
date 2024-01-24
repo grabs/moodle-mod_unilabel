@@ -159,11 +159,26 @@ class content_type extends \mod_unilabel\content_type {
             ['rows' => 10],
             $this->editor_options($form->context)
         );
-        $repeatarray[] = $mform->createElement(
+        $urlelement = $mform->createElement(
             'text',
             $prefix . 'url',
             get_string('url', $this->component) . '-{no}',
             ['size' => 50]
+        );
+        $mform->setType($prefix . 'url', PARAM_URL);
+        $newwindowelement = $mform->createElement(
+            'checkbox',
+            $prefix . 'newwindow',
+            get_string('newwindow')
+
+        );
+        $repeatarray[] = $mform->createElement(
+            'group',
+            $prefix . 'urlgroup',
+            get_string('url', $this->component) . '-{no}',
+            [$urlelement, $newwindowelement],
+            null,
+            false
         );
         $repeatarray[] = $mform->createElement(
             'static',
@@ -205,7 +220,7 @@ class content_type extends \mod_unilabel\content_type {
         $repeatedoptions[$prefix . 'image_mobile']['type'] = PARAM_FILE;
         // Adding the help buttons.
         $repeatedoptions[$prefix . 'content']['helpbutton']      = ['content', $this->component];
-        $repeatedoptions[$prefix . 'url']['helpbutton']          = ['url', $this->component];
+        $repeatedoptions[$prefix . 'urlgroup']['helpbutton']     = ['url', $this->component];
         $repeatedoptions[$prefix . 'image_mobile']['helpbutton'] = ['image_mobile', $this->component];
 
         $defaultrepeatcount = 1; // The default count for tiles.
@@ -328,6 +343,10 @@ class content_type extends \mod_unilabel\content_type {
             // Prepare the url field.
             $elementname        = $prefix . 'url[' . $index . ']';
             $data[$elementname] = $tile->url;
+
+            // Prepare the newwindow field.
+            $elementname = $prefix . 'newwindow[' . $index . ']';
+            $data[$elementname] = $tile->newwindow;
 
             // Prepare the content field.
             $elementname                = $prefix . 'content[' . $index . ']';
@@ -512,6 +531,7 @@ class content_type extends \mod_unilabel\content_type {
             $tilerecord->gridid    = $unilabeltyperecord->id;
             $tilerecord->title     = $title;
             $tilerecord->url       = $formdata->{$prefix . 'url'}[$i];
+            $tilerecord->newwindow = !empty($formdata->{$prefix . 'newwindow'}[$i]);
             $tilerecord->sortorder = $sortorder;
 
             $tilerecord->content = ''; // Dummy content.
