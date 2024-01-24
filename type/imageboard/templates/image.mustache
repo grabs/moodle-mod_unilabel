@@ -21,7 +21,8 @@
     Example context (json):
     {
         "title": "",
-        "url": "",
+        "url": "https://example.com",
+        "newwindow": 1,
         "xposition": "400",
         "yposition": "200",
         "targetwidth": "0",
@@ -43,7 +44,7 @@
                 }}{{#targetwidth}}width: {{.}}px;{{/targetwidth}}{{!
                 }}{{#targetheight}}height: {{.}}px;{{/targetheight}}{{!
                 }}">
-    {{#url}}<a href="{{{.}}}">{{/url}}
+    {{#url}}<a href="{{{.}}}"{{#newwindow}} target="_blank"{{/newwindow}}>{{/url}}
         {{#title}}
             <div class="unilabel-imageboard-title rounded" style="position: absolute;{{!
                 }}z-index: 5;{{!

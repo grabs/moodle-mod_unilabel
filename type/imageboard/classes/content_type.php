@@ -49,13 +49,21 @@ class content_type extends \mod_unilabel\content_type {
     /** @var \stdClass $config */
     private $config;
 
+    /** @var string */
+    private $type;
+
+    /** @var string */
+    private $component;
+
     /**
      * Constructor
      *
      * @return void
      */
     public function __construct() {
-        $this->config = get_config('unilabeltype_imageboard');
+        $this->type = 'imageboard';
+        $this->component = 'unilabeltype_' . $this->type;
+        $this->config = get_config($this->component);
     }
 
     /**
@@ -66,31 +74,31 @@ class content_type extends \mod_unilabel\content_type {
      * @return void
      */
     public function add_form_fragment(\mod_unilabel\edit_content_form $form, \context $context) {
-        global $OUTPUT;
+        global $PAGE, $OUTPUT;
 
         $unilabeltyperecord = $this->load_unilabeltype_record($form->unilabel->id);
 
         $mform = $form->get_mform();
-        $prefix = 'unilabeltype_imageboard_';
+        $prefix = $this->component . '_';
 
-        $mform->addElement('advcheckbox', $prefix . 'showintro', get_string('showunilabeltext', 'unilabeltype_imageboard'));
+        $mform->addElement('advcheckbox', $prefix . 'showintro', get_string('showunilabeltext', $this->component));
 
         $mform->addElement('header', $prefix . 'hdr', $this->get_name());
-        $mform->addHelpButton($prefix . 'hdr', 'pluginname', 'unilabeltype_imageboard');
+        $mform->addHelpButton($prefix . 'hdr', 'pluginname', $this->component);
 
         $numbers = array_combine(range(100, 1800, 50), range(100, 1800, 50));
-        $mform->addElement('select', $prefix . 'canvaswidth', get_string('canvaswidth', 'unilabeltype_imageboard'), $numbers);
+        $mform->addElement('select', $prefix . 'canvaswidth', get_string('canvaswidth', $this->component), $numbers);
 
         $numbers = array_combine(range(100, 1800, 50), range(100, 1800, 50));
-        $mform->addElement('select', $prefix . 'canvasheight', get_string('canvasheight', 'unilabeltype_imageboard'), $numbers);
+        $mform->addElement('select', $prefix . 'canvasheight', get_string('canvasheight', $this->component), $numbers);
 
-        $mform->addElement('checkbox', $prefix . 'autoscale', get_string('autoscale', 'unilabeltype_imageboard'));
-        $mform->addHelpButton($prefix . 'autoscale', 'autoscale', 'unilabeltype_imageboard');
+        $mform->addElement('checkbox', $prefix . 'autoscale', get_string('autoscale', $this->component));
+        $mform->addHelpButton($prefix . 'autoscale', 'autoscale', $this->component);
 
         $mform->addElement(
                 'filemanager',
                 $prefix . 'backgroundimage',
-                get_string('backgroundimage', 'unilabeltype_imageboard'),
+                get_string('backgroundimage', $this->component),
                 null,
                 [
                         'maxbytes' => $form->get_course()->maxbytes,
@@ -99,7 +107,7 @@ class content_type extends \mod_unilabel\content_type {
                         'accepted_types' => ['web_image'],
                 ]
         );
-        $mform->setType('unilabeltype_imageboard_backgroundimage', PARAM_FILE);
+        $mform->setType($prefix . 'backgroundimage', PARAM_FILE);
 
         // Documentation where changes are needed if there will be added more settings e.g. fontsize of title
         // 1. content_type.php.
@@ -116,7 +124,7 @@ class content_type extends \mod_unilabel\content_type {
 
         // 1. content_type.php.
         $numbers = array_combine(range(0, 36, 1), range(0, 36, 1));
-        $mform->addElement('select', $prefix . 'fontsize', get_string('fontsize_help', 'unilabeltype_imageboard'), $numbers);
+        $mform->addElement('select', $prefix . 'fontsize', get_string('fontsize_help', $this->component), $numbers);
 
         $titlecolor = '';
         if (empty($unilabeltyperecord->titlecolor)) {
@@ -126,7 +134,7 @@ class content_type extends \mod_unilabel\content_type {
         }
         $this->add_colourpicker($mform,
                 $prefix . 'titlecolor',
-                get_string('titlecolor', 'unilabeltype_imageboard'),
+                get_string('titlecolor', $this->component),
                 $titlecolor);
 
         $titlebackgroundcolor = '';
@@ -138,7 +146,7 @@ class content_type extends \mod_unilabel\content_type {
 
         $this->add_colourpicker($mform,
                 $prefix . 'titlebackgroundcolor',
-                get_string('titlebackgroundcolor', 'unilabeltype_imageboard'),
+                get_string('titlebackgroundcolor', $this->component),
                 $titlebackgroundcolor);
 
         // Prepare the activity url picker.
@@ -153,115 +161,177 @@ class content_type extends \mod_unilabel\content_type {
         // If we want each repeated elment in a numbered group we add a header with '{no}' in its label.
         // This is replaced by the number of element.
         $repeatarray[] = $mform->createElement(
-                'header',
-                $prefix . 'imagehdr',
-                get_string('image', 'unilabeltype_imageboard') . '-{no}');
+            'header',
+            'singleelementheader',
+            get_string('image', $this->component) . '-{no}'
+        );
+
         $repeatarray[] = $mform->createElement(
-                'text',
-                $prefix . 'title',
-                get_string('title', 'unilabeltype_imageboard') . '-{no}',
-                ['size' => 50]
+            'text',
+            $prefix . 'title',
+            get_string('title', $this->component) . '-{no}',
+            ['size' => 50]
         );
         $repeatarray[] = $mform->createElement(
-                'filemanager',
-                $prefix . 'image',
-                get_string('image', 'unilabeltype_imageboard') . '-{no}',
-                null,
-                [
-                        'maxbytes' => $form->get_course()->maxbytes,
-                        'maxfiles' => 1,
-                        'subdirs' => false,
-                        'accepted_types' => ['web_image'],
-                ]
+            'filemanager',
+            $prefix . 'image',
+            get_string('image', $this->component) . '-{no}',
+            null,
+            [
+                    'maxbytes' => $form->get_course()->maxbytes,
+                    'maxfiles' => 1,
+                    'subdirs' => false,
+                    'accepted_types' => ['web_image'],
+            ]
         );
 
         $position = [];
-        $position[] = $mform->createElement('text',
-                $prefix . 'xposition',
-                get_string('xposition', 'unilabeltype_imageboard'),
-                ['size' => 4, 'placeholder' => get_string('placeholder_xposition', 'unilabeltype_imageboard')]);
+        $position[] = $mform->createElement(
+            'text',
+            $prefix . 'xposition',
+            get_string('xposition', $this->component),
+            ['size' => 4, 'placeholder' => get_string('placeholder_xposition', $this->component)]
+        );
         $mform->setType($prefix . 'xposition', PARAM_INT);
-        $position[] = $mform->createElement('text',
-                $prefix . 'yposition',
-                get_string('yposition', 'unilabeltype_imageboard'),
-                ['size' => 4, 'placeholder' => get_string('placeholder_yposition', 'unilabeltype_imageboard')]);
+        $position[] = $mform->createElement(
+            'text',
+            $prefix . 'yposition',
+            get_string('yposition', $this->component),
+            ['size' => 4, 'placeholder' => get_string('placeholder_yposition', $this->component)]
+        );
         $mform->setType($prefix . 'yposition', PARAM_INT);
-        $repeatarray[] = $mform->createElement('group',
-                $prefix . 'position',
-                get_string('position', 'unilabeltype_imageboard'),
-                $position,
-                null,
-                false);
+        $repeatarray[] = $mform->createElement(
+            'group',
+            $prefix . 'position',
+            get_string('position', $this->component) . '-{no}',
+            $position,
+            null,
+            false
+        );
         $mform->setType($prefix . 'position', PARAM_RAW);
 
         $targetsize = [];
-        $targetsize[] = $mform->createElement('text',
-                $prefix . 'targetwidth',
-                get_string('targetwidth', 'unilabeltype_imageboard'),
-                ['size' => 4, 'placeholder' => get_string('placeholder_targetwidth', 'unilabeltype_imageboard')]);
+        $targetsize[] = $mform->createElement(
+            'text',
+            $prefix . 'targetwidth',
+            get_string('targetwidth', $this->component),
+            ['size' => 4, 'placeholder' => get_string('placeholder_targetwidth', $this->component)]
+        );
         $mform->setType($prefix . 'targetwidth', PARAM_INT);
-        $targetsize[] = $mform->createElement('text',
-                $prefix . 'targetheight',
-                get_string('targetheight', 'unilabeltype_imageboard'),
-                ['size' => 4, 'placeholder' => get_string('placeholder_targetheight', 'unilabeltype_imageboard')]);
+        $targetsize[] = $mform->createElement(
+            'text',
+            $prefix . 'targetheight',
+            get_string('targetheight', $this->component),
+            ['size' => 4, 'placeholder' => get_string('placeholder_targetheight', $this->component)]
+        );
         $mform->setType($prefix . 'targetheight', PARAM_INT);
-        $repeatarray[] = $mform->createElement('group',
-                $prefix . 'targetsize',
-                get_string('targetsize', 'unilabeltype_imageboard'),
-                $targetsize,
-                null,
-                false);
+        $repeatarray[] = $mform->createElement(
+            'group',
+            $prefix . 'targetsize',
+            get_string('targetsize', $this->component) . '-{no}',
+            $targetsize,
+            null,
+            false
+        );
         $mform->setType($prefix . 'targetsize', PARAM_RAW);
 
-        $repeatarray[] = $mform->createElement(
-                'text',
-                $prefix . 'url',
-                get_string('url', 'unilabeltype_imageboard') . '-{no}',
-                ['size' => 50]
+        $urlelement = $mform->createElement(
+            'text',
+            $prefix . 'url',
+            get_string('url', $this->component) . '-{no}',
+            ['size' => 50]
+        );
+        $mform->setType($prefix . 'url', PARAM_URL);
+        $newwindowelement = $mform->createElement(
+            'checkbox',
+            $prefix . 'newwindow',
+            get_string('newwindow')
+
         );
         $repeatarray[] = $mform->createElement(
-                'static',
-                $prefix . 'activitypickerbutton',
-                '',
-                $OUTPUT->render($pickerbutton)
-
+            'group',
+            $prefix . 'urlgroup',
+            get_string('url', $this->component) . '-{no}',
+            [$urlelement, $newwindowelement],
+            null,
+            false
+        );
+        $repeatarray[] = $mform->createElement(
+            'static',
+            $prefix . 'activitypickerbutton',
+            '',
+            $OUTPUT->render($pickerbutton)
         );
         $numbers = array_combine(range(0, 10, 1), range(0, 10, 1));
         $repeatarray[] = $mform->createElement(
-                'select',
-                $prefix . 'border',
-                get_string('border', 'unilabeltype_imageboard'),
-                $numbers
+            'select',
+            $prefix . 'border',
+            get_string('border', $this->component),
+            $numbers
         );
 
         $repeatedoptions = [];
         $repeatedoptions[$prefix . 'title']['type'] = PARAM_TEXT;
         $repeatedoptions[$prefix . 'url']['type'] = PARAM_URL;
-        $repeatedoptions[$prefix . 'url']['helpbutton'] = ['url', 'unilabeltype_imageboard'];
         $repeatedoptions[$prefix . 'image']['type'] = PARAM_FILE;
         $repeatedoptions[$prefix . 'border']['type'] = PARAM_INT;
         $repeatedoptions[$prefix . 'border']['default'] = $this->config->default_bordersize;
-        $repeatedoptions[$prefix . 'position']['helpbutton'] = ['position', 'unilabeltype_imageboard'];
-        $repeatedoptions[$prefix . 'targetsize']['helpbutton'] = ['targetsize', 'unilabeltype_imageboard'];
+        // Adding the help buttons.
+        $repeatedoptions[$prefix . 'urlgroup']['helpbutton'] = ['url', $this->component];
+        $repeatedoptions[$prefix . 'position']['helpbutton'] = ['position', $this->component];
+        $repeatedoptions[$prefix . 'targetsize']['helpbutton'] = ['targetsize', $this->component];
 
-        $defaultrepeatcount = 4; // The default count for images.
+        $defaultrepeatcount = 1; // The default count for images.
         $repeatcount = count($this->images);
-        if ($rest = count($this->images) % $defaultrepeatcount) {
-            $repeatcount = count($this->images) + ($defaultrepeatcount - $rest);
-        }
-        if ($repeatcount == 0) {
-            $repeatcount = $defaultrepeatcount;
-        }
 
         $nextel = $form->repeat_elements(
-                $repeatarray,
-                $repeatcount,
-                $repeatedoptions,
-                $prefix . 'chosen_images_count',
-                $prefix . 'add_more_images_btn',
-                $defaultrepeatcount, // Each time we add 3 elements.
-                get_string('addmoreimages', 'unilabeltype_imageboard')
+            $repeatarray,
+            $repeatcount,
+            $repeatedoptions,
+            'multiple_chosen_elements_count',
+            $prefix . 'add_more_elements_btn',
+            $defaultrepeatcount, // Each time we add 3 elements.
+            get_string('addmoreimages', $this->component)
         );
+
+        // This elements are needed by js to set empty hidden fields while deleting an element.
+        $myelements = [
+            'title',
+            'url',
+            'image',
+            'border',
+            'xposition',
+            'yposition',
+            'targetwidth',
+            'targetheight',
+        ];
+        $myeditorelements = [];
+
+        // Render the button to add elements.
+        $btn = $OUTPUT->render_from_template('mod_unilabel/load_element_button', [
+            'type' => $this->type,
+            'formid' => $formid,
+            'contextid' => $context->id,
+            'courseid' => $course->id,
+            'prefix' => $prefix,
+        ]);
+        $mform->addElement('html', $btn);
+        // Add dynamic buttons like "Add item", "Delete" and "move".
+        $PAGE->requires->js_call_amd(
+            'mod_unilabel/add_dyn_formbuttons',
+            'init',
+            [
+                $this->type,
+                $formid,
+                $context->id,
+                $course->id,
+                $prefix,
+                $myelements,
+                $myeditorelements,
+                false, // Do not use drag and drop.
+            ]
+        );
+
     }
 
     /**
@@ -277,7 +347,7 @@ class content_type extends \mod_unilabel\content_type {
         $cm = get_coursemodule_from_instance('unilabel', $unilabel->id);
         $context = \context_module::instance($cm->id);
 
-        $prefix = 'unilabeltype_imageboard_';
+        $prefix = $this->component . '_';
 
         // Set default data for the imageboard in general.
         if (!$unilabeltyperecord = $this->load_unilabeltype_record($unilabel->id)) {
@@ -300,7 +370,7 @@ class content_type extends \mod_unilabel\content_type {
 
         // Hint: $draftitemid is set by the function file_prepare_draft_area().
         $draftitemidbackgroundimage = 0; // This is needed to create a new draftitemid.
-        file_prepare_draft_area($draftitemidbackgroundimage, $context->id, 'unilabeltype_imageboard', 'backgroundimage', 0);
+        file_prepare_draft_area($draftitemidbackgroundimage, $context->id, $this->component, 'backgroundimage', 0);
         $data[$prefix . 'backgroundimage'] = $draftitemidbackgroundimage;
 
         // 3. Set the selected value.
@@ -327,6 +397,10 @@ class content_type extends \mod_unilabel\content_type {
             $elementname = $prefix . 'url[' . $index . ']';
             $data[$elementname] = $image->url;
 
+            // Prepare the newwindow field.
+            $elementname = $prefix . 'newwindow[' . $index . ']';
+            $data[$elementname] = $image->newwindow;
+
             // Prepare the url field.
             $elementname = $prefix . 'xposition[' . $index . ']';
             $data[$elementname] = $image->xposition;
@@ -346,7 +420,7 @@ class content_type extends \mod_unilabel\content_type {
             // Prepare the images.
             // $draftitemid is set by the function file_prepare_draft_area().
             $draftitemidimage = 0; // This is needed to create a new draftitemid.
-            file_prepare_draft_area($draftitemidimage, $context->id, 'unilabeltype_imageboard', 'image', $image->id);
+            file_prepare_draft_area($draftitemidimage, $context->id, $this->component, 'image', $image->id);
             $elementname = $prefix . 'image[' . $index . ']';
             $data[$elementname] = $draftitemidimage;
 
@@ -366,7 +440,7 @@ class content_type extends \mod_unilabel\content_type {
      * @return array
      */
     public function form_validation($errors, $data, $files) {
-        $prefix = 'unilabeltype_imageboard_';
+        $prefix = $this->component . '_';
 
         // Check the colour values.
         $colourvaluestocheck = ['titlecolor', 'titlebackgroundcolor'];
@@ -506,7 +580,7 @@ class content_type extends \mod_unilabel\content_type {
         // We want to keep the images consistent so we start a transaction here.
         $transaction = $DB->start_delegated_transaction();
 
-        $prefix = 'unilabeltype_imageboard_';
+        $prefix = $this->component . '_';
 
         // First save the imageboard record.
         if (!$unilabeltyperecord = $DB->get_record('unilabeltype_imageboard', ['unilabelid' => $unilabel->id])) {
@@ -531,8 +605,8 @@ class content_type extends \mod_unilabel\content_type {
         $usercontext = \context_user::instance($USER->id);
         // First: remove old image images.
         // We use the module_context as context and this component as component.
-        $fs->delete_area_files($context->id, 'unilabeltype_imageboard', 'backgroundimage');
-        $fs->delete_area_files($context->id, 'unilabeltype_imageboard', 'image');
+        $fs->delete_area_files($context->id, $this->component, 'backgroundimage');
+        $fs->delete_area_files($context->id, $this->component, 'image');
 
         // Second: remove old image records.
         $DB->delete_records('unilabeltype_imageboard_img', ['imageboardid' => $unilabeltyperecord->id]);
@@ -544,7 +618,7 @@ class content_type extends \mod_unilabel\content_type {
         $unilabeltyperecord->canvasheight = abs($formdata->{$prefix . 'canvasheight'});
         // 5. ToDo ... do we need code for fontsize here ???????
 
-        file_save_draft_area_files($draftitemidbackgroundimage, $context->id, 'unilabeltype_imageboard', 'backgroundimage', 0);
+        file_save_draft_area_files($draftitemidbackgroundimage, $context->id, $this->component, 'backgroundimage', 0);
 
         // Now update the record with the information collected for the "hole" board.
         // Information for each image follows.
@@ -552,7 +626,7 @@ class content_type extends \mod_unilabel\content_type {
 
         // How many images could be defined (we have an array here)?
         // They may not all used so some could be left out.
-        $potentialimagecount = $formdata->{$prefix . 'chosen_images_count'};
+        $potentialimagecount = $formdata->multiple_chosen_elements_count;
         for ($i = 0; $i < $potentialimagecount; $i++) {
             // Get the draftitemids to identify the submitted files in image and content.
             $draftitemidimage = $formdata->{$prefix . 'image'}[$i];
@@ -569,6 +643,7 @@ class content_type extends \mod_unilabel\content_type {
             $imagerecord->imageboardid = $unilabeltyperecord->id;
             $imagerecord->title = $title;
             $imagerecord->url = $formdata->{$prefix . 'url'}[$i];
+            $imagerecord->newwindow = !empty($formdata->{$prefix . 'newwindow'}[$i]);
 
             $imagerecord->xposition = abs($formdata->{$prefix . 'xposition'}[$i]);
             $imagerecord->yposition = abs($formdata->{$prefix . 'yposition'}[$i]);
@@ -583,7 +658,7 @@ class content_type extends \mod_unilabel\content_type {
             $DB->update_record('unilabeltype_imageboard_img', $imagerecord);
 
             // Now we can save our draft files for image.
-            file_save_draft_area_files($draftitemidimage, $context->id, 'unilabeltype_imageboard', 'image', $imagerecord->id);
+            file_save_draft_area_files($draftitemidimage, $context->id, $this->component, 'image', $imagerecord->id);
         }
         $transaction->allow_commit();
 
@@ -630,13 +705,13 @@ class content_type extends \mod_unilabel\content_type {
     private function get_backgroundimage() {
         $fs = get_file_storage();
 
-        $files = $fs->get_area_files($this->context->id, 'unilabeltype_imageboard', 'backgroundimage', 0, '', $includedirs = false);
+        $files = $fs->get_area_files($this->context->id, $this->component, 'backgroundimage', 0, '', $includedirs = false);
         if (!$file = array_shift($files)) {
             return '';
         }
         $imageurl = \moodle_url::make_pluginfile_url(
                 $this->context->id,
-                'unilabeltype_imageboard',
+                $this->component,
                 'backgroundimage',
                 0,
                 '/',
@@ -653,13 +728,13 @@ class content_type extends \mod_unilabel\content_type {
      */
     private function get_imageurl_for_image($image) {
         $fs = get_file_storage();
-        $files = $fs->get_area_files($this->context->id, 'unilabeltype_imageboard', 'image', $image->id, '', $includedirs = false);
+        $files = $fs->get_area_files($this->context->id, $this->component, 'image', $image->id, '', $includedirs = false);
         if (!$file = array_shift($files)) {
             return '';
         }
         $imageurl = \moodle_url::make_pluginfile_url(
                 $this->context->id,
-                'unilabeltype_imageboard',
+                $this->component,
                 'image',
                 $image->id,
                 '/',
