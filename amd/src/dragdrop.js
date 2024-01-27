@@ -123,9 +123,26 @@ export const init = async(type, formid, useDragdrop) => {
             handle: '.draghandle',
             animation: 150,
             swapThreshold: 0.5,
-            onEnd: (e) => {
+            onEnd: async(e) => {
                 log.debug(e.item);
+                if (globalThis.tinymce !== undefined) {
+                    var fieldsetselector = '#' + e.item.id;
+                    log.debug(fieldsetselector);
+                    var repeatindex = parseInt(document.querySelector(fieldsetselector).dataset.index);
+                    let tinyeditor = await import('editor_tiny/editor');
+                    let tinyconfig = await import('mod_unilabel/tinyconfig');
+                    let editor = globalThis.tinymce;
+                    editor.remove('#' + e.item.id + ' textarea');
+                    let config = tinyconfig.getTinyConfig();
+                    document.querySelectorAll('#id_singleelementheader_' + repeatindex + ' [data-fieldtype="editor"]').forEach(
+                        async(editorcontainer) => {
+                            let target = editorcontainer.querySelector('textarea');
+                            await tinyeditor.setupForTarget(target, config);
+                        }
+                    );
+                }
                 resortList();
+                return true;
             }
         }
     );

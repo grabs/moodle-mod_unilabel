@@ -35,28 +35,32 @@ namespace unilabeltype_imageboard\output;
 class edit_element extends \mod_unilabel\output\edit_element_base {
 
     /**
-     * Constructor
+     * Get the name of the elements group.
      *
-     * @param string $formid The id the edit_content form (mform) is using
-     * @param \context $context The context of the cm
-     * @param \stdClass $course
-     * @param string $type The unilabel type like "grid" or "carousel"
-     * @param int $repeatindex
+     * @return string
      */
-    public function __construct(string $formid, \context $context, \stdClass $course, string $type, int $repeatindex) {
+    public function get_elements_name() {
+        return get_string('image', $this->component);
+    }
 
-        parent::__construct($formid, $context, $course, $type, $repeatindex);
+    /**
+     * Get the form elements as array in the order they should be printed out.
+     *
+     * @return array
+     */
+    public function get_elements() {
+        $elements = [];
 
         $inputidbase  = 'id_' . $this->prefix . 'url_';
-        $pickerbutton = new \mod_unilabel\output\component\activity_picker_button($formid, $inputidbase);
+        $pickerbutton = new \mod_unilabel\output\component\activity_picker_button($this->formid, $inputidbase);
 
-        $this->data->titleelement = $this->render_element(
+        $elements[] = $this->render_element(
             $this->get_textfield(
                 'title',
                 ['size' => 50]
             )
         );
-        $this->data->imageelement = $this->render_element(
+        $elements[] = $this->render_element(
             $this->get_filemanager(
                 'image',
                 [],
@@ -76,7 +80,7 @@ class edit_element extends \mod_unilabel\output\edit_element_base {
             'yposition',
             ['size' => 4, 'placeholder' => get_string('placeholder_yposition', $this->component)]
         );
-        $this->data->positionelement = $this->render_element(
+        $elements[] = $this->render_element(
             $this->get_group('position', [$xposition, $yposition], null, false, 'position')
         );
 
@@ -88,7 +92,7 @@ class edit_element extends \mod_unilabel\output\edit_element_base {
             'targetheight',
             ['size' => 4, 'placeholder' => get_string('placeholder_targetheight', $this->component)]
         );
-        $this->data->targetsizeelement = $this->render_element(
+        $elements[] = $this->render_element(
             $this->get_group('targetsize', [$targetwidth, $targetheight], null, false, 'targetsize')
         );
 
@@ -102,7 +106,7 @@ class edit_element extends \mod_unilabel\output\edit_element_base {
             '',
             get_string('newwindow')
         );
-        $this->data->urlelement = $this->render_element(
+        $elements[] = $this->render_element(
             $this->get_group(
                 'urlgroup',
                 [$urlelement, $newwindowelement],
@@ -113,7 +117,7 @@ class edit_element extends \mod_unilabel\output\edit_element_base {
             )
         );
 
-        $this->data->pickerbutton = $this->render_element(
+        $elements[] = $this->render_element(
             $this->get_static(
                 'picker',
                 $this->output->render(
@@ -123,22 +127,14 @@ class edit_element extends \mod_unilabel\output\edit_element_base {
         );
 
         $numbers = array_combine(range(0, 10, 1), range(0, 10, 1));
-        $this->data->borderelement = $this->render_element(
+        $elements[] = $this->render_element(
             $this->get_select(
                 'border',
                 $numbers
             )
         );
-    }
 
-    /**
-     * Export for template.
-     *
-     * @param renderer_base $output The renderer.
-     * @return stdClass
-     */
-    public function export_for_template(\renderer_base $output) {
-        return $this->data;
+        return $elements;
     }
 
     /**

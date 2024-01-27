@@ -44,6 +44,9 @@ $string['pluginname']            = 'Unilabel';
 $string['search:activity']       = 'Unilabel';
 $string['settings']              = 'Settings';
 $string['switchtype']            = 'Switch content type';
+$string['tinydndwarning']        = 'Attention, you are using the editor TinyMCE. This is only supported to a limited extent if you move elements with drag-and-drop.<br>
+After moving elements, no further files can be added to the editor, for example.<br>
+After the drag and drop action, it is recommended to save the form before continuing work.';
 $string['unilabel:addinstance']  = 'Add a new unilabel';
 $string['unilabel:view']         = 'View unilabel';
 $string['unilabel:edit']         = 'Edit unilabel';

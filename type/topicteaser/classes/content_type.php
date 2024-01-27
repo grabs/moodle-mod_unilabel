@@ -38,9 +38,6 @@ class content_type extends \mod_unilabel\content_type {
     /** @var \stdClass */
     private $unilabeltyperecord;
 
-    /** @var \stdClass */
-    private $config;
-
     /**
      * Get the content of a section. This method is used by the fragment api to load this content by ajax.
      *
@@ -76,7 +73,7 @@ class content_type extends \mod_unilabel\content_type {
      * @return void
      */
     public function __construct() {
-        $this->config = get_config('unilabeltype_topicteaser');
+        $this->init_type(__NAMESPACE__);
         if (empty($this->config->columns)) {
             $this->config->columns = 4;
         }

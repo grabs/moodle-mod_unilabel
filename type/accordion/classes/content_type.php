@@ -36,24 +36,13 @@ class content_type extends \mod_unilabel\content_type {
     /** @var \context */
     private $context;
 
-    /** @var \stdClass */
-    private $config;
-
-    /** @var string */
-    private $type;
-
-    /** @var string */
-    private $component;
-
     /**
      * Constructor.
      *
      * @return void
      */
     public function __construct() {
-        $this->type = 'accordion';
-        $this->component = 'unilabeltype_' . $this->type;
-        $this->config = get_config($this->component);
+        $this->init_type(__NAMESPACE__);
     }
 
     /**
@@ -63,6 +52,15 @@ class content_type extends \mod_unilabel\content_type {
      */
     public function get_namespace() {
         return __NAMESPACE__;
+    }
+
+    /**
+     * Get true if the unilabeltype supports sortorder by using drag-and-drop.
+     *
+     * @return bool
+     */
+    public function use_sortorder() {
+        return true;
     }
 
     /**
@@ -239,8 +237,7 @@ class content_type extends \mod_unilabel\content_type {
         );
 
         // This elements are needed by js to set empty hidden fields while deleting an element.
-        $myelements = [];
-        $myeditorelements = [
+        $myelements = [
             'heading',
             'content',
         ];
@@ -262,11 +259,9 @@ class content_type extends \mod_unilabel\content_type {
                 $this->type,
                 $formid,
                 $context->id,
-                $course->id,
                 $prefix,
                 $myelements,
-                $myeditorelements,
-                true, // Use drag and drop.
+                $this->use_sortorder(), // Use drag and drop.
             ]
         );
     }

@@ -42,22 +42,44 @@ class edit_element extends \mod_unilabel\output\edit_element_base {
      * @param \stdClass $course
      * @param string $type The unilabel type like "grid" or "carousel"
      * @param int $repeatindex
+     * @param bool $elementsonly
      */
-    public function __construct(string $formid, \context $context, \stdClass $course, string $type, int $repeatindex) {
+    public function __construct(string $formid, \context $context, \stdClass $course,
+                                            string $type, int $repeatindex, bool $elementsonly = false) {
+
+        parent::__construct($formid, $context, $course, $type, $repeatindex, $elementsonly);
+        $this->add_sortorder();
+    }
+
+    /**
+     * Get the name of the elements group.
+     *
+     * @return string
+     */
+    public function get_elements_name() {
+        return get_string('tile', $this->component);
+    }
+
+    /**
+     * Get the form elements as array in the order they should be printed out.
+     *
+     * @return array
+     */
+    public function get_elements() {
         global $OUTPUT;
 
-        parent::__construct($formid, $context, $course, $type, $repeatindex);
+        $elements = [];
 
         $inputidbase  = 'id_' . $this->prefix . 'url_';
-        $pickerbutton = new \mod_unilabel\output\component\activity_picker_button($formid, $inputidbase);
+        $pickerbutton = new \mod_unilabel\output\component\activity_picker_button($this->formid, $inputidbase);
 
-        $this->data->titleelement = $this->render_element(
+        $elements[] = $this->render_element(
             $this->get_textfield(
                 'title',
                 ['size' => 50]
             )
         );
-        $this->data->contentelement = $this->render_element(
+        $elements[] = $this->render_element(
             $this->get_editor(
                 'content',
                 ['rows' => 10],
@@ -76,7 +98,7 @@ class edit_element extends \mod_unilabel\output\edit_element_base {
             '',
             get_string('newwindow')
         );
-        $this->data->urlelement = $this->render_element(
+        $elements[] = $this->render_element(
             $this->get_group(
                 'urlgroup',
                 [$urlelement, $newwindowelement],
@@ -87,7 +109,7 @@ class edit_element extends \mod_unilabel\output\edit_element_base {
             )
         );
 
-        $this->data->pickerbutton = $this->render_element(
+        $elements[] = $this->render_element(
             $this->get_static(
                 'picker',
                 $OUTPUT->render(
@@ -95,14 +117,14 @@ class edit_element extends \mod_unilabel\output\edit_element_base {
                 )
             )
         );
-        $this->data->imageelement = $this->render_element(
+        $elements[] = $this->render_element(
             $this->get_filemanager(
                 'image',
                 [],
                 $this->manager_options()
             )
         );
-        $this->data->imagemobileelement = $this->render_element(
+        $elements[] = $this->render_element(
             $this->get_filemanager(
                 'image_mobile',
                 [],
@@ -110,20 +132,8 @@ class edit_element extends \mod_unilabel\output\edit_element_base {
                 'image_mobile'
             )
         );
-        $this->data->sortorderelement = $this->render_element(
-            $this->get_hidden('sortorder')
-        );
 
-    }
-
-    /**
-     * Export for template.
-     *
-     * @param renderer_base $output The renderer.
-     * @return stdClass
-     */
-    public function export_for_template(\renderer_base $output) {
-        return $this->data;
+        return $elements;
     }
 
     /**

@@ -42,13 +42,32 @@ class edit_element extends \mod_unilabel\output\edit_element_base {
      * @param \stdClass $course
      * @param string $type The unilabel type like "grid" or "carousel"
      * @param int $repeatindex
+     * @param bool $elementsonly
      */
-    public function __construct(string $formid, \context $context, \stdClass $course, string $type, int $repeatindex) {
-        global $OUTPUT;
+    public function __construct(string $formid, \context $context, \stdClass $course,
+                                            string $type, int $repeatindex, bool $elementsonly = false) {
 
-        parent::__construct($formid, $context, $course, $type, $repeatindex);
+        parent::__construct($formid, $context, $course, $type, $repeatindex, $elementsonly);
+        $this->add_sortorder();
+    }
 
-        $this->data->headingelement = $this->render_element(
+    /**
+     * Get the name of the elements group.
+     *
+     * @return string
+     */
+    public function get_elements_name() {
+        return get_string('segment', $this->component);
+    }
+
+    /**
+     * Get the form elements as array in the order they should be printed out.
+     *
+     * @return array
+     */
+    public function get_elements() {
+        $elements = [];
+        $elements[] = $this->render_element(
             $this->get_editor(
                 'heading',
                 ['rows' => 2],
@@ -56,7 +75,7 @@ class edit_element extends \mod_unilabel\output\edit_element_base {
                 'heading'
             )
         );
-        $this->data->contentelement = $this->render_element(
+        $elements[]  = $this->render_element(
             $this->get_editor(
                 'content',
                 ['rows' => 10],
@@ -64,20 +83,8 @@ class edit_element extends \mod_unilabel\output\edit_element_base {
                 'content'
             )
         );
-        $this->data->sortorderelement = $this->render_element(
-            $this->get_hidden('sortorder')
-        );
 
-    }
-
-    /**
-     * Export for template.
-     *
-     * @param renderer_base $output The renderer.
-     * @return stdClass
-     */
-    public function export_for_template(\renderer_base $output) {
-        return $this->data;
+        return $elements;
     }
 
     /**

@@ -241,15 +241,42 @@ function unilabel_check_updates_since(cm_info $cm, $from, $filter = []) {
  * @return string The html fragment we want to use by ajax
  */
 function mod_unilabel_output_fragment_get_html($args) {
-    global $PAGE, $FULLME, $OUTPUT;
+    global $OUTPUT, $DB;
 
-    $PAGE->set_url(new \moodle_url($FULLME));
-    $PAGE->set_context(\context_system::instance());
+    $contextid = $args['contextid'] ?? 0;
+    $formid = $args['formid'] ?? '';
+    $repeatindex = $args['repeatindex'] ?? 0;
+    $elementsonly = $args['elementsonly'] ?? false;
 
-    $type = $args['type'] ?? null;
-    if (empty($type)) {
-        throw new \moodle_exception('Missing param "type"');
+    if (empty($contextid)) {
+        throw new \moodle_exception('Missing param "contextid"');
     }
+    if (empty($formid)) {
+        throw new \moodle_exception('Missing param "formid"');
+    }
+    if (empty($formid)) {
+        $repeatindex = 0;
+    }
+
+    $context = \context::instance_by_id($contextid);
+    if ($context->contextlevel != CONTEXT_MODULE) {
+        throw new \moodle_exception('Wrong contextlevel');
+    }
+
+    if (!$cm = get_coursemodule_from_id('unilabel', $context->instanceid)) {
+        throw new \moodle_exception('Wrong contextid "' . $context->id . '"');
+    }
+
+    if (!$unilabel = $DB->get_record('unilabel', ['id' => $cm->instance])) {
+        throw new \moodle_exception('Wrong instance "' . $cm->instance . '"');
+    }
+    $course = get_course($cm->course);
+
+    $type = $unilabel->unilabeltype;
+    if (empty($type)) {
+        throw new \moodle_exception('No unilabeltype defined');
+    }
+
     $classname = 'unilabeltype_' . $type . '\\output\\edit_element';
     if (!class_exists($classname)) {
         throw new \moodle_exception('Could not find class "' . $classname . '"');
@@ -257,7 +284,6 @@ function mod_unilabel_output_fragment_get_html($args) {
 
     $formid = $args['formid'];
     $context = \context::instance_by_id($args['contextid']);
-    $course = get_course($args['courseid']);
     $repeatindex = intval($args['repeatindex']);
 
     $editelement = new $classname(
@@ -265,7 +291,8 @@ function mod_unilabel_output_fragment_get_html($args) {
         $context,
         $course,
         $type,
-        $repeatindex
+        $repeatindex,
+        $elementsonly
     );
 
     return $OUTPUT->render($editelement);

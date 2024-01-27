@@ -51,6 +51,8 @@ abstract class edit_element_base implements \templatable, \renderable {
     protected $component;
     /** @var int */
     protected $repeatindex;
+    /** @var bool */
+    protected $elementsonly;
     /** @var \core_renderer */
     protected $output;
 
@@ -62,8 +64,11 @@ abstract class edit_element_base implements \templatable, \renderable {
      * @param \stdClass $course
      * @param string $type The unilabel type like "grid" or "carousel"
      * @param int $repeatindex
+     * @param bool $elementsonly
      */
-    public function __construct(string $formid, \context $context, \stdClass $course, string $type, int $repeatindex) {
+    public function __construct(string $formid, \context $context, \stdClass $course,
+                                        string $type, int $repeatindex, bool $elementsonly = false) {
+
         global $CFG, $OUTPUT;
 
         require_once($CFG->libdir . '/formslib.php');
@@ -86,6 +91,7 @@ abstract class edit_element_base implements \templatable, \renderable {
         $this->component = 'unilabeltype_' . $type;
         $this->prefix = $this->component . '_';
         $this->repeatindex = $repeatindex;
+        $this->elementsonly = $elementsonly;
 
         // Set the common values for the output array.
         $this->data = new \stdClass();
@@ -94,7 +100,44 @@ abstract class edit_element_base implements \templatable, \renderable {
         $this->data->repeatindex = $this->repeatindex;
         $this->data->prefix = $this->prefix;
         $this->data->repeatnr = $this->repeatindex + 1;
+        $this->data->elementsonly = $this->elementsonly;
+    }
 
+    /**
+     * Get the name of the elements group.
+     *
+     * @return string
+     */
+    abstract public function get_elements_name();
+
+    /**
+     * Get the form elements as array in the order they should be printed out.
+     *
+     * @return array
+     */
+    abstract public function get_elements();
+
+    /**
+     * Add a sortorder element to the form fragment.
+     *
+     * @return void
+     */
+    protected function add_sortorder() {
+        $this->data->sortorderelement = $this->render_element(
+            $this->get_hidden('sortorder')
+        );
+    }
+
+    /**
+     * Export for template.
+     *
+     * @param renderer_base $output The renderer.
+     * @return stdClass
+     */
+    public function export_for_template(\renderer_base $output) {
+        $this->data->elements = $this->get_elements();
+        $this->data->elementsname = $this->get_elements_name();
+        return $this->data;
     }
 
     /**

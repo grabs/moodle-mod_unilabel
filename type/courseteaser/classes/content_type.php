@@ -37,16 +37,13 @@ class content_type extends \mod_unilabel\content_type {
     /** @var \stdClass */
     private $unilabeltyperecord;
 
-    /** @var \stdClass */
-    private $config;
-
     /**
      * Constructor.
      *
      * @return void
      */
     public function __construct() {
-        $this->config = get_config('unilabeltype_courseteaser');
+        $this->init_type(__NAMESPACE__);
         if (empty($this->config->columns)) {
             $this->config->columns = 4;
         }

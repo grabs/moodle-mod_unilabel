@@ -22,13 +22,12 @@
 
 import ContentLoader from 'mod_unilabel/contentloader';
 import Templates from 'core/templates';
-import {exception as displayException} from 'core/notification';
+import notification from 'core/notification';
 import log from 'core/log';
 
 let _formid;
 let _type;
 let _elements;
-let _editorelements;
 
 /**
  * Register the del button and get the html from mustache.
@@ -50,7 +49,7 @@ const registerActionButtons = (headerelement, index) => {
         );
         Templates.runTemplateJS(js);
         return;
-    }).catch((error) => displayException(error));
+    }).catch((error) => notification.exception(error));
 };
 
 /**
@@ -76,32 +75,6 @@ const delElement = (index) => {
             newelement.value = '';
             myparent.insertAdjacentElement('afterbegin', newelement);
         });
-        _editorelements.forEach((element) => {
-            let name;
-            name = 'unilabeltype_' + _type + '_' + element + '[' + index + '][text]';
-            log.debug('Set dummy editorelement-text ' + name);
-            newelement = document.createElement('input');
-            newelement.type = 'hidden';
-            newelement.name = name;
-            newelement.value = '';
-            myparent.insertAdjacentElement('afterbegin', newelement);
-
-            name = 'unilabeltype_' + _type + '_' + element + '[' + index + '][format]';
-            log.debug('Set dummy editorelement-format ' + name);
-            newelement = document.createElement('input');
-            newelement.type = 'hidden';
-            newelement.name = name;
-            newelement.value = 1;
-            myparent.insertAdjacentElement('afterbegin', newelement);
-
-            name = 'unilabeltype_' + _type + '_' + element + '[' + index + '][itemid]';
-            log.debug('Set dummy editorelement-itemid ' + name);
-            newelement = document.createElement('input');
-            newelement.type = 'hidden';
-            newelement.name = name;
-            newelement.value = 0;
-            myparent.insertAdjacentElement('afterbegin', newelement);
-        });
         const myevent = new CustomEvent('itemremoved', {detail: index});
         thisform.dispatchEvent(myevent);
     }
@@ -113,13 +86,11 @@ const delElement = (index) => {
  * @param {string} type The type of unilabeltype e.g.: grid
  * @param {string} formid The id of the mform the draggable elements are related to
  * @param {Integer} contextid
- * @param {Integer} courseid
  * @param {string} prefix
  * @param {array} elements The dummy fields we need if we want to delete an element
- * @param {array} editorelements The same as element but for editor which has subelements like "text", "format" and "itemid"
  * @param {boolean} useDragdrop The same as element but for editor which has subelements like "text", "format" and "itemid"
  */
-export const init = async(type, formid, contextid, courseid, prefix, elements, editorelements, useDragdrop) => {
+export const init = async(type, formid, contextid, prefix, elements, useDragdrop) => {
     // Import the dragdrop module asynchron.
     const dragDrop = await import('mod_unilabel/dragdrop');
     dragDrop.init(type, formid, useDragdrop);
@@ -127,7 +98,6 @@ export const init = async(type, formid, contextid, courseid, prefix, elements, e
     _type = type;
     _formid = formid;
     _elements = elements;
-    _editorelements = editorelements;
 
     // Register a click for the whole form but only applying to the delButtons.
     var thisform = document.querySelector('#' + formid);
@@ -155,26 +125,24 @@ export const init = async(type, formid, contextid, courseid, prefix, elements, e
         }
         button.addEventListener('click', (e) => {
             var contentcontainerselector = '#addcontent-' + formid;
+            var repeatindex = parseInt(e.target.form.multiple_chosen_elements_count.value);
             var fragmentcall = 'get_html';
+
             var serviceparams = {
-                'type': type,
                 'contextid': contextid,
                 'formid': formid,
-                'courseid': courseid,
-                'prefix': prefix
+                'repeatindex': repeatindex
             };
-
-            var repeatindex = parseInt(e.target.form.multiple_chosen_elements_count.value);
-            e.target.form.multiple_chosen_elements_count.value = repeatindex + 1;
-            serviceparams.repeatindex = repeatindex;
             log.debug(serviceparams);
+
+            e.target.form.multiple_chosen_elements_count.value = repeatindex + 1;
 
             var contentLoader = new ContentLoader(contentcontainerselector, fragmentcall, serviceparams, contextid);
             contentLoader.loadContent('beforebegin').then(() => {
                 const myevent = new CustomEvent('itemadded', {detail: repeatindex});
                 thisform.dispatchEvent(myevent);
                 return true;
-            }).catch((error) => displayException(error));
+            }).catch((error) => notification.exception(error));
         });
     }
 };
