@@ -358,6 +358,9 @@ abstract class edit_element_base implements \templatable, \renderable {
                                     bool $appendname = false, $helpbutton = '', string $extralabel = '') {
 
         $elementname = $this->prefix . $name . '_' . $this->repeatindex;
+        $attributes = [];
+        $attributes['id'] = 'id_' . $this->prefix . $name . '_' . $this->repeatindex;
+        $attributes['name'] = $elementname;
 
         if (empty($extralabel)) {
             $label = get_string($name, $this->component) . '-' . ($this->repeatindex + 1);
@@ -369,7 +372,7 @@ abstract class edit_element_base implements \templatable, \renderable {
         if ($helpbutton) {
             $element->_helpbutton = $this->output->help_icon($helpbutton, $this->component);
         }
-        $element->setAttributes([]); // The group element has no attributes but it needs at least an empty array!!!
+        $element->setAttributes($attributes); // The group element needs at least this attributes!!!
 
         return $element;
     }
