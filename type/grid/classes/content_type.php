@@ -505,21 +505,20 @@ class content_type extends \mod_unilabel\content_type {
         $potentialtilecount = $formdata->multiple_chosen_elements_count;
         for ($i = 0; $i < $potentialtilecount; ++$i) {
             // Get the draftitemids to identify the submitted files in image, imagemobile and content.
+            // We only create a record if we have at least a title, a file or a content.
             $draftitemid = $formdata->{$prefix . 'image'}[$i];
+            // Do we have an image? We get this information with file_get_draft_area_info().
+            $fileinfo = file_get_draft_area_info($draftitemid);
+            $title   = $formdata->{$prefix . 'title'}[$i];
+            $content = $formdata->{$prefix . 'content'}[$i]['text'] ?? '';
+            if (empty($title) && $fileinfo['filecount'] < 1 && !$this->html_has_content($content)) {
+                continue;
+            }
             if (!empty($unilabeltyperecord->usemobile)) {
                 $draftitemidmobile = $formdata->{$prefix . 'image_mobile'}[$i];
             }
             $draftitemidcontent = $formdata->{$prefix . 'content'}[$i]['itemid'];
-
-            // Do we have an image? We get this information with file_get_draft_area_info().
-            $fileinfo = file_get_draft_area_info($draftitemid);
-            // We only create a record if we have at least a title, a file or a content.
-            $title   = $formdata->{$prefix . 'title'}[$i];
             $sortorder = $formdata->{$prefix . 'sortorder'}[$i];
-            $content = $formdata->{$prefix . 'content'}[$i]['text'];
-            if (empty($title) && $fileinfo['filecount'] < 1 && !$this->html_has_content($content)) {
-                continue;
-            }
 
             $tilerecord            = new \stdClass();
             $tilerecord->gridid    = $unilabeltyperecord->id;

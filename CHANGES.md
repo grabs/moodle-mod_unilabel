@@ -1,5 +1,8 @@
 ## Release notes
 
+### Release 4.3.3
+* Fix error while deleting elements in grid and carousel
+
 ### Release 4.3.2
 * Fixed wrong Font Awesome in css
 * Type collapsedtext now use Moodle css classes to show the carets for collapsed and expanded.
