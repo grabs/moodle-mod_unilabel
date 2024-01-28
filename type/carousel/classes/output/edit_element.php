@@ -42,12 +42,10 @@ class edit_element extends \mod_unilabel\output\edit_element_base {
      * @param \stdClass $course
      * @param string $type The unilabel type like "grid" or "carousel"
      * @param int $repeatindex
-     * @param bool $elementsonly
      */
-    public function __construct(string $formid, \context $context, \stdClass $course,
-                                        string $type, int $repeatindex, bool $elementsonly = false) {
+    public function __construct(string $formid, \context $context, \stdClass $course, string $type, int $repeatindex) {
 
-        parent::__construct($formid, $context, $course, $type, $repeatindex, $elementsonly);
+        parent::__construct($formid, $context, $course, $type, $repeatindex);
         $this->add_sortorder();
     }
 
@@ -63,20 +61,18 @@ class edit_element extends \mod_unilabel\output\edit_element_base {
     /**
      * Get the form elements as array in the order they should be printed out.
      *
-     * @return array
+     * @return \HTML_QuickForm_element[]
      */
     public function get_elements() {
         $elements = [];
         $inputidbase  = 'id_' . $this->prefix . 'url_';
         $pickerbutton = new \mod_unilabel\output\component\activity_picker_button($this->formid, $inputidbase);
 
-        $elements[] = $this->render_element(
-            $this->get_editor(
-                'caption',
-                ['rows' => 4],
-                $this->editor_options(),
-                'caption'
-            )
+        $elements[] = $this->get_editor(
+            'caption',
+            ['rows' => 4],
+            $this->editor_options(),
+            'caption'
         );
 
         $urlelement = $this->get_textfield(
@@ -89,39 +85,31 @@ class edit_element extends \mod_unilabel\output\edit_element_base {
             '',
             get_string('newwindow')
         );
-        $elements[] = $this->render_element(
-            $this->get_group(
-                'urlgroup',
-                [$urlelement, $newwindowelement],
-                null,
-                false,
-                'url',
-                get_string('url', $this->component) . '-' . ($this->repeatindex + 1)
-            )
+        $elements[] = $this->get_group(
+            'urlgroup',
+            [$urlelement, $newwindowelement],
+            null,
+            false,
+            'url',
+            get_string('url', $this->component) . '-' . ($this->repeatindex + 1)
         );
 
-        $elements[] = $this->render_element(
-            $this->get_static(
-                'picker',
-                $this->output->render(
-                    $pickerbutton
-                )
+        $elements[] = $this->get_static(
+            'picker',
+            $this->output->render(
+                $pickerbutton
             )
         );
-        $elements[] = $this->render_element(
-            $this->get_filemanager(
-                'image',
-                [],
-                $this->manager_options()
-            )
+        $elements[] = $this->get_filemanager(
+            'image',
+            [],
+            $this->manager_options()
         );
-        $elements[] = $this->render_element(
-            $this->get_filemanager(
-                'image_mobile',
-                [],
-                $this->manager_options(),
-                'image_mobile'
-            )
+        $elements[] = $this->get_filemanager(
+            'image_mobile',
+            [],
+            $this->manager_options(),
+            'image_mobile'
         );
 
         return $elements;

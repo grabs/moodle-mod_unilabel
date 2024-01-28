@@ -126,7 +126,7 @@ export const init = async(type, formid, contextid, prefix, elements, useDragdrop
         button.addEventListener('click', (e) => {
             var contentcontainerselector = '#addcontent-' + formid;
             var repeatindex = parseInt(e.target.form.multiple_chosen_elements_count.value);
-            var fragmentcall = 'get_html';
+            var fragmentcall = 'get_edit_element';
 
             var serviceparams = {
                 'contextid': contextid,

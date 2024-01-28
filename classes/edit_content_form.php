@@ -190,18 +190,4 @@ class edit_content_form extends \moodleform {
     public function get_course() {
         return $this->_course;
     }
-
-    /**
-     * Checks whether or not tinymce is the current editor.
-     * This is needed because the drag and drop feature does not fully support this editor.
-     *
-     * @return bool
-     */
-    public function tiny_active() {
-        $editor = editors_get_preferred_editor();
-        if (get_class($editor) == 'editor_tiny\editor') {
-            return true;
-        }
-        return false;
-    }
 }

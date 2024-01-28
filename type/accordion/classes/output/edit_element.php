@@ -42,12 +42,10 @@ class edit_element extends \mod_unilabel\output\edit_element_base {
      * @param \stdClass $course
      * @param string $type The unilabel type like "grid" or "carousel"
      * @param int $repeatindex
-     * @param bool $elementsonly
      */
-    public function __construct(string $formid, \context $context, \stdClass $course,
-                                            string $type, int $repeatindex, bool $elementsonly = false) {
+    public function __construct(string $formid, \context $context, \stdClass $course, string $type, int $repeatindex) {
 
-        parent::__construct($formid, $context, $course, $type, $repeatindex, $elementsonly);
+        parent::__construct($formid, $context, $course, $type, $repeatindex);
         $this->add_sortorder();
     }
 
@@ -63,25 +61,21 @@ class edit_element extends \mod_unilabel\output\edit_element_base {
     /**
      * Get the form elements as array in the order they should be printed out.
      *
-     * @return array
+     * @return \HTML_QuickForm_element[]
      */
     public function get_elements() {
         $elements = [];
-        $elements[] = $this->render_element(
-            $this->get_editor(
-                'heading',
-                ['rows' => 2],
-                $this->editor_options(),
-                'heading'
-            )
+        $elements[] = $this->get_editor(
+            'heading',
+            ['rows' => 2],
+            $this->editor_options(),
+            'heading'
         );
-        $elements[]  = $this->render_element(
-            $this->get_editor(
-                'content',
-                ['rows' => 10],
-                $this->editor_options(),
-                'content'
-            )
+        $elements[]  = $this->get_editor(
+            'content',
+            ['rows' => 10],
+            $this->editor_options(),
+            'content'
         );
 
         return $elements;

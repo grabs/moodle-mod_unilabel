@@ -127,13 +127,6 @@ $select  = new single_select(
 );
 $select->label = get_string('switchtype', 'mod_unilabel');
 
-// Check tinymce and print a warning.
-if ($unilabeltype->use_sortorder()) {
-    if ($form->tiny_active()) {
-        \core\notification::warning(get_string('tinydndwarning', 'mod_unilabel'));
-    }
-}
-
 echo $renderer->header();
 echo $renderer->render($select);
 $form->display();

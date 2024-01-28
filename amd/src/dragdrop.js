@@ -26,6 +26,7 @@ import config from 'core/config';
 let _formid;
 let _type;
 let _useDragdrop;
+let _contextid;
 
 /**
  * Find the items in our mform we want to be draggable
@@ -115,6 +116,7 @@ export const init = async(type, formid, useDragdrop) => {
 
     // Import Sortable from 'js/Sortable.js';
     const Sortable = await import(config.wwwroot + '/mod/unilabel/js/Sortable.min.js');
+    _contextid = config.contextid;
     const mysortablelist = document.querySelector('#' + formid);
     var sortable = Sortable.create(
         mysortablelist,
@@ -133,10 +135,15 @@ export const init = async(type, formid, useDragdrop) => {
                     let tinyconfig = await import('mod_unilabel/tinyconfig');
                     let editor = globalThis.tinymce;
                     editor.remove('#' + e.item.id + ' textarea');
-                    let config = tinyconfig.getTinyConfig();
                     document.querySelectorAll('#id_singleelementheader_' + repeatindex + ' [data-fieldtype="editor"]').forEach(
                         async(editorcontainer) => {
                             let target = editorcontainer.querySelector('textarea');
+                            let targetid = target.getAttribute('id');
+                            let targetname = target.getAttribute('name');
+                            // Find the current draftitemid;
+                            let draftitemidselector = targetname.replace('[text]', '[itemid]');
+                            let draftitemid = document.forms[_formid][draftitemidselector].value;
+                            let config = await tinyconfig.getTinyConfig(_contextid, targetid, targetname, draftitemid, repeatindex);
                             await tinyeditor.setupForTarget(target, config);
                         }
                     );

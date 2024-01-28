@@ -51,8 +51,6 @@ abstract class edit_element_base implements \templatable, \renderable {
     protected $component;
     /** @var int */
     protected $repeatindex;
-    /** @var bool */
-    protected $elementsonly;
     /** @var \core_renderer */
     protected $output;
 
@@ -64,11 +62,8 @@ abstract class edit_element_base implements \templatable, \renderable {
      * @param \stdClass $course
      * @param string $type The unilabel type like "grid" or "carousel"
      * @param int $repeatindex
-     * @param bool $elementsonly
      */
-    public function __construct(string $formid, \context $context, \stdClass $course,
-                                        string $type, int $repeatindex, bool $elementsonly = false) {
-
+    public function __construct(string $formid, \context $context, \stdClass $course, string $type, int $repeatindex) {
         global $CFG, $OUTPUT;
 
         require_once($CFG->libdir . '/formslib.php');
@@ -91,7 +86,6 @@ abstract class edit_element_base implements \templatable, \renderable {
         $this->component = 'unilabeltype_' . $type;
         $this->prefix = $this->component . '_';
         $this->repeatindex = $repeatindex;
-        $this->elementsonly = $elementsonly;
 
         // Set the common values for the output array.
         $this->data = new \stdClass();
@@ -100,7 +94,6 @@ abstract class edit_element_base implements \templatable, \renderable {
         $this->data->repeatindex = $this->repeatindex;
         $this->data->prefix = $this->prefix;
         $this->data->repeatnr = $this->repeatindex + 1;
-        $this->data->elementsonly = $this->elementsonly;
     }
 
     /**
@@ -113,7 +106,7 @@ abstract class edit_element_base implements \templatable, \renderable {
     /**
      * Get the form elements as array in the order they should be printed out.
      *
-     * @return array
+     * @return \HTML_QuickForm_element[]
      */
     abstract public function get_elements();
 
@@ -135,7 +128,11 @@ abstract class edit_element_base implements \templatable, \renderable {
      * @return stdClass
      */
     public function export_for_template(\renderer_base $output) {
-        $this->data->elements = $this->get_elements();
+        $elements = $this->get_elements();
+        $this->data->elements = [];
+        foreach ($elements as $element) {
+            $this->data->elements[] = $this->render_element($element);
+        }
         $this->data->elementsname = $this->get_elements_name();
         return $this->data;
     }
