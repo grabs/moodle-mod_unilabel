@@ -46,7 +46,7 @@ class edit_element extends \mod_unilabel\output\edit_element_base {
     /**
      * Get the form elements as array in the order they should be printed out.
      *
-     * @return array
+     * @return \HTML_QuickForm_element[]
      */
     public function get_elements() {
         $elements = [];
@@ -54,18 +54,14 @@ class edit_element extends \mod_unilabel\output\edit_element_base {
         $inputidbase  = 'id_' . $this->prefix . 'url_';
         $pickerbutton = new \mod_unilabel\output\component\activity_picker_button($this->formid, $inputidbase);
 
-        $elements[] = $this->render_element(
-            $this->get_textfield(
-                'title',
-                ['size' => 50]
-            )
+        $elements[] = $this->get_textfield(
+            'title',
+            ['size' => 50]
         );
-        $elements[] = $this->render_element(
-            $this->get_filemanager(
-                'image',
-                [],
-                $this->manager_options()
-            )
+        $elements[] = $this->get_filemanager(
+            'image',
+            [],
+            $this->manager_options()
         );
 
         // The position and the target are grouped elements built by:
@@ -80,9 +76,7 @@ class edit_element extends \mod_unilabel\output\edit_element_base {
             'yposition',
             ['size' => 4, 'placeholder' => get_string('placeholder_yposition', $this->component)]
         );
-        $elements[] = $this->render_element(
-            $this->get_group('position', [$xposition, $yposition], null, false, 'position')
-        );
+        $elements[] = $this->get_group('position', [$xposition, $yposition], null, false, 'position');
 
         $targetwidth = $this->get_textfield(
             'targetwidth',
@@ -92,9 +86,7 @@ class edit_element extends \mod_unilabel\output\edit_element_base {
             'targetheight',
             ['size' => 4, 'placeholder' => get_string('placeholder_targetheight', $this->component)]
         );
-        $elements[] = $this->render_element(
-            $this->get_group('targetsize', [$targetwidth, $targetheight], null, false, 'targetsize')
-        );
+        $elements[] = $this->get_group('targetsize', [$targetwidth, $targetheight], null, false, 'targetsize');
 
         $urlelement = $this->get_textfield(
             'url',
@@ -106,32 +98,26 @@ class edit_element extends \mod_unilabel\output\edit_element_base {
             '',
             get_string('newwindow')
         );
-        $elements[] = $this->render_element(
-            $this->get_group(
-                'urlgroup',
-                [$urlelement, $newwindowelement],
-                null,
-                false,
-                'url',
-                get_string('url', $this->component) . '-' . ($this->repeatindex + 1)
-            )
+        $elements[] = $this->get_group(
+            'urlgroup',
+            [$urlelement, $newwindowelement],
+            null,
+            false,
+            'url',
+            get_string('url', $this->component) . '-' . ($this->repeatindex + 1)
         );
 
-        $elements[] = $this->render_element(
-            $this->get_static(
-                'picker',
-                $this->output->render(
-                    $pickerbutton
-                )
+        $elements[] = $this->get_static(
+            'picker',
+            $this->output->render(
+                $pickerbutton
             )
         );
 
         $numbers = array_combine(range(0, 10, 1), range(0, 10, 1));
-        $elements[] = $this->render_element(
-            $this->get_select(
-                'border',
-                $numbers
-            )
+        $elements[] = $this->get_select(
+            'border',
+            $numbers
         );
 
         return $elements;
