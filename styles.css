@@ -49,6 +49,9 @@
     opacity: 0;
 }
 
+#page-mod-unilabel-edit_content div.activitytitle.unilabel-input-replacement {
+    width: 450px;
+}
 
 /***********************************************/
 /*

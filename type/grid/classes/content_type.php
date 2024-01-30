@@ -189,24 +189,14 @@ class content_type extends \mod_unilabel\content_type {
             $prefix . 'image',
             get_string('image', $this->component) . '-{no}',
             null,
-            [
-                'maxbytes'       => $form->get_course()->maxbytes,
-                'maxfiles'       => 1,
-                'subdirs'        => false,
-                'accepted_types' => ['web_image'],
-            ]
+            $this->manager_options($form->context)
         );
         $repeatarray[] = $mform->createElement(
             'filemanager',
             $prefix . 'image_mobile',
             get_string('image_mobile', $this->component) . '-{no}',
             null,
-            [
-                'maxbytes'       => $form->get_course()->maxbytes,
-                'maxfiles'       => 1,
-                'subdirs'        => false,
-                'accepted_types' => ['web_image'],
-            ]
+            $this->manager_options($form->context)
         );
 
         $repeatedoptions                                   = [];
@@ -683,6 +673,19 @@ class content_type extends \mod_unilabel\content_type {
             'noclean'  => true,
             'context'  => $context,
             'subdirs'  => true,
+        ];
+    }
+
+    /**
+     * Get the options array for a file manager.
+     *
+     * @return array
+     */
+    public function manager_options($context) {
+        return [
+            'maxfiles'       => 1,
+            'subdirs'        => false,
+            'accepted_types' => ['web_image'],
         ];
     }
 

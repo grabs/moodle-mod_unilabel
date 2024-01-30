@@ -21,18 +21,55 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-define(['jquery'], function($) {
-    return {
-        'init': function(formid, inputidbase) {
-            $('[data-button="' + formid + '"]').on('click', function(event) {
-                event.preventDefault();
-                // Get the id (repeat number) from parent element.
-                var id = $(this).parent().parent().parent().attr('id').split("_").slice(-1);
-                var currentinput = inputidbase + id;
+import $ from 'jquery';
+import log from 'core/log';
 
-                $('#unilabel-modal-activity-picker-' + formid).attr('data-inputid', currentinput);
-                $('#unilabel-modal-activity-picker-' + formid).modal('show');
-            });
+export const init = async(formid, inputidbase) => {
+    const str = await import('core/str');
+    const deletestr = await str.get_string('delete');
+    // The inputswitcher switches an text input element into a hidden element and added an activitylink clone.
+    const inputswitcher = await import('mod_unilabel/activity_picker_input_switcher');
+
+    let pickerlist = document.querySelector('#unilabel-activity-picker-list');
+    let links = pickerlist.querySelectorAll('a.activity-picker-link');
+
+    let maybeactivityelement;
+
+    log.debug('Get all picker-button-links');
+    let pickerbuttons = document.querySelectorAll('a.unilabel-picker-button-link');
+    log.debug(pickerbuttons);
+    pickerbuttons.forEach(el => {
+        try {
+            let id = el.parentElement.parentElement.parentElement.id.split("_").slice(-1);
+            if (id) {
+                let currentinput = document.querySelector('#' + inputidbase + id);
+                log.debug(currentinput.value);
+                links.forEach(link => {
+                    if (link.href == currentinput.value) {
+                        let activitylinksrc = link.closest('.activitytitle');
+                        maybeactivityelement = currentinput.parentElement.querySelector(
+                            'div.activitytitle.unilabel-input-replacement'
+                        );
+                        if (maybeactivityelement) {
+                            return;
+                        }
+
+                        inputswitcher.switchInput(currentinput, activitylinksrc, currentinput.value, false, deletestr);
+                    }
+                });
+            }
+        } catch (error) {
+            log.debug(error);
         }
-    };
-});
+    });
+
+    $('[data-button="' + formid + '"]').on('click', function(event) {
+        event.preventDefault();
+        // Get the id (repeat number) from parent element.
+        var id = $(this).parent().parent().parent().attr('id').split("_").slice(-1);
+        var currentinput = inputidbase + id;
+
+        $('#unilabel-modal-activity-picker-' + formid).attr('data-inputid', currentinput);
+        $('#unilabel-modal-activity-picker-' + formid).modal('show');
+    });
+};

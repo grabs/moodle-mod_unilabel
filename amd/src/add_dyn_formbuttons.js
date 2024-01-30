@@ -137,6 +137,9 @@ export const init = async(type, formid, contextid, prefix, elements, useDragdrop
 
             e.target.form.multiple_chosen_elements_count.value = repeatindex + 1;
 
+            // To make the moodle form aware of the change, we set the data-initial-value to its original value.
+            e.target.form.dataset.formDirty = true;
+
             var contentLoader = new ContentLoader(contentcontainerselector, fragmentcall, serviceparams, contextid);
             contentLoader.loadContent('beforebegin').then(() => {
                 const myevent = new CustomEvent('itemadded', {detail: repeatindex});

@@ -143,12 +143,7 @@ class content_type extends \mod_unilabel\content_type {
             $prefix . 'caption',
             get_string('caption', $this->component) . '-{no}',
             ['rows' => 4],
-            [
-                'maxfiles' => EDITOR_UNLIMITED_FILES,
-                'noclean'  => true,
-                'context'  => $context,
-                'subdirs'  => true,
-            ]
+            $this->editor_options($form->context)
         );
         $urlelement = $mform->createElement(
             'text',
@@ -183,24 +178,14 @@ class content_type extends \mod_unilabel\content_type {
             $prefix . 'image',
             get_string('image', $this->component) . '-{no}',
             null,
-            [
-                'maxbytes'       => $form->get_course()->maxbytes,
-                'maxfiles'       => 1,
-                'subdirs'        => false,
-                'accepted_types' => ['web_image'],
-            ]
+            $this->manager_options($form->context)
         );
         $repeatarray[] = $mform->createElement(
             'filemanager',
             $prefix . 'image_mobile',
             get_string('image_mobile', $this->component) . '-{no}',
             null,
-            [
-                'maxbytes'       => $form->get_course()->maxbytes,
-                'maxfiles'       => 1,
-                'subdirs'        => false,
-                'accepted_types' => ['web_image'],
-            ]
+            $this->manager_options($form->context)
         );
 
         $repeatedoptions                                   = [];
@@ -647,6 +632,34 @@ class content_type extends \mod_unilabel\content_type {
         $check = trim(str_replace($searches, '', $caption));
 
         return !empty($check);
+    }
+
+    /**
+     * Get the options array to support files in editor.
+     *
+     * @param  \context $context
+     * @return array
+     */
+    public function editor_options($context) {
+        return [
+            'maxfiles' => EDITOR_UNLIMITED_FILES,
+            'noclean'  => true,
+            'context'  => $context,
+            'subdirs'  => true,
+        ];
+    }
+
+    /**
+     * Get the options array for a file manager.
+     *
+     * @return array
+     */
+    public function manager_options($context) {
+        return [
+            'maxfiles'       => 1,
+            'subdirs'        => false,
+            'accepted_types' => ['web_image'],
+        ];
     }
 
     /**
