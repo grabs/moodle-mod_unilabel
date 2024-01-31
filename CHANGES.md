@@ -1,5 +1,10 @@
 ## Release notes
 
+### Release 4.3.4
+* Optimize activity picker, so users can see whether or not the used link comes from an activity
+* Fix hyphenation for wrapping long words - Thanks to Florian Dagner (#37)
+* Fix missing draftitemid in carousel
+
 ### Release 4.3.3
 * Fix error while deleting elements in grid and carousel
 

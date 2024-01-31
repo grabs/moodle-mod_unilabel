@@ -178,14 +178,14 @@ class content_type extends \mod_unilabel\content_type {
             $prefix . 'image',
             get_string('image', $this->component) . '-{no}',
             null,
-            $this->manager_options($form->context)
+            $this->manager_options()
         );
         $repeatarray[] = $mform->createElement(
             'filemanager',
             $prefix . 'image_mobile',
             get_string('image_mobile', $this->component) . '-{no}',
             null,
-            $this->manager_options($form->context)
+            $this->manager_options()
         );
 
         $repeatedoptions                                   = [];
@@ -654,7 +654,7 @@ class content_type extends \mod_unilabel\content_type {
      *
      * @return array
      */
-    public function manager_options($context) {
+    public function manager_options() {
         return [
             'maxfiles'       => 1,
             'subdirs'        => false,

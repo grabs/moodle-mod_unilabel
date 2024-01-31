@@ -184,5 +184,8 @@ Feature: Modify content of the unilabeltype carousel
 
     # Click on a page link to insert its url into the url element in the formular.
     And I click on "PageName1" "link" in the "#unilabel-activity-picker-list" "css_element"
+    And I should see "PageName1"
+
+    # Remove the link added by the activity picker.
+    And I click on "#id_singleelementheader_0 a.unilabel-replacement-delete" "css_element"
     And the focused element is "Url-1" "field"
-    Then the "value" attribute of "Url-1" "field" should contain "mod/page/view.php"

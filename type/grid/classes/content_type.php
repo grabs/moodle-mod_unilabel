@@ -679,6 +679,7 @@ class content_type extends \mod_unilabel\content_type {
     /**
      * Get the options array for a file manager.
      *
+     * @param \context $context
      * @return array
      */
     public function manager_options($context) {

@@ -83,6 +83,7 @@ export const switchInput = (currentinput, activitylinksrc, url, makedirty, delet
     deleteicon.title = deletestr;
 
     deletelink.insertAdjacentElement('afterbegin', deleteicon);
+    deletelink.classList.add('unilabel-replacement-delete');
     deletelink.href = '#';
     deletelink.dataset.inputid = currentinput.id; // Add the data attribute to find the input field.
     deletelink.title = deletestr;
