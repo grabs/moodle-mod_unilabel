@@ -53,6 +53,13 @@
     width: 450px;
 }
 
+/* Activity picker replacement */
+#page-mod-unilabel-edit_content div.unilabel-input-replacement {
+    padding-right: .5rem;
+    border-style: solid;
+    border-width: 2px;
+}
+
 /***********************************************/
 /*
 This is a workaround for a five-column grid.

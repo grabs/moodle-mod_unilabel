@@ -73,7 +73,7 @@ export const switchInput = (currentinput, activitylinksrc, url, makedirty, delet
         }
     });
 
-    activitylink.classList.add('border', 'unilabel-input-replacement');
+    activitylink.classList.add('unilabel-input-replacement', 'border-primary', 'rounded');
     let deletelinkcontainer = document.createElement('div');
     let deletelink = document.createElement('a');
     let deleteicon = document.createElement('i');
