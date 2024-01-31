@@ -81,6 +81,7 @@ class restore_unilabeltype_carousel_subplugin extends restore_subplugin {
         $this->set_mapping($this->get_namefor('slide'), $oldid, $newitemid, true);
 
         // Process files.
+        $this->add_related_files('unilabeltype_carousel', 'caption', 'unilabeltype_carousel_slide');
         $this->add_related_files('unilabeltype_carousel', 'image', 'unilabeltype_carousel_slide');
         $this->add_related_files('unilabeltype_carousel', 'image_mobile', 'unilabeltype_carousel_slide');
     }

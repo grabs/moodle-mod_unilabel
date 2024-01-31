@@ -303,8 +303,18 @@ class content_type extends \mod_unilabel\content_type {
 
             // Prepare the caption field.
             $elementname                  = $prefix . 'caption[' . $index . ']';
-            $data[$elementname]['text']   = $slide->caption;
             $data[$elementname]['format'] = FORMAT_HTML;
+            $draftitemid                  = file_get_submitted_draft_itemid($elementname);
+            $data[$elementname]['text']   = file_prepare_draft_area(
+                $draftitemid,
+                $context->id,
+                $this->component,
+                'caption',
+                $slide->id,
+                null,
+                $slide->caption
+            );
+            $data[$elementname]['itemid'] = $draftitemid;
 
             // Prepare the images.
             // $draftitemid is set by the function file_prepare_draft_area().
@@ -384,11 +394,23 @@ class content_type extends \mod_unilabel\content_type {
                 'height'     => $unilabeltyperecord->height,
                 'autoheight' => empty($unilabeltyperecord->height),
                 'background' => $unilabeltyperecord->background,
-                'slides'     => array_values($this->slides),
                 'hasslides'  => count($this->slides) > 0,
                 'cmid'       => $cm->id,
                 'plugin'     => $this->component,
             ];
+            $content['slides'] = array_values(
+                array_map(function ($slide) {
+                    $slide->caption = file_rewrite_pluginfile_urls(
+                        $slide->caption,
+                        'pluginfile.php',
+                        $this->context->id,
+                        $this->component,
+                        'caption',
+                        $slide->id
+                    );
+                    return $slide;
+                }, $this->slides)
+            );
 
             if (!empty($this->config->custombutton)) {
                 $fontbuttons = setting_configselect_button::get_font_buttons();
@@ -466,6 +488,7 @@ class content_type extends \mod_unilabel\content_type {
 
         // First: remove old slide images.
         // We use the module_context as context and this component as component.
+        $fs->delete_area_files($context->id, $this->component, 'caption');
         $fs->delete_area_files($context->id, $this->component, 'image');
         $fs->delete_area_files($context->id, $this->component, 'image_mobile');
 
@@ -490,6 +513,11 @@ class content_type extends \mod_unilabel\content_type {
                 continue;
             }
 
+            // Rewrite file url in caption.
+            // Get the draftitemid for caption editor.
+            $drafitemidcaption = $formdata->{$prefix . 'caption'}[$i]['itemid'];
+            $caption = file_rewrite_urls_to_pluginfile($caption, $drafitemidcaption);
+
             $sortorder = $formdata->{$prefix . 'sortorder'}[$i];
 
             $sliderecord             = new \stdClass();
@@ -502,7 +530,20 @@ class content_type extends \mod_unilabel\content_type {
             $sliderecord->id = $DB->insert_record('unilabeltype_carousel_slide', $sliderecord);
 
             // Now we can save our draft files.
-            file_save_draft_area_files($draftitemid, $context->id, $this->component, 'image', $sliderecord->id);
+            file_save_draft_area_files(
+                $drafitemidcaption,
+                $context->id,
+                $this->component,
+                'caption',
+                $sliderecord->id
+            );
+            file_save_draft_area_files(
+                $draftitemid,
+                $context->id,
+                $this->component,
+                'image',
+                $sliderecord->id
+            );
             if (!empty($formdata->{$prefix . 'usemobile'})) {
                 file_save_draft_area_files(
                     $draftitemidmobile,

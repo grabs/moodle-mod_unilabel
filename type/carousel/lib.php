@@ -50,8 +50,13 @@ function unilabeltype_carousel_pluginfile($course, $cm, $context, $filearea, $ar
         return false;
     }
 
-    if (($filearea !== 'image') && ($filearea !== 'image_mobile')) {
-        return false;
+    switch ($filearea) {
+        case 'caption':
+        case 'image':
+        case 'image_mobile':
+            break;
+        default:
+            return false;
     }
 
     $relativepath = implode('/', $args);
