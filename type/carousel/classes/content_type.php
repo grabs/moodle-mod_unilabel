@@ -142,7 +142,13 @@ class content_type extends \mod_unilabel\content_type {
             'editor',
             $prefix . 'caption',
             get_string('caption', $this->component) . '-{no}',
-            ['rows' => 4]
+            ['rows' => 4],
+            [
+                'maxfiles' => EDITOR_UNLIMITED_FILES,
+                'noclean'  => true,
+                'context'  => $context,
+                'subdirs'  => true,
+            ]
         );
         $urlelement = $mform->createElement(
             'text',

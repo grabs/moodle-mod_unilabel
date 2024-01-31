@@ -155,7 +155,7 @@ class content_type extends \mod_unilabel\content_type {
             $prefix . 'content',
             get_string('content', $this->component) . '-{no}',
             ['rows' => 10],
-            $this->editor_options($form->context)
+            $this->editor_options($context)
         );
         $urlelement = $mform->createElement(
             'text',

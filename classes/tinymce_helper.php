@@ -233,7 +233,7 @@ class tinymce_helper extends \editor_tiny\editor {
      */
     public static function tiny_active() {
         $editor = editors_get_preferred_editor();
-        if ($editor::class == 'editor_tiny\editor') {
+        if (get_class($editor) == 'editor_tiny\editor') {
             return true;
         }
 
