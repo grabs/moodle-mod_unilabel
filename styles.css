@@ -45,6 +45,11 @@
     cursor: move;
     display: inline;
 }
+
+#page-mod-unilabel-edit_content form fieldset.draggable {
+    cursor: inherit;
+}
+
 #page-mod-unilabel-edit_content form fieldset.draggable.dragging {
     opacity: 0;
 }
