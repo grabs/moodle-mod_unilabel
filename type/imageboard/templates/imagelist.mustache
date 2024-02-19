@@ -24,12 +24,14 @@
             {
                 "title": "",
                 "url": "http://localhost/mod/forum/view.php?id=136",
+                "newwindow": 1,
                 "imageurl": "http://localhost/image1.png",
                 "nr": 0
             },
             {
                 "title": "",
                 "url": "",
+                "newwindow": 1,
                 "imageurl": "http://localhost/image2.png",
                 "nr": 1
             }
@@ -57,7 +59,7 @@
                             {{^imageurl}}
                                 <i style="width: 40px" class="fa fa-picture-o fa-lg fa-fw mr-2"></i>
                             {{/imageurl}}
-                            {{#url}}<a href="{{{.}}}">{{/url}}
+                            {{#url}}<a href="{{{.}}}"{{#newwindow}} target="_blank"{{/newwindow}}>{{/url}}
                                 {{title}}
                             {{#url}}</a>{{/url}}
                         </div>

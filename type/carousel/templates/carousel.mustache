@@ -33,6 +33,7 @@
                 "id": "4",
                 "carouselid": "1",
                 "url": "",
+                "newwindow": 1,
                 "caption": "<p>Slide 1<br><\/p>",
                 "imageurl": "https://url-to-image",
                 "imagemobileurl": "",
@@ -42,6 +43,7 @@
                 "id": "5",
                 "carouselid": "1",
                 "url": "",
+                "newwindow": 1,
                 "caption": "<p>Slide 2<br><\/p>",
                 "imageurl": "https://url-to-image",
                 "imagemobileurl": "",
@@ -51,6 +53,7 @@
                 "id": "6",
                 "carouselid": "1",
                 "url": "",
+                "newwindow": 1,
                 "caption": "<p>Slide 3<br><\/p>",
                 "imageurl": "https://url-to-image",
                 "imagemobileurl": "",
@@ -83,7 +86,7 @@
                 <div class="carousel-item text-center py-4{{^nr}} active{{/nr}}">
                     {{#url}}
                         <!-- The overlay is used as button to show the modal dialog -->
-                        <a href="{{{url}}}">
+                        <a href="{{{url}}}"{{#newwindow}} target="_blank"{{/newwindow}}>
                             <div class="unilabel-overlay-effect bg-primary h-100 w-100"></div>
                         </a>
                     {{/url}}

@@ -1,5 +1,22 @@
 ## Release notes
 
+### Release 4.3.4
+* Optimize activity picker, so users can see whether or not the used link comes from an activity
+* Carousel caption now can handle images
+* Fix hyphenation for wrapping long words - Thanks to Florian Dagner (#37)
+* Fix missing draftitemid in carousel
+
+### Release 4.3.3
+* Fix error while deleting elements in grid and carousel
+
+### Release 4.3.2
+* Fixed wrong Font Awesome in css
+* Type collapsedtext now use Moodle css classes to show the carets for collapsed and expanded.
+* Introduce Drag-and-Drop for element with items like "accordion", "carousel" and "grid"
+* Introduce adding and removing of elements by ajax
+* New option to open a url in a new window.
+* Fix issue "Always show manual completion" (Thanks to Stefa Hanauska) (#39)
+
 ### Release 4.3.1
 * mod_unilabel: prevent loading activities like inline folder (#36)
 

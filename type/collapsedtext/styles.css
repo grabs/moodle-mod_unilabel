@@ -1,13 +1,3 @@
-span.unilabeltype-collapsed-caret:after {
-    content: "\f0d7";
-    font-weight: 900;
-    font-style: normal;
-    font-variant: normal;
-    line-height: 1;
-    text-rendering: auto;
-    font-family: "Font Awesome 6 Free";
-}
-
-a.unilabel-title.collapsed span.unilabeltype-collapsed-caret::after {
-    content: "\f0da";
+div.unilabeltype-collapsed a.icons-collapse-expand {
+    text-decoration: none;
 }

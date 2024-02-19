@@ -36,16 +36,13 @@ class content_type extends \mod_unilabel\content_type {
     /** @var \stdClass */
     private $unilabeltyperecord;
 
-    /** @var \stdClass */
-    private $config;
-
     /**
      * Constructor.
      *
      * @return void
      */
     public function __construct() {
-        $this->config = get_config('unilabeltype_collapsedtext');
+        $this->init_type(__NAMESPACE__);
     }
 
     /**
@@ -126,10 +123,12 @@ class content_type extends \mod_unilabel\content_type {
             $useanimation = $this->get_useanimation($unilabel);
 
             $content = [
-                'title'        => $this->get_title($unilabel),
-                'content'      => $intro,
-                'cmid'         => $cm->id,
-                'useanimation' => $useanimation,
+                'title'            => $this->get_title($unilabel),
+                'content'          => $intro,
+                'cmid'             => $cm->id,
+                'useanimation'     => $useanimation,
+                'srtitle_expand'   => get_string('expand'),
+                'srtitle_collapse' => get_string('collapse'),
             ];
 
             if ($cm->id == $cmidfromurl) {

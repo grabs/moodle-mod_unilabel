@@ -31,28 +31,64 @@ Feature: Modify content of the unilabeltype imageboard
 
     When I log in as "teacher1"
     And I am on "Course 1" course homepage with editing mode on
+
     # Edit the unilabel instance.
     And I should see "Edit content"
     And I click on "Edit content" "link" in the "#section-1" "css_element"
-    # Open the imageboard section.
-    And I click on "#id_unilabeltype_imageboard_hdr div.ftoggler > a" "css_element"
-    # Activate autorun.
-    And I should see "Witdh of canvas"
-    And I set the field "Witdh of canvas" to "400"
 
-    And I should see "Height of canvas"
-    And I set the field "Height of canvas" to "300"
+    # Set the base settings
+    And I should see "Canvas width"
+    And I should see "Canvas height"
 
+    And I set the field "Canvas width" to "400"
+    And I set the field "Canvas height" to "300"
     And I should see "Backgroundimage"
+    And I upload "mod/unilabel/tests/fixtures/gradient-green.png" file to "Backgroundimage" filemanager
 
-    # Set the Caption for the four images.
-    # Both are defined by the css-id id_unilabeltype_imageboard_imghdr_0 and ..._1.
-    # Click on the toggle "Image-1" and open the element
-    And I click on "#id_unilabeltype_imageboard_imagehdr_0 div.ftoggler > a" "css_element"
-    And I should see "Title-1"
-    And I set the field "Title-1" to "Title-Element-1"
+    # I couldn't make it to upload more than one file in a behat step, so I press save and edit it again
+    # to upload another image.
 
     # Save the changes.
     And I press "Save changes"
+
+    And I should see "Edit content"
+    And I click on "Edit content" "link" in the "#section-1" "css_element"
+
+    # Adding two images
+
+    And I click on "Add element" "button"
+    And I should see "Image-1"
+    # Set the values and image for elements.
+    # Click on the toggle "Image-1" and open the element
+    And I click on "#id_singleelementheader_0 div.ftoggler > a" "css_element"
+    And I set the field "Title-1" to "Title-Element-1"
+    And I upload "mod/unilabel/tests/fixtures/gradient-blue.png" file to "Image-1" filemanager
+    And I set the field with xpath "//input[@type='text' and @name='unilabeltype_imageboard_xposition[0]']" to "100"
+    And I set the field "unilabeltype_imageboard_xposition[0]" to "100"
+    And I set the field "unilabeltype_imageboard_yposition[0]" to "100"
+    And I set the field "unilabeltype_imageboard_targetwidth[0]" to "100"
+    And I set the field "unilabeltype_imageboard_border[0]" to "2"
+
+    # Save the changes.
+    And I press "Save changes"
+    And I should see "Title-Element-1"
+
+    And I should see "Edit content"
+    And I click on "Edit content" "link" in the "#section-1" "css_element"
+
+    And I click on "Add element" "button"
+    And I should see "Image-2"
+    # Click on the toggle "Image-2" and open the element
+    And I click on "#id_singleelementheader_1 div.ftoggler > a" "css_element"
+    And I set the field "Title-2" to "Title-Element-2"
+    And I upload "mod/unilabel/tests/fixtures/gradient-red.png" file to "Image-2" filemanager
+    And I set the field "unilabeltype_imageboard_xposition[1]" to "300"
+    And I set the field "unilabeltype_imageboard_yposition[1]" to "100"
+    And I set the field "unilabeltype_imageboard_targetwidth[1]" to "100"
+    And I set the field "unilabeltype_imageboard_border[1]" to "2"
+
+    # Save the changes.
+    And I press "Save changes"
+    And I should see "Title-Element-2"
 
 # There are comming more features and steps.

@@ -40,5 +40,5 @@ Feature: Modify content of the unilabeltype collapsedtext
     # The "Click here" link should be shown.
     Then I should see "Click here"
     # After click on "Click here" the content should be shown.
-    And I click on "#section-1 .unilabel-content .unilabeltype-collapsed a.unilabel-title.collapsed" "css_element"
+    And I click on "#section-1 .unilabel-content .unilabeltype-collapsed a.icons-collapse-expand.collapsed" "css_element"
     And I should see "Hello label"

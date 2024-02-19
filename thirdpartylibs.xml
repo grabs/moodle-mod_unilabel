@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<libraries>
+    <library>
+        <location>js</location>
+        <name>SortableJS</name>
+        <version>1.15.2</version>
+        <repository>https://github.com/SortableJS/Sortable</repository>
+        <license>MIT License</license>
+    </library>
+</libraries>

@@ -36,6 +36,35 @@
     overflow: hidden;
     z-index: 998;
 }
+
+/* Drag and drop style */
+#page-mod-unilabel-edit_content form fieldset span .draghandle {
+    display: none;
+}
+#page-mod-unilabel-edit_content form fieldset.draggable span .draghandle {
+    cursor: move;
+    display: inline;
+}
+#page-mod-unilabel-edit_content form fieldset.draggable.dragging {
+    opacity: 0;
+}
+
+#page-mod-unilabel-edit_content div.activitytitle.unilabel-input-replacement {
+    width: 450px;
+}
+
+/* Activity picker replacement */
+#page-mod-unilabel-edit_content div.unilabel-input-replacement {
+    padding-right: .5rem;
+    border-style: solid;
+    border-width: 2px;
+}
+
+/* Hyphenation to break long words, for example in the grid  */
+.unilabel-hyphens {
+    hyphens: auto;
+}
+
 /***********************************************/
 /*
 This is a workaround for a five-column grid.

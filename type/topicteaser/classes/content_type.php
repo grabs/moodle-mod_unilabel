@@ -38,9 +38,6 @@ class content_type extends \mod_unilabel\content_type {
     /** @var \stdClass */
     private $unilabeltyperecord;
 
-    /** @var \stdClass */
-    private $config;
-
     /**
      * Get the content of a section. This method is used by the fragment api to load this content by ajax.
      *
@@ -76,7 +73,7 @@ class content_type extends \mod_unilabel\content_type {
      * @return void
      */
     public function __construct() {
-        $this->config = get_config('unilabeltype_topicteaser');
+        $this->init_type(__NAMESPACE__);
         if (empty($this->config->columns)) {
             $this->config->columns = 4;
         }
@@ -288,9 +285,10 @@ class content_type extends \mod_unilabel\content_type {
                     $template = 'carousel';
                     $template = 'carousel';
                     if (!empty($this->config->custombutton)) {
+                        $fontbuttons = setting_configselect_button::get_font_buttons();
                         $content['custombuttons']   = 1;
-                        $content['fontawesomenext'] = setting_configselect_button::$buttonlist[$this->config->custombutton]['next'];
-                        $content['fontawesomeprev'] = setting_configselect_button::$buttonlist[$this->config->custombutton]['prev'];
+                        $content['fontawesomenext'] = $fontbuttons[$this->config->custombutton]['next'];
+                        $content['fontawesomeprev'] = $fontbuttons[$this->config->custombutton]['prev'];
 
                         // To make sure we have clean html we have to put the carousel css into the <head> by using javascript.
                         $cssstring                = $renderer->render_from_template('mod_unilabel/carousel_button_style', $content);

@@ -36,6 +36,76 @@ namespace mod_unilabel;
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 abstract class content_type {
+    /** @var \stdClass */
+    protected $config;
+
+    /** @var string */
+    protected $type;
+
+    /** @var string */
+    protected $component;
+
+    /** @var string The prefix, which is used in the mform */
+    protected $prefix;
+
+    /**
+     * This method must be called in each constructor.
+     *
+     * @param string $component // The component of the unilabeltype e.g. "unilabeltype_grid".
+     * @return void
+     */
+    public function init_type(string $component) {
+        $this->component = $component;
+        $this->type = str_replace('unilabeltype_', '', $component);
+        $this->prefix = $component . '_';
+        $this->config = get_config($this->component);
+    }
+
+    /**
+     * Get the component as string (e.g. "unilabeltype_grid")..
+     *
+     * @return string
+     */
+    public function get_component() {
+        return $this->component;
+    }
+
+    /**
+     * Get the type as string (e.g. "grid").
+     *
+     * @return string
+     */
+    public function get_type() {
+        return $this->type;
+    }
+
+    /**
+     * Get the prefix as string (e.g. "unilabeltype_grid_").
+     *
+     * @return string
+     */
+    public function get_prefix() {
+        return $this->prefix;
+    }
+
+    /**
+     * Get the config of the unilabeltype.
+     *
+     * @return \stdClass
+     */
+    public function get_config() {
+        return $this->config;
+    }
+
+    /**
+     * Get true if the unilabeltype supports sortorder by using drag-and-drop.
+     *
+     * @return bool
+     */
+    public function use_sortorder() {
+        return false;
+    }
+
     /**
      * Get the namespace of the content type class.
      *

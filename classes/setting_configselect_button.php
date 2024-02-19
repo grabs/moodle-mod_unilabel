@@ -48,16 +48,7 @@ class setting_configselect_button extends \admin_setting {
      *
      * @var array
      */
-    public static $buttonlist = [
-        '1' => ['next' => 'fa-solid fa-angle-right fa-xl',  'prev' => 'fa-solid fa-angle-left fa-xl'],
-        '2' => ['next' => 'fa-solid fa-angles-right fa-xl', 'prev' => 'fa-solid fa-angles-left fa-xl'],
-        '3' => ['next' => 'fa-solid fa-forward',            'prev' => 'fa-solid fa-backward'],
-        '4' => ['next' => 'fa-solid fa-caret-right fa-xl',  'prev' => 'fa-solid fa-caret-left fa-xl'],
-        '5' => ['next' => 'fa-regular fa-hand-point-right', 'prev' => 'fa-regular fa-hand-point-left'],
-        '6' => ['next' => 'fa-solid fa-arrow-right fa-xl',  'prev' => 'fa-solid fa-arrow-left fa-xl'],
-        '7' => ['next' => 'fa-regular fa-circle-right',     'prev' => 'fa-regular fa-circle-left'],
-        '8' => ['next' => 'fa-solid fa-circle-arrow-right', 'prev' => 'fa-solid fa-circle-arrow-left'],
-    ];
+    public $buttonlist = [];
 
     /**
      * Constructor.
@@ -68,8 +59,9 @@ class setting_configselect_button extends \admin_setting {
      * @return void
      */
     public function __construct($name, $visiblename, $description, $defaultsetting) {
+        $this->buttonlist = static::get_font_buttons();
         $this->options = [0 => 0];
-        foreach (self::$buttonlist as $key => $btn) {
+        foreach ($this->buttonlist as $key => $btn) {
             $this->options[$key] = $btn['next'];
         }
         parent::__construct($name, $visiblename, $description, $defaultsetting);
@@ -153,5 +145,41 @@ class setting_configselect_button extends \admin_setting {
         $element = $OUTPUT->render_from_template('mod_unilabel/setting_configselect', $context);
 
         return format_admin_setting($this, $this->visiblename, $element, $this->description, true, '', $defaultinfo, $query);
+    }
+
+    /**
+     * Get an array with a font awesome button definition. Depending on the Moodle
+     * version it returns font awesome 4.7 or 6.0 free.
+     *
+     * @return array
+     */
+    public static function get_font_buttons() {
+        // Since Moodle 4.2 the new FontAwesome 6 is used.
+        if (version_compare(moodle_major_version(), '4.2', '<')) {
+            // The current Moodle version is less then 4.2. So we load the fontawesome 4.7 items.
+            return [
+                '1' => ['next' => 'fa fa-angle-right fa-xl',          'prev' => 'fa fa-angle-left fa-xl'],
+                '2' => ['next' => 'fa fa-angle-double-right fa-xl',   'prev' => 'fa fa-angle-double-left fa-xl'],
+                '3' => ['next' => 'fa fa-forward fa-xl',              'prev' => 'fa fa-backward fa-xl'],
+                '4' => ['next' => 'fa fa-caret-right fa-xl',          'prev' => 'fa fa-caret-left fa-xl'],
+                '5' => ['next' => 'fa fa-hand-o-right fa-xl',         'prev' => 'fa fa-hand-o-left fa-xl'],
+                '6' => ['next' => 'fa fa-arrow-right fa-xl',          'prev' => 'fa fa-arrow-left fa-xl'],
+                '7' => ['next' => 'fa fa-arrow-circle-right fa-xl',   'prev' => 'fa fa-arrow-circle-left fa-xl'],
+                '8' => ['next' => 'fa fa-arrow-circle-o-right fa-xl', 'prev' => 'fa fa-arrow-circle-o-left fa-xl'],
+            ];
+        } else {
+            // The current Moodle version is 4.2 or later. So we load the fontawesome 6 items.
+            return [
+                '1' => ['next' => 'fa fa-solid fa-angle-right fa-xl',  'prev' => 'fa fa-solid fa-angle-left fa-xl'],
+                '2' => ['next' => 'fa fa-solid fa-angles-right fa-xl', 'prev' => 'fa fa-solid fa-angles-left fa-xl'],
+                '3' => ['next' => 'fa fa-solid fa-forward',            'prev' => 'fa fa-solid fa-backward'],
+                '4' => ['next' => 'fa fa-solid fa-caret-right fa-xl',  'prev' => 'fa fa-solid fa-caret-left fa-xl'],
+                '5' => ['next' => 'fa fa-regular fa-hand-point-right', 'prev' => 'fa fa-regular fa-hand-point-left'],
+                '6' => ['next' => 'fa fa-solid fa-arrow-right fa-xl',  'prev' => 'fa fa-solid fa-arrow-left fa-xl'],
+                '7' => ['next' => 'fa fa-regular fa-circle-right',     'prev' => 'fa fa-regular fa-circle-left'],
+                '8' => ['next' => 'fa fa-solid fa-circle-arrow-right', 'prev' => 'fa fa-solid fa-circle-arrow-left'],
+            ];
+        }
+
     }
 }

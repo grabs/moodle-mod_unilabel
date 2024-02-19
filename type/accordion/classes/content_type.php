@@ -36,16 +36,13 @@ class content_type extends \mod_unilabel\content_type {
     /** @var \context */
     private $context;
 
-    /** @var \stdClass */
-    private $config;
-
     /**
      * Constructor.
      *
      * @return void
      */
     public function __construct() {
-        $this->config = get_config('unilabeltype_accordion');
+        $this->init_type(__NAMESPACE__);
     }
 
     /**
@@ -55,6 +52,15 @@ class content_type extends \mod_unilabel\content_type {
      */
     public function get_namespace() {
         return __NAMESPACE__;
+    }
+
+    /**
+     * Get true if the unilabeltype supports sortorder by using drag-and-drop.
+     *
+     * @return bool
+     */
+    public function use_sortorder() {
+        return true;
     }
 
     /**
@@ -75,7 +81,7 @@ class content_type extends \mod_unilabel\content_type {
             $this->cm      = get_coursemodule_from_instance('unilabel', $unilabelid);
             $this->context = \context_module::instance($this->cm->id);
 
-            $this->segments = $DB->get_records('unilabeltype_accordion_seg', ['accordionid' => $this->record->id]);
+            $this->segments = $DB->get_records('unilabeltype_accordion_seg', ['accordionid' => $this->record->id], 'sortorder ASC');
         }
 
         return $this->record;
@@ -92,7 +98,7 @@ class content_type extends \mod_unilabel\content_type {
     public function get_content($unilabel, $cm, \plugin_renderer_base $renderer) {
         if (!$this->load_unilabeltype_record($unilabel->id)) {
             $content = [
-                'intro'    => get_string('nocontent', 'unilabeltype_accordion'),
+                'intro'    => get_string('nocontent', $this->component),
                 'cmid'     => $cm->id,
                 'segments' => [],
             ];
@@ -105,7 +111,7 @@ class content_type extends \mod_unilabel\content_type {
                     $v->heading,
                     'pluginfile.php',
                     $this->context->id,
-                    'unilabeltype_accordion',
+                    $this->component,
                     'heading',
                     $v->id
                 );
@@ -113,7 +119,7 @@ class content_type extends \mod_unilabel\content_type {
                     $v->content,
                     'pluginfile.php',
                     $this->context->id,
-                    'unilabeltype_accordion',
+                    $this->component,
                     'content',
                     $v->id
                 );
@@ -127,7 +133,7 @@ class content_type extends \mod_unilabel\content_type {
                     return $v->heading != '' && $v->content != '';
                 }),
                 'cmid'     => $cm->id,
-                'plugin'   => 'unilabeltype_accordion',
+                'plugin'   => $this->component,
                 'collapse' => $this->record->type == 1,
             ];
         }
@@ -164,14 +170,15 @@ class content_type extends \mod_unilabel\content_type {
      * @return void
      */
     public function add_form_fragment(\mod_unilabel\edit_content_form $form, \context $context) {
+        global $PAGE, $OUTPUT;
         $this->load_unilabeltype_record($form->unilabel->id);
 
         $mform  = $form->get_mform();
-        $prefix = 'unilabeltype_accordion_';
+        $prefix = $this->component . '_';
 
-        $mform->addElement('advcheckbox', $prefix . 'showintro', get_string('showunilabeltext', 'unilabeltype_accordion'));
+        $mform->addElement('advcheckbox', $prefix . 'showintro', get_string('showunilabeltext', $this->component));
 
-        $mform->addElement('advcheckbox', $prefix . 'type', get_string('collapse', 'unilabeltype_accordion'));
+        $mform->addElement('advcheckbox', $prefix . 'type', get_string('collapse', $this->component));
 
         $textfieldoptions = [
             'subdirs'  => true,
@@ -179,53 +186,83 @@ class content_type extends \mod_unilabel\content_type {
             'maxfiles' => EDITOR_UNLIMITED_FILES,
         ];
 
+        $formid       = $mform->getAttribute('id');
+        $course       = $form->get_course();
+
         $repeatarray   = [];
         $repeatarray[] = $mform->createElement(
             'header',
-            $prefix . 'segment-header',
-            get_string('segment', 'unilabeltype_accordion') . ' {no}'
+            'singleelementheader',
+            get_string('segment', $this->component) . '-{no}'
+        );
+        $repeatarray[] = $mform->createElement(
+            'hidden',
+            $prefix . 'sortorder'
         );
         $repeatarray[] = $mform->createElement(
             'editor',
             $prefix . 'heading',
-            get_string('heading', 'unilabeltype_accordion'),
+            get_string('heading', $this->component),
             ['rows' => 2],
             $textfieldoptions
         );
         $repeatarray[] = $mform->createElement(
             'editor',
             $prefix . 'content',
-            get_string('content', 'unilabeltype_accordion'),
+            get_string('content', $this->component),
             ['rows' => 10],
             $textfieldoptions
         );
-        $repeatarray[] = $mform->createElement(
-            'submit',
-            $prefix . 'delete_segment',
-            get_string('delete_segment', 'unilabeltype_accordion'),
-            0
-        );
-        $mform->registerNoSubmitButton($prefix . 'delete_segment');
 
-        $repeatedoptions                              = [];
-        $repeatedoptions[$prefix . 'heading']['type'] = PARAM_RAW;
-        $repeatedoptions[$prefix . 'content']['type'] = PARAM_RAW;
+        $repeatedoptions                                = [];
+        $repeatedoptions[$prefix . 'sortorder']['type'] = PARAM_INT;
+        $repeatedoptions[$prefix . 'heading']['type']   = PARAM_RAW;
+        $repeatedoptions[$prefix . 'content']['type']   = PARAM_RAW;
         // Adding the help buttons.
-        $repeatedoptions[$prefix . 'heading']['helpbutton'] = ['heading', 'unilabeltype_accordion', '', true];
-        $repeatedoptions[$prefix . 'content']['helpbutton'] = ['content', 'unilabeltype_accordion', '', true];
+        $repeatedoptions[$prefix . 'heading']['helpbutton'] = ['heading', $this->component, '', true];
+        $repeatedoptions[$prefix . 'content']['helpbutton'] = ['content', $this->component, '', true];
 
-        $defaultrepeatcount = 3; // The default count for segments.
-        $repeatcount        = max((count($this->segments) / $defaultrepeatcount) * $defaultrepeatcount, $defaultrepeatcount);
+        $defaultrepeatcount = 1; // The default count for segments.
+        $repeatcount        = count($this->segments);
+
         $form->repeat_elements(
             $repeatarray,
             $repeatcount,
             $repeatedoptions,
-            $prefix . 'chosen_segments_count',
-            $prefix . 'add_more_segments_btn',
+            'multiple_chosen_elements_count', // We need a fixed name here to get drag and drop work.
+            $prefix . 'add_more_elements_btn', // This element musst be called so to get removed when dnd is enabled.
             $defaultrepeatcount,
-            get_string('addmoresegments', 'unilabeltype_accordion'),
-            false,
-            $prefix . 'delete_segment'
+            get_string('addmoresegments', $this->component),
+            false
+        );
+
+        // This elements are needed by js to set empty hidden fields while deleting an element.
+        $myelements = [
+            'heading',
+            'content',
+        ];
+
+        // Render the button to add elements.
+        $btn = $OUTPUT->render_from_template('mod_unilabel/load_element_button', [
+            'type' => $this->type,
+            'formid' => $formid,
+            'contextid' => $context->id,
+            'courseid' => $course->id,
+            'prefix' => $prefix,
+        ]);
+        $mform->addElement('html', $btn);
+        // Add dynamic buttons like "Add item", "Delete" and "move".
+        $PAGE->requires->js_call_amd(
+            'mod_unilabel/add_dyn_formbuttons',
+            'init',
+            [
+                $this->type,
+                $formid,
+                $context->id,
+                $prefix,
+                $myelements,
+                $this->use_sortorder(), // Use drag and drop.
+            ]
         );
     }
 
@@ -242,7 +279,7 @@ class content_type extends \mod_unilabel\content_type {
         $cm      = get_coursemodule_from_instance('unilabel', $unilabel->id);
         $context = \context_module::instance($cm->id);
 
-        $prefix = 'unilabeltype_accordion_';
+        $prefix = $this->component . '_';
 
         if (!$this->load_unilabeltype_record($unilabel->id)) {
             $data[$prefix . 'showintro'] = !empty($this->config->showintro);
@@ -255,7 +292,7 @@ class content_type extends \mod_unilabel\content_type {
         if (!$segments = $DB->get_records(
             'unilabeltype_accordion_seg',
             ['accordionid' => $this->record->id],
-            'id ASC'
+            'sortorder ASC'
         )) {
             return $data;
         }
@@ -269,7 +306,7 @@ class content_type extends \mod_unilabel\content_type {
             $data[$elementname]['text']   = file_prepare_draft_area(
                 $draftid,
                 $context->id,
-                'unilabeltype_accordion',
+                $this->component,
                 'heading',
                 $segment->id,
                 null,
@@ -285,13 +322,17 @@ class content_type extends \mod_unilabel\content_type {
             $data[$elementname]['text']   = file_prepare_draft_area(
                 $draftid,
                 $context->id,
-                'unilabeltype_accordion',
+                $this->component,
                 'content',
                 $segment->id,
                 null,
                 $segment->content
             );
             $data[$elementname]['itemid'] = $draftid;
+
+            // Prepare the sortorder field.
+            $elementname        = $prefix . 'sortorder[' . $index . ']';
+            $data[$elementname] = $segment->sortorder ?? ($index + 1);
 
             ++$index;
         }
@@ -311,7 +352,7 @@ class content_type extends \mod_unilabel\content_type {
 
         $transaction = $DB->start_delegated_transaction();
 
-        $prefix = 'unilabeltype_accordion_';
+        $prefix = $this->component . '_';
 
         // First save the accordion record.
         if (!$record = $DB->get_record('unilabeltype_accordion', ['unilabelid' => $unilabel->id])) {
@@ -328,14 +369,14 @@ class content_type extends \mod_unilabel\content_type {
         $fs      = get_file_storage();
         $context = \context_module::instance($formdata->cmid);
 
-        $fs->delete_area_files($context->id, 'unilabeltype_accordion', 'heading');
-        $fs->delete_area_files($context->id, 'unilabeltype_accordion', 'content');
+        $fs->delete_area_files($context->id, $this->component, 'heading');
+        $fs->delete_area_files($context->id, $this->component, 'content');
 
         $DB->delete_records('unilabeltype_accordion_seg', ['accordionid' => $record->id]);
 
-        $potentialsegmentcount = $formdata->{$prefix . 'chosen_segments_count'};
+        $potentialsegmentcount = $formdata->multiple_chosen_elements_count;
         for ($i = 0; $i < $potentialsegmentcount; ++$i) {
-            if (!isset($formdata->{$prefix . 'heading'}[$i])) {
+            if (empty($formdata->{$prefix . 'heading'}[$i]['text'])) {
                 continue;
             }
             $heading = $formdata->{$prefix . 'heading'}[$i]['text'];
@@ -347,12 +388,14 @@ class content_type extends \mod_unilabel\content_type {
             $segmentrecord->heading = file_rewrite_urls_to_pluginfile($heading, $formdata->{$prefix . 'heading'}[$i]['itemid']);
             $segmentrecord->content = file_rewrite_urls_to_pluginfile($content, $formdata->{$prefix . 'content'}[$i]['itemid']);
 
+            $segmentrecord->sortorder = $formdata->{$prefix . 'sortorder'}[$i];
+
             $segmentrecord->id = $DB->insert_record('unilabeltype_accordion_seg', $segmentrecord);
 
             file_save_draft_area_files(
                 $formdata->{$prefix . 'heading'}[$i]['itemid'],
                 $context->id,
-                'unilabeltype_accordion',
+                $this->component,
                 'heading',
                 $segmentrecord->id,
                 null
@@ -361,7 +404,7 @@ class content_type extends \mod_unilabel\content_type {
             file_save_draft_area_files(
                 $formdata->{$prefix . 'content'}[$i]['itemid'],
                 $context->id,
-                'unilabeltype_accordion',
+                $this->component,
                 'content',
                 $segmentrecord->id,
                 null

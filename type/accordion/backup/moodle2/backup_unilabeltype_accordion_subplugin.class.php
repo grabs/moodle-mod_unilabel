@@ -32,7 +32,7 @@ class backup_unilabeltype_accordion_subplugin extends backup_subplugin {
         $subpluginaccordion = new backup_nested_element('unilabeltype_accordion', ['id'], ['showintro', 'type']);
         $subpluginsegment   = new backup_nested_element('unilabeltype_accordion_seg',
             ['id'],
-            ['heading', 'content']
+            ['sortorder', 'heading', 'content']
         );
 
         // Connect XML elements into the tree.

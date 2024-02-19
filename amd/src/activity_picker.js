@@ -21,37 +21,53 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-define(['jquery'], function($) {
-    return {
-        'init': function(formid) {
-            var currentinput;
-            $('#unilabel-modal-activity-picker-' + formid).on('show.bs.modal', function() {
-                $('#unilabel-modal-activity-picker-' + formid).appendTo('body');
-                currentinput = $('#unilabel-modal-activity-picker-' + formid).attr('data-inputid');
-            });
-            $('.activity-picker-link').on('click', function(event) {
-                event.stopPropagation();
-                event.preventDefault();
-                $('#unilabel-modal-activity-picker-' + formid).modal('hide');
-                var url = $(this).attr('href');
-                // To make the form aware of the change, we set the data-initial-value to its original value.
-                $('#' + currentinput).attr('data-initial-value', $('#' + currentinput).val());
-                $('#' + currentinput).val(url); // Set the url into the input field.
-                $('#' + currentinput).select(); // Select the the input field.
-            });
+import $ from 'jquery';
+import log from 'core/log';
 
-            $("#search-" + formid).on("keyup", function() {
-                var value = $(this).val().toLowerCase();
-                $("#unilabel-activity-picker-list li").filter((index, element) => {
-                    // Looking for data-filterstring we can apply the search term.
-                    if (element.dataset.filterstring.toLowerCase().indexOf(value) > -1) {
-                        $(element).slideDown();
-                    } else {
-                        $(element).slideUp();
-                    }
-                    return index;
-                });
-            });
+export const init = async(formid) => {
+    let currentinput;
+    let maybeactivityelement;
+    let modalid = 'unilabel-modal-activity-picker-' + formid;
+    const str = await import('core/str');
+    const deletestr = await str.get_string('delete');
+    const inputswitcher = await import('mod_unilabel/activity_picker_input_switcher');
+
+    $('#' + modalid).on('show.bs.modal', function() {
+        $('#' + modalid).appendTo('body');
+        currentinput = document.querySelector('#' + document.querySelector('#' + modalid).dataset.inputid);
+        maybeactivityelement = currentinput.parentElement.querySelector('div.activitytitle.unilabel-input-replacement');
+    });
+
+    document.querySelector('#unilabel-activity-picker').addEventListener('click', (e) => {
+        if (!e.target.classList.contains('activity-picker-link')) {
+            return;
         }
-    };
-});
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (maybeactivityelement) {
+            log.debug('There already is an replacement element. It must be remove before a new one is added.');
+            maybeactivityelement.remove();
+        }
+
+        $('#unilabel-modal-activity-picker-' + formid).modal('hide');
+        if (e.target.classList.contains('activity-picker-link')) {
+            let url = e.target.href;
+            let activitylinksrc = e.target.closest('.activitytitle');
+            inputswitcher.switchInput(currentinput, activitylinksrc, url, true, deletestr);
+        }
+    });
+
+    $("#search-" + formid).on("keyup", function() {
+        let value = $(this).val().toLowerCase();
+        $("#unilabel-activity-picker-list li").filter((index, element) => {
+            // Looking for data-filterstring we can apply the search term.
+            if (element.dataset.filterstring.toLowerCase().indexOf(value) > -1) {
+                $(element).slideDown();
+            } else {
+                $(element).slideUp();
+            }
+            return index;
+        });
+    });
+};

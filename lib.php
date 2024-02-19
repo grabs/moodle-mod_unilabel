@@ -233,3 +233,131 @@ function unilabel_check_updates_since(cm_info $cm, $from, $filter = []) {
 
     return $updates;
 }
+
+/**
+ * Get a html fragment.
+ *
+ * @param  mixed  $args an array or object with context and parameters needed to get the data
+ * @return string The html fragment we want to use by ajax
+ */
+function mod_unilabel_output_fragment_get_edit_element($args) {
+    global $OUTPUT, $DB;
+
+    $contextid = $args['contextid'] ?? 0;
+    $formid = $args['formid'] ?? '';
+    $repeatindex = $args['repeatindex'] ?? 0;
+
+    if (empty($contextid)) {
+        throw new \moodle_exception('Missing param "contextid"');
+    }
+    if (empty($formid)) {
+        throw new \moodle_exception('Missing param "formid"');
+    }
+    if (empty($formid)) {
+        $repeatindex = 0;
+    }
+
+    $context = \context::instance_by_id($contextid);
+    if ($context->contextlevel != CONTEXT_MODULE) {
+        throw new \moodle_exception('Wrong contextlevel');
+    }
+
+    if (!$cm = get_coursemodule_from_id('unilabel', $context->instanceid)) {
+        throw new \moodle_exception('Wrong contextid "' . $context->id . '"');
+    }
+
+    if (!$unilabel = $DB->get_record('unilabel', ['id' => $cm->instance])) {
+        throw new \moodle_exception('Wrong instance "' . $cm->instance . '"');
+    }
+    $course = get_course($cm->course);
+
+    $type = $unilabel->unilabeltype;
+    if (empty($type)) {
+        throw new \moodle_exception('No unilabeltype defined');
+    }
+
+    $classname = 'unilabeltype_' . $type . '\\output\\edit_element';
+    if (!class_exists($classname)) {
+        throw new \moodle_exception('Could not find class "' . $classname . '"');
+    }
+
+    $formid = $args['formid'];
+    $context = \context::instance_by_id($args['contextid']);
+    $repeatindex = intval($args['repeatindex']);
+
+    $editelement = new $classname(
+        $formid,
+        $context,
+        $course,
+        $type,
+        $repeatindex
+    );
+
+    return $OUTPUT->render($editelement);
+}
+
+/**
+ * Get a html fragment.
+ *
+ * @param  mixed  $args an array or object with context and parameters needed to get the data
+ * @return string The html fragment we want to use by ajax
+ */
+function mod_unilabel_output_fragment_get_tinyconfig($args) {
+    global $DB;
+
+    if (!\mod_unilabel\tinymce_helper::tiny_active()) {
+        throw new \moodle_exception('Use only if tinymce is the current editor');
+    }
+
+    $contextid = $args['contextid'] ?? 0;
+    $targetid = $args['targetid'] ?? '';
+    $targetname = $args['targetname'] ?? '';
+    $draftitemid = $args['draftitemid'] ?? 0;
+    $repeatindex = $args['repeatindex'] ?? 0;
+
+    if (empty($contextid)) {
+        throw new \moodle_exception('Missing param "contextid"');
+    }
+    if (empty($targetid)) {
+        throw new \moodle_exception('Missing param "targetid"');
+    }
+    if (empty($targetname)) {
+        throw new \moodle_exception('Missing param "targetname"');
+    }
+    if (empty($draftitemid)) {
+        throw new \moodle_exception('Missing param "draftitemid"');
+    }
+
+    $context = \context::instance_by_id($contextid);
+    if ($context->contextlevel != CONTEXT_MODULE) {
+        throw new \moodle_exception('Wrong contextlevel');
+    }
+
+    list($course, $cm) = get_course_and_cm_from_cmid($context->instanceid, 'unilabel');
+    if (!$unilabel = $DB->get_record('unilabel', ['id' => $cm->instance])) {
+        throw new \moodle_exception('Wrong instance "' . $cm->instance . '"');
+    }
+
+    $type = $unilabel->unilabeltype;
+    $classname = '\\unilabeltype_' . $type . '\\output\edit_element';
+    if (!class_exists($classname)) {
+        throw new \moodle_exception('Wrong element type "' . $classname . '"');
+    }
+    $editelementobj = new $classname('dummy', $context, $course, $type, $repeatindex, false);
+    $elements = $editelementobj->get_elements();
+
+    $tinyhelper = new \mod_unilabel\tinymce_helper();
+
+    foreach ($elements as $element) {
+        if ($element->getType() != 'editor') {
+            continue;
+        }
+        $attributes = $element->getAttributes();
+        if ($attributes['id'] == $targetid) {
+            return $tinyhelper->get_options($editelementobj->editor_options(), $draftitemid);
+        }
+
+    }
+
+    throw new \moodle_exception('Element not found');
+}

@@ -45,5 +45,20 @@ function xmldb_unilabeltype_accordion_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2022041602, 'unilabeltype', 'accordion');
     }
 
+    if ($oldversion < 2023111601) {
+
+        // Define field sortorder to be added to unilabeltype_accordion_seg.
+        $table = new xmldb_table('unilabeltype_accordion_seg');
+        $field = new xmldb_field('sortorder', XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'accordionid');
+
+        // Conditionally launch add field sortorder.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Accordion savepoint reached.
+        upgrade_plugin_savepoint(true, 2023111601, 'unilabeltype', 'accordion');
+    }
+
     return true;
 }

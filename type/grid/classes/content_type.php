@@ -45,16 +45,22 @@ class content_type extends \mod_unilabel\content_type {
     /** @var \context */
     private $context;
 
-    /** @var \stdClass */
-    private $config;
-
     /**
      * Constructor.
      *
      * @return void
      */
     public function __construct() {
-        $this->config = get_config('unilabeltype_grid');
+        $this->init_type(__NAMESPACE__);
+    }
+
+    /**
+     * Get true if the unilabeltype supports sortorder by using drag-and-drop.
+     *
+     * @return bool
+     */
+    public function use_sortorder() {
+        return true;
     }
 
     /**
@@ -65,24 +71,24 @@ class content_type extends \mod_unilabel\content_type {
      * @return void
      */
     public function add_form_fragment(\mod_unilabel\edit_content_form $form, \context $context) {
-        global $OUTPUT;
+        global $PAGE, $OUTPUT;
 
         $unilabeltyperecord = $this->load_unilabeltype_record($form->unilabel->id);
 
         $mform  = $form->get_mform();
-        $prefix = 'unilabeltype_grid_';
+        $prefix = $this->component . '_';
 
-        $mform->addElement('advcheckbox', $prefix . 'showintro', get_string('showunilabeltext', 'unilabeltype_grid'));
+        $mform->addElement('advcheckbox', $prefix . 'showintro', get_string('showunilabeltext', $this->component));
 
         $mform->addElement('header', $prefix . 'hdr', $this->get_name());
-        $mform->addHelpButton($prefix . 'hdr', 'pluginname', 'unilabeltype_grid');
+        $mform->addHelpButton($prefix . 'hdr', 'pluginname', $this->component);
 
         $numbers = array_combine(range(1, 6), range(1, 6));
-        $mform->addElement('select', $prefix . 'columns', get_string('columns', 'unilabeltype_grid'), $numbers);
+        $mform->addElement('select', $prefix . 'columns', get_string('columns', $this->component), $numbers);
 
         // In all smaller displays we can not use 5 columns. It is not supported by bootstrap and css injection will not work here.
         $numbers       = [1 => 1, 2 => 2, 3 => 3, 4 => 4, 6 => 6];
-        $strdefaultcol = get_string('default_columns', 'unilabeltype_grid');
+        $strdefaultcol = get_string('default_columns', $this->component);
         $columnsmiddle = $mform->createElement('select', $prefix . 'columnsmiddle', '', $numbers);
         $defaultmiddle = $mform->createElement('advcheckbox', $prefix . 'defaultmiddle', $strdefaultcol);
         $mform->addGroup(
@@ -91,7 +97,7 @@ class content_type extends \mod_unilabel\content_type {
                 $defaultmiddle,
             ],
             $prefix . 'group_middle',
-            get_string('columnsmiddle', 'unilabeltype_grid'),
+            get_string('columnsmiddle', $this->component),
             [' '],
             false
         );
@@ -105,19 +111,19 @@ class content_type extends \mod_unilabel\content_type {
                 $defaultsmall,
             ],
             $prefix . 'group_small',
-            get_string('columnssmall', 'unilabeltype_grid'),
+            get_string('columnssmall', $this->component),
             [' '],
             false
         );
         $mform->disabledIf($prefix . 'columnssmall', $prefix . 'defaultsmall', 'checked');
 
         $numbers = array_combine(range(100, 600, 50), range(100, 600, 50));
-        $numbers = [0 => get_string('autoheight', 'unilabeltype_grid')] + $numbers;
-        $mform->addElement('select', $prefix . 'height', get_string('height', 'unilabeltype_grid'), $numbers);
-        $mform->addHelpButton($prefix . 'height', 'height', 'unilabeltype_grid');
+        $numbers = [0 => get_string('autoheight', $this->component)] + $numbers;
+        $mform->addElement('select', $prefix . 'height', get_string('height', $this->component), $numbers);
+        $mform->addHelpButton($prefix . 'height', 'height', $this->component);
 
-        $mform->addElement('advcheckbox', $prefix . 'usemobile', get_string('use_mobile_images', 'unilabeltype_grid'));
-        $mform->addHelpButton($prefix . 'usemobile', 'use_mobile_images', 'unilabeltype_grid');
+        $mform->addElement('advcheckbox', $prefix . 'usemobile', get_string('use_mobile_images', $this->component));
+        $mform->addHelpButton($prefix . 'usemobile', 'use_mobile_images', $this->component);
 
         // Prepare the activity url picker.
         $formid       = $mform->getAttribute('id');
@@ -130,25 +136,47 @@ class content_type extends \mod_unilabel\content_type {
         $repeatarray = [];
         // If we want each repeated elment in a numbered group we add a header with '{no}' in its label.
         // This is replaced by the number of element.
-        $repeatarray[] = $mform->createElement('header', $prefix . 'tilehdr', get_string('tile', 'unilabeltype_grid') . '-{no}');
+        $elementheader = $mform->createElement('header', 'singleelementheader', get_string('tile', $this->component) . '-{no}');
+        $repeatarray[] = $elementheader;
+
+        $repeatarray[] = $mform->createElement(
+            'hidden',
+            $prefix . 'sortorder'
+        );
+
         $repeatarray[] = $mform->createElement(
             'text',
             $prefix . 'title',
-            get_string('title', 'unilabeltype_grid') . '-{no}',
+            get_string('title', $this->component) . '-{no}',
             ['size' => 50]
         );
         $repeatarray[] = $mform->createElement(
             'editor',
             $prefix . 'content',
-            get_string('content', 'unilabeltype_grid') . '-{no}',
+            get_string('content', $this->component) . '-{no}',
             ['rows' => 10],
-            $this->editor_options($form->context)
+            $this->editor_options($context)
         );
-        $repeatarray[] = $mform->createElement(
+        $urlelement = $mform->createElement(
             'text',
             $prefix . 'url',
-            get_string('url', 'unilabeltype_grid') . '-{no}',
+            get_string('url', $this->component) . '-{no}',
             ['size' => 50]
+        );
+        $mform->setType($prefix . 'url', PARAM_URL);
+        $newwindowelement = $mform->createElement(
+            'checkbox',
+            $prefix . 'newwindow',
+            get_string('newwindow')
+
+        );
+        $repeatarray[] = $mform->createElement(
+            'group',
+            $prefix . 'urlgroup',
+            get_string('url', $this->component) . '-{no}',
+            [$urlelement, $newwindowelement],
+            null,
+            false
         );
         $repeatarray[] = $mform->createElement(
             'static',
@@ -159,57 +187,73 @@ class content_type extends \mod_unilabel\content_type {
         $repeatarray[] = $mform->createElement(
             'filemanager',
             $prefix . 'image',
-            get_string('image', 'unilabeltype_grid') . '-{no}',
+            get_string('image', $this->component) . '-{no}',
             null,
-            [
-                'maxbytes'       => $form->get_course()->maxbytes,
-                'maxfiles'       => 1,
-                'subdirs'        => false,
-                'accepted_types' => ['web_image'],
-            ]
+            $this->manager_options($form->context)
         );
         $repeatarray[] = $mform->createElement(
             'filemanager',
             $prefix . 'image_mobile',
-            get_string('image_mobile', 'unilabeltype_grid') . '-{no}',
+            get_string('image_mobile', $this->component) . '-{no}',
             null,
-            [
-                'maxbytes'       => $form->get_course()->maxbytes,
-                'maxfiles'       => 1,
-                'subdirs'        => false,
-                'accepted_types' => ['web_image'],
-            ]
+            $this->manager_options($form->context)
         );
 
         $repeatedoptions                                   = [];
+        $repeatedoptions[$prefix . 'sortorder']['type']    = PARAM_INT;
         $repeatedoptions[$prefix . 'title']['type']        = PARAM_TEXT;
         $repeatedoptions[$prefix . 'url']['type']          = PARAM_URL;
         $repeatedoptions[$prefix . 'content']['type']      = PARAM_RAW;
         $repeatedoptions[$prefix . 'image']['type']        = PARAM_FILE;
         $repeatedoptions[$prefix . 'image_mobile']['type'] = PARAM_FILE;
         // Adding the help buttons.
-        $repeatedoptions[$prefix . 'content']['helpbutton']      = ['content', 'unilabeltype_grid'];
-        $repeatedoptions[$prefix . 'url']['helpbutton']          = ['url', 'unilabeltype_grid'];
-        $repeatedoptions[$prefix . 'image_mobile']['helpbutton'] = ['image_mobile', 'unilabeltype_grid'];
+        $repeatedoptions[$prefix . 'content']['helpbutton']      = ['content', $this->component];
+        $repeatedoptions[$prefix . 'urlgroup']['helpbutton']     = ['url', $this->component];
+        $repeatedoptions[$prefix . 'image_mobile']['helpbutton'] = ['image_mobile', $this->component];
 
-        $defaultrepeatcount = 4; // The default count for tiles.
+        $defaultrepeatcount = 1; // The default count for tiles.
         $repeatcount        = count($this->tiles);
-        if ($rest = count($this->tiles) % $defaultrepeatcount) {
-            $repeatcount = count($this->tiles) + ($defaultrepeatcount - $rest);
-        }
-        if ($repeatcount == 0) {
-            $repeatcount = $defaultrepeatcount;
-        }
 
         $nextel = $form->repeat_elements(
             $repeatarray,
             $repeatcount,
             $repeatedoptions,
-            $prefix . 'chosen_tiles_count',
-            $prefix . 'add_more_tiles_btn',
+            'multiple_chosen_elements_count', // We need a fixed name here to get drag and drop work.
+            $prefix . 'add_more_elements_btn', // This element musst be called so to get removed when dnd is enabled.
             $defaultrepeatcount, // Each time we add 3 elements.
-            get_string('addmoretiles', 'unilabeltype_grid'),
+            get_string('addmoretiles', $this->component),
             false
+        );
+
+        // This elements are needed by js to set empty hidden fields while deleting an element.
+        $myelements = [
+            'title',
+            'url',
+            'content',
+            'image',
+            'image_mobile',
+        ];
+
+        // Render the button to add elements.
+        $btn = $OUTPUT->render_from_template('mod_unilabel/load_element_button', [
+            'type' => $this->type,
+            'formid' => $formid,
+            'contextid' => $context->id,
+            'courseid' => $course->id,
+            'prefix' => $prefix,
+        ]);
+        $mform->addElement('html', $btn);
+        $PAGE->requires->js_call_amd(
+            'mod_unilabel/add_dyn_formbuttons',
+            'init',
+            [
+                $this->type,
+                $formid,
+                $context->id,
+                $prefix,
+                $myelements,
+                $this->use_sortorder(), // Use drag and drop.
+            ]
         );
     }
 
@@ -226,16 +270,16 @@ class content_type extends \mod_unilabel\content_type {
         $cm      = get_coursemodule_from_instance('unilabel', $unilabel->id);
         $context = \context_module::instance($cm->id);
 
-        $prefix = 'unilabeltype_grid_';
+        $prefix = $this->component . '_';
 
         // Set default data for the grid in generel.
         if (!$unilabeltyperecord = $this->load_unilabeltype_record($unilabel->id)) {
-            $data[$prefix . 'columns']       = $this->config->columns;
-            $data[$prefix . 'columnsmiddle'] = $this->get_default_col_middle($this->config->columns);
+            $data[$prefix . 'columns']       = $this->config->columns ?? 4;
+            $data[$prefix . 'columnsmiddle'] = $this->get_default_col_middle($this->config->columns ?? 4);
             $data[$prefix . 'defaultmiddle'] = true;
             $data[$prefix . 'columnssmall']  = $this->get_default_col_small();
             $data[$prefix . 'defaultsmall']  = true;
-            $data[$prefix . 'height']        = $this->config->height;
+            $data[$prefix . 'height']        = $this->config->height ?? 300;
             $data[$prefix . 'showintro']     = !empty($this->config->showintro);
             $data[$prefix . 'usemobile']     = !empty($this->config->usemobile);
 
@@ -263,11 +307,14 @@ class content_type extends \mod_unilabel\content_type {
         $data[$prefix . 'usemobile'] = $unilabeltyperecord->usemobile;
 
         // Set default data for tiles.
-        if (!$tiles = $DB->get_records(
+        $tiles = $DB->get_records(
             'unilabeltype_grid_tile',
-            ['gridid' => $unilabeltyperecord->id],
-            'id ASC'
-        )) {
+            [
+                'gridid' => $unilabeltyperecord->id,
+            ],
+            'sortorder ASC',
+        );
+        if (!$tiles) {
             return $data;
         }
 
@@ -281,16 +328,22 @@ class content_type extends \mod_unilabel\content_type {
             $elementname        = $prefix . 'url[' . $index . ']';
             $data[$elementname] = $tile->url;
 
+            // Prepare the newwindow field.
+            $elementname = $prefix . 'newwindow[' . $index . ']';
+            $data[$elementname] = $tile->newwindow;
+
             // Prepare the content field.
             $elementname                = $prefix . 'content[' . $index . ']';
             $draftitemidcontent         = 0;
-            $data[$elementname]['text'] = file_prepare_draft_area($draftitemidcontent,
-                                    $context->id,
-                                    'unilabeltype_grid',
-                                    'content',
-                                    $tile->id,
-                                    ['subdirs' => true],
-                                    $tile->content);
+            $data[$elementname]['text'] = file_prepare_draft_area(
+                $draftitemidcontent,
+                $context->id,
+                $this->component,
+                'content',
+                $tile->id,
+                ['subdirs' => true],
+                $tile->content
+            );
 
             $data[$elementname]['format'] = FORMAT_HTML;
             $data[$elementname]['itemid'] = $draftitemidcontent;
@@ -298,16 +351,21 @@ class content_type extends \mod_unilabel\content_type {
             // Prepare the images.
             // $draftitemid is set by the function file_prepare_draft_area().
             $draftitemidimage = 0; // This is needed to create a new draftitemid.
-            file_prepare_draft_area($draftitemidimage, $context->id, 'unilabeltype_grid', 'image', $tile->id);
+            file_prepare_draft_area($draftitemidimage, $context->id, $this->component, 'image', $tile->id);
             $elementname        = $prefix . 'image[' . $index . ']';
             $data[$elementname] = $draftitemidimage;
 
             // Prepare the mobile images.
             // $draftitemid is set by the function file_prepare_draft_area().
             $draftitemidimagemobile = 0; // This is needed to create a new draftitemid.
-            file_prepare_draft_area($draftitemidimagemobile, $context->id, 'unilabeltype_grid', 'image_mobile', $tile->id);
+            file_prepare_draft_area($draftitemidimagemobile, $context->id, $this->component, 'image_mobile', $tile->id);
             $elementname        = $prefix . 'image_mobile[' . $index . ']';
             $data[$elementname] = $draftitemidimagemobile;
+
+            // Prepare the sortorder field.
+            $elementname        = $prefix . 'sortorder[' . $index . ']';
+            $data[$elementname] = $tile->sortorder ?? ($index + 1);
+
             ++$index;
         }
 
@@ -334,7 +392,7 @@ class content_type extends \mod_unilabel\content_type {
     public function get_content($unilabel, $cm, \plugin_renderer_base $renderer) {
         if (!$unilabeltyperecord = $this->load_unilabeltype_record($unilabel->id)) {
             $content = [
-                'intro'    => get_string('nocontent', 'unilabeltype_grid'),
+                'intro'    => get_string('nocontent', $this->component),
                 'cmid'     => $cm->id,
                 'hastiles' => false,
             ];
@@ -395,7 +453,7 @@ class content_type extends \mod_unilabel\content_type {
         // We want to keep the tiles consistent so we start a transaction here.
         $transaction = $DB->start_delegated_transaction();
 
-        $prefix = 'unilabeltype_grid_';
+        $prefix = $this->component . '_';
 
         // First save the grid record.
         if (!$unilabeltyperecord = $DB->get_record('unilabeltype_grid', ['unilabelid' => $unilabel->id])) {
@@ -425,58 +483,62 @@ class content_type extends \mod_unilabel\content_type {
 
         // First: remove old tile images.
         // We use the module_context as context and this component as component.
-        $fs->delete_area_files($context->id, 'unilabeltype_grid', 'image');
-        $fs->delete_area_files($context->id, 'unilabeltype_grid', 'image_mobile');
-        $fs->delete_area_files($context->id, 'unilabeltype_grid', 'content');
+        $fs->delete_area_files($context->id, $this->component, 'image');
+        $fs->delete_area_files($context->id, $this->component, 'image_mobile');
+        $fs->delete_area_files($context->id, $this->component, 'content');
 
         // Second: remove old tile records.
         $DB->delete_records('unilabeltype_grid_tile', ['gridid' => $unilabeltyperecord->id]);
 
         // How many tiles could be defined (we have an array here)?
         // They may not all used so some could be left out.
-        $potentialtilecount = $formdata->{$prefix . 'chosen_tiles_count'};
+        $potentialtilecount = $formdata->multiple_chosen_elements_count;
         for ($i = 0; $i < $potentialtilecount; ++$i) {
             // Get the draftitemids to identify the submitted files in image, imagemobile and content.
+            // We only create a record if we have at least a title, a file or a content.
             $draftitemid = $formdata->{$prefix . 'image'}[$i];
+            // Do we have an image? We get this information with file_get_draft_area_info().
+            $fileinfo = file_get_draft_area_info($draftitemid);
+            $title   = $formdata->{$prefix . 'title'}[$i];
+            $content = $formdata->{$prefix . 'content'}[$i]['text'] ?? '';
+            if (empty($title) && $fileinfo['filecount'] < 1 && !$this->html_has_content($content)) {
+                continue;
+            }
             if (!empty($unilabeltyperecord->usemobile)) {
                 $draftitemidmobile = $formdata->{$prefix . 'image_mobile'}[$i];
             }
             $draftitemidcontent = $formdata->{$prefix . 'content'}[$i]['itemid'];
+            $sortorder = $formdata->{$prefix . 'sortorder'}[$i];
 
-            // Do we have an image? We get this information with file_get_draft_area_info().
-            $fileinfo = file_get_draft_area_info($draftitemid);
-            // We only create a record if we have at least a title, a file or a content.
-            $title   = $formdata->{$prefix . 'title'}[$i];
-            $content = $formdata->{$prefix . 'content'}[$i]['text'];
-            if (empty($title) && $fileinfo['filecount'] < 1 && !$this->html_has_content($content)) {
-                continue;
-            }
-
-            $tilerecord         = new \stdClass();
-            $tilerecord->gridid = $unilabeltyperecord->id;
-            $tilerecord->title  = $title;
-            $tilerecord->url    = $formdata->{$prefix . 'url'}[$i];
+            $tilerecord            = new \stdClass();
+            $tilerecord->gridid    = $unilabeltyperecord->id;
+            $tilerecord->title     = $title;
+            $tilerecord->url       = $formdata->{$prefix . 'url'}[$i];
+            $tilerecord->newwindow = !empty($formdata->{$prefix . 'newwindow'}[$i]);
+            $tilerecord->sortorder = $sortorder;
 
             $tilerecord->content = ''; // Dummy content.
             $tilerecord->id      = $DB->insert_record('unilabeltype_grid_tile', $tilerecord);
 
             // Save draft files from content and convert the pluginfile links.
-            $tilerecord->content = file_save_draft_area_files($draftitemidcontent,
+            $tilerecord->content = file_save_draft_area_files(
+                $draftitemidcontent,
                 $context->id,
-                'unilabeltype_grid',
+                $this->component,
                 'content',
                 $tilerecord->id,
                 $this->editor_options($context),
-                $content);
+                $content
+            );
             $DB->update_record('unilabeltype_grid_tile', $tilerecord);
 
             // Now we can save our draft files for image and imagemobile.
-            file_save_draft_area_files($draftitemid, $context->id, 'unilabeltype_grid', 'image', $tilerecord->id);
+            file_save_draft_area_files($draftitemid, $context->id, $this->component, 'image', $tilerecord->id);
             if (!empty($formdata->{$prefix . 'usemobile'})) {
                 file_save_draft_area_files(
                     $draftitemidmobile,
                     $context->id,
-                    'unilabeltype_grid',
+                    $this->component,
                     'image_mobile',
                     $tilerecord->id
                 );
@@ -506,13 +568,13 @@ class content_type extends \mod_unilabel\content_type {
             $this->cm      = get_coursemodule_from_instance('unilabel', $unilabelid);
             $this->context = \context_module::instance($this->cm->id);
 
-            $tiles = $DB->get_records('unilabeltype_grid_tile', ['gridid' => $this->unilabeltyperecord->id]);
+            $tiles = $DB->get_records('unilabeltype_grid_tile', ['gridid' => $this->unilabeltyperecord->id], 'sortorder ASC');
             $index = 0;
 
             foreach ($tiles as $tile) {
                 $tile->imageurl       = $this->get_image_for_tile($tile);
                 $tile->imagemobileurl = $this->get_image_mobile_for_tile($tile);
-                $tile->title          = empty($tile->title) ? get_string('tilenr', 'unilabeltype_grid', $index + 1) : $tile->title;
+                $tile->title          = empty($tile->title) ? get_string('tilenr', $this->component, $index + 1) : $tile->title;
                 $tile->content        = $this->format_content($tile, $this->context);
                 $tile->nr             = $index;
                 ++$index;
@@ -532,13 +594,13 @@ class content_type extends \mod_unilabel\content_type {
     private function get_image_for_tile($tile) {
         $fs = get_file_storage();
 
-        $files = $fs->get_area_files($this->context->id, 'unilabeltype_grid', 'image', $tile->id, '', $includedirs = false);
+        $files = $fs->get_area_files($this->context->id, $this->component, 'image', $tile->id, '', $includedirs = false);
         if (!$file = array_shift($files)) {
             return '';
         }
         $imageurl = \moodle_url::make_pluginfile_url(
             $this->context->id,
-            'unilabeltype_grid',
+            $this->component,
             'image',
             $tile->id,
             '/',
@@ -559,7 +621,7 @@ class content_type extends \mod_unilabel\content_type {
 
         $files = $fs->get_area_files(
             $this->context->id,
-            'unilabeltype_grid',
+            $this->component,
             'image_mobile',
             $tile->id,
             '',
@@ -570,7 +632,7 @@ class content_type extends \mod_unilabel\content_type {
         }
         $imageurl = \moodle_url::make_pluginfile_url(
             $this->context->id,
-            'unilabeltype_grid',
+            $this->component,
             'image_mobile',
             $tile->id,
             '/',
@@ -615,6 +677,20 @@ class content_type extends \mod_unilabel\content_type {
     }
 
     /**
+     * Get the options array for a file manager.
+     *
+     * @param \context $context
+     * @return array
+     */
+    public function manager_options($context) {
+        return [
+            'maxfiles'       => 1,
+            'subdirs'        => false,
+            'accepted_types' => ['web_image'],
+        ];
+    }
+
+    /**
      * Get the format options array.
      *
      * @param  \context $context
@@ -643,7 +719,7 @@ class content_type extends \mod_unilabel\content_type {
             $tile->content,
             'pluginfile.php',
             $context->id,
-            'unilabeltype_grid',
+            $this->component,
             'content',
             $tile->id
         );

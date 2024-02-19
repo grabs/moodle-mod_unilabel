@@ -52,7 +52,7 @@ class backup_unilabeltype_carousel_subplugin extends backup_subplugin {
         );
         $subpluginslide = new backup_nested_element('unilabeltype_carousel_slide',
             ['id'],
-            ['url', 'caption']
+            ['sortorder', 'url', 'caption']
         );
 
         // Connect XML elements into the tree.
@@ -65,6 +65,7 @@ class backup_unilabeltype_carousel_subplugin extends backup_subplugin {
         $subpluginslide->set_source_table('unilabeltype_carousel_slide', ['carouselid' => backup::VAR_PARENTID]);
 
         // File annotations.
+        $subpluginslide->annotate_files('unilabeltype_carousel', 'caption', 'id');
         $subpluginslide->annotate_files('unilabeltype_carousel', 'image', 'id');
         $subpluginslide->annotate_files('unilabeltype_carousel', 'image_mobile', 'id');
 
