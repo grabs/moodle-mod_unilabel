@@ -3,3 +3,8 @@
     list-style: none;
     mix-blend-mode: difference;
 }
+
+.carousel-caption-bar  {
+    background-color: #00000080;
+    width: 100%;
+}
