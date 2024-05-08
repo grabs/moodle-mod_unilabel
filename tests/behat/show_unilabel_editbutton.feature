@@ -24,7 +24,7 @@ Feature: Show teachers and users the unilabel on the course page
     # Set up a unilabel.
     When I log in as "teacher1"
     And I am on "Course 1" course homepage with editing mode on
-    And I add a "Unilabel" to section "1" and I fill the form with:
+    And I add a unilabel to course "Course 1" section "1" and I fill the form with:
       | Name          | Testlabel1  |
       | Unilabel text | Hello label |
       | Label type    | Simple text |
@@ -37,7 +37,7 @@ Feature: Show teachers and users the unilabel on the course page
   Scenario: Do not see the "Edit content" button as student
     When I log in as "teacher1"
     And I am on "Course 1" course homepage with editing mode on
-    And I add a "Unilabel" to section "1" and I fill the form with:
+    And I add a unilabel to course "Course 1" section "1" and I fill the form with:
       | Name          | Testlabel1  |
       | Unilabel text | Hello label |
       | Label type    | Simple text |

@@ -76,7 +76,7 @@
     <div id="{{plugin}}-{{cmid}}" class="{{plugin}} carousel slide my-2" data-ride="carousel" data-interval="{{#interval}}{{.}}000{{/interval}}{{^interval}}false{{/interval}}">
 
         <!-- Indicators -->
-        <ul class="carousel-indicators">
+        <ul class="carousel-indicators" style="z-index:999;">
             {{#items}}
                 <li data-target="#{{plugin}}-{{cmid}}" data-slide-to="{{nr}}"{{#first}} class="active"{{/first}}></li>
             {{/items}}

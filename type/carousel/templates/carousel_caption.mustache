@@ -20,10 +20,13 @@
 
     Example context (json):
     {
-        "caption": "Slide 1"
+        "caption": "Slide 1",
+        "captionstyle": "dark",
+        "captionwidth": "600"
     }
 }}
 
-<div class="carousel-caption">
+<div class="carousel-caption p-1 mx-auto rounded{{#captionstyle}} {{.}}{{/captionstyle}}{{#captionwidth}} fixedwidth{{/captionwidth}}"{{!
+                                                                        }} {{#captionwidth}} style="max-width:{{.}}px"{{/captionwidth}}>
     {{{caption}}}
 </div>

@@ -65,5 +65,28 @@ function xmldb_unilabeltype_carousel_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2024012400, 'unilabeltype', 'carousel');
     }
 
+    if ($oldversion < 2024050700) {
+
+        // Define field captionstyle to be added to unilabeltype_carousel.
+        $table = new xmldb_table('unilabeltype_carousel');
+        $field = new xmldb_field('captionstyle', XMLDB_TYPE_CHAR, '255', null, null, null, null, 'background');
+
+        // Conditionally launch add field captionstyle.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field captionwidth to be added to unilabeltype_carousel.
+        $table = new xmldb_table('unilabeltype_carousel');
+        $field = new xmldb_field('captionwidth', XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'captionstyle');
+
+        // Conditionally launch add field captionwidth.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+        // Carousel savepoint reached.
+        upgrade_plugin_savepoint(true, 2024050700, 'unilabeltype', 'carousel');
+    }
+
     return true;
 }

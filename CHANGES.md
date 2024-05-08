@@ -1,5 +1,9 @@
 ## Release notes
 
+### Release 4.4.0
+* Apply new coding style rules
+* Carousel caption has new settings for its style (#44)
+
 ### Release 4.3.4
 * Optimize activity picker, so users can see whether or not the used link comes from an activity
 * Carousel caption now can handle images

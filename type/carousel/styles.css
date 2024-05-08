@@ -3,3 +3,18 @@
     list-style: none;
     mix-blend-mode: difference;
 }
+.unilabel-content .unilabeltype_carousel .carousel-caption.fixedwidth {
+    left: 0;
+    right: 0;
+}
+.unilabel-content .unilabeltype_carousel .carousel-caption p:last-child {
+    margin-bottom: 0;
+}
+.unilabel-content .unilabeltype_carousel .carousel-caption.dark {
+    background-color: rgba(0, 0, 0, .8);
+    color: #fff;
+}
+.unilabel-content .unilabeltype_carousel .carousel-caption.light {
+    background-color: rgba(255, 255, 255, .8);
+    color: #000;
+}

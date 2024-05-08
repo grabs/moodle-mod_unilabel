@@ -41,7 +41,7 @@ class mod_unilabel_generator extends testing_module_generator {
      * @param  array|null          $options
      * @return stdClass
      */
-    public function create_instance($record = null, ?array $options = null) {
+    public function create_instance($record = null, ?array $options = null): \stdClass {
         $record = (object) (array) $record;
 
         return parent::create_instance($record, (array) $options);

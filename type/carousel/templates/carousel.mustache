@@ -28,6 +28,8 @@
         "background": "#A0E2FD",
         "fontawesomeprev": "fa-solid fa-forward",
         "fontawesomenext": "fa-solid fa-forward",
+        "captionstyle": "dark",
+        "captionwidth": "600",
         "slides": [
             {
                 "id": "4",
@@ -74,7 +76,7 @@
     <div id="{{plugin}}-{{uniqid}}-{{cmid}}" class="{{plugin}} carousel slide my-2" data-ride="carousel" data-interval="{{#interval}}{{.}}000{{/interval}}{{^interval}}false{{/interval}}">
 
         <!-- Indicators -->
-        <ul class="carousel-indicators">
+        <ul class="carousel-indicators" style="z-index:999;">
             {{#slides}}
                 <li data-target="#{{plugin}}-{{uniqid}}-{{cmid}}" data-slide-to="{{nr}}"{{^nr}} class="active"{{/nr}}></li>
             {{/slides}}

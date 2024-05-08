@@ -46,6 +46,12 @@ class content_type extends \mod_unilabel\content_type {
     /** @var \context */
     private $context;
 
+    /** Caption styles to be used in the instances caption setting. */
+    public const CAPTIONSTYLES = [
+        'dark',
+        'light',
+    ];
+
     /**
      * Constructor.
      *
@@ -115,6 +121,14 @@ class content_type extends \mod_unilabel\content_type {
 
         $mform->addElement('advcheckbox', $prefix . 'usemobile', get_string('use_mobile_images', $this->component));
         $mform->addHelpButton($prefix . 'usemobile', 'use_mobile_images', $this->component);
+
+        $captionoptions = $this->get_captionstyle_options(true);
+        $mform->addElement('select', $prefix . 'captionstyle', get_string('captionstyle', $this->component), $captionoptions);
+        $mform->addHelpButton($prefix . 'captionstyle', 'captionstyle', $this->component);
+
+        $mform->addElement('text', $prefix . 'captionwidth', get_string('captionwidth', $this->component));
+        $mform->setType($prefix . 'captionwidth', PARAM_INT);
+        $mform->addHelpButton($prefix . 'captionwidth', 'captionwidth', $this->component);
 
         // Prepare the activity url picker.
         $formid       = $mform->getAttribute('id');
@@ -268,6 +282,7 @@ class content_type extends \mod_unilabel\content_type {
             $data[$prefix . 'background']       = '#ffffff';
             $data[$prefix . 'showintro']        = !empty($this->config->showintro);
             $data[$prefix . 'usemobile']        = !empty($this->config->usemobile);
+            $data[$prefix . 'captionwidth']     = 0;
 
             return $data;
         }
@@ -278,6 +293,8 @@ class content_type extends \mod_unilabel\content_type {
         $data[$prefix . 'background']       = $unilabeltyperecord->background;
         $data[$prefix . 'showintro']        = $unilabeltyperecord->showintro;
         $data[$prefix . 'usemobile']        = $unilabeltyperecord->usemobile;
+        $data[$prefix . 'captionstyle']     = $unilabeltyperecord->captionstyle;
+        $data[$prefix . 'captionwidth']     = $unilabeltyperecord->captionwidth;
 
         // Set default data for slides.
         $slides = $DB->get_records(
@@ -388,15 +405,17 @@ class content_type extends \mod_unilabel\content_type {
             $intro     = $this->format_intro($unilabel, $cm);
             $showintro = !empty($unilabeltyperecord->showintro);
             $content   = [
-                'showintro'  => $showintro,
-                'intro'      => $showintro ? $intro : '',
-                'interval'   => $unilabeltyperecord->carouselinterval,
-                'height'     => $unilabeltyperecord->height,
-                'autoheight' => empty($unilabeltyperecord->height),
-                'background' => $unilabeltyperecord->background,
-                'hasslides'  => count($this->slides) > 0,
-                'cmid'       => $cm->id,
-                'plugin'     => $this->component,
+                'showintro'    => $showintro,
+                'intro'        => $showintro ? $intro : '',
+                'interval'     => $unilabeltyperecord->carouselinterval,
+                'height'       => $unilabeltyperecord->height,
+                'autoheight'   => empty($unilabeltyperecord->height),
+                'background'   => $unilabeltyperecord->background,
+                'hasslides'    => count($this->slides) > 0,
+                'cmid'         => $cm->id,
+                'plugin'       => $this->component,
+                'captionstyle' => $unilabeltyperecord->captionstyle,
+                'captionwidth' => $unilabeltyperecord->captionwidth,
             ];
             $content['slides'] = array_values(
                 array_map(function ($slide) {
@@ -475,10 +494,12 @@ class content_type extends \mod_unilabel\content_type {
         } else {
             $unilabeltyperecord->carouselinterval = 0;
         }
-        $unilabeltyperecord->height     = $formdata->{$prefix . 'height'};
-        $unilabeltyperecord->background = $formdata->{$prefix . 'background'};
-        $unilabeltyperecord->showintro  = $formdata->{$prefix . 'showintro'};
-        $unilabeltyperecord->usemobile  = $formdata->{$prefix . 'usemobile'};
+        $unilabeltyperecord->height       = $formdata->{$prefix . 'height'};
+        $unilabeltyperecord->background   = $formdata->{$prefix . 'background'};
+        $unilabeltyperecord->showintro    = $formdata->{$prefix . 'showintro'};
+        $unilabeltyperecord->usemobile    = $formdata->{$prefix . 'usemobile'};
+        $unilabeltyperecord->captionstyle = $formdata->{$prefix . 'captionstyle'};
+        $unilabeltyperecord->captionwidth = $formdata->{$prefix . 'captionwidth'};
 
         $DB->update_record('unilabeltype_carousel', $unilabeltyperecord);
 
@@ -701,6 +722,28 @@ class content_type extends \mod_unilabel\content_type {
             'subdirs'        => false,
             'accepted_types' => ['web_image'],
         ];
+    }
+
+    /**
+     * Generates an array with options to define a css class.
+     * The structure is like:
+     * [
+     *     'light' => 'captionstyle_light',
+     *     'dark'  => 'captionstyle_dark',
+     * ]
+     *
+     * @param bool $addchoose If true an additional element "Choose" is add at the beginning.
+     * @return array
+     */
+    public function get_captionstyle_options($addchoose = false) {
+        $options = [];
+        foreach (static::CAPTIONSTYLES as $style) {
+            $options[$style] = get_string('captionstyle_' . $style, $this->component);
+        }
+        if ($addchoose) {
+            $options = ['' => get_string('choose')] + $options;
+        }
+        return $options;
     }
 
     /**
