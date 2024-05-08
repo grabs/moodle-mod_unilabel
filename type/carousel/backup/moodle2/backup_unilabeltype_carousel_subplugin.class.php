@@ -46,7 +46,8 @@ class backup_unilabeltype_carousel_subplugin extends backup_subplugin {
                 'carouselinterval',
                 'height',
                 'background',
-                'showintro',
+                'captionstyle',
+                'captionwidth',
                 'usemobile',
             ]
         );
