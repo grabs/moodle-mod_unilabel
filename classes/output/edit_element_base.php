@@ -51,7 +51,7 @@ abstract class edit_element_base implements \templatable, \renderable {
     protected $component;
     /** @var int */
     protected $repeatindex;
-    /** @var \core_renderer */
+    /** @var \plugin_renderer_base */
     protected $output;
 
     /**
@@ -124,7 +124,7 @@ abstract class edit_element_base implements \templatable, \renderable {
     /**
      * Export for template.
      *
-     * @param renderer_base $output The renderer.
+     * @param \renderer_base $output The renderer.
      * @return stdClass
      */
     public function export_for_template(\renderer_base $output) {

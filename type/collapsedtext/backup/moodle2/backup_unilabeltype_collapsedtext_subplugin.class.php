@@ -43,7 +43,6 @@ class backup_unilabeltype_collapsedtext_subplugin extends backup_subplugin {
             'unilabeltype_collapsedtext',
             ['id'],
             [
-                'title',
                 'presentation',
                 'useanimation',
             ]

@@ -41,14 +41,14 @@ $collapsedtextsettings[] = new admin_setting_configcheckbox(
 );
 
 $select = [
-    'collapsed' => get_string('collapsed', 'unilabeltype_collapsedtext'),
-    'dialog'    => get_string('dialog', 'unilabeltype_collapsedtext'),
+    \unilabeltype_collapsedtext\content_type::PRESENTATION_COLLAPSED => get_string('collapsed', 'unilabeltype_collapsedtext'),
+    \unilabeltype_collapsedtext\content_type::PRESENTATION_DIALOG    => get_string('dialog', 'unilabeltype_collapsedtext'),
 ];
 $collapsedtextsettings[] = new admin_setting_configselect(
     'unilabeltype_collapsedtext/presentation',
     get_string('default_presentation', 'unilabeltype_collapsedtext'),
     '',
-    'collapsed',
+    \unilabeltype_collapsedtext\content_type::PRESENTATION_COLLAPSED,
     $select
 );
 

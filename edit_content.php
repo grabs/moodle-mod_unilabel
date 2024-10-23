@@ -108,6 +108,7 @@ if ($formdata = $form->get_data()) {
     if ($updatesuccess) {
         $msg     = get_string('updatesuccessful', 'mod_unilabel');
         $msgtype = \core\output\notification::NOTIFY_SUCCESS;
+        rebuild_course_cache($course->id);
     } else {
         $msg     = get_string('updatefailed', 'mod_unilabel');
         $msgtype = \core\output\notification::NOTIFY_ERROR;

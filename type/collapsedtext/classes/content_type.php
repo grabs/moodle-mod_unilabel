@@ -33,6 +33,9 @@ namespace unilabeltype_collapsedtext;
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class content_type extends \mod_unilabel\content_type {
+    public const PRESENTATION_COLLAPSED = 'collapsed';
+    public const PRESENTATION_DIALOG = 'dialog';
+
     /** @var \stdClass */
     private $unilabeltyperecord;
 
@@ -64,8 +67,8 @@ class content_type extends \mod_unilabel\content_type {
         $mform->addRule($prefix . 'title', get_string('required'), 'required', null, 'client');
 
         $select = [
-            'collapsed' => get_string('collapsed', 'unilabeltype_collapsedtext'),
-            'dialog'    => get_string('dialog', 'unilabeltype_collapsedtext'),
+            static::PRESENTATION_COLLAPSED => get_string('collapsed', 'unilabeltype_collapsedtext'),
+            static::PRESENTATION_DIALOG    => get_string('dialog', 'unilabeltype_collapsedtext'),
         ];
         $mform->addElement('select', $prefix . 'presentation', get_string('presentation', 'unilabeltype_collapsedtext'), $select);
 
@@ -83,15 +86,9 @@ class content_type extends \mod_unilabel\content_type {
         global $DB;
         $prefix = 'unilabeltype_collapsedtext_';
 
-        if (!$unilabeltyperecord = $this->load_unilabeltype_record($unilabel)) {
-            $data[$prefix . 'title']        = '';
-            $data[$prefix . 'useanimation'] = $this->config->useanimation;
-            $data[$prefix . 'presentation'] = $this->config->presentation;
-        } else {
-            $data[$prefix . 'title']        = $unilabeltyperecord->title;
-            $data[$prefix . 'useanimation'] = $unilabeltyperecord->useanimation;
-            $data[$prefix . 'presentation'] = $unilabeltyperecord->presentation;
-        }
+        $data[$prefix . 'title']        = $unilabel->name;
+        $data[$prefix . 'useanimation'] = static::get_useanimation();
+        $data[$prefix . 'presentation'] = static::get_presentation();
 
         return $data;
     }
@@ -115,36 +112,33 @@ class content_type extends \mod_unilabel\content_type {
      */
     public function get_content($unilabel, $cm, \plugin_renderer_base $renderer) {
         $cmidfromurl = optional_param('cmid', 0, PARAM_INT);
-        if (!$unilabeltyperecord = $this->load_unilabeltype_record($unilabel)) {
-            $content  = [];
-            $template = 'default';
-        } else {
-            $intro        = $this->format_intro($unilabel, $cm);
-            $useanimation = $this->get_useanimation($unilabel);
+        $intro        = $this->format_intro($unilabel, $cm);
+        $useanimation = $this->get_useanimation();
 
-            $content = [
-                'title'            => $this->get_title($unilabel),
-                'content'          => $intro,
-                'cmid'             => $cm->id,
-                'useanimation'     => $useanimation,
-                'srtitle_expand'   => get_string('expand'),
-                'srtitle_collapse' => get_string('collapse'),
-            ];
+        $content = [
+            'title'            => $this->get_title($unilabel),
+            'content'          => $intro,
+            'cmid'             => $cm->id,
+            'useanimation'     => $useanimation,
+            'srtitle_expand'   => get_string('expand'),
+            'srtitle_collapse' => get_string('collapse'),
+        ];
 
-            if ($cm->id == $cmidfromurl) {
-                $content['openonstart'] = true;
-            }
+        if ($cm->id == $cmidfromurl) {
+            $content['openonstart'] = true;
+        }
 
-            switch ($unilabeltyperecord->presentation) {
-                case 'collapsed':
-                    $template = 'collapsed';
-                    break;
-                case 'dialog':
-                    $template = 'dialog';
-                    break;
-                default:
-                    $template = 'default';
-            }
+        $presentation = static::get_presentation();
+
+        switch ($presentation) {
+            case static::PRESENTATION_COLLAPSED:
+                $template = 'collapsed';
+                break;
+            case static::PRESENTATION_DIALOG:
+                $template = 'dialog';
+                break;
+            default:
+                throw new \moodle_exception('Wrong presentation type: '. $presentation);
         }
 
         $content = $renderer->render_from_template('unilabeltype_collapsedtext/' . $template, $content);
@@ -180,7 +174,8 @@ class content_type extends \mod_unilabel\content_type {
 
         $prefix = 'unilabeltype_collapsedtext_';
 
-        $unilabeltyperecord->title        = $formdata->{$prefix . 'title'};
+        $title        = $formdata->{$prefix . 'title'};
+
         $unilabeltyperecord->useanimation = !empty($formdata->{$prefix . 'useanimation'});
         $unilabeltyperecord->presentation = $formdata->{$prefix . 'presentation'};
 
@@ -189,6 +184,7 @@ class content_type extends \mod_unilabel\content_type {
         } else {
             $DB->update_record('unilabeltype_collapsedtext', $unilabeltyperecord);
         }
+        $DB->set_field('unilabel', 'name', $title, ['id' => $unilabel->id]);
 
         return !empty($unilabeltyperecord->id);
     }
@@ -200,28 +196,25 @@ class content_type extends \mod_unilabel\content_type {
      * @return string
      */
     public function get_title($unilabel) {
-        $this->load_unilabeltype_record($unilabel);
+        return $unilabel->name;
+    }
 
-        if (empty($this->unilabeltyperecord->title)) {
-            return get_string('notitle', 'unilabeltype_collapsedtext');
-        }
-
-        return $this->unilabeltyperecord->title;
+    /**
+     * Get the sort of presentation.
+     *
+     * @return bool
+     */
+    public function get_presentation() {
+        return (bool) ($this->unilabeltyperecord->presentation ?? $this->config->presentation);
     }
 
     /**
      * Do we want animation or not.
      *
-     * @param  \stdClass $unilabel
      * @return bool
      */
-    public function get_useanimation($unilabel) {
-        if (empty($this->unilabeltyperecord)) {
-            return $this->config->useanimation;
-        }
-        $this->load_unilabeltype_record($unilabel);
-
-        return !empty($this->unilabeltyperecord->useanimation);
+    public function get_useanimation() {
+        return (bool) ($this->unilabeltyperecord->useanimation ?? $this->config->useanimation);
     }
 
     /**

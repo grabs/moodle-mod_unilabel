@@ -118,7 +118,7 @@ abstract class content_type {
      *
      * @param  \stdClass             $unilabel
      * @param  \stdClass             $cm
-     * @param  \plugin_renderer_base $renderer
+     * @param  \plugin_renderer_base        $renderer
      * @return string
      */
     abstract public function get_content($unilabel, $cm, \plugin_renderer_base $renderer);

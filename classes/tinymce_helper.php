@@ -35,6 +35,7 @@ namespace mod_unilabel;
 class tinymce_helper extends \editor_tiny\editor {
     /**
      * Get an escaped and json encoded configuration object for reinitialize an tinymce instance by js.
+     * Most of this code comes from editor_tiny\editor::use_editor in lib/editor/tiny/classes/editor.php.
      *
      * @param  array  $editoroptions
      * @param  int    $draftitemid
@@ -123,6 +124,7 @@ class tinymce_helper extends \editor_tiny\editor {
 
     /**
      * Extract the filepicker options.
+     * Most of this code comes from MoodleQuickForm_editor::toHtml in lib/form/editor.php.
      *
      * @param  array $options
      * @param  int   $draftitemid
