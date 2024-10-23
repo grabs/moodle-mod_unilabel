@@ -35,7 +35,7 @@ function xmldb_unilabeltype_collapsedtext_upgrade($oldversion) {
 
     $dbman = $DB->get_manager();
 
-    if ($oldversion < 2024100100) {
+    if ($oldversion < 2024050800) {
 
         // Move all titles from collapsedtext to the unilabel name field.
         $collapsedelements = $DB->get_recordset('unilabeltype_collapsedtext', [], 'id ASC');
@@ -54,7 +54,7 @@ function xmldb_unilabeltype_collapsedtext_upgrade($oldversion) {
         }
 
         // Collapsedtext savepoint reached.
-        upgrade_plugin_savepoint(true, 2024100100, 'unilabeltype', 'collapsedtext');
+        upgrade_plugin_savepoint(true, 2024050800, 'unilabeltype', 'collapsedtext');
     }
     return true;
 }
