@@ -345,14 +345,11 @@ abstract class edit_element_base implements \templatable, \renderable {
      *
      * @param string $name The element name without the prefix.
      * @param \HTML_QuickForm_element[] $elements
-     * @param string $separator String to seperate elements
-     * @param bool $appendname
      * @param string $helpbutton
      * @param string $extralabel In from the name independent label.
      * @return \MoodleQuickForm_group The group element
      */
-    protected function get_group(string $name, array $elements, string $separator = null,
-                                    bool $appendname = false, $helpbutton = '', string $extralabel = '') {
+    protected function get_group(string $name, array $elements, $helpbutton = '', string $extralabel = '') {
 
         $elementname = $this->prefix . $name . '_' . $this->repeatindex;
         $attributes = [];
@@ -365,7 +362,7 @@ abstract class edit_element_base implements \templatable, \renderable {
             $label = $extralabel;
         }
 
-        $element = new \MoodleQuickForm_group($elementname, $label, $elements, $separator, $appendname);
+        $element = new \MoodleQuickForm_group($elementname, $label, $elements, null, false);
         if ($helpbutton) {
             $element->_helpbutton = $this->output->help_icon($helpbutton, $this->component);
         }

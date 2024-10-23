@@ -76,7 +76,7 @@ class edit_element extends \mod_unilabel\output\edit_element_base {
             'yposition',
             ['size' => 4, 'placeholder' => get_string('placeholder_yposition', $this->component)]
         );
-        $elements[] = $this->get_group('position', [$xposition, $yposition], null, false, 'position');
+        $elements[] = $this->get_group('position', [$xposition, $yposition], 'position');
 
         $targetwidth = $this->get_textfield(
             'targetwidth',
@@ -86,7 +86,7 @@ class edit_element extends \mod_unilabel\output\edit_element_base {
             'targetheight',
             ['size' => 4, 'placeholder' => get_string('placeholder_targetheight', $this->component)]
         );
-        $elements[] = $this->get_group('targetsize', [$targetwidth, $targetheight], null, false, 'targetsize');
+        $elements[] = $this->get_group('targetsize', [$targetwidth, $targetheight], 'targetsize');
 
         $urlelement = $this->get_textfield(
             'url',
@@ -101,8 +101,6 @@ class edit_element extends \mod_unilabel\output\edit_element_base {
         $elements[] = $this->get_group(
             'urlgroup',
             [$urlelement, $newwindowelement],
-            null,
-            false,
             'url',
             get_string('url', $this->component) . '-' . ($this->repeatindex + 1)
         );

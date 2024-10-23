@@ -88,8 +88,6 @@ class edit_element extends \mod_unilabel\output\edit_element_base {
         $elements[] = $this->get_group(
             'urlgroup',
             [$urlelement, $newwindowelement],
-            null,
-            false,
             'url',
             get_string('url', $this->component) . '-' . ($this->repeatindex + 1)
         );

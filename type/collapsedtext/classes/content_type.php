@@ -33,7 +33,9 @@ namespace unilabeltype_collapsedtext;
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class content_type extends \mod_unilabel\content_type {
+    /** The presentation type "collapsed" which show a bootstrap collapsed element. */
     public const PRESENTATION_COLLAPSED = 'collapsed';
+    /** The presentation type "dialog" which shows a bootstrap modalbox. */
     public const PRESENTATION_DIALOG = 'dialog';
 
     /** @var \stdClass */
