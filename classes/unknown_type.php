@@ -96,7 +96,7 @@ class unknown_type extends \mod_unilabel\content_type {
      *
      * @param  \stdClass             $unilabel
      * @param  \stdClass             $cm
-     * @param  \plugin_renderer_base        $renderer
+     * @param  \plugin_renderer_base $renderer
      * @return string
      */
     public function get_content($unilabel, $cm, \plugin_renderer_base $renderer) {

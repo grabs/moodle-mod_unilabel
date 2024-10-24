@@ -1,5 +1,9 @@
 ## Release notes
 
+### Release 4.4.1
+* Type Collapsed text now uses the label name as title
+* Fix deprecated code definition
+
 ### Release 4.4.0
 * Apply new coding style rules
 * Carousel caption has new settings for its style (#44)
