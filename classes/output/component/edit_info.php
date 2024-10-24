@@ -39,10 +39,12 @@ class edit_info implements \renderable, \templatable {
     /**
      * Constructor.
      *
+     * @param string $component The unilabeltype component
      * @param string $infotext
      */
-    public function __construct($infotext) {
+    public function __construct(string $component, string $infotext) {
         $this->data['edit_info'] = $infotext;
+        $this->data['pluginname'] = get_string('pluginname', $component);
     }
 
     /**

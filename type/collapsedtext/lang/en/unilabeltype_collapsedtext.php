@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die;
 $string['collapsed']            = 'Collapsed';
 $string['default_presentation'] = 'Default presentation';
 $string['dialog']               = 'Modal dialog';
-$string['edit_info']            = 'After saving, further settings can be found under the "Edit content" button';
+$string['edit_info']            = 'You can use this type to display a text as collapsed text. The title is used as a button to expand the text.<br>After saving, further settings can be found under the "Edit content" button';
 $string['notitle']              = 'No title';
 $string['pluginname']           = 'Collapsed text';
 $string['pluginname_help']      = 'This content type shows you the content in a collapsed form or in a modal dialog. You have to define a title where the user can click on.';

@@ -118,7 +118,13 @@ class factory {
         }
         $groupname = 'edit_info_' . $type;
         $group = [];
-        $group[] = $mform->createElement('html', $OUTPUT->render(new \mod_unilabel\output\component\edit_info($infotext)));
+        $group[] = $mform->createElement(
+            'html',
+            $OUTPUT->render(new \mod_unilabel\output\component\edit_info(
+                $plugin->get_namespace(),
+                $infotext)
+            )
+        );
         $mform->addGroup($group, $groupname, '', '');
         $mform->hideIf($groupname, 'unilabeltype', 'neq', $type);
     }

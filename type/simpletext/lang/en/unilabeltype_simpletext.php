@@ -24,6 +24,7 @@
  */
 defined('MOODLE_INTERNAL') || die;
 
+$string['edit_info']        = 'With this type, only the description text is displayed, without any special effects.';
 $string['filteractive']     = 'Activate filter';
 $string['pluginname']       = 'Simple text';
 $string['pluginname_help']  = 'Prints a simple text element';

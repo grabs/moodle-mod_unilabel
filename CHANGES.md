@@ -2,6 +2,8 @@
 
 ### Release 4.4.1
 * Type Collapsed text now uses the label name as title
+* Type Collapsed text and Topic teaser now are shown directly after adding.
+* Add new info text for each type into the main edit form.
 * Fix deprecated code definition
 
 ### Release 4.4.0
