@@ -49,6 +49,13 @@ abstract class content_type {
     protected $prefix;
 
     /**
+     * Constructor to initialize the type.
+     */
+    public function __construct() {
+        $this->init_type($this->get_namespace());
+    }
+
+    /**
      * This method must be called in each constructor.
      *
      * @param string $component // The component of the unilabeltype e.g. "unilabeltype_grid".
@@ -68,6 +75,15 @@ abstract class content_type {
      */
     public function get_component() {
         return $this->component;
+    }
+
+    /**
+     * Get the an information to the user hwo to edit this type after creation.
+     *
+     * @return string
+     */
+    public function get_edit_info(): string {
+        return get_string('edit_info', $this->get_namespace());
     }
 
     /**

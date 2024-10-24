@@ -45,6 +45,15 @@ class unknown_type extends \mod_unilabel\content_type {
     }
 
     /**
+     * Get the an information to the user hwo to edit this type after creation.
+     *
+     * @return string
+     */
+    public function get_edit_info(): string {
+        return '';
+    }
+
+    /**
      * Dummy method to get default data.
      *
      * @param  array     $data

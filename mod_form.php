@@ -56,10 +56,16 @@ class mod_unilabel_mod_form extends moodleform_mod {
         $this->standard_intro_elements(get_string('unilabeltext', 'mod_unilabel'));
 
         $plugins = \mod_unilabel\factory::get_plugin_list();
+        $plugintypes = array_keys($plugins);
+
         $plugins = ['' => get_string('choose')] + $plugins;
         $mform->addElement('select', 'unilabeltype', get_string('labeltype', 'mod_unilabel'), $plugins);
         $mform->addRule('unilabeltype', get_string('required'), 'required', null, 'client');
         $mform->addHelpButton('unilabeltype', 'labeltype', 'mod_unilabel');
+
+        foreach ($plugintypes as $type) {
+            \mod_unilabel\factory::add_edit_info_element($type, $mform);
+        }
 
         // Unilabel does not add "Show description" checkbox meaning that 'intro' is always shown on the course page.
         $mform->addElement('hidden', 'showdescription', 1);

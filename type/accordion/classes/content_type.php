@@ -37,15 +37,6 @@ class content_type extends \mod_unilabel\content_type {
     private $context;
 
     /**
-     * Constructor.
-     *
-     * @return void
-     */
-    public function __construct() {
-        $this->init_type(__NAMESPACE__);
-    }
-
-    /**
      * Get the namespace of this content type.
      *
      * @return string

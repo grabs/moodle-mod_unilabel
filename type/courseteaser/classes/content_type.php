@@ -43,7 +43,7 @@ class content_type extends \mod_unilabel\content_type {
      * @return void
      */
     public function __construct() {
-        $this->init_type(__NAMESPACE__);
+        parent::__construct();
         if (empty($this->config->columns)) {
             $this->config->columns = 4;
         }

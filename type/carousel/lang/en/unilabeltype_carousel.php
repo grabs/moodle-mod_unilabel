@@ -41,6 +41,7 @@ $string['default_carouselinterval'] = 'Default interval';
 $string['default_height']           = 'Default height';
 $string['default_showintro']        = 'Default show unilabel text';
 $string['default_usemobile']        = 'Default use mobile images';
+$string['edit_info']                = 'After saving, you can add elements using the "Edit content" button.';
 $string['height']                   = 'Height';
 $string['height_help']              = 'If your pictures are of a different size, use the fixed height option. This scales all images to the same height. If your pictures have the same height, you can also use "auto height".';
 $string['image']                    = 'Image';

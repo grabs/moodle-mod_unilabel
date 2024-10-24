@@ -15,15 +15,43 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unilabel type carousel.
+ * mod_unilabel Activity picker.
  *
- * @package     unilabeltype_carousel
+ * @package     mod_unilabel
  * @author      Andreas Grabs <info@grabs-edv.de>
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-defined('MOODLE_INTERNAL') || die;
 
-$plugin->component = 'unilabeltype_carousel';
-$plugin->version   = 2024050801;
-$plugin->requires  = 2022111800;
+namespace mod_unilabel\output\component;
+
+/**
+ * Activity picker to choose a internal url to an activity.
+ * @package     mod_unilabel
+ * @author      Andreas Grabs <info@grabs-edv.de>
+ * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class edit_info implements \renderable, \templatable {
+    /** @var array */
+    public $data;
+
+    /**
+     * Constructor.
+     *
+     * @param string $infotext
+     */
+    public function __construct($infotext) {
+        $this->data['edit_info'] = $infotext;
+    }
+
+    /**
+     * Export the data for usage in mustache.
+     *
+     * @param  \renderer_base $output
+     * @return array
+     */
+    public function export_for_template(\renderer_base $output) {
+        return $this->data;
+    }
+}

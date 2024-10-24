@@ -53,15 +53,6 @@ class content_type extends \mod_unilabel\content_type {
     ];
 
     /**
-     * Constructor.
-     *
-     * @return void
-     */
-    public function __construct() {
-        $this->init_type(__NAMESPACE__);
-    }
-
-    /**
      * Get true if the unilabeltype supports sortorder by using drag-and-drop.
      *
      * @return bool

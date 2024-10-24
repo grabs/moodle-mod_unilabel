@@ -15,21 +15,16 @@
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
 {{!
-    @template mod_unilabel/content
-    This is a wrapper for all content templates.
+    @template mod_unilabel/edit_info
+    Shows an alert box with edit informations to a unilabeltype.
 
     Example context (json):
-    [{
-        "editlink": {
-            "url": "https:\/\/...",
-            "title": "title"},
-            "content":"<div>Sample content</div>"
-    }]
+    {
+        "edit_info": "<div>Edit info</div>"
+    }
 }}
 
-<div class="unilabel-content">
-    {{#editlink}}
-        <div class="editlink"><a href="{{{url}}}"><i class="icon fa fa-pencil fa-fw"> </i>{{title}}</a></div>
-    {{/editlink}}
-    {{{content}}}
+<div class="alert alert-info">
+    <i class="icon fa fa-info-circle text-info fa-fw"></i>
+    {{{edit_info}}}
 </div>

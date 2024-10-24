@@ -36,6 +36,7 @@ $string['default_carouselinterval'] = 'Default interval';
 $string['default_columns']          = 'Default columns';
 $string['default_presentation']     = 'Default presentation';
 $string['default_showintro']        = 'Default show unilabel text';
+$string['edit_info']                = 'After saving, further settings can be found under the "Edit content" button';
 $string['grid']                     = 'Grid';
 $string['nocontent']                = 'No content';
 $string['pluginname']               = 'Course teaser';

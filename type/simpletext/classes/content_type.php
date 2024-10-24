@@ -33,14 +33,6 @@ namespace unilabeltype_simpletext;
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class content_type extends \mod_unilabel\content_type {
-    /**
-     * Constructor
-     *
-     * @return void
-     */
-    public function __construct() {
-        $this->init_type(__NAMESPACE__);
-    }
 
     /**
      * Add elements to the activity settings form.
@@ -51,6 +43,15 @@ class content_type extends \mod_unilabel\content_type {
      */
     public function add_form_fragment(\mod_unilabel\edit_content_form $form, \context $context) {
         return null;
+    }
+
+    /**
+     * Get the an information to the user hwo to edit this type after creation.
+     *
+     * @return string
+     */
+    public function get_edit_info(): string {
+        return '';
     }
 
     /**

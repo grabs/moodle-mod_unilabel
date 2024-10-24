@@ -73,7 +73,7 @@ class content_type extends \mod_unilabel\content_type {
      * @return void
      */
     public function __construct() {
-        $this->init_type(__NAMESPACE__);
+        parent::__construct();
         if (empty($this->config->columns)) {
             $this->config->columns = 4;
         }
@@ -187,43 +187,36 @@ class content_type extends \mod_unilabel\content_type {
         global $DB;
         $prefix = 'unilabeltype_topicteaser_';
 
-        if (!$unilabeltyperecord = $this->load_unilabeltype_record($unilabel->id)) {
-            $data[$prefix . 'presentation']     = $this->config->presentation;
-            $data[$prefix . 'columns']          = $this->config->columns;
-            $data[$prefix . 'columnsmiddle']    = $this->get_default_col_middle($this->config->columns);
-            $data[$prefix . 'defaultmiddle']    = true;
-            $data[$prefix . 'columnssmall']     = $this->get_default_col_small();
-            $data[$prefix . 'defaultsmall']     = true;
-            $data[$prefix . 'carouselinterval'] = $this->config->carouselinterval;
-            $data[$prefix . 'autorun']          = $this->config->autorun;
-            $data[$prefix . 'clickaction']      = $this->config->clickaction;
-            $data[$prefix . 'showintro']        = $this->config->showintro;
-            $data[$prefix . 'showcoursetitle']  = $this->config->showcoursetitle;
-        } else {
-            $data[$prefix . 'presentation'] = $unilabeltyperecord->presentation;
-            $data[$prefix . 'columns']      = $unilabeltyperecord->columns;
-            if (empty($unilabeltyperecord->columnsmiddle)) {
-                $data[$prefix . 'columnsmiddle'] = $this->get_default_col_middle($unilabeltyperecord->columns);
-                $data[$prefix . 'defaultmiddle'] = true;
-            } else {
-                $data[$prefix . 'columnsmiddle'] = $unilabeltyperecord->columnsmiddle;
-                $data[$prefix . 'defaultmiddle'] = false;
-            }
-            if (empty($unilabeltyperecord->columnssmall)) {
-                $data[$prefix . 'columnssmall'] = $this->get_default_col_small();
-                $data[$prefix . 'defaultsmall'] = true;
-            } else {
-                $data[$prefix . 'columnssmall'] = $unilabeltyperecord->columnssmall;
-                $data[$prefix . 'defaultsmall'] = false;
-            }
+        $unilabeltyperecord = $this->load_unilabeltype_record($unilabel->id);
 
-            $data[$prefix . 'carouselinterval'] = $unilabeltyperecord->carouselinterval;
-            $data[$prefix . 'autorun']          = (bool) (!empty($unilabeltyperecord->carouselinterval));
-            $data[$prefix . 'clickaction']      = $unilabeltyperecord->clickaction;
-            $data[$prefix . 'showintro']        = $unilabeltyperecord->showintro;
-            $data[$prefix . 'showcoursetitle']  = $unilabeltyperecord->showcoursetitle;
-            $data[$prefix . 'course']           = $unilabeltyperecord->course;
+        $data[$prefix . 'presentation'] = $unilabeltyperecord->presentation ?? $this->config->presentation;
+        $data[$prefix . 'columns']      = $unilabeltyperecord->columns ?? $this->config->columns;
+        if (empty($columnsmiddle = $this->get_coloumnsmiddle($unilabel))) {
+            $columns = $this->get_default_col_middle($unilabeltyperecord->columns ?? $this->config->columns);
+            $data[$prefix . 'columnsmiddle'] = $columns;
+            $data[$prefix . 'defaultmiddle'] = true;
+        } else {
+            $data[$prefix . 'columnsmiddle'] = $columnsmiddle;
+            $data[$prefix . 'defaultmiddle'] = false;
         }
+        if (empty($columnssmall = $this->get_coloumnssmall($unilabel))) {
+            $data[$prefix . 'columnssmall'] = $this->get_default_col_small();
+            $data[$prefix . 'defaultsmall'] = true;
+        } else {
+            $data[$prefix . 'columnssmall'] = $columnssmall;
+            $data[$prefix . 'defaultsmall'] = false;
+        }
+
+        $data[$prefix . 'carouselinterval'] = $unilabeltyperecord->carouselinterval ?? $this->config->carouselinterval;
+
+        $autorun = empty($unilabeltyperecord) ? $this->config->autorun : !empty($unilabeltyperecord->carouselinterval);
+        $data[$prefix . 'autorun']          = $autorun;
+
+        $data[$prefix . 'clickaction']      = $this->get_click_action($unilabel);
+        $data[$prefix . 'showintro']        = $unilabeltyperecord->showintro ?? $this->config->showintro;
+        $data[$prefix . 'showcoursetitle']  = $unilabeltyperecord->showcoursetitle ?? $this->config->showcoursetitle;
+
+        $data[$prefix . 'course']           = $this->get_selected_courseid($unilabel);
 
         return $data;
     }
@@ -248,65 +241,60 @@ class content_type extends \mod_unilabel\content_type {
     public function get_content($unilabel, $cm, \plugin_renderer_base $renderer) {
         global $DB;
 
-        if (!$unilabeltyperecord = $this->load_unilabeltype_record($unilabel->id)) {
-            $content = [
-                'cmid'     => $cm->id,
-                'hasitems' => false,
-            ];
-            $template = 'default';
-        } else {
-            $intro     = $this->format_intro($unilabel, $cm);
-            $showintro = !empty($unilabeltyperecord->showintro);
-            $courseid  = empty($unilabeltyperecord->course) ? $unilabel->course : $unilabeltyperecord->course;
-            $items     = $this->get_sections_html($courseid);
-            $title     = null;
-            if (!empty($unilabeltyperecord->showcoursetitle)) {
-                if ($course = $DB->get_record('course', ['id' => $courseid])) {
-                    $title = $course->fullname;
-                } else {
-                    $title = get_string('coursenotfound', 'unilabeltype_topicteaser');
-                }
-            }
-            $content = [
-                'title'         => $title,
-                'showintro'     => $showintro,
-                'intro'         => $showintro ? $intro : '',
-                'interval'      => $unilabeltyperecord->carouselinterval,
-                'height'        => 300,
-                'items'         => array_values($items),
-                'hasitems'      => count($items) > 0,
-                'openmodal'     => ($unilabeltyperecord->clickaction == 'opendialog'),
-                'opencourseurl' => ($unilabeltyperecord->clickaction == 'opencourseurl'),
-                'cmid'          => $cm->id,
-                'plugin'        => 'unilabeltype_topicteaser',
-            ];
-            switch ($unilabeltyperecord->presentation) {
-                case 'carousel':
-                    $template = 'carousel';
-                    $template = 'carousel';
-                    if (!empty($this->config->custombutton)) {
-                        $fontbuttons = setting_configselect_button::get_font_buttons();
-                        $content['custombuttons']   = 1;
-                        $content['fontawesomenext'] = $fontbuttons[$this->config->custombutton]['next'];
-                        $content['fontawesomeprev'] = $fontbuttons[$this->config->custombutton]['prev'];
+        $unilabeltyperecord = $this->load_unilabeltype_record($unilabel->id);
 
-                        // To make sure we have clean html we have to put the carousel css into the <head> by using javascript.
-                        $cssstring                = $renderer->render_from_template('mod_unilabel/carousel_button_style', $content);
-                        $content['cssjsonstring'] = json_encode($cssstring);
-                    }
-                    break;
-                case 'grid':
-                    $template              = 'grid';
-                    $content['colclasses'] = $this->get_bootstrap_cols(
-                        $unilabeltyperecord->columns,
-                        $unilabeltyperecord->columnsmiddle,
-                        $unilabeltyperecord->columnssmall
-                    );
-                    break;
-                default:
-                    $template = 'default';
+        $intro     = $this->format_intro($unilabel, $cm);
+        $showintro = !empty($unilabeltyperecord->showintro);
+        $courseid  = $this->get_selected_courseid($unilabel);
+        $items     = $this->get_sections_html($courseid, $unilabel);
+        $title     = null;
+        if (!empty($unilabeltyperecord->showcoursetitle)) {
+            if ($course = $DB->get_record('course', ['id' => $courseid])) {
+                $title = $course->fullname;
+            } else {
+                $title = get_string('coursenotfound', 'unilabeltype_topicteaser');
             }
         }
+        $content = [
+            'title'         => $title,
+            'showintro'     => $showintro,
+            'intro'         => $showintro ? $intro : '',
+            'interval'      => $unilabeltyperecord->carouselinterval ?? $this->config->carouselinterval,
+            'items'         => array_values($items),
+            'hasitems'      => count($items) > 0,
+            'openmodal'     => ($this->get_click_action($unilabel) == 'opendialog'),
+            'opencourseurl' => ($this->get_click_action($unilabel) == 'opencourseurl'),
+            'cmid'          => $cm->id,
+            'plugin'        => 'unilabeltype_topicteaser',
+        ];
+        $presentation = $unilabeltyperecord->presentation ?? $this->config->presentation;
+        switch ($presentation) {
+            case 'carousel':
+                $template = 'carousel';
+                $template = 'carousel';
+                if (!empty($this->config->custombutton)) {
+                    $fontbuttons = setting_configselect_button::get_font_buttons();
+                    $content['custombuttons']   = 1;
+                    $content['fontawesomenext'] = $fontbuttons[$this->config->custombutton]['next'];
+                    $content['fontawesomeprev'] = $fontbuttons[$this->config->custombutton]['prev'];
+
+                    // To make sure we have clean html we have to put the carousel css into the <head> by using javascript.
+                    $cssstring                = $renderer->render_from_template('mod_unilabel/carousel_button_style', $content);
+                    $content['cssjsonstring'] = json_encode($cssstring);
+                }
+                break;
+            case 'grid':
+                $template              = 'grid';
+                $content['colclasses'] = $this->get_bootstrap_cols(
+                    $unilabeltyperecord->columns ?? $this->config->columns,
+                    $this->get_coloumnsmiddle($unilabel),
+                    $this->get_coloumnssmall($unilabel)
+                );
+                break;
+            default:
+                $template = 'default';
+        }
+
         $content = $renderer->render_from_template('unilabeltype_topicteaser/' . $template, $content);
 
         return $content;
@@ -389,6 +377,72 @@ class content_type extends \mod_unilabel\content_type {
     }
 
     /**
+     * Get the click action for the unilabel.
+     *
+     * This function retrieves the click action setting from the unilabeltype_topicteaser table
+     * for the given unilabel. If the record does not exist or the click action is not set,
+     * it returns the default click action from the plugin configuration.
+     *
+     * @param \stdClass $unilabel The unilabel object for which to get the click action.
+     * @return string The click action for the unilabel.
+     */
+    public function get_click_action($unilabel) {
+        $unilabeltyperecord = $this->load_unilabeltype_record($unilabel->id);
+        return $unilabeltyperecord->clickaction ?? $this->config->clickaction;
+    }
+
+    /**
+     * Retrieves the middle column count for the unilabel.
+     *
+     * If the middle column count is not set in the unilabeltype_topicteaser table,
+     * it returns the default middle column count based on the column count.
+     *
+     * @param \stdClass $unilabel The unilabel object for which to get the middle column count.
+     * @return int The middle column count for the unilabel.
+     */
+    public function get_coloumnsmiddle($unilabel) {
+        $unilabeltyperecord = $this->load_unilabeltype_record($unilabel->id);
+        if (empty($unilabeltyperecord->columnsmiddle)) {
+            return $this->get_default_col_middle($unilabeltyperecord->columns ?? $this->config->columns);
+        } else {
+            return $unilabeltyperecord->columnsmiddle;
+        }
+    }
+
+    /**
+     * Retrieves the small column count for the unilabel.
+     *
+     * If the small column count is not set in the unilabeltype_topicteaser table,
+     * it returns the default small column count.
+     *
+     * @param \stdClass $unilabel The unilabel object for which to get the small column count.
+     * @return int The small column count for the unilabel.
+     */
+    public function get_coloumnssmall($unilabel) {
+        $unilabeltyperecord = $this->load_unilabeltype_record($unilabel->id);
+        if (empty($unilabeltyperecord->columnssmall)) {
+            return $this->get_default_col_small();
+        } else {
+            return $unilabeltyperecord->columnssmall;
+        }
+    }
+
+    /**
+     * Retrieves the course ID associated with this unilabel type.
+     *
+     * This function retrieves the course ID from the unilabeltype_topicteaser table
+     * for the given unilabel. If the course ID is not set,
+     * it returns the course ID from the unilabel object.
+     *
+     * @param \stdClass $unilabel The unilabel object for which to get the course ID.
+     * @return int The course ID associated with the unilabel.
+     */
+    public function get_selected_courseid($unilabel) {
+        $unilabeltyperecord = $this->load_unilabeltype_record($unilabel->id);
+        return $unilabeltyperecord->course ?? $unilabel->course;
+    }
+
+    /**
      * Get the sections from the given course.
      *
      * @param  int   $courseid
@@ -419,13 +473,14 @@ class content_type extends \mod_unilabel\content_type {
     /**
      * Get the html formated content of all sections.
      *
-     * @param  int   $courseid
+     * @param  int      $courseid
+     * @param \stdClass $unilabel
      * @return array
      */
-    public function get_sections_html($courseid) {
+    public function get_sections_html($courseid, $unilabel) {
         global $DB, $PAGE;
 
-        $mycm = get_coursemodule_from_instance('unilabel', $this->unilabeltyperecord->unilabelid);
+        $mycm = get_coursemodule_from_instance('unilabel', $unilabel->id);
         if ($PAGE->course->id == $courseid) {
             $mysection = $DB->get_record('course_sections', ['id' => $mycm->section]);
         }

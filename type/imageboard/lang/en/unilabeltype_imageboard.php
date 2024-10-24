@@ -53,6 +53,7 @@ $string['default_titlebackgroundcolor'] = 'Default title backgroundcolor';
 $string['default_titlebackgroundcolor_desc'] = 'Default backgroundcolor of imagetitle if imagetitle is not empty';
 $string['default_titlecolor'] = 'Default title color';
 $string['default_titlecolor_desc'] = 'Default title color of imagetitle';
+$string['edit_info'] = 'After saving, you can add elements using the "Edit content" button.';
 $string['fontsize_help'] = 'Fontsize of imagetitle';
 $string['height_help'] = 'Use the fixed height option if your pictures have different sizes. This scales all images to the same height. You can also use "auto height" if your pictures have the same height.';
 $string['image'] = 'Image';

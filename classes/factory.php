@@ -98,6 +98,32 @@ class factory {
     }
 
     /**
+     * Adds an edit info element to the given MoodleQuickForm.
+     *
+     * This function retrieves the edit info for the specified content type plugin,
+     * creates a group containing an HTML element with the edit info, and adds the group
+     * to the form. It also hides the group if the content type does not match the specified type.
+     *
+     * @param string $type The content type for which to retrieve the edit info.
+     * @param \MoodleQuickForm $mform The MoodleQuickForm to which to add the edit info element.
+     *
+     * @return void
+     */
+    public static function add_edit_info_element(string $type, \MoodleQuickForm $mform) {
+        global $OUTPUT;
+
+        $plugin = static::get_plugin($type);
+        if (!$infotext = $plugin->get_edit_info()) {
+            return; // No edit info available for this type.
+        }
+        $groupname = 'edit_info_' . $type;
+        $group = [];
+        $group[] = $mform->createElement('html', $OUTPUT->render(new \mod_unilabel\output\component\edit_info($infotext)));
+        $mform->addGroup($group, $groupname, '', '');
+        $mform->hideIf($groupname, 'unilabeltype', 'neq', $type);
+    }
+
+    /**
      * Save the content for the current content type plugin.
      *
      * @param  \stdClass $formdata

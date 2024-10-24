@@ -47,15 +47,6 @@ class content_type extends \mod_unilabel\content_type {
     private $context;
 
     /**
-     * Constructor
-     *
-     * @return void
-     */
-    public function __construct() {
-        $this->init_type(__NAMESPACE__);
-    }
-
-    /**
      * Add elements to the activity settings form.
      *
      * @param \mod_unilabel\edit_content_form $form

@@ -42,15 +42,6 @@ class content_type extends \mod_unilabel\content_type {
     private $unilabeltyperecord;
 
     /**
-     * Constructor.
-     *
-     * @return void
-     */
-    public function __construct() {
-        $this->init_type(__NAMESPACE__);
-    }
-
-    /**
      * Add elements to the activity settings form.
      *
      * @param  \mod_unilabel\edit_content_form $form
@@ -86,6 +77,8 @@ class content_type extends \mod_unilabel\content_type {
      */
     public function get_form_default($data, $unilabel) {
         global $DB;
+
+        $this->load_unilabeltype_record($unilabel->id);
         $prefix = 'unilabeltype_collapsedtext_';
 
         $data[$prefix . 'title']        = $unilabel->name;
@@ -113,6 +106,7 @@ class content_type extends \mod_unilabel\content_type {
      * @return string
      */
     public function get_content($unilabel, $cm, \plugin_renderer_base $renderer) {
+        $this->load_unilabeltype_record($unilabel->id);
         $cmidfromurl = optional_param('cmid', 0, PARAM_INT);
         $intro        = $this->format_intro($unilabel, $cm);
         $useanimation = $this->get_useanimation();
@@ -169,7 +163,7 @@ class content_type extends \mod_unilabel\content_type {
      */
     public function save_content($formdata, $unilabel) {
         global $DB;
-        if (!$unilabeltyperecord = $this->load_unilabeltype_record($unilabel)) {
+        if (!$unilabeltyperecord = $this->load_unilabeltype_record($unilabel->id)) {
             $unilabeltyperecord             = new \stdClass();
             $unilabeltyperecord->unilabelid = $unilabel->id;
         }
@@ -222,14 +216,14 @@ class content_type extends \mod_unilabel\content_type {
     /**
      * Load and cache the unilabel record.
      *
-     * @param  \stdClass $unilabel
+     * @param  int       $unilabelid
      * @return \stdClass
      */
-    private function load_unilabeltype_record($unilabel) {
+    private function load_unilabeltype_record($unilabelid) {
         global $DB;
 
         if (empty($this->unilabeltyperecord)) {
-            $this->unilabeltyperecord = $DB->get_record('unilabeltype_collapsedtext', ['unilabelid' => $unilabel->id]);
+            $this->unilabeltyperecord = $DB->get_record('unilabeltype_collapsedtext', ['unilabelid' => $unilabelid]);
         }
 
         return $this->unilabeltyperecord;
