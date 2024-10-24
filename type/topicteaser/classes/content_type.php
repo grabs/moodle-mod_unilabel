@@ -451,8 +451,11 @@ class content_type extends \mod_unilabel\content_type {
     public function get_sections_from_course($courseid) {
         global $DB;
 
-        $params = ['course' => $courseid, 'visible' => 1];
-        if (!$sectionsrecords = $DB->get_records('course_sections', $params, 'section')) {
+        $params = ['courseid' => $courseid, 'visible' => 1];
+        $select = 'course = :courseid AND
+                   visible = :visible AND
+                   component IS NULL';
+        if (!$sectionsrecords = $DB->get_records_select('course_sections', $select, $params, 'section')) {
             return [];
         }
 

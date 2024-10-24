@@ -1,5 +1,8 @@
 ## Release notes
 
+### Release 4.5.0
+* Fix type Topic teaser exclude new sub sections.
+
 ### Release 4.4.1
 * Type Collapsed text now uses the label name as title
 * Type Collapsed text and Topic teaser now are shown directly after adding.

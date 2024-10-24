@@ -25,5 +25,5 @@
 defined('MOODLE_INTERNAL') || die;
 
 $plugin->component = 'unilabeltype_topicteaser';
-$plugin->version   = 2024050801;
-$plugin->requires  = 2022111800;
+$plugin->version   = 2024102400;
+$plugin->requires  = 2024100100;
