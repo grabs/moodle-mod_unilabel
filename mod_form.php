@@ -73,7 +73,11 @@ class mod_unilabel_mod_form extends moodleform_mod {
 
         $this->standard_coursemodule_elements();
 
-        // The buttons.
-        $this->add_action_buttons(true, false, null);
+        // Add three buttons (save, save and edit content, cancel).
+        $this->add_action_buttons(
+            true,
+            get_string('savechangesandeditcontent', 'mod_unilabel'),
+            get_string('savechangesandreturntocourse')
+        );
     }
 }

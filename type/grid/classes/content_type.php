@@ -73,6 +73,7 @@ class content_type extends \mod_unilabel\content_type {
 
         $mform->addElement('header', $prefix . 'hdr', $this->get_name());
         $mform->addHelpButton($prefix . 'hdr', 'pluginname', $this->component);
+        $mform->setExpanded($prefix . 'hdr', false);
 
         $numbers = array_combine(range(1, 6), range(1, 6));
         $mform->addElement('select', $prefix . 'columns', get_string('columns', $this->component), $numbers);
