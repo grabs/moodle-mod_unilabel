@@ -27,6 +27,7 @@ require_once('../../config.php');
 
 $id = optional_param('id', 0, PARAM_INT);    // Course Module ID.
 $l  = optional_param('l', 0, PARAM_INT);     // The unilabel ID.
+$forceview = optional_param('forceview', 0, PARAM_INT);
 
 if ($id) {
     $PAGE->set_url('/mod/unilabel/index.php', ['id' => $id]);
@@ -56,5 +57,11 @@ if ($id) {
 
 require_login($course, true, $cm);
 
-$url = new \moodle_url('/course/view.php', ['id' => $course->id, 'section' => $cm->sectionnum], 'module-' . $id);
+// The param "forceview" is set after adding or editing the instance and if the submit button "Save and edit content" was clicked.
+// In this case we redirect to the edit_content page. Otherwise we redirect to the course view page.
+if ($forceview && $PAGE->user_is_editing() && has_capability('mod/unilabel:edit', $PAGE->context)) {
+    $url = new \moodle_url('/mod/unilabel/edit_content.php', ['cmid' => $cm->id]);
+} else {
+    $url = new \moodle_url('/course/view.php', ['id' => $course->id, 'section' => $cm->sectionnum], 'module-' . $id);
+}
 redirect($url);

@@ -34,6 +34,8 @@ Feature: Modify content of the unilabeltype carousel
     # Edit the unilabel instance.
     And I should see "Edit content"
     And I click on "Edit content" "link" in the "#section-1" "css_element"
+    # Open the carousel settings section
+    And I click on "#id_unilabeltype_carousel_hdr div.ftoggler > a" "css_element"
 
     # Activate autorun.
     And I should see "Run automatically"
@@ -97,6 +99,8 @@ Feature: Modify content of the unilabeltype carousel
     # Edit the unilabel instance.
     And I should see "Edit content"
     And I click on "Edit content" "link" in the "#section-1" "css_element"
+    # Open the carousel settings section
+    And I click on "#id_unilabeltype_carousel_hdr div.ftoggler > a" "css_element"
 
     # Dectivate autorun.
     And I should see "Run automatically"

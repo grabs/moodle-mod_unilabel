@@ -37,6 +37,9 @@ Feature: Modify content of the unilabeltype grid
     And I should see "Edit content"
     And I click on "Edit content" "link" in the "#section-1" "css_element"
 
+    # Open the grid settings section
+    And I click on "#id_unilabeltype_grid_hdr div.ftoggler > a" "css_element"
+
     # Activate autorun.
     And I should see "Columns"
     And I set the field "Columns" to "4"
