@@ -51,13 +51,13 @@
         {{#items}}
             <div class="text-center {{{colclasses}}}">
                 <!-- The overlay is used as button to show the modal dialog -->
-                <a href="{{{courseurl}}}">
+                <a href="{{{courseurl}}}" role="button" title="{{#str}} link_to, mod_unilabel, {{title}} {{/str}}" aria-label="{{#str}} link_to, mod_unilabel, {{title}} {{/str}}">
                     <div class="unilabel-overlay-effect bg-primary h-100 w-100"></div>
                 </a>
                 <h3>{{title}}</h3>
                 {{#imageurl}}
                     <div style="width:100%;">
-                        <img class="img-fluid mh-100 mb-3" src="{{{imageurl}}}" style="object-fit:contain;"/>
+                        <img class="img-fluid mh-100 mb-3" alt="{{title}}" src="{{{imageurl}}}" style="object-fit:contain;"/>
                     </div>
                 {{/imageurl}}
             </div>

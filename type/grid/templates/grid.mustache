@@ -64,12 +64,12 @@
             <div class="text-center {{{colclasses}}} py-4">
                 <!-- The overlay is used as button to show the modal dialog -->
                 {{#url}}
-                    <a href="{{{url}}}"{{#newwindow}} target="_blank"{{/newwindow}}>
+                    <a href="{{{url}}}"{{#newwindow}} target="_blank"{{/newwindow}} title="{{#str}}link_to, mod_unilabel, {{.}}{{/str}}" aria-label="{{#str}}link_to, mod_unilabel, {{.}}{{/str}}">
                         <div class="unilabel-overlay-effect bg-primary h-100 w-100"></div>
                     </a>
                 {{/url}}
                 {{^url}}
-                    <a href="#" data-toggle="modal" data-target="#grid-modal-{{cmid}}-{{nr}}">
+                    <a href="#" data-toggle="modal" data-target="#grid-modal-{{cmid}}-{{nr}}" title="{{#str}}open_content, unilabeltype_grid, {{title}}{{/str}}" aria-label="{{#str}}open_content, unilabeltype_grid, {{title}}{{/str}}">
                         <div class="unilabel-overlay-effect bg-primary h-100 w-100"></div>
                     </a>
                 {{/url}}

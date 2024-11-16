@@ -55,8 +55,8 @@ Feature: Modify content of the unilabeltype courseteaser
 
     # The Courses should be shown.
     Then I should see "Course 2"
-    # Now we wait until course 3 appears and click on it.
-    And I wait "3" seconds
-    And I click on "Course 3" "link" in the "#section-1 .unilabeltype_courseteaser.carousel" "css_element"
+    # Now we move to the slide for Course 3.
+    And I click on "Next slide" "button" in the "#section-1 .unilabeltype_courseteaser.carousel" "css_element"
+    And I click on "Course 3" "button" in the "#section-1 .unilabeltype_courseteaser.carousel" "css_element"
     # Now we should see the label from course 3
     And I should see "Hello course 3"

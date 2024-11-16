@@ -55,7 +55,15 @@ along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 {{#segments}}
     <div class="card" id="accordion-{{uniqid}}-{{id}}">
         <div class="card-header" id="accordion-heading-{{uniqid}}-{{id}}">
-            <button id="unilabel-button-{{uniqid}}-{{id}}" class="btn btn-link btn-block collapsed" type="button" data-toggle="collapse" data-target="#accordion-segment-{{uniqid}}-{{id}}" aria-expanded="false" aria-controls="accordion-segment-{{uniqid}}-{{id}}">
+            <button id="unilabel-button-{{uniqid}}-{{id}}"{{!
+            }} class="btn btn-link btn-block collapsed"{{!
+            }} type="button"{{!
+            }} data-toggle="collapse"{{!
+            }} data-target="#accordion-segment-{{uniqid}}-{{id}}"{{!
+            }} aria-expanded="false"{{!
+            }} aria-controls="accordion-segment-{{uniqid}}-{{id}}"{{!
+            }} aria-label="{{#str}} showmore {{/str}}"{{!
+            }} title="{{#str}} showmore {{/str}}">
                 {{{ heading }}}
             </button>
         </div>

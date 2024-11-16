@@ -71,9 +71,8 @@ Feature: Modify content of the unilabeltype topicteaser
 
     # The Course name from course 2 should be shown.
     Then I should see "Course 2"
-    # Now we wait until topic 2 appears and click on it.
-    And I wait "3" seconds
-    # And I click on "Topic 2" "link" in the "#section-1 .unilabeltype_topicteaser.carousel" "css_element"
+    # Now we move to the slide for topic 2.
+    And I click on "Next slide" "button" in the "#section-1 .unilabeltype_topicteaser.carousel" "css_element"
     And I click on "#section-1 .unilabeltype_topicteaser.carousel .carousel-inner .carousel-item.active > a" "css_element"
     # Now we should see the label from topic 2 as modal box
     And I should see "Hello topic 2"
