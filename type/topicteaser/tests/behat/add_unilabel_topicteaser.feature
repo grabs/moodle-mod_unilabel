@@ -16,8 +16,8 @@ Feature: Modify content of the unilabeltype topicteaser
       | teacher1 | C2     | editingteacher |
     And the following config values are set as admin:
       | active           | 1          | unilabeltype_topicteaser |
-      | autorun          | 1          | unilabeltype_topicteaser |
-      | carouselinterval | 2          | unilabeltype_topicteaser |
+      | autorun          | 0          | unilabeltype_topicteaser |
+      | carouselinterval | 0          | unilabeltype_topicteaser |
       | columns          | 4          | unilabeltype_topicteaser |
       | presentation     | carousel   | unilabeltype_topicteaser |
       | clickaction      | opendialog | unilabeltype_topicteaser |
