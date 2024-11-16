@@ -1,5 +1,9 @@
 ## Release notes
 
+### Release 4.5.1
+* Add third button in modedit page to jump directly to the edit content page.
+* Add aria-label attributes to certain elements (#50)
+
 ### Release 4.5.0
 * Fix type Topic teaser exclude new sub sections.
 
