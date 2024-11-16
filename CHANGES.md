@@ -1,5 +1,9 @@
 ## Release notes
 
+### Release 4.4.2
+* Add third button in modedit page to jump directly to the edit content page.
+* Add aria-label attributes to certain elements (#50)
+
 ### Release 4.4.1
 * Type Collapsed text now uses the label name as title
 * Type Collapsed text and Topic teaser now are shown directly after adding.
