@@ -47,6 +47,7 @@ $string['privacy:metadata']                  = 'The unilabel resource plugin doe
 $string['savechangesandeditcontent']         = 'Save and edit content';
 $string['search:activity']                   = 'Unilabel';
 $string['settings']                          = 'Settings';
+$string['showmore']                          = 'Show more';
 $string['subplugintype_unilabeltype']        = 'Unilabel type plugin';
 $string['subplugintype_unilabeltype_plural'] = 'Unilabel type plugins';
 $string['switchtype']                        = 'Switch content type';
