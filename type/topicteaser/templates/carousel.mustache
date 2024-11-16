@@ -86,7 +86,10 @@
             {{#items}}
                 <div class="carousel-item text-center py-4{{#first}} active{{/first}}">
                     <!-- The overlay is used as button to show the modal dialog -->
-                    <a href="{{{viewurl}}}"{{#openmodal}} data-toggle="modal" data-target="#topicteaser-modal-{{cmid}}-{{nr}}"{{/openmodal}}>
+                    <a href="{{{viewurl}}}"{{!
+                    }}{{#openmodal}} data-toggle="modal" data-target="#topicteaser-modal-{{cmid}}-{{nr}}"{{/openmodal}}{{!
+                    }} title="{{#str}} link_to, mod_unilabel, {{name}} {{/str}}" aria-label="{{#str}} link_to, mod_unilabel, {{name}} {{/str}}"{{!
+                    }} role="button">
                         <div class="unilabel-overlay-effect bg-primary h-100 w-100"></div>
                     </a>
                     <h3>{{name}}</h3>
@@ -98,10 +101,12 @@
         <!-- Left and right controls -->
         {{< unilabeltype_topicteaser/carousel_control}}{{!
             }} {{$direction}}next{{/direction}}{{!
+            }} {{$arialabel}}{{#str}} next_slide, mod_unilabel {{/str}}{{/arialabel}}{{!
             }} {{$icon}}{{#fontawesomenext}}{{.}}{{/fontawesomenext}}{{^fontawesomenext}}d-none{{/fontawesomenext}}{{/icon}}{{!
             }} {{/ unilabeltype_topicteaser/carousel_control}}
         {{< unilabeltype_topicteaser/carousel_control}}{{!
             }} {{$direction}}prev{{/direction}}{{!
+            }} {{$arialabel}}{{#str}} prev_slide, mod_unilabel {{/str}}{{/arialabel}}{{!
             }} {{$icon}}{{#fontawesomeprev}}{{.}}{{/fontawesomeprev}}{{^fontawesomeprev}}d-none{{/fontawesomeprev}}{{/icon}}{{!
             }} {{/ unilabeltype_topicteaser/carousel_control}}
     </div>

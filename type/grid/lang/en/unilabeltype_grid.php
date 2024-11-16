@@ -43,6 +43,7 @@ $string['image']                  = 'Image';
 $string['image_mobile']           = 'Image mobile';
 $string['image_mobile_help']      = 'Mobile images will be shown on screens smaller than 768px. If you do not define a mobile image the general image is shown on all screens.';
 $string['nocontent']              = 'No content';
+$string['open_content']           = 'Open content for {$a}';
 $string['pluginname']             = 'Grid';
 $string['pluginname_help']        = 'This plugin type creates a grid consisting of pictures. A click on the image opens a modal dialog field or brings the user to a defined url.';
 $string['privacy:metadata']       = 'The unilabel type Grid does not store any personal data.';

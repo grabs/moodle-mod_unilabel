@@ -25,6 +25,11 @@
     }
 }}
 
-<a class="carousel-control-{{$direction}}{{/direction}}" href="#{{plugin}}-{{cmid}}" data-slide="{{$direction}}{{/direction}}">
+<a class="carousel-control-{{$direction}}{{/direction}}"{{!
+    }} href="#{{plugin}}-{{cmid}}"{{!
+    }} data-slide="{{$direction}}{{/direction}}"{{!
+    }} role="button"{{!
+    }} aria-label="{{$arialabel}}{{/arialabel}}"{{!
+    }} title="{{$arialabel}}{{/arialabel}}">
     <span class="carousel-control-{{$direction}}{{/direction}}-icon"><i class="{{$icon}}{{/icon}}"></i></span>
 </a>

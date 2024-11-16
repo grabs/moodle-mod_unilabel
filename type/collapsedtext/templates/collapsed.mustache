@@ -38,11 +38,12 @@
 
 {{#useanimation}}
     <div class="unilabeltype-collapsed">
-        <a data-toggle="collapse"
-           href="#unilabeltype-collapsed-{{uniqid}}-{{cmid}}"
-           class="icons-collapse-expand {{^openonstart}}collapsed{{/openonstart}}"
-           aria-expanded="true"
-           aria-controls="unilabeltype-collapsed-{{uniqid}}-{{cmid}}">
+        <a data-toggle="collapse"{{!
+        }} href="#unilabeltype-collapsed-{{uniqid}}-{{cmid}}"{{!
+        }} class="icons-collapse-expand {{^openonstart}}collapsed{{/openonstart}}"{{!
+        }} aria-expanded="true"{{!
+        }} aria-controls="unilabeltype-collapsed-{{uniqid}}-{{cmid}}"{{!
+        }} aria-label="{{#str}}showmore{{/str}}">
             <span class="collapsed-icon icon-no-margin mr-1" title="{{srtitle_expand}}">
                 <span class="dir-rtl-hide"><i class="icon fa fa-chevron-right fa-fw " aria-hidden="true"></i></span>
                 <span class="dir-ltr-hide"><i class="icon fa fa-chevron-left fa-fw " aria-hidden="true"></i></span>

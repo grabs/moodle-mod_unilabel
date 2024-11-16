@@ -53,6 +53,7 @@ $string['pluginname_help']          = 'The carousel content type offers you a sl
 $string['privacy:metadata']         = 'The unilabel type Carousel does not store any personal data.';
 $string['showunilabeltext']         = 'Show unilabel text';
 $string['slide']                    = 'Slide';
+$string['slide_image']              = 'Slide image';
 $string['slides']                   = 'Slides';
 $string['title']                    = 'Title';
 $string['url']                      = 'Url';

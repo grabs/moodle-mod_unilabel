@@ -88,7 +88,9 @@
                 <div class="carousel-item text-center py-4{{^nr}} active{{/nr}}">
                     {{#url}}
                         <!-- The overlay is used as button to show the modal dialog -->
-                        <a href="{{{url}}}"{{#newwindow}} target="_blank"{{/newwindow}}>
+                        <a href="{{{url}}}"{{#newwindow}} target="_blank"{{/newwindow}}{{!
+                            }} aria-label="{{#str}}link_to, mod_unilabel, {{.}}{{/str}}"{{!
+                            }} title="{{#str}}link_to, mod_unilabel, {{.}}{{/str}}">
                             <div class="unilabel-overlay-effect bg-primary h-100 w-100"></div>
                         </a>
                     {{/url}}
@@ -96,13 +98,19 @@
 
                     {{#imagemobileurl}}
                         {{#imageurl}}
-                        <img class="img-fluid d-none d-md-inline" alt="{{captionplain}}" src="{{{imageurl}}}"{{^autoheight}} style="height:100%;object-fit:contain;"{{/autoheight}}>
+                            <img class="img-fluid d-none d-md-inline"{{!
+                            }} alt="{{#captionplain}}{{.}}{{/captionplain}}{{^captionplain}}{{#str}}slide_image, unilabeltype_carousel{{/str}}{{/captionplain}}"{{!
+                            }} src="{{{imageurl}}}"{{^autoheight}} style="height:100%;object-fit:contain;"{{/autoheight}}>
                         {{/imageurl}}
-                        <img class="img-fluid d-inline d-md-none" alt="{{captionplain}}" src="{{{imagemobileurl}}}"{{^autoheight}} style="height:100%;object-fit:contain;"{{/autoheight}}>
+                        <img class="img-fluid d-inline d-md-none"{{!
+                        }} alt="{{#captionplain}}{{.}}{{/captionplain}}{{^captionplain}}{{#str}}slide_image, unilabeltype_carousel{{/str}}{{/captionplain}}"{{!
+                        }} src="{{{imagemobileurl}}}"{{^autoheight}} style="height:100%;object-fit:contain;"{{/autoheight}}>
                     {{/imagemobileurl}}
                     {{^imagemobileurl}}
                         {{#imageurl}}
-                        <img class="img-fluid" alt="{{captionplain}}" src="{{{imageurl}}}"{{^autoheight}} style="height:100%;object-fit:contain;"{{/autoheight}}>
+                            <img class="img-fluid"{{!
+                            }} alt="{{#captionplain}}{{.}}{{/captionplain}}{{^captionplain}}{{#str}}slide_image, unilabeltype_carousel{{/str}}{{/captionplain}}"{{!
+                            }} src="{{{imageurl}}}"{{^autoheight}} style="height:100%;object-fit:contain;"{{/autoheight}}>
                         {{/imageurl}}
                     {{/imagemobileurl}}
 
@@ -119,10 +127,12 @@
         <!-- Left and right controls -->
         {{< unilabeltype_carousel/carousel_control}}{{!
             }} {{$direction}}next{{/direction}}{{!
+            }} {{$arialabel}}{{#str}} next_slide, mod_unilabel {{/str}}{{/arialabel}}{{!
             }} {{$icon}}{{#fontawesomenext}}{{.}}{{/fontawesomenext}}{{^fontawesomenext}}d-none{{/fontawesomenext}}{{/icon}}{{!
             }} {{/ unilabeltype_carousel/carousel_control}}
         {{< unilabeltype_carousel/carousel_control}}{{!
             }} {{$direction}}prev{{/direction}}{{!
+            }} {{$arialabel}}{{#str}} prev_slide, mod_unilabel {{/str}}{{/arialabel}}{{!
             }} {{$icon}}{{#fontawesomeprev}}{{.}}{{/fontawesomeprev}}{{^fontawesomeprev}}d-none{{/fontawesomeprev}}{{/icon}}{{!
             }} {{/ unilabeltype_carousel/carousel_control}}
     </div>

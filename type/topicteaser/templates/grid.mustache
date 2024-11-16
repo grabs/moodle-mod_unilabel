@@ -56,7 +56,11 @@
         {{#items}}
             <div class="text-center {{{colclasses}}}">
                 <!-- The overlay is used as button to show the modal dialog -->
-                <a href="{{{viewurl}}}"{{#openmodal}} data-toggle="modal" data-target="#topicteaser-modal-{{cmid}}-{{nr}}"{{/openmodal}}>
+                <a href="{{{viewurl}}}"{{!
+                }}{{#openmodal}} data-toggle="modal" data-target="#topicteaser-modal-{{cmid}}-{{nr}}"{{/openmodal}}{{!
+                }} title="{{#str}} link_to, mod_unilabel, {{name}} {{/str}}"{{!
+                }} aria-label="{{#str}} link_to, mod_unilabel, {{name}} {{/str}}"{{!
+                }} role="button">
                     <div class="unilabel-overlay-effect bg-primary h-100 w-100"></div>
                 </a>
                 <h3>{{name}}</h3>
