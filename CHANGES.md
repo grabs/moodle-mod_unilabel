@@ -1,5 +1,9 @@
 ## Release notes
 
+### Release 4.5.2
+* Type collapsed text does not show modal dialog (#51)
+* Make github actions more restrictive
+
 ### Release 4.5.1
 * Add third button in modedit page to jump directly to the edit content page.
 * Add aria-label attributes to certain elements (#50)
