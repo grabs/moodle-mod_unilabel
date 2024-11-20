@@ -198,10 +198,10 @@ class content_type extends \mod_unilabel\content_type {
     /**
      * Get the sort of presentation.
      *
-     * @return bool
+     * @return string On of the constants static::PRESENTATION_COLLAPSED or static::PRESENTATION_DIALOG
      */
     public function get_presentation() {
-        return (bool) ($this->unilabeltyperecord->presentation ?? $this->config->presentation);
+        return $this->unilabeltyperecord->presentation ?? $this->config->presentation;
     }
 
     /**
