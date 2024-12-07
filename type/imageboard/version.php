@@ -29,4 +29,3 @@ $plugin->component = 'unilabeltype_imageboard';
 $plugin->version   = 2024102400;
 $plugin->requires  = 2024100100;
 $plugin->release = 'v4.5.0';
-$plugin->dependencies = ['mod_unilabel' => 2024102400];

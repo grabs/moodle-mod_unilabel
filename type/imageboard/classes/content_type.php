@@ -47,6 +47,41 @@ class content_type extends \mod_unilabel\content_type {
     private $context;
 
     /**
+     * Constructor
+     *
+     * @return void
+     */
+    public function __construct() {
+        $this->init_type(__NAMESPACE__);
+    }
+
+    /**
+     * Get a config setting or all config settings
+     *
+     * @param string|null $name If empty all config settings are returned.
+     * @return mixed
+     */
+    public function get_config($name = null) {
+        if (empty($name)) {
+            return $this->config;
+        }
+
+        if (!isset($this->config->{$name})) {
+            throw new \moodle_exception('Unknown config property "' . $name . '"');
+        }
+        return $this->config->{$name};
+    }
+
+    /**
+     * Get an array of image elements.
+     *
+     * @return array
+     */
+    public function get_images() {
+        return $this->images;
+    }
+
+    /**
      * Add elements to the activity settings form.
      *
      * @param \mod_unilabel\edit_content_form $form
@@ -103,6 +138,9 @@ class content_type extends \mod_unilabel\content_type {
         // 11. Add langstrings for settings.
 
         // 1. content_type.php.
+        $numbers = array_combine(range(1, 5, 1), range(1, 5, 1));
+        $mform->addElement('select', $prefix . 'titlelineheight', get_string('titlelineheight_help', $this->component), $numbers);
+
         $numbers = array_combine(range(0, 36, 1), range(0, 36, 1));
         $mform->addElement('select', $prefix . 'fontsize', get_string('fontsize_help', $this->component), $numbers);
 
@@ -165,6 +203,13 @@ class content_type extends \mod_unilabel\content_type {
             ]
         );
 
+        $repeatarray[] = $mform->createElement(
+            'text',
+            $prefix . 'alt',
+            get_string('alt', $this->component) . '-{no}',
+            ['size' => 255]
+        );
+
         $position = [];
         $position[] = $mform->createElement(
             'text',
@@ -215,6 +260,21 @@ class content_type extends \mod_unilabel\content_type {
         );
         $mform->setType($prefix . 'targetsize', PARAM_RAW);
 
+        $numbers = array_combine(range(0, 10, 1), range(0, 10, 1));
+        $repeatarray[] = $mform->createElement(
+            'select',
+            $prefix . 'border',
+            get_string('border', $this->component),
+            $numbers
+        );
+        $numbers = array_combine(range(0, 30, 1), range(0, 30, 1));
+        $repeatarray[] = $mform->createElement(
+            'select',
+            $prefix . 'borderradius',
+            get_string('borderradius', $this->component),
+            $numbers
+        );
+
         $urlelement = $mform->createElement(
             'text',
             $prefix . 'url',
@@ -242,20 +302,16 @@ class content_type extends \mod_unilabel\content_type {
             '',
             $OUTPUT->render($pickerbutton)
         );
-        $numbers = array_combine(range(0, 10, 1), range(0, 10, 1));
-        $repeatarray[] = $mform->createElement(
-            'select',
-            $prefix . 'border',
-            get_string('border', $this->component),
-            $numbers
-        );
 
         $repeatedoptions = [];
         $repeatedoptions[$prefix . 'title']['type'] = PARAM_TEXT;
         $repeatedoptions[$prefix . 'url']['type'] = PARAM_URL;
         $repeatedoptions[$prefix . 'image']['type'] = PARAM_FILE;
+        $repeatedoptions[$prefix . 'alt']['type'] = PARAM_TEXT;
         $repeatedoptions[$prefix . 'border']['type'] = PARAM_INT;
         $repeatedoptions[$prefix . 'border']['default'] = $this->config->default_bordersize;
+        $repeatedoptions[$prefix . 'borderradius']['type'] = PARAM_INT;
+        $repeatedoptions[$prefix . 'borderradius']['default'] = $this->config->default_borderradius;
         // Adding the help buttons.
         $repeatedoptions[$prefix . 'urlgroup']['helpbutton'] = ['url', $this->component];
         $repeatedoptions[$prefix . 'position']['helpbutton'] = ['position', $this->component];
@@ -280,6 +336,8 @@ class content_type extends \mod_unilabel\content_type {
             'url',
             'image',
             'border',
+            'borderradius',
+            'alt',
             'xposition',
             'yposition',
             'targetwidth',
@@ -309,6 +367,9 @@ class content_type extends \mod_unilabel\content_type {
             ]
         );
 
+        // Added parameter $context might not nessessary???
+        $preview = new \unilabeltype_imageboard\output\imageboard_preview($form->unilabel, $this, null, $context);
+        $mform->addElement('html', $OUTPUT->render($preview));
     }
 
     /**
@@ -333,6 +394,7 @@ class content_type extends \mod_unilabel\content_type {
             $data[$prefix . 'canvasheight'] = $this->config->default_canvasheight ?? '400';
             $data[$prefix . 'backgroundimage'] = 0;
             // 2. Set default data for the imageboard in general.
+            $data[$prefix . 'titlelineheight'] = $this->config->default_titlelineheight ?? '2';
             $data[$prefix . 'fontsize'] = $this->config->default_fontsize ?? '12';
             $data[$prefix . 'titlecolor'] = $this->config->default_titlecolor ?? '#fffffe';
             $data[$prefix . 'titlebackgroundcolor'] = $this->config->default_titlebackgroundcolor ?? '#aaaaaa';
@@ -351,6 +413,7 @@ class content_type extends \mod_unilabel\content_type {
         $data[$prefix . 'backgroundimage'] = $draftitemidbackgroundimage;
 
         // 3. Set the selected value.
+        $data[$prefix . 'titlelineheight'] = $unilabeltyperecord->titlelineheight;
         $data[$prefix . 'fontsize'] = $unilabeltyperecord->fontsize;
         $data[$prefix . 'titlecolor'] = $unilabeltyperecord->titlecolor;
         $data[$prefix . 'titlebackgroundcolor'] = $unilabeltyperecord->titlebackgroundcolor;
@@ -378,7 +441,9 @@ class content_type extends \mod_unilabel\content_type {
             $elementname = $prefix . 'newwindow[' . $index . ']';
             $data[$elementname] = $image->newwindow;
 
-            // Prepare the url field.
+            $elementname = $prefix . 'alt[' . $index . ']';
+            $data[$elementname] = $image->alt;
+
             $elementname = $prefix . 'xposition[' . $index . ']';
             $data[$elementname] = $image->xposition;
 
@@ -393,6 +458,9 @@ class content_type extends \mod_unilabel\content_type {
 
             $elementname = $prefix . 'border[' . $index . ']';
             $data[$elementname] = $image->border;
+
+            $elementname = $prefix . 'borderradius[' . $index . ']';
+            $data[$elementname] = $image->borderradius;
 
             // Prepare the images.
             // $draftitemid is set by the function file_prepare_draft_area().
@@ -449,79 +517,14 @@ class content_type extends \mod_unilabel\content_type {
      * @return string
      */
     public function get_content($unilabel, $cm, \plugin_renderer_base $renderer) {
-        global $USER, $PAGE;
+        global $OUTPUT;
 
         if (!$unilabeltyperecord = $this->load_unilabeltype_record($unilabel->id)) {
             return '';
         } else {
-            $intro = $this->format_intro($unilabel, $cm);
-            $showintro = !empty($unilabeltyperecord->showintro);
-
-            // Check if the user can edit the unilabel.
-            // Then there should be a 50x50px grid visible that can be help for better positioning the images.
-            $context = \context_module::instance($cm->id);
-            $capababilityforgrid = has_capability('mod/unilabel:edit', $context, $USER->id, true);
-
-            $bordercolor = $this->config->default_bordercolor ?? '#ff0000';
-            $gridcolor = $this->config->default_gridcolor ?? '#ff0000';
-
-            $images = [];
-            $hasimages = false;
-            foreach ($this->images as $image) {
-                $hasimages = true;
-                if ($image->imageurl != '') {
-                    $image->imageurl = $image->imageurl->out();
-                } else {
-                    $image->imageurl = '';
-                }
-                if (!empty($image->border)) {
-                    $image->border = $image->border;
-                }
-                $images[] = $image;
-            }
-
-            // Create a 50x50px helpergrid if $capababilityforgrid.
-            $helpergrids = [];
-            $canvaswidth = $unilabeltyperecord->canvaswidth;
-            $canvasheight = $unilabeltyperecord->canvasheight;
-            $autoscale = $unilabeltyperecord->autoscale;
-
-            if ($capababilityforgrid) {
-                for ($y = 0; $y < $canvasheight; $y = $y + 50) {
-                    for ($x = 0; $x < $canvaswidth; $x = $x + 50) {
-                        $helpergrid = [];
-                        $helpergrid['x'] = $x;
-                        $helpergrid['y'] = $y;
-                        $helpergrids[] = $helpergrid;
-                    }
-                }
-            }
-            $content = [
-                'showintro' => $showintro,
-                'intro' => $showintro ? $intro : '',
-                'images' => $images,
-                'hasimages' => $hasimages,
-                'cmid' => $cm->id,
-                'canvaswidth' => $canvaswidth,
-                'canvasheight' => $canvasheight,
-                'autoscale' => $autoscale,
-                'backgroundimage' => $unilabeltyperecord->backgroundimage,
-                // 4. Add setting in function get_content.
-                'fontsize' => $unilabeltyperecord->fontsize,
-                'titlecolor' => $unilabeltyperecord->titlecolor,
-                'titlebackgroundcolor' => $unilabeltyperecord->titlebackgroundcolor,
-                'capababilityforgrid' => $capababilityforgrid,
-                'bordercolor' => $bordercolor,
-                'gridcolor' => $gridcolor,
-                'helpergrids' => $helpergrids,
-                'editing' => $PAGE->user_is_editing(),
-            ];
+            $view = new \unilabeltype_imageboard\output\imageboard_view($unilabel, $this, $cm);
+            $content = $OUTPUT->render($view);
         }
-
-        global $OUTPUT;
-        // Be able to create a json: $content_as_json = json_encode($content);.
-        $content = $OUTPUT->render_from_template('unilabeltype_imageboard/imageboard', $content);
-
         return $content;
     }
 
@@ -573,6 +576,7 @@ class content_type extends \mod_unilabel\content_type {
         $unilabeltyperecord->autoscale = !empty($formdata->{$prefix . 'autoscale'});
 
         // 5. Add setting to save_content.
+        $unilabeltyperecord->titlelineheight = $formdata->{$prefix . 'titlelineheight'};
         $unilabeltyperecord->fontsize = $formdata->{$prefix . 'fontsize'};
         $unilabeltyperecord->titlecolor = $formdata->{$prefix . 'titlecolor'};
         $unilabeltyperecord->titlebackgroundcolor = $formdata->{$prefix . 'titlebackgroundcolor'};
@@ -622,6 +626,8 @@ class content_type extends \mod_unilabel\content_type {
             $imagerecord->url = $formdata->{$prefix . 'url'}[$i];
             $imagerecord->newwindow = !empty($formdata->{$prefix . 'newwindow'}[$i]);
 
+            $imagerecord->alt = $formdata->{$prefix . 'alt'}[$i];
+
             $imagerecord->xposition = abs($formdata->{$prefix . 'xposition'}[$i]);
             $imagerecord->yposition = abs($formdata->{$prefix . 'yposition'}[$i]);
 
@@ -629,6 +635,7 @@ class content_type extends \mod_unilabel\content_type {
             $imagerecord->targetheight = abs($formdata->{$prefix . 'targetheight'}[$i]);
 
             $imagerecord->border = abs($formdata->{$prefix . 'border'}[$i]);
+            $imagerecord->borderradius = abs($formdata->{$prefix . 'borderradius'}[$i]);
 
             $imagerecord->id = $DB->insert_record('unilabeltype_imageboard_img', $imagerecord);
 
