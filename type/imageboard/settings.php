@@ -50,6 +50,13 @@ $imageboardsettings[] = new admin_setting_configselect('unilabeltype_imageboard/
     $numbers
 );
 
+$numbers = array_combine(range(1, 5, 1), range(1, 5, 1));
+$imageboardsettings[] = new admin_setting_configselect('unilabeltype_imageboard/default_titlelineheight',
+    get_string('default_titlelineheight', 'unilabeltype_imageboard'),
+    get_string('default_titlelineheight_help', 'unilabeltype_imageboard'),
+    2,
+    $numbers
+);
 
 $numbers = array_combine(range(0, 36, 1), range(0, 36, 1));
 $imageboardsettings[] = new admin_setting_configselect('unilabeltype_imageboard/default_fontsize',
@@ -77,19 +84,23 @@ $imageboardsettings[] = new admin_setting_configselect('unilabeltype_imageboard/
         $numbers
 );
 
+$numbers = array_combine(range(0, 30, 1), range(0, 30, 1));
+$imageboardsettings[] = new admin_setting_configselect('unilabeltype_imageboard/default_borderradius',
+    get_string('default_borderradius', 'unilabeltype_imageboard'),
+    get_string('default_borderradius_desc', 'unilabeltype_imageboard'),
+    10,
+    $numbers
+);
+
 $name = 'unilabeltype_imageboard/default_bordercolor';
 $title = get_string('default_bordercolor', 'unilabeltype_imageboard');
 $description = get_string('default_bordercolor_desc', 'unilabeltype_imageboard');
 $imageboardsettings[] = new admin_setting_configcolourpicker($name, $title, $description, '#ff0000');
 
-
-
 $name = 'unilabeltype_imageboard/default_gridcolor';
 $title = get_string('default_gridcolor', 'unilabeltype_imageboard');
 $description = get_string('default_gridcolor_desc', 'unilabeltype_imageboard');
 $imageboardsettings[] = new admin_setting_configcolourpicker($name, $title, $description, '#0000ff');
-
-
 
 $imageboardsettings[] = new admin_setting_configcheckbox('unilabeltype_imageboard/default_showintro',
     get_string('default_showintro', 'unilabeltype_imageboard'),
