@@ -15,7 +15,7 @@
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
 {{!
-    @template unilabeltype_imageboard/imageboard
+    @template unilabeltype_imageboard/imageboard_preview
     Template to show an imageboard with images.
 
     Example context (json):
@@ -31,7 +31,6 @@
                 "yposition": "100",
                 "targetwidth": "80",
                 "targetheight": "0",
-                "titlelineheight": 2,
                 "fontsize": "12",
                 "imageurl": "http://localhost/image1.png",
                 "nr": 0
@@ -44,7 +43,6 @@
                 "yposition": "200",
                 "targetwidth": "0",
                 "targetheight": "0",
-                "titlelineheight": 2,
                 "fontsize": "12",
                 "imageurl": "http://localhost/image2.png",
                 "nr": 1
@@ -66,51 +64,44 @@
         "gridcolor": "#B7009E"
     }
 }}
-    <div id="unilabeltype-imageboard-container-{{cmid}}" class="unilabeltype-imageboard-container">
-        {{#showintro}}
-            {{{intro}}}
-        {{/showintro}}
 
-        <div id="unilabeltype-imageboard-{{cmid}}"
-            class="unilabeltype-imageboard"
-            style="position: relative;
-                    background: url('{{backgroundimage}}');
-                    width: {{canvaswidth}}px;
-                    height: {{canvasheight}}px;
-                    background-size: cover;">
-            {{#images}}
-                {{> unilabeltype_imageboard/image }}
-            {{/images}}
-
-            {{#capababilityforgrid}}
-                {{> unilabeltype_imageboard/imageboard_helpergrid}}
-            {{/capababilityforgrid}}
-
-        </div>
-
-        <!-- List the used images or text -->
-
-        <div class="unilabeltype-imageboard-controllbuttons d-flex flex-column mt-2">
-            {{#capababilityforgrid}}
-                <div class="unilabel-imageboard-gridtoggler">
-                    <a class="unilabeltype-imageboard-controllbutton" href="#" id="unilabeltype-imageboard-gridtoggler-{{cmid}}">
-                        <i class="fa fa-th fa-fw"></i> <span class="unilabeltype-imageboard-toggle-text">{{#str}} buttonlabelhelpergridshow, unilabeltype_imageboard {{/str}}</span>
-                    </a>
-                </div>
-            {{/capababilityforgrid}}
-            {{#hasimages}}
-                {{> unilabeltype_imageboard/imagelist }}
-            {{/hasimages}}
-        </div>
+<div id="unilabel-imageboard-preview">
+    <div id="unilabel-imageboard-background-canvas" style="position: relative;">
+        <div id="imageboardcontainer"></div>
     </div>
+
+</div>
+
+<div class="unilabeltype-imageboard-controllbuttons d-flex flex-column mt-2">
+    <div class="unilabel-imageboard-gridtoggler">
+        <a class="unilabeltype-imageboard-controllbutton" href="#" id="unilabeltype-imageboard-gridtoggler-{{cmid}}">
+            <i class="fa fa-th fa-fw"></i> <span class="unilabeltype-imageboard-toggle-text">{{#str}} buttonlabelhelpergridshow, unilabeltype_imageboard {{/str}}</span>
+        </a>
+    </div>
+
+
+
+    <div>
+        <label for="unilabeltype-imageboard-snap">
+            {{#str}} snap, unilabeltype_imageboard {{/str}}
+            <input id="unilabeltype-imageboard-snap" type="number"
+                   min="1" max="100" step="1" value="1"
+                   inputmode="decimal">
+        </label>
+    </div>
+</div>
+
 {{#js}}
-    require(['unilabeltype_imageboard/imageboardrenderer'], function(imageboardrenderer) {
-        imageboardrenderer.init(
-            {{cmid}},
+    require(['unilabeltype_imageboard/imageboardpreviewrenderer'], function(imageboardpreviewrenderer) {
+        imageboardpreviewrenderer.init(
             '{{canvaswidth}}',
             '{{canvasheight}}',
-            {{#autoscale}}true{{/autoscale}}{{^autoscale}}false{{/autoscale}},
-            {{#editing}}true{{/editing}}{{^editing}}false{{/editing}}
+            '{{gridcolor}}',
+            '{{xsteps}}',
+            '{{ysteps}}'
         );
+    });
+    require(['unilabeltype_imageboard/imageboarddraganddrop'], function(imageboarddraganddrop) {
+    imageboarddraganddrop.init();
     });
 {{/js}}
