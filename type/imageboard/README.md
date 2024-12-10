@@ -10,6 +10,12 @@ Form:
 
 CHANGELOG
 
+[v4.3.2] 2024112700:
+- support drag and drop in editmode
+- support borderradius for each image
+- support titlelineheight
+
+
 [v3.0.1] 2023101500:
 
 - move duplicate code to resize function 

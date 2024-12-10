@@ -20,24 +20,27 @@
 
     Example context (json):
     {
-        "title": "",
+        "title": "Test",
         "url": "https://example.com",
         "newwindow": 1,
         "xposition": "400",
         "yposition": "200",
         "targetwidth": "0",
         "targetheight": "0",
+        "titlelineheight": 2,
         "fontsize": "12",
         "titlecolor": "#00ff00",
         "titlebackgroundcolor": "#0000ff",
         "imageurl": "http://localhost/image.png",
+        "alt": "Alt-text for the image",
         "nr": 1,
         "bordercolor": "#2D57FA",
-        "border": "4"
+        "border": "4",
+        "borderradius": "20"
     }
 }}
 
-<div id="imageid_{{nr}}" style="position: absolute;{{!
+<div id="imageid_{{cmid}}_{{nr}}" style="position: absolute;{{!
                 }}z-index: 5;{{!
                 }}left: {{xposition}}px;{{!
                 }}top: {{yposition}}px;{{!
@@ -46,25 +49,35 @@
                 }}">
     {{#url}}<a href="{{{.}}}"{{#newwindow}} target="_blank"{{/newwindow}}>{{/url}}
         {{#title}}
-            <div class="unilabel-imageboard-title rounded" style="position: absolute;{{!
-                }}z-index: 5;{{!
-                }}top: calc(-{{fontsize}}px - 10px);{{!
+            <div id="id_elementtitle_{{cmid}}_{{nr}}" class="unilabel-imageboard-title unilable-imageboard-titlelineheight-{{#titlelineheight}}{{.}}{{/titlelineheight}}" style="top: calc(-{{#titlelineheight}}{{.}}em{{/titlelineheight}});{{!
                 }}color: {{titlecolor}}; background-color: {{titlebackgroundcolor}};{{!
-                }}{{#fontsize}}font-size: {{.}}px;line-height: {{.}}px;padding: 5px;{{/fontsize}}{{!
+                }}{{#fontsize}}font-size: {{.}}px;{{/fontsize}}{{!
+                }}{{#borderradius}}border-radius: {{.}}px;{{/borderradius}}{{!
+                }}{{^borderradius}}border-radius: 0;{{/borderradius}}{{!
                 }}white-space: nowrap;">
                 {{title}}
             </div>
         {{/title}}
         {{#imageurl}}
-            <div class="unilabel-imageboard-image rounded" style="position: relative;{{!
+            <div id="unilabel-imageboard-image-{{cmid}}-{{nr}}" class="unilabel-imageboard-image" style="position: relative;{{!
                 }}z-index: 5;{{!
                 }}{{#targetwidth}}width: {{.}}px; {{/targetwidth}}{{!
                 }}{{#targetheight}}height: {{.}}px; {{/targetheight}}{{!
+                }}{{#borderradius}}border-radius: {{.}}px;{{/borderradius}}{{!
+                }}{{^borderradius}}border-radius: 0;{{/borderradius}}{{!
                 }}">
-                <img class="rounded" src="{{{.}}}" title="{{title}}" alt="{{title}}" style="width: 100%;{{!
-                    }}height: 100%;{{!
-                    }}{{#border}}border: solid {{.}}px {{titlebackgroundcolor}};{{/border}}{{!
+                <div class="image-container" style="{{#targetwidth}}width: {{.}}px; {{/targetwidth}}{{#targetheight}}height: {{.}}px; {{/targetheight}}{{!
+                        }}{{#borderradius}}border-radius: {{.}}px;{{/borderradius}}{{!
+                        }}{{^borderradius}}border-radius: 0;{{/borderradius}}{{!
                     }}">
+                    <img class="unilabel-imageboard-image" src="{{{.}}}" title="{{title}}" alt="{{alt}}" style="{{#targetwidth}}width: 100%; {{/targetwidth}}{{!
+                        }}{{#targetheight}}height: 100%; {{/targetheight}}{{!
+                        }}{{#border}}border: solid {{.}}px {{titlebackgroundcolor}};{{/border}}{{!
+                        }}{{#borderradius}}border-radius: {{.}}px;{{/borderradius}}{{!
+                        }}{{^borderradius}}border-radius: 0;{{/borderradius}}{{!
+                        }}">
+                    <span class="dot"></span>
+                </div>
             </div>
         {{/imageurl}}
     {{#url}}</a>{{/url}}
