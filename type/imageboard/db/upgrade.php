@@ -53,7 +53,7 @@ function xmldb_unilabeltype_imageboard_upgrade($oldversion) {
     if ($oldversion < 2023080100) {
         // Define field border to be added to unilabeltype_imageboard.
         $table = new xmldb_table('unilabeltype_imageboard_img');
-        $field = new xmldb_field('border', XMLDB_TYPE_INTEGER, '3', null, null, null, '0', 'targetheight');
+        $field = new xmldb_field('border', XMLDB_TYPE_INTEGER, '10', null, null, null, '0', 'targetheight');
 
         // Conditionally launch add field border.
         if (!$dbman->field_exists($table, $field)) {
@@ -155,7 +155,7 @@ function xmldb_unilabeltype_imageboard_upgrade($oldversion) {
 
         // Define field borderradius to be added to unilabeltype_imageboard.
         $table = new xmldb_table('unilabeltype_imageboard_img');
-        $field = new xmldb_field('alt', XMLDB_TYPE_CHAR, '255', null, null, null, '', 'url');
+        $field = new xmldb_field('alt', XMLDB_TYPE_CHAR, '10', null, null, null, '', 'url');
 
         // Conditionally launch add field alt text for image.
         if (!$dbman->field_exists($table, $field)) {
