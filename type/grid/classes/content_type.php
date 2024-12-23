@@ -122,7 +122,8 @@ class content_type extends \mod_unilabel\content_type {
         $course       = $form->get_course();
         $picker       = new \mod_unilabel\output\component\activity_picker($course, $formid);
         $inputidbase  = 'id_' . $prefix . 'url_';
-        $pickerbutton = new \mod_unilabel\output\component\activity_picker_button($formid, $inputidbase);
+        $urltitleinputidbase  = 'id_' . $prefix . 'urltitle_';
+        $pickerbutton = new \mod_unilabel\output\component\activity_picker_button($formid, $inputidbase, $urltitleinputidbase);
         $mform->addElement('html', $OUTPUT->render($picker));
 
         $repeatarray = [];
@@ -149,6 +150,12 @@ class content_type extends \mod_unilabel\content_type {
             ['rows' => 10],
             $this->editor_options($context)
         );
+        $repeatarray[] = $mform->createElement(
+            'static',
+            $prefix . 'activitypickerbutton',
+            '',
+            $OUTPUT->render($pickerbutton)
+        );
         $urlelement = $mform->createElement(
             'text',
             $prefix . 'url',
@@ -171,10 +178,10 @@ class content_type extends \mod_unilabel\content_type {
             false
         );
         $repeatarray[] = $mform->createElement(
-            'static',
-            $prefix . 'activitypickerbutton',
-            '',
-            $OUTPUT->render($pickerbutton)
+            'text',
+            $prefix . 'urltitle',
+            get_string('urltitle', $this->component) . '-{no}',
+            ['size' => 50]
         );
         $repeatarray[] = $mform->createElement(
             'filemanager',
@@ -194,6 +201,7 @@ class content_type extends \mod_unilabel\content_type {
         $repeatedoptions                                   = [];
         $repeatedoptions[$prefix . 'sortorder']['type']    = PARAM_INT;
         $repeatedoptions[$prefix . 'title']['type']        = PARAM_TEXT;
+        $repeatedoptions[$prefix . 'urltitle']['type']     = PARAM_TEXT;
         $repeatedoptions[$prefix . 'url']['type']          = PARAM_URL;
         $repeatedoptions[$prefix . 'content']['type']      = PARAM_RAW;
         $repeatedoptions[$prefix . 'image']['type']        = PARAM_FILE;
@@ -220,6 +228,7 @@ class content_type extends \mod_unilabel\content_type {
         // This elements are needed by js to set empty hidden fields while deleting an element.
         $myelements = [
             'title',
+            'urltitle',
             'url',
             'content',
             'image',
@@ -315,6 +324,9 @@ class content_type extends \mod_unilabel\content_type {
             // Prepare the title field.
             $elementname        = $prefix . 'title[' . $index . ']';
             $data[$elementname] = $tile->title;
+            // Prepare the urltitle field.
+            $elementname        = $prefix . 'urltitle[' . $index . ']';
+            $data[$elementname] = $tile->urltitle ?? '';
 
             // Prepare the url field.
             $elementname        = $prefix . 'url[' . $index . ']';
@@ -360,7 +372,6 @@ class content_type extends \mod_unilabel\content_type {
 
             ++$index;
         }
-
         return $data;
     }
 
@@ -492,6 +503,7 @@ class content_type extends \mod_unilabel\content_type {
             // Do we have an image? We get this information with file_get_draft_area_info().
             $fileinfo = file_get_draft_area_info($draftitemid);
             $title   = $formdata->{$prefix . 'title'}[$i];
+            $urltitle   = $formdata->{$prefix . 'urltitle'}[$i];
             $content = $formdata->{$prefix . 'content'}[$i]['text'] ?? '';
             if (empty($title) && $fileinfo['filecount'] < 1 && !$this->html_has_content($content)) {
                 continue;
@@ -505,6 +517,7 @@ class content_type extends \mod_unilabel\content_type {
             $tilerecord            = new \stdClass();
             $tilerecord->gridid    = $unilabeltyperecord->id;
             $tilerecord->title     = $title;
+            $tilerecord->urltitle  = $urltitle;
             $tilerecord->url       = $formdata->{$prefix . 'url'}[$i];
             $tilerecord->newwindow = !empty($formdata->{$prefix . 'newwindow'}[$i]);
             $tilerecord->sortorder = $sortorder;
@@ -573,7 +586,6 @@ class content_type extends \mod_unilabel\content_type {
             }
             $this->tiles = $tiles;
         }
-
         return $this->unilabeltyperecord;
     }
 

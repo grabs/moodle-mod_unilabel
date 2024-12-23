@@ -31,6 +31,7 @@
                 "gridid": "1",
                 "title": "Title 1",
                 "url": "https://example.com",
+                "urltitle": "Forum: someting",
                 "newwindow": 1,
                 "content": "<p>fdsafsdf<br><\/p>",
                 "imageurl": "https://url-to-image",
@@ -42,6 +43,7 @@
                 "gridid": "1",
                 "title": "Title 2",
                 "url": "",
+                "urltitle": "",
                 "newwindow": 1,
                 "content": "<p>fdfdfdfdf<br><\/p>",
                 "imageurl": "https://url-to-image",
@@ -64,12 +66,18 @@
             <div class="text-center {{{colclasses}}} py-4">
                 <!-- The overlay is used as button to show the modal dialog -->
                 {{#url}}
-                    <a href="{{{url}}}"{{#newwindow}} target="_blank"{{/newwindow}} title="{{#str}}link_to, mod_unilabel, {{.}}{{/str}}" aria-label="{{#str}}link_to, mod_unilabel, {{.}}{{/str}}">
+                    <a tabindex="0" role="button" href="{{{url}}}"{{#newwindow}}{{!
+                            }} target="_blank"{{/newwindow}}{{!
+                            }} title="{{#urltitle}}{{#str}}link_to, mod_unilabel, {{.}}{{/str}}{{/urltitle}}{{^urltitle}}{{#str}}link_to, mod_unilabel, {{url}}{{/str}}{{/urltitle}}"{{!
+                            }} aria-label="{{#urltitle}}{{#str}}link_to, mod_unilabel, {{.}}{{/str}}{{/urltitle}}{{^urltitle}}{{#str}}link_to, mod_unilabel, {{url}}{{/str}}{{/urltitle}}">
                         <div class="unilabel-overlay-effect bg-primary h-100 w-100"></div>
                     </a>
                 {{/url}}
                 {{^url}}
-                    <a href="#" data-toggle="modal" data-target="#grid-modal-{{cmid}}-{{nr}}" title="{{#str}}open_content, unilabeltype_grid, {{title}}{{/str}}" aria-label="{{#str}}open_content, unilabeltype_grid, {{title}}{{/str}}">
+                    <a tabindex="0" role="button" href="#" data-toggle="modal"{{!
+                             }} data-target="#grid-modal-{{cmid}}-{{nr}}"{{!
+                             }} title="{{#str}}open_content, unilabeltype_grid, {{title}}{{/str}}"{{!
+                             }} aria-label="{{#str}}open_content, unilabeltype_grid, {{title}}{{/str}}">
                         <div class="unilabel-overlay-effect bg-primary h-100 w-100"></div>
                     </a>
                 {{/url}}

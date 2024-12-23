@@ -127,7 +127,8 @@ class content_type extends \mod_unilabel\content_type {
         $course       = $form->get_course();
         $picker       = new \mod_unilabel\output\component\activity_picker($course, $formid);
         $inputidbase  = 'id_' . $prefix . 'url_';
-        $pickerbutton = new \mod_unilabel\output\component\activity_picker_button($formid, $inputidbase);
+        $urltitleinputidbase  = 'id_' . $prefix . 'urltitle_';
+        $pickerbutton = new \mod_unilabel\output\component\activity_picker_button($formid, $inputidbase, $urltitleinputidbase);
         $mform->addElement('html', $OUTPUT->render($picker));
 
         $repeatarray = [];
@@ -151,6 +152,12 @@ class content_type extends \mod_unilabel\content_type {
             ['rows' => 4],
             $this->editor_options($form->context)
         );
+        $repeatarray[] = $mform->createElement(
+            'static',
+            $prefix . 'activitypickerbutton',
+            '',
+            $OUTPUT->render($pickerbutton)
+        );
         $urlelement = $mform->createElement(
             'text',
             $prefix . 'url',
@@ -173,10 +180,10 @@ class content_type extends \mod_unilabel\content_type {
             false
         );
         $repeatarray[] = $mform->createElement(
-            'static',
-            $prefix . 'activitypickerbutton',
-            '',
-            $OUTPUT->render($pickerbutton)
+            'text',
+            $prefix . 'urltitle',
+            get_string('urltitle', $this->component) . '-{no}',
+            ['size' => 50]
         );
 
         $repeatarray[] = $mform->createElement(
@@ -197,6 +204,7 @@ class content_type extends \mod_unilabel\content_type {
         $repeatedoptions                                   = [];
         $repeatedoptions[$prefix . 'sortorder']['type']    = PARAM_INT;
         $repeatedoptions[$prefix . 'url']['type']          = PARAM_URL;
+        $repeatedoptions[$prefix . 'urltitle']['type']     = PARAM_TEXT;
         $repeatedoptions[$prefix . 'caption']['type']      = PARAM_RAW;
         $repeatedoptions[$prefix . 'image']['type']        = PARAM_FILE;
         $repeatedoptions[$prefix . 'image_mobile']['type'] = PARAM_FILE;
@@ -222,6 +230,7 @@ class content_type extends \mod_unilabel\content_type {
         // This elements are needed by js to set empty hidden fields while deleting an element.
         $myelements = [
             'caption',
+            'urltitle',
             'url',
             'image',
             'image_mobile',
@@ -306,6 +315,10 @@ class content_type extends \mod_unilabel\content_type {
             $elementname        = $prefix . 'url[' . $index . ']';
             $data[$elementname] = $slide->url;
 
+            // Prepare the urltitle field.
+            $elementname        = $prefix . 'urltitle[' . $index . ']';
+            $data[$elementname] = $slide->urltitle ?? '';
+
             // Prepare the newwindow field.
             $elementname = $prefix . 'newwindow[' . $index . ']';
             $data[$elementname] = $slide->newwindow;
@@ -345,7 +358,6 @@ class content_type extends \mod_unilabel\content_type {
 
             ++$index;
         }
-
         return $data;
     }
 
@@ -530,11 +542,13 @@ class content_type extends \mod_unilabel\content_type {
             // Get the draftitemid for caption editor.
             $drafitemidcaption = $formdata->{$prefix . 'caption'}[$i]['itemid'];
             $caption = file_rewrite_urls_to_pluginfile($caption, $drafitemidcaption);
+            $urltitle   = $formdata->{$prefix . 'urltitle'}[$i];
 
             $sortorder = $formdata->{$prefix . 'sortorder'}[$i];
 
             $sliderecord             = new \stdClass();
             $sliderecord->carouselid = $unilabeltyperecord->id;
+            $sliderecord->urltitle   = $urltitle;
             $sliderecord->url        = $formdata->{$prefix . 'url'}[$i];
             $sliderecord->newwindow = !empty($formdata->{$prefix . 'newwindow'}[$i]);
             $sliderecord->caption    = $caption;

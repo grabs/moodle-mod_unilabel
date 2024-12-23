@@ -22,7 +22,8 @@
 }
 
 /* Nice overlay effect which can be used in subplugins */
-.unilabel-overlay-effect:hover {
+.unilabel-overlay-effect:hover,
+a:focus .unilabel-overlay-effect {
     opacity: 0.3;
 }
 .unilabel-overlay-effect {
