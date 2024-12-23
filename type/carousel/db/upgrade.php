@@ -88,5 +88,20 @@ function xmldb_unilabeltype_carousel_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2024050700, 'unilabeltype', 'carousel');
     }
 
+    if ($oldversion < 2024050802) {
+
+        // Define field urltitle to be added to unilabeltype_carousel_slide.
+        $table = new xmldb_table('unilabeltype_carousel_slide');
+        $field = new xmldb_field('urltitle', XMLDB_TYPE_CHAR, '255', null, null, null, null, 'caption');
+
+        // Conditionally launch add field urltitle.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Carousel savepoint reached.
+        upgrade_plugin_savepoint(true, 2024050802, 'unilabeltype', 'carousel');
+    }
+
     return true;
 }

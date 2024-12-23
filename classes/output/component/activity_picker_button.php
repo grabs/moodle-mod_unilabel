@@ -40,13 +40,16 @@ class activity_picker_button implements \renderable, \templatable {
      * Constructor.
      *
      * @param string $formid
-     * @param string $inputidbase
+     * @param string $inputidbase The base id of the url input field
+     * @param string $urltitleinputidbase The base id of the urltitle input field
      */
-    public function __construct($formid, $inputidbase) {
-        $this->data                = [];
-        $this->data['formid']      = $formid;
-        $this->data['inputidbase'] = $inputidbase;
-        $this->data['buttontitle'] = get_string('chooseurlfromactivity', 'mod_unilabel');
+    public function __construct($formid, $inputidbase, $urltitleinputidbase = '') {
+        $this->data = [];
+
+        $this->data['formid']              = $formid;
+        $this->data['inputidbase']         = $inputidbase;
+        $this->data['urltitleinputidbase'] = $urltitleinputidbase;
+        $this->data['buttontitle']         = get_string('chooseurlfromactivity', 'mod_unilabel');
     }
 
     /**

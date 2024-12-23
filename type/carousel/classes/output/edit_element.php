@@ -66,7 +66,8 @@ class edit_element extends \mod_unilabel\output\edit_element_base {
     public function get_elements() {
         $elements = [];
         $inputidbase  = 'id_' . $this->prefix . 'url_';
-        $pickerbutton = new \mod_unilabel\output\component\activity_picker_button($this->formid, $inputidbase);
+        $labelidbase  = 'id_' . $this->prefix . 'urltitle_';
+        $pickerbutton = new \mod_unilabel\output\component\activity_picker_button($this->formid, $inputidbase, $labelidbase);
 
         $elements[] = $this->get_editor(
             'caption',
@@ -75,6 +76,12 @@ class edit_element extends \mod_unilabel\output\edit_element_base {
             'caption'
         );
 
+        $elements[] = $this->get_static(
+            'picker',
+            $this->output->render(
+                $pickerbutton
+            )
+        );
         $urlelement = $this->get_textfield(
             'url',
             ['size' => 50]
@@ -92,12 +99,11 @@ class edit_element extends \mod_unilabel\output\edit_element_base {
             get_string('url', $this->component) . '-' . ($this->repeatindex + 1)
         );
 
-        $elements[] = $this->get_static(
-            'picker',
-            $this->output->render(
-                $pickerbutton
-            )
+        $elements[] = $this->get_textfield(
+            'urltitle',
+            ['size' => 50]
         );
+
         $elements[] = $this->get_filemanager(
             'image',
             [],

@@ -24,7 +24,13 @@
 import $ from 'jquery';
 import log from 'core/log';
 
-export const init = async(formid, inputidbase) => {
+/**
+ * Set the url input field when loading the mform. It modifies only already saved elements and not the new one.
+ * @param {*} formid
+ * @param {*} inputidbase
+ * @param {*} labelidbase
+ */
+export const init = async(formid, inputidbase, labelidbase) => {
     const str = await import('core/str');
     const deletestr = await str.get_string('delete');
     // The inputswitcher switches an text input element into a hidden element and added an activitylink clone.
@@ -54,7 +60,14 @@ export const init = async(formid, inputidbase) => {
                             return;
                         }
 
-                        inputswitcher.switchInput(currentinput, activitylinksrc, currentinput.value, false, deletestr);
+                        inputswitcher.switchInput(
+                            currentinput,
+                            null,
+                            activitylinksrc,
+                            currentinput.value,
+                            false,
+                            deletestr
+                        );
                     }
                 });
             }
@@ -68,8 +81,15 @@ export const init = async(formid, inputidbase) => {
         // Get the id (repeat number) from parent element.
         var id = $(this).parent().parent().parent().attr('id').split("_").slice(-1);
         var currentinput = inputidbase + id;
+        var currenturltitleinput;
+        if (labelidbase == '') {
+            currenturltitleinput = '';
+        } else {
+            currenturltitleinput = labelidbase + id;
+        }
 
         $('#unilabel-modal-activity-picker-' + formid).attr('data-inputid', currentinput);
+        $('#unilabel-modal-activity-picker-' + formid).attr('data-labelid', currenturltitleinput);
         $('#unilabel-modal-activity-picker-' + formid).modal('show');
     });
 };

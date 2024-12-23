@@ -53,6 +53,7 @@ $string['tilenr']                 = 'Tile {$a}';
 $string['tiles']                  = 'Tiles';
 $string['title']                  = 'Title';
 $string['url']                    = 'Url';
+$string['urltitle']               = 'Url title';
 $string['url_help']               = 'By defining a url the whole slide becomes a clickable button linked to the defined url.';
 $string['use_mobile_images']      = 'Use mobile images';
 $string['use_mobile_images_help'] = 'If you activate the usage of mobile images you can upload a mobile image in addition to standard one for every slide. The mobile image will be displayed on screens smaller than 768px.';

@@ -26,6 +26,7 @@ import log from 'core/log';
 
 export const init = async(formid) => {
     let currentinput;
+    let currenturltitleinput;
     let maybeactivityelement;
     let modalid = 'unilabel-modal-activity-picker-' + formid;
     const str = await import('core/str');
@@ -35,6 +36,12 @@ export const init = async(formid) => {
     $('#' + modalid).on('show.bs.modal', function() {
         $('#' + modalid).appendTo('body');
         currentinput = document.querySelector('#' + document.querySelector('#' + modalid).dataset.inputid);
+
+        if (document.querySelector('#' + modalid).dataset.labelid == '') {
+            currenturltitleinput = null; // Url title field does not exist.
+        } else {
+            currenturltitleinput = document.querySelector('#' + document.querySelector('#' + modalid).dataset.labelid);
+        }
         maybeactivityelement = currentinput.parentElement.querySelector('div.activitytitle.unilabel-input-replacement');
     });
 
@@ -54,7 +61,7 @@ export const init = async(formid) => {
         if (e.target.classList.contains('activity-picker-link')) {
             let url = e.target.href;
             let activitylinksrc = e.target.closest('.activitytitle');
-            inputswitcher.switchInput(currentinput, activitylinksrc, url, true, deletestr);
+            inputswitcher.switchInput(currentinput, currenturltitleinput, activitylinksrc, url, true, deletestr);
         }
     });
 

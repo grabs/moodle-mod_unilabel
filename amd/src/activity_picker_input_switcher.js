@@ -27,12 +27,13 @@ import log from 'core/log';
  * Switch the input to a visible activity link.
  *
  * @param {Element} currentinput The url input field which is bound to the picker
+ * @param {Element} currenturltitleinput The url input field which is bound to the picker
  * @param {Element} activitylinksrc The activity element from the picker list to be cloned to the url input
  * @param {String} url
  * @param {Boolean} makedirty Should the from be dirty after switching
  * @param {String} deletestr The delete string for the delete button.
  */
-export const switchInput = (currentinput, activitylinksrc, url, makedirty, deletestr) => {
+export const switchInput = (currentinput, currenturltitleinput, activitylinksrc, url, makedirty, deletestr) => {
     /**
      * Go recursive through all child elements given from element and apply the callback function.
      *
@@ -92,6 +93,11 @@ export const switchInput = (currentinput, activitylinksrc, url, makedirty, delet
     activitylink.insertAdjacentElement('beforeend', deletelinkcontainer);
     currentinput.insertAdjacentElement('afterend', activitylink);
 
+    // After the activitylink is rendered we can get its innerText to fill the urltitle text field.
+    if (currenturltitleinput) {
+        currenturltitleinput.value = activitylink.innerText.replace(/(?:\r\n|\r|\n)/g, ': ');
+    }
+
     if (makedirty) {
         makeFormDirty(currentinput);
     }
@@ -100,6 +106,10 @@ export const switchInput = (currentinput, activitylinksrc, url, makedirty, delet
         e.preventDefault();
         activitylink.remove();
         let currentinput = document.querySelector('#' + e.target.dataset.inputid);
+        let currenturltitleinput = document.querySelector('#' + e.target.dataset.labelid);
+        if (currenturltitleinput) {
+            currenturltitleinput.value = '';
+        }
         currentinput.value = '';
         currentinput.type = 'text';
         currentinput.focus();
