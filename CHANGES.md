@@ -1,5 +1,12 @@
 ## Release notes
 
+### Release 4.4.4
+* Add new url title to show a user friendly aria-label (#50)
+* Make tiles in grid focussable with keyboard (#52)
+* Add preview for imageboard editing page (Many, many thanks to Andreas Schenkel for this new feature!)
+    * The preview updates the view while changing the image parameters.
+    * The images in the preview can be moved using drag-n-drop.
+
 ### Release 4.4.3
 * Type collapsed text does not show modal dialog (#51)
 * Make github actions more restrictive
