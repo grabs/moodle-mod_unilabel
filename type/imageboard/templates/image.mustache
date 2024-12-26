@@ -22,6 +22,7 @@
     {
         "title": "Test",
         "url": "https://example.com",
+        "urltitle": "Forum: someting",
         "newwindow": 1,
         "xposition": "400",
         "yposition": "200",
@@ -47,7 +48,10 @@
                 }}{{#targetwidth}}width: {{.}}px;{{/targetwidth}}{{!
                 }}{{#targetheight}}height: {{.}}px;{{/targetheight}}{{!
                 }}">
-    {{#url}}<a href="{{{.}}}"{{#newwindow}} target="_blank"{{/newwindow}}>{{/url}}
+    {{#url}}<a href="{{{.}}}"{{!
+                }} title="{{#urltitle}}{{#str}}link_to, mod_unilabel, {{.}}{{/str}}{{/urltitle}}{{^urltitle}}{{#str}}link_to, mod_unilabel, {{url}}{{/str}}{{/urltitle}}"{{!
+                }} aria-label="{{#urltitle}}{{#str}}link_to, mod_unilabel, {{.}}{{/str}}{{/urltitle}}{{^urltitle}}{{#str}}link_to, mod_unilabel, {{url}}{{/str}}{{/urltitle}}"{{!
+                }}{{#newwindow}} target="_blank"{{/newwindow}}>{{/url}}
         {{#title}}
             <div id="id_elementtitle_{{cmid}}_{{nr}}" class="unilabel-imageboard-title unilable-imageboard-titlelineheight-{{#titlelineheight}}{{.}}{{/titlelineheight}}" style="top: calc(-{{#titlelineheight}}{{.}}em{{/titlelineheight}});{{!
                 }}color: {{titlecolor}}; background-color: {{titlebackgroundcolor}};{{!

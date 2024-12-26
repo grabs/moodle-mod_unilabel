@@ -24,6 +24,7 @@
             {
                 "title": "",
                 "url": "http://localhost/mod/forum/view.php?id=136",
+                "urltitle": "Forum: someting",
                 "newwindow": 1,
                 "imageurl": "http://localhost/image1.png",
                 "nr": 0
@@ -31,6 +32,7 @@
             {
                 "title": "",
                 "url": "",
+                "urltitle": "",
                 "newwindow": 1,
                 "imageurl": "http://localhost/image2.png",
                 "nr": 1
@@ -53,15 +55,20 @@
                             {{nr}}
                         </div>
                         <div{{^imageurl}} class="text-muted"{{/imageurl}}>
+                            {{#url}}{{! If there is a url we add an a-tag here.
+                                    }}<a href="{{{.}}}"{{!
+                                    }} title="{{#urltitle}}{{#str}}link_to, mod_unilabel, {{.}}{{/str}}{{/urltitle}}{{^urltitle}}{{#str}}link_to, mod_unilabel, {{url}}{{/str}}{{/urltitle}}"{{!
+                                    }} aria-label="{{#urltitle}}{{#str}}link_to, mod_unilabel, {{.}}{{/str}}{{/urltitle}}{{^urltitle}}{{#str}}link_to, mod_unilabel, {{url}}{{/str}}{{/urltitle}}"{{!
+                                    }}{{#newwindow}} target="_blank"{{/newwindow}}>{{!
+                            }}{{/url}}
                             {{#imageurl}}
                                 <img class="mr-2" src="{{{imageurl}}}" width="40" alt="{{title}}">
                             {{/imageurl}}
                             {{^imageurl}}
                                 <i style="width: 40px" class="fa fa-picture-o fa-lg fa-fw mr-2"></i>
                             {{/imageurl}}
-                            {{#url}}<a href="{{{.}}}"{{#newwindow}} target="_blank"{{/newwindow}}>{{/url}}
                                 {{title}}
-                            {{#url}}</a>{{/url}}
+                            {{#url}}</a>{{/url}} {{! If there is a url we close the a-tag here.}}
                         </div>
                     </div>
                 </li>

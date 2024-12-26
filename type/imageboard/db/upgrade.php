@@ -137,37 +137,46 @@ function xmldb_unilabeltype_imageboard_upgrade($oldversion) {
     if ($oldversion < 2024050802) {
         // Define field fontsize to be added to unilabeltype_imageboard.
         $table = new xmldb_table('unilabeltype_imageboard');
-        $field = new xmldb_field('titlelineheight', XMLDB_TYPE_INTEGER, '3', null, null, null, '0', 'fontsize');
+        $field = new xmldb_field('titlelineheight', XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'canvasheight');
 
-        // Conditionally launch add field fontsize.
+        // Conditionally launch add field titlelineheight.
         if (!$dbman->field_exists($table, $field)) {
             $dbman->add_field($table, $field);
         }
 
-        // Define field borderradius to be added to unilabeltype_imageboard.
+        // Define field borderradius to be added to unilabeltype_imageboard_img.
         $table = new xmldb_table('unilabeltype_imageboard_img');
-        $field = new xmldb_field('borderradius', XMLDB_TYPE_INTEGER, '3', null, null, null, '0', 'targetheight');
+        $field = new xmldb_field('borderradius', XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'border');
 
         // Conditionally launch add field borderradius.
         if (!$dbman->field_exists($table, $field)) {
             $dbman->add_field($table, $field);
         }
 
-        // Define field borderradius to be added to unilabeltype_imageboard.
+        // Define field alt to be added to unilabeltype_imageboard_img.
         $table = new xmldb_table('unilabeltype_imageboard_img');
-        $field = new xmldb_field('alt', XMLDB_TYPE_CHAR, '10', null, null, null, '', 'url');
+        $field = new xmldb_field('alt', XMLDB_TYPE_CHAR, '255', null, null, null, null, 'newwindow');
 
-        // Conditionally launch add field alt text for image.
+        // Conditionally launch add field alt.
         if (!$dbman->field_exists($table, $field)) {
             $dbman->add_field($table, $field);
         }
 
-        // New field for an imageboard.
+        // Set for all records the titlelineheight value to "2".
         $DB->set_field('unilabeltype_imageboard', 'titlelineheight', 2);
 
-        // New fields for each image.
+        // Set for all records the alt value to "image".
         $DB->set_field('unilabeltype_imageboard_img', 'borderradius', 10);
-        $DB->set_field('unilabeltype_imageboard_img', 'alt', 'imgage');
+        $DB->set_field('unilabeltype_imageboard_img', 'alt', 'image');
+
+        // Define field urltitle to be added to unilabeltype_imageboard_img.
+        $table = new xmldb_table('unilabeltype_imageboard_img');
+        $field = new xmldb_field('urltitle', XMLDB_TYPE_CHAR, '255', null, null, null, null, 'title');
+
+        // Conditionally launch add field urltitle.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
 
         upgrade_plugin_savepoint(true, 2024050802, 'unilabeltype', 'imageboard');
     }
