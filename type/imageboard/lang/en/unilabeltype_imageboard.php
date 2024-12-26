@@ -89,6 +89,7 @@ $string['titlecolor'] = 'Color of title';
 $string['titlelineheight'] = 'Lineheight of imagetitle';
 $string['titlelineheight_help'] = 'Lineheight in em';
 $string['url'] = 'Url';
+$string['urltitle'] = 'Url title';
 $string['url_help'] = 'The image becomes a clickable button linked to the defined url by defining an url.';
 $string['xposition'] = 'X';
 $string['yposition'] = 'Y';

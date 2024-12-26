@@ -172,7 +172,8 @@ class content_type extends \mod_unilabel\content_type {
         $course = $form->get_course();
         $picker = new \mod_unilabel\output\component\activity_picker($course, $formid);
         $inputidbase = 'id_' . $prefix . 'url_';
-        $pickerbutton = new \mod_unilabel\output\component\activity_picker_button($formid, $inputidbase);
+        $urltitleinputidbase  = 'id_' . $prefix . 'urltitle_';
+        $pickerbutton = new \mod_unilabel\output\component\activity_picker_button($formid, $inputidbase, $urltitleinputidbase);
         $mform->addElement('html', $OUTPUT->render($picker));
 
         $repeatarray = [];
@@ -275,6 +276,12 @@ class content_type extends \mod_unilabel\content_type {
             $numbers
         );
 
+        $repeatarray[] = $mform->createElement(
+            'static',
+            $prefix . 'activitypickerbutton',
+            '',
+            $OUTPUT->render($pickerbutton)
+        );
         $urlelement = $mform->createElement(
             'text',
             $prefix . 'url',
@@ -297,14 +304,15 @@ class content_type extends \mod_unilabel\content_type {
             false
         );
         $repeatarray[] = $mform->createElement(
-            'static',
-            $prefix . 'activitypickerbutton',
-            '',
-            $OUTPUT->render($pickerbutton)
+            'text',
+            $prefix . 'urltitle',
+            get_string('urltitle', $this->component) . '-{no}',
+            ['size' => 50]
         );
 
         $repeatedoptions = [];
         $repeatedoptions[$prefix . 'title']['type'] = PARAM_TEXT;
+        $repeatedoptions[$prefix . 'urltitle']['type'] = PARAM_TEXT;
         $repeatedoptions[$prefix . 'url']['type'] = PARAM_URL;
         $repeatedoptions[$prefix . 'image']['type'] = PARAM_FILE;
         $repeatedoptions[$prefix . 'alt']['type'] = PARAM_TEXT;
@@ -333,6 +341,7 @@ class content_type extends \mod_unilabel\content_type {
         // This elements are needed by js to set empty hidden fields while deleting an element.
         $myelements = [
             'title',
+            'urltitle',
             'url',
             'image',
             'border',
@@ -432,6 +441,10 @@ class content_type extends \mod_unilabel\content_type {
             // Prepare the title field.
             $elementname = $prefix . 'title[' . $index . ']';
             $data[$elementname] = $image->title;
+
+            // Prepare the urltitle field.
+            $elementname        = $prefix . 'urltitle[' . $index . ']';
+            $data[$elementname] = $image->urltitle ?? '';
 
             // Prepare the url field.
             $elementname = $prefix . 'url[' . $index . ']';
@@ -616,6 +629,7 @@ class content_type extends \mod_unilabel\content_type {
             $fileinfo = file_get_draft_area_info($draftitemidimage);
             // We only create a record if we have at least a title, a file or a content.
             $title = $formdata->{$prefix . 'title'}[$i];
+            $urltitle = $formdata->{$prefix . 'urltitle'}[$i];
             if (empty($title) && $fileinfo['filecount'] < 1) {
                 continue;
             }
@@ -623,6 +637,7 @@ class content_type extends \mod_unilabel\content_type {
             $imagerecord = new \stdClass();
             $imagerecord->imageboardid = $unilabeltyperecord->id;
             $imagerecord->title = $title;
+            $imagerecord->urltitle = $urltitle;
             $imagerecord->url = $formdata->{$prefix . 'url'}[$i];
             $imagerecord->newwindow = !empty($formdata->{$prefix . 'newwindow'}[$i]);
 

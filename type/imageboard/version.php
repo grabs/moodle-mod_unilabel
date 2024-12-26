@@ -26,7 +26,5 @@
 defined('MOODLE_INTERNAL') || die;
 
 $plugin->component = 'unilabeltype_imageboard';
-$plugin->version   = 2024050802;
+$plugin->version   = 2024050804;
 $plugin->requires  = 2022111800;
-$plugin->release = 'v4.3.2';
-$plugin->dependencies = ['mod_unilabel' => 2023111600];
