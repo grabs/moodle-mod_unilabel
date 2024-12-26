@@ -134,7 +134,7 @@ function xmldb_unilabeltype_imageboard_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2024012400, 'unilabeltype', 'imageboard');
     }
 
-    if ($oldversion < 2024112103) {
+    if ($oldversion < 2024050802) {
         // Define field fontsize to be added to unilabeltype_imageboard.
         $table = new xmldb_table('unilabeltype_imageboard');
         $field = new xmldb_field('titlelineheight', XMLDB_TYPE_INTEGER, '3', null, null, null, '0', 'fontsize');
@@ -169,7 +169,7 @@ function xmldb_unilabeltype_imageboard_upgrade($oldversion) {
         $DB->set_field('unilabeltype_imageboard_img', 'borderradius', 10);
         $DB->set_field('unilabeltype_imageboard_img', 'alt', 'imgage');
 
-        upgrade_plugin_savepoint(true, 2024112103, 'unilabeltype', 'imageboard');
+        upgrade_plugin_savepoint(true, 2024050802, 'unilabeltype', 'imageboard');
     }
 
     return true;
