@@ -58,7 +58,7 @@ class backup_unilabeltype_imageboard_subplugin extends backup_subplugin {
         );
         $subpluginimage = new backup_nested_element('unilabeltype_imageboard_img',
             ['id'],
-            ['title', 'url', 'alt', 'xposition', 'yposition', 'targetwidth', 'targetheight', 'border', 'borderradius']
+            ['title', 'urltitle', 'url', 'alt', 'xposition', 'yposition', 'targetwidth', 'targetheight', 'border', 'borderradius']
         );
 
         // Connect XML elements into the tree.
