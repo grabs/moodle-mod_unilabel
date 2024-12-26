@@ -162,13 +162,6 @@ function xmldb_unilabeltype_imageboard_upgrade($oldversion) {
             $dbman->add_field($table, $field);
         }
 
-        // Set for all records the titlelineheight value to "2".
-        $DB->set_field('unilabeltype_imageboard', 'titlelineheight', 2);
-
-        // Set for all records the alt value to "image".
-        $DB->set_field('unilabeltype_imageboard_img', 'borderradius', 10);
-        $DB->set_field('unilabeltype_imageboard_img', 'alt', 'image');
-
         // Define field urltitle to be added to unilabeltype_imageboard_img.
         $table = new xmldb_table('unilabeltype_imageboard_img');
         $field = new xmldb_field('urltitle', XMLDB_TYPE_CHAR, '255', null, null, null, null, 'title');
