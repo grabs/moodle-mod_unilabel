@@ -70,6 +70,9 @@ jobs:
           DB: ${{ matrix.database }}
           MOODLE_BRANCH: ${{ matrix.moodlebranch }}
 
+      - name: Install npx # Install npx to run stylelint for subplugins.
+        run: npm install -g npx
+
       - name: Run phplint
         if: ${{ always() }}
         run: moodle-plugin-ci phplint
@@ -93,6 +96,10 @@ jobs:
       - name: Run grunt
         if: ${{ always() }}
         run: moodle-plugin-ci grunt --max-lint-warnings=0
+
+      - name: Run stylelint for subplugins
+        if: ${{ always() }}
+        run: npx stylelint "type/**/styles.css"
 
       - name: Run phpdoc
         if: ${{ always() }}
