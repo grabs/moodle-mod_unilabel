@@ -98,7 +98,7 @@ jobs:
 
       - name: Run stylelint for subplugins
         if: ${{ always() }}
-        run: npx stylelint --config-basedir ../.. type/**/styles.css
+        run: moodle-plugin-ci grunt --max-lint-warnings=0 type/imageboard
 
       # - name: Run phpdoc
       #   if: ${{ always() }}
