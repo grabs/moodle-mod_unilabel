@@ -26,7 +26,7 @@ export const init = () => {
 
     // Store the data about the canvas/background.
     let canvas = null;
-    let canvaswidth = 950;
+    let canvaswidth = 600;
     let canvasheight = 400;
 
     registerDnDListener();
@@ -37,6 +37,8 @@ export const init = () => {
     function registerDnDListener() {
         setTimeout(function() {
             canvas = document.getElementById("unilabel-imageboard-background-canvas");
+            canvaswidth = canvas.clientWidth;
+            canvasheight = canvas.clientHeight;
             canvas.addEventListener("dragstart", dragStart, false);
             canvas.addEventListener("dragend", dragEnd, false);
         }, 1000);
