@@ -96,9 +96,16 @@ jobs:
         if: ${{ always() }}
         run: moodle-plugin-ci grunt --max-lint-warnings=0
 
-      - name: Run stylelint for subplugins
+      - name: Run grunt for subplugins
         if: ${{ always() }}
-        run: moodle-plugin-ci grunt --max-lint-warnings=0 /home/runner/work/moodle-mod_unilabel/moodle-mod_unilabel/moodle/mod/unilabel/type/imageboard
+        run: |
+          moodle-plugin-ci grunt --max-lint-warnings=0 /home/runner/work/moodle-mod_unilabel/moodle-mod_unilabel/moodle/mod/unilabel/type/accordion
+          moodle-plugin-ci grunt --max-lint-warnings=0 /home/runner/work/moodle-mod_unilabel/moodle-mod_unilabel/moodle/mod/unilabel/type/carousel
+          moodle-plugin-ci grunt --max-lint-warnings=0 /home/runner/work/moodle-mod_unilabel/moodle-mod_unilabel/moodle/mod/unilabel/type/collapsedtext
+          moodle-plugin-ci grunt --max-lint-warnings=0 /home/runner/work/moodle-mod_unilabel/moodle-mod_unilabel/moodle/mod/unilabel/type/courseteaser
+          moodle-plugin-ci grunt --max-lint-warnings=0 /home/runner/work/moodle-mod_unilabel/moodle-mod_unilabel/moodle/mod/unilabel/type/grid
+          moodle-plugin-ci grunt --max-lint-warnings=0 /home/runner/work/moodle-mod_unilabel/moodle-mod_unilabel/moodle/mod/unilabel/type/imageboard
+          moodle-plugin-ci grunt --max-lint-warnings=0 /home/runner/work/moodle-mod_unilabel/moodle-mod_unilabel/moodle/mod/unilabel/type/topicteaser
 
       # - name: Run phpdoc
       #   if: ${{ always() }}
