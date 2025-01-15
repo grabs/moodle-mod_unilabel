@@ -24,17 +24,13 @@
     visibility: hidden;
 }
 
-.unilabeltype-imageboard {
-    /* box-shadow: 0 0 10px #aaa; */
-  }
-
-  .unilabeltype-imageboard-container {
-      padding: 10px;
-      overflow: hidden; /* Hide scrollbars */
+.unilabeltype-imageboard-container {
+    padding: 10px;
+    overflow: hidden; /* Hide scrollbars */
 }
 
 .unilabeltype-imageboard-container a:focus div {
-    box-shadow: 0 0 0 .2rem rgba(15,108,191,.75);
+    box-shadow: 0 0 0 .2rem rgba(15, 108, 191, .75);
 }
 
 #unilabel-imageboard-preview .unilabel-imageboard-title,
@@ -85,8 +81,6 @@
     padding-left: 5px;
     padding-right: 5px;
 }
-
-
 
 /* Container für das Bild */
 #unilabel-imageboard-preview .image-container {
@@ -147,7 +141,7 @@
 }
 
 .unilabel-imageboard-coordinates {
-    background-color: rgba(255,255,255,0.9);
+    background-color: rgba(255, 255, 255, 0.9);
     padding-left: 2px;
     padding-right: 2px;
 }

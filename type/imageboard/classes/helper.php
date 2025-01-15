@@ -45,11 +45,20 @@ class helper {
      */
     public static function createdataforhelpergrid($canvaswidth = 600, $canvasheight = 400, $xsteps = 50, $ysteps = 50): array {
         $helpergrids = [];
-        for ($y = 0; $y < $canvasheight; $y = $y + $ysteps) {
-            for ($x = 0; $x < $canvaswidth; $x = $x + $xsteps) {
+        for ($y = 0; $y < $canvasheight; $y += $ysteps) {
+            for ($x = 0; $x < $canvaswidth; $x += $xsteps) {
                 $helpergrid = [];
                 $helpergrid['x'] = $x;
                 $helpergrid['y'] = $y;
+
+                // Calculate the last step, which can be smaller then a step.
+                if ($x + $xsteps > $canvaswidth) {
+                    $helpergrid['xsteps'] = ($x + $xsteps) - $canvaswidth;
+                }
+                if ($y + $ysteps > $canvasheight) {
+                    $helpergrid['ysteps'] = ($y + $ysteps) - $canvasheight;
+                }
+
                 $helpergrids[] = $helpergrid;
             }
         }
