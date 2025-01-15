@@ -76,7 +76,7 @@ jobs:
 
       - name: Run codechecker
         if: ${{ always() }}
-        run: moodle-plugin-ci codechecker
+        run: moodle-plugin-ci codechecker --max-warnings=0
 
       - name: Run validate
         if: ${{ always() }}
@@ -93,6 +93,15 @@ jobs:
       - name: Run grunt
         if: ${{ always() }}
         run: moodle-plugin-ci grunt --max-lint-warnings=0
+
+      - name: Run grunt for subplugins
+        if: ${{ always() }}
+        run: |
+          for s in $(ls /home/runner/work/moodle-mod_unilabel/moodle-mod_unilabel/moodle/mod/unilabel/type)
+          do
+            echo "Running grunt for subplugin $s"
+            moodle-plugin-ci grunt --max-lint-warnings=0 /home/runner/work/moodle-mod_unilabel/moodle-mod_unilabel/moodle/mod/unilabel/type/$s
+          done
 
       - name: Run phpdoc
         if: ${{ always() }}
