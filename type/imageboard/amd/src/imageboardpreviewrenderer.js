@@ -9,21 +9,31 @@
 import Templates from 'core/templates';
 import * as Str from 'core/str';
 import log from 'core/log';
+import cfg from 'core/config';
 
-export const init = (canvaswidth, canvasheight, gridcolor, xsteps, ysteps) => {
+/**
+ * Initialize the imageboard renderer.
+ *
+ * @param {Integer} canvaswidth
+ * @param {Integer} canvasheight
+ * @param {String} gridcolor
+ * @param {Integer} xsteps
+ * @param {Integer} ysteps
+ */
+export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) => {
     canvaswidth = parseInt(canvaswidth, 10);
     canvasheight = parseInt(canvasheight, 10);
     xsteps = parseInt(xsteps, 10);
     ysteps = parseInt(ysteps, 10);
-    registerAllEventlistener();
-    // Timeout notwendig, damit das Bild in der Draftarea "vorhanden" ist.
-    // document.querySelector('#id_unilabeltype_imageboard_backgroundimage_fieldset .filemanager-container .realpreview');
-    setTimeout(refreshBackgroundImage, 1000);
-    // To show all images on pageload.
-    setTimeout(refreshAllImages, 1000);
-    setTimeout(function() {
-        renderHelpergrid(canvaswidth, canvasheight, gridcolor, xsteps, ysteps);
-    }, 1000);
+
+    let imageList = new Array();
+    let lastImageNumber = -1;
+
+    // The next calls depends on each other, so we wait for each of them to be ready.
+    await registerAllEventlistener();
+    await refreshBackgroundImage();
+    await refreshAllImages();
+    await renderHelpergrid(canvaswidth, canvasheight, gridcolor, xsteps, ysteps);
 
     // In preview only ONE helpergrid exists with number 0...
     const gridtoggler = document.getElementById("unilabeltype-imageboard-gridtoggler-0");
@@ -38,6 +48,9 @@ export const init = (canvaswidth, canvasheight, gridcolor, xsteps, ysteps) => {
             hideGrid(togglerText, helpergrid);
         }
     });
+
+    const imageboarddraganddrop = await import('unilabeltype_imageboard/imageboarddraganddrop');
+    imageboarddraganddrop.init();
 
     /**
      * Helper function to show the grid from imageboard.
@@ -71,13 +84,13 @@ export const init = (canvaswidth, canvasheight, gridcolor, xsteps, ysteps) => {
      *
      * @param {event} event
      */
-    function focusoutExecute(event) {
+    async function onChangeAttribute(event) {
         var number = getNumberFromEvent(event);
         if (number >= 0) {
             refreshImage(number);
         } else {
-            // ToDo: only refresh if titlecolor, titlebackgroundcolor, titlesize was changed
-            refreshAllImages();
+            // TODO: only refresh if titlecolor, titlebackgroundcolor, titlesize was changed.
+            await refreshAllImages();
         }
     }
 
@@ -110,19 +123,21 @@ export const init = (canvaswidth, canvasheight, gridcolor, xsteps, ysteps) => {
     }
 
     /**
-     *
-     * @param {event} event
+     * Add a new preview image when a new element is added.
      */
-    function onclickExecute(event) {
-        var targetid = event.target.getAttribute('id');
-        var mform = targetid.split('button-mform1')[1];
-        if (mform) {
-            setTimeout(function() {
-                // An element was added so we have to add a div for the image to the dom.
-                let singleElements = document.querySelectorAll('[id^="fitem_id_unilabeltype_imageboard_title_"]');
-                let number = singleElements.length;
-                addImageToDom(number - 1);
-            }, 500);
+    function onAddElement() {
+        addImageToDom(parseInt(lastImageNumber) + 1);
+    }
+
+    /**
+     * Remove the preview image related to the element which was removed.
+     * The index of the element comes from the detail property of the event object.
+     * @param {*} event
+     */
+    function onRemoveElement(event) {
+        let removedImage = document.querySelector('#unilabel-imageboard-element-' + event.detail);
+        if (removedImage) {
+            removedImage.remove();
         }
     }
 
@@ -130,22 +145,33 @@ export const init = (canvaswidth, canvasheight, gridcolor, xsteps, ysteps) => {
      * Register eventlistener to the all input fields of the form to register
      * focus-out events from input fields in order to trigger a fresh of the preview.
      */
-    function registerAllEventlistener() {
+    async function registerAllEventlistener() {
         var mform = document.querySelectorAll('[id^="mform"]')[0];
         // We register one listener per eventtype to the mform and use the bubble-event-feature to check out
         // the target of an event.
 
-        // All focusout-events will be handeled by oneListenerForAllInputFocusout.
-        mform.addEventListener("focusout", focusoutExecute, false);
+        // All change events will be handeled by the onChangeAttribute function.
+        mform.addEventListener("change", async(event) => {
+            await onChangeAttribute(event);
+        });
 
-        // All click-events will be handeled by oneListenerForAllInputClick.
-        mform.addEventListener("click", onclickExecute, false);
+        // All keyup events will be handeled by the onChangeAttribute function.
+        mform.addEventListener("keyup", async(event) => {
+            await onChangeAttribute(event);
+        });
 
-        // All uploadCompleted-events
-        // mform.addEventListener(eventTypes.uploadCompleted, machwas, false);
+        // If there is a new element added, the event "itemadded" is fired and we can add a new preview image.
+        mform.addEventListener("itemadded", (event) => {
+            onAddElement(event);
+        });
+
+        // If there is an element removed, the event "itemremoved" is fired and we can remove the related preview image.
+        mform.addEventListener("itemremoved", (event) => {
+            onRemoveElement(event);
+        });
 
         // First: When uploading a backgroundimage the backgroundimage of the backgroundimagediv must be updated.
-        // ToDo: better use eventlistener
+        // TODO: better use eventlistener
         let backgroundfileNode = document.getElementById('id_unilabeltype_imageboard_backgroundimage_fieldset');
         if (backgroundfileNode) {
             let observer = new MutationObserver(refreshBackgroundImage);
@@ -154,24 +180,21 @@ export const init = (canvaswidth, canvasheight, gridcolor, xsteps, ysteps) => {
         // Also add listener for canvas size
         let canvasx = document.getElementById('id_unilabeltype_imageboard_canvaswidth');
         if (canvasx) {
-            let observer = new MutationObserver(refreshBackgroundImage);
-            observer.observe(canvasx, {attributes: true, childList: true, subtree: true});
+            canvasx.addEventListener('change', refreshBackgroundImage);
         }
         let canvasy = document.getElementById('id_unilabeltype_imageboard_canvasheight');
         if (canvasy) {
-            let observer = new MutationObserver(refreshBackgroundImage);
-            observer.observe(canvasy, {attributes: true, childList: true, subtree: true});
+            canvasy.addEventListener('change', refreshBackgroundImage);
         }
     }
 
     /**
      * Sets the background image of the SVG to the current image in filemanager.
      */
-    function refreshBackgroundImage() {
+    async function refreshBackgroundImage() {
         let filemanagerbackgroundimagefieldset = document.getElementById('id_unilabeltype_imageboard_backgroundimage_fieldset');
         let previewimage = filemanagerbackgroundimagefieldset.getElementsByClassName('realpreview');
         let backgrounddiv = document.getElementById('unilabel-imageboard-background-canvas');
-
         if (previewimage.length > 0) {
             let backgroundurl = previewimage[0].getAttribute('src').split('?')[0];
             // If the uploaded file reuses the filename of a previously uploaded image, they differ
@@ -179,7 +202,7 @@ export const init = (canvaswidth, canvasheight, gridcolor, xsteps, ysteps) => {
             if (previewimage[0].getAttribute('src').split('?')[1].includes('&oid=')) {
                 backgroundurl += '?oid=' + previewimage[0].getAttribute('src').split('&oid=')[1];
             }
-            backgrounddiv.style.background = 'red'; // ToDo: Do wie need this code? Just to indicate changes during dev.
+            backgrounddiv.style.background = 'red'; // TODO: Do wie need this code? Just to indicate changes during dev.
             backgrounddiv.style.backgroundSize = 'cover';
             backgrounddiv.style.backgroundImage = "url('" + backgroundurl + "')";
 
@@ -192,10 +215,11 @@ export const init = (canvaswidth, canvasheight, gridcolor, xsteps, ysteps) => {
             let canvasheightselected = canvasheightinput.selectedOptions;
             let canvasheight = canvasheightselected[0].value;
             backgrounddiv.style.height = canvasheight + "px";
+            await refreshHelpergrid(canvaswidth, canvasheight, gridcolor, xsteps, ysteps);
         } else {
             // Image might be deleted so update the backroundidv and remove backgroundimage in preview;
-            // ToDo    if (previewimage.length > 0) does not recognize when an image is deleted so we need a different condition!
-            backgrounddiv.style.background = 'green'; // Todo: check if this is needed. just to indicate changes during development.
+            // TODO: If (previewimage.length > 0) does not recognize when an image is deleted so we need a different condition!
+            backgrounddiv.style.background = 'green'; // TODO: check if this is needed. just to indicate changes during development.
             backgrounddiv.style.backgroundImage = "url('')";
             const canvaswidthinput = document.getElementById('id_unilabeltype_imageboard_canvaswidth');
             let canvaswidthselected = canvaswidthinput.selectedOptions;
@@ -206,11 +230,12 @@ export const init = (canvaswidth, canvasheight, gridcolor, xsteps, ysteps) => {
             let canvasheightselected = canvasheightinput.selectedOptions;
             let canvasheight = canvasheightselected[0].value;
             backgrounddiv.style.height = canvasheight + "px";
+            await refreshHelpergrid(canvaswidth, canvasheight, gridcolor, xsteps, ysteps);
         }
     }
 
-
     /**
+     * Create the helper grid as async function so we can wait till it is ready.
      *
      * @param {number} canvaswidth
      * @param {number} canvasheight
@@ -218,13 +243,59 @@ export const init = (canvaswidth, canvasheight, gridcolor, xsteps, ysteps) => {
      * @param {number} xsteps
      * @param {number} ysteps
      */
-    function renderHelpergrid(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) {
+    async function renderHelpergrid(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) {
+        let gridcontent = await getHelpergrid(canvaswidth, canvasheight, gridcolor, xsteps, ysteps);
+        // We have to get the actual content, combine it with the rendered image and replace then the actual content.
+        let imageboardcontainer = document.getElementById('imageboardcontainer').innerHTML;
+        let combined = "<div>" + imageboardcontainer + "</div>" + gridcontent.resultHtml;
+        Templates.replaceNodeContents('#imageboardcontainer', combined, gridcontent.resultJs);
+        // TODO: Check.
+        return;
+    }
+
+    /**
+     * Refresh the helper grid as async function so we can wait till it is ready.
+     *
+     * @param {number} canvaswidth
+     * @param {number} canvasheight
+     * @param {string} gridcolor
+     * @param {number} xsteps
+     * @param {number} ysteps
+     */
+    async function refreshHelpergrid(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) {
+        let gridContainer = document.querySelector('#unilabeltype-imageboard-helpergrid-0');
+        if (gridContainer) {
+            let gridcontent = await getHelpergrid(canvaswidth, canvasheight, gridcolor, xsteps, ysteps);
+            let newGrid = createElementFromHTML(gridcontent.resultHtml);
+            gridContainer.replaceWith(newGrid);
+            Templates.runTemplateJS(gridcontent.resultJs);
+        } else {
+            log.debug('No grid found :(');
+        }
+    }
+
+    /**
+     * Create the helpergrid and returns the created html.
+     * @param {*} canvaswidth
+     * @param {*} canvasheight
+     * @param {*} gridcolor
+     * @param {*} xsteps
+     * @param {*} ysteps
+     * @returns {*} An object with the properties "resultHtml" and "resultJs".
+     */
+    async function getHelpergrid(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) {
         let helpergrids = [];
-        for (let y = 0; y < canvasheight; y = y + ysteps) {
-            for (let x = 0; x < canvaswidth; x = x + xsteps) {
+        for (let y = 0; y < canvasheight; y += ysteps) {
+            for (let x = 0; x < canvaswidth; x += xsteps) {
                 let helpergrid = {};
                 helpergrid.x = x;
                 helpergrid.y = y;
+                if (x + xsteps > canvaswidth) {
+                    helpergrid.xsteps = (x + xsteps) - canvaswidth;
+                }
+                if (y + ysteps > canvasheight) {
+                    helpergrid.ysteps = (y + ysteps) - canvasheight;
+                }
                 helpergrids.push(helpergrid);
             }
         }
@@ -238,41 +309,42 @@ export const init = (canvaswidth, canvasheight, gridcolor, xsteps, ysteps) => {
             cmid: 0,
             hidden: 0
         };
-
-        Templates.renderForPromise('unilabeltype_imageboard/imageboard_helpergridpreview', context).then(({html, js}) => {
+        var resultHtml = '';
+        var resultJs = '';
+        await Templates.renderForPromise('unilabeltype_imageboard/imageboard_helpergridpreview', context).then(({html, js}) => {
             // We have to get the actual content, combine it with the rendered image and replace then the actual content.
-            let imageboardcontainer = document.getElementById('imageboardcontainer').innerHTML;
-            let combined = "<div>" + imageboardcontainer + "</div>" + html;
-            Templates.replaceNodeContents('#imageboardcontainer', combined, js);
-            // ToDo: Check.
+            resultHtml = html;
+            resultJs = js;
             return;
         }).catch(() => {
             log.debug('Rendering failed');
         });
+
+        return {
+            resultHtml: resultHtml,
+            resultJs: resultJs
+        };
     }
 
 
     /**
      * Gets the number of ALL elements in the form and then adds a div for each element to the dom if not already exists.
-     * We need a timeout
+     * This function is designed as async function, so we can wait till all depending actions are ready.
      */
-    function refreshAllImages() {
+    async function refreshAllImages() {
         const singleElements = document.querySelectorAll('[id^="fitem_id_unilabeltype_imageboard_image_"]');
         for (let i = 0; i < singleElements.length; i++) {
-            // Todo: Skip removed elements that are still in the dom but hidden.
+            // TODO: Skip removed elements that are still in the dom but hidden.
             let singleElement = singleElements[i].getAttribute('id');
             let number = singleElement.split('fitem_id_unilabeltype_imageboard_image_')[1];
-            // Check if there exists already a div for this image.
-            const imageid = document.getElementById('unilabel-imageboard-imageid-' + number);
-            if (imageid === null) {
-                // Div does not exist so we need do add it do dom.
-                addImageToDom(number);
-                // ToDo: Do we need a timeout to wait until the dic was added so that refresh can work correctly?
-                // see also refreshImage ... there is already a timeout
-                setTimeout(function() {
-                    refreshImage(number);
-                }, 1000);
+            // Check if there exists already the elment for the image with number xyz.
+            if (!document.getElementById('unilabel-imageboard-element-' + number)) {
+                // Add the new image and wait till it is rendered.
+                await addImageToDom(number);
+                // Refresh the presentation of the image.
+                refreshImage(number);
             } else {
+                // Refresh the presentation of the image.
                 refreshImage(number);
             }
         }
@@ -280,18 +352,30 @@ export const init = (canvaswidth, canvasheight, gridcolor, xsteps, ysteps) => {
 
     /**
      *
-     * @param {int} number
+     * @param {Integer} number
      */
-    function addImageToDom(number) {
-        const imageid = document.getElementById('unilabel-imageboard-imageid-' + number);
-        if (imageid === null) {
-            renderAddedImage(number);
-            // This div does not exist so we need do add it do dom.
-            // Add an obverser to be able to update if image is uploaded.
-            let imagefileNode = document.getElementById('fitem_id_unilabeltype_imageboard_image_' + (number));
-            if (imagefileNode) {
-                let observer = new MutationObserver(refreshImage);
-                observer.observe(imagefileNode, {attributes: true, childList: true, subtree: true});
+    async function addImageToDom(number) {
+        // If there is an invalid number, we do nothing.
+        if (number < 0) {
+            return;
+        }
+
+        // Check whether the image has to be created.
+        if (!document.getElementById('unilabel-imageboard-element-' + number)) {
+            // Get the rendered html for the new preview image.
+            let result = await renderAddedImage(number);
+            if (result.resultHtml) {
+                // Place the new rendered image at the end of the div all preview images are in.
+                document.querySelector('#imageboardcontainer div').insertAdjacentHTML('beforeend', result.resultHtml);
+                // Run the JS for the new image. This actually does nothing but sometime it will.
+                Templates.runTemplateJS(result.resultJs);
+
+                // Add the mutation listener for the filepicker element related to the new image.
+                let imagefileNode = document.getElementById('fitem_id_unilabeltype_imageboard_image_' + (number));
+                if (imagefileNode) {
+                    let observer = new MutationObserver(refreshImage);
+                    observer.observe(imagefileNode, {attributes: true, childList: true, subtree: true});
+                }
             }
         } else {
             // Div already exists so we need only to refresh the image because we only uploaded a new image
@@ -304,109 +388,123 @@ export const init = (canvaswidth, canvasheight, gridcolor, xsteps, ysteps) => {
      *
      * @param {number} number of
      */
-    function renderAddedImage(number) {
+    async function renderAddedImage(number) {
+        if (imageList.includes(number)) {
+            return {};
+        }
+        lastImageNumber = number;
+        imageList.push(lastImageNumber);
         const context = {
             // Data to be rendered
             number: number,
-            title: "title"
+            displaynumber: parseInt(number) + 1,
+            title: "title",
+            wwwroot: cfg.wwwroot
         };
 
-        Templates.renderForPromise('unilabeltype_imageboard/previewimage', context).then(({html, js}) => {
+        let resultHtml;
+        let resultJs;
+        await Templates.renderForPromise('unilabeltype_imageboard/previewimage', context).then(({html, js}) => {
             // We have to get the actual content, combine it with the rendered image and replace then the actual content.
-            let imageboardcontainer = document.getElementById('imageboardcontainer').innerHTML;
-            let combined = "<div>" + imageboardcontainer + "</div>" + html;
-            Templates.replaceNodeContents('#imageboardcontainer', combined, js);
+            resultHtml = html;
+            resultJs = js;
             return;
         }).catch(() => {
-            // No tiny editor present.
+            log.debug('Error while rendering from template');
         });
+
+        return {
+            resultHtml: resultHtml,
+            resultJs: resultJs
+        };
     }
 
     /**
      * If an image was uploaded or inputfields in the form changed then we need to refresh
      * this image.
-     * @param {int} number
+     * @param {Integer} number
      */
-    function refreshImage(number) {
+    async function refreshImage(number) {
         // When there was an upload, then the number is NOT a number.
-        // ToDo: Do not yet know the best way how I will get the number in his case.
+        // TODO: Do not yet know the best way how I will get the number in his case.
         // For now if it is a number the normal refresh can be used and only ONE image will be refreshed.
         // In the else code ther will be a refresh of ALL images until I can refactor this.
         if (!Array.isArray(number)) {
             let imageid = document.getElementById("unilabel-imageboard-imageid-" + number);
-            // Fill all the needed values for imagedata.
-            let imagedata = getAllImagedataFromForm(number);
-            imageid.style.background = imagedata.titlebackgroundcolor;
-            imageid.src = imagedata.src;
+            if (imageid) {
+                // Fill all the needed values for imagedata.
+                let imagedata = getAllImagedataFromForm(number);
+                imageid.style.background = imagedata.titlebackgroundcolor;
+                imageid.src = imagedata.src;
 
-            if (imagedata.src === "") {
-                // Hide the image div.
-                imageid.classList.add("hidden");
-            } else {
-                imageid.classList.remove("hidden");
-                imageid.alt = imagedata.alt;
-            }
+                if (imagedata.src === "") {
+                    // Hide the image div.
+                    imageid.classList.add("hidden");
+                } else {
+                    imageid.classList.remove("hidden");
+                    imageid.alt = imagedata.alt;
+                }
 
-            const imagediv = document.getElementById('unilabel-imageboard-element-' + number);
-            imagediv.style.left = parseInt(imagedata.xposition) + "px";
-            imagediv.style.top = parseInt(imagedata.yposition) + "px";
+                const imagediv = document.getElementById('unilabel-imageboard-element-' + number);
+                imagediv.style.left = parseInt(imagedata.xposition) + "px";
+                imagediv.style.top = parseInt(imagedata.yposition) + "px";
 
-            // Switch to the correct class eg "unilable-imageboard-titlelineheight-4 if lineheight = 4.
-            const idelementtitle = document.getElementById('id_elementtitle-' + number);
-            idelementtitle.classList.remove("unilable-imageboard-titlelineheight-0");
-            idelementtitle.classList.remove("unilable-imageboard-titlelineheight-1");
-            idelementtitle.classList.remove("unilable-imageboard-titlelineheight-2");
-            idelementtitle.classList.remove("unilable-imageboard-titlelineheight-3");
-            idelementtitle.classList.remove("unilable-imageboard-titlelineheight-4");
-            idelementtitle.classList.remove("unilable-imageboard-titlelineheight-5");
-            const dummy = "unilable-imageboard-titlelineheight-" + imagedata.titlelineheight;
-            idelementtitle.classList.add(dummy);
+                // Switch to the correct class eg "unilable-imageboard-titlelineheight-4 if lineheight = 4.
+                const idelementtitle = document.getElementById('id_elementtitle-' + number);
+                idelementtitle.classList.remove("unilable-imageboard-titlelineheight-0");
+                idelementtitle.classList.remove("unilable-imageboard-titlelineheight-1");
+                idelementtitle.classList.remove("unilable-imageboard-titlelineheight-2");
+                idelementtitle.classList.remove("unilable-imageboard-titlelineheight-3");
+                idelementtitle.classList.remove("unilable-imageboard-titlelineheight-4");
+                idelementtitle.classList.remove("unilable-imageboard-titlelineheight-5");
+                const dummy = "unilable-imageboard-titlelineheight-" + imagedata.titlelineheight;
+                idelementtitle.classList.add(dummy);
 
-            if (imagedata.targetwidth != 0) {
-                imageid.style.width = imagedata.targetwidth + "px";
-            } else {
-                imageid.style.width = "auto";
-            }
-            if (imagedata.targetheight != 0) {
-                imageid.style.height = imagedata.targetheight + "px";
-            } else {
-                imageid.style.height = "auto";
-            }
-            if (imagedata.title != "") {
-                imageid.title = (parseInt(number) + 1) + ": " + imagedata.title;
-            } else {
-                imageid.title = (parseInt(number) + 1) + ": ";
-            }
-            if (imagedata.border != 0) {
-                imageid.style.border = imagedata.border + "px solid";
-                imageid.style.borderColor = imagedata.titlebackgroundcolor;
-            } else {
-                imageid.style.border = "0";
-            }
-            if (imagedata.borderradius != 0) {
-                imageid.style.borderRadius = imagedata.borderradius + "px";
-            } else {
-                imageid.style.borderRadius = "0";
-            }
+                if (imagedata.targetwidth != 0) {
+                    imageid.style.width = imagedata.targetwidth + "px";
+                } else {
+                    imageid.style.width = "auto";
+                }
+                if (imagedata.targetheight != 0) {
+                    imageid.style.height = imagedata.targetheight + "px";
+                } else {
+                    imageid.style.height = "auto";
+                }
+                if (imagedata.title != "") {
+                    imageid.title = (parseInt(number) + 1) + ": " + imagedata.title;
+                } else {
+                    imageid.title = (parseInt(number) + 1) + ": ";
+                }
+                if (imagedata.border != 0) {
+                    imageid.style.border = imagedata.border + "px solid";
+                    imageid.style.borderColor = imagedata.titlebackgroundcolor;
+                } else {
+                    imageid.style.border = "0";
+                }
+                if (imagedata.borderradius != 0) {
+                    imageid.style.borderRadius = imagedata.borderradius + "px";
+                } else {
+                    imageid.style.borderRadius = "0";
+                }
 
-            // Title above image.
-            const elementtitle = document.getElementById('id_elementtitle-' + number);
-            elementtitle.innerHTML = imagedata.title;
-            elementtitle.style.color = imagedata.titlecolor;
-            elementtitle.style.backgroundColor = imagedata.titlebackgroundcolor;
-            elementtitle.style.fontSize = imagedata.fontsize + "px";
-            elementtitle.style.borderRadius = imagedata.borderradius + "px";
+                // Title above image.
+                const elementtitle = document.getElementById('id_elementtitle-' + number);
+                elementtitle.innerHTML = imagedata.title;
+                elementtitle.style.color = imagedata.titlecolor;
+                elementtitle.style.backgroundColor = imagedata.titlebackgroundcolor;
+                elementtitle.style.fontSize = imagedata.fontsize + "px";
+                elementtitle.style.borderRadius = imagedata.borderradius + "px";
+            }
         } else {
-            setTimeout(function() {
-                refreshAllImages();
-            }, 600);
+            // Because the next call is a async call we have to wait till it is ready.
+            await refreshAllImages();
         }
     }
 
     /**
      * Get all data from image that is stored in the form and collects them in one array.
      *
-     * @param {int} number of the image
+     * @param {Integer} number of the image
      * @returns {*[]} Array with the collected information that are set in the form for the image.
      */
     function getAllImagedataFromForm(number) {
@@ -452,14 +550,30 @@ export const init = (canvaswidth, canvasheight, gridcolor, xsteps, ysteps) => {
         imagedata.borderradius = document.getElementById(imageids.borderradius).value;
 
         let div = document.getElementById(imageids.coordinates);
-        if (imagedata.xposition === "") {
-            // If an element was added the coordinates are empty ...
-            imagedata.xposition = 0;
+        if (div) {
+            if (imagedata.xposition === "") {
+                // If an element was added the coordinates are empty ...
+                imagedata.xposition = 0;
+            }
+            if (imagedata.yposition === "") {
+                imagedata.yposition = 0;
+            }
+            div.innerHTML = (parseInt(number) + 1) + ": " + imagedata.xposition + " / " + imagedata.yposition;
         }
-        if (imagedata.yposition === "") {
-            imagedata.yposition = 0;
-        }
-        div.innerHTML = (parseInt(number) + 1) + ": " + imagedata.xposition + " / " + imagedata.yposition;
         return imagedata;
+    }
+
+    /**
+     * This is a helper function to create an html element which can be used to replace another element.
+     *
+     * @param {Sring} htmlString
+     * @returns {Element}
+     */
+    function createElementFromHTML(htmlString) {
+        var div = document.createElement('div');
+        div.innerHTML = htmlString.trim();
+
+        // Change this to div.childNodes to support multiple top-level nodes.
+        return div.firstChild;
     }
 };

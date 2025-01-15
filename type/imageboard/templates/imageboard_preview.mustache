@@ -67,7 +67,9 @@
 
 <div id="unilabel-imageboard-preview">
     <div id="unilabel-imageboard-background-canvas" style="position: relative;">
-        <div id="imageboardcontainer"></div>
+        <div id="imageboardcontainer">
+            <div></div>
+        </div>
     </div>
 
 </div>
@@ -100,8 +102,5 @@
             '{{xsteps}}',
             '{{ysteps}}'
         );
-    });
-    require(['unilabeltype_imageboard/imageboarddraganddrop'], function(imageboarddraganddrop) {
-    imageboarddraganddrop.init();
     });
 {{/js}}
