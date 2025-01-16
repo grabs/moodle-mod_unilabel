@@ -26,6 +26,8 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
     xsteps = parseInt(xsteps, 10);
     ysteps = parseInt(ysteps, 10);
 
+    let emptyPictureSrc = cfg.wwwroot + '/mod/unilabel/type/imageboard/pix/empty-picture.gif';
+
     let imageList = new Array();
     let lastImageNumber = -1;
 
@@ -88,9 +90,9 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
         var number = getNumberFromEvent(event);
         if (number >= 0) {
             refreshImage(number);
-        } else {
-            // TODO: only refresh if titlecolor, titlebackgroundcolor, titlesize was changed.
-            await refreshAllImages();
+        // } else {
+        //     // TODO: only refresh if titlecolor, titlebackgroundcolor, titlesize was changed.
+        //     await refreshAllImages();
         }
     }
 
@@ -173,6 +175,28 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
         // First: When uploading a backgroundimage the backgroundimage of the backgroundimagediv must be updated.
         // TODO: better use eventlistener
         let backgroundfileNode = document.getElementById('id_unilabeltype_imageboard_backgroundimage_fieldset');
+        require(['core_form/events'], function(FormEvent) {
+            backgroundfileNode.addEventListener(FormEvent.eventTypes.uploadChanged, (event) => {
+                // In the event object the target is the filemanager we want to access.
+                const filemanager = event.target;
+                const interval = setInterval(async() => {
+                    // As long the filemanager is updating, e.g. while uploading large images, we have to wait.
+                    if (!filemanager.classList.contains('fm-updating')) {
+                        clearInterval(interval);
+                        // If the filemanager does not have any items we can reset our preview image.
+                        if (filemanager.classList.contains('fm-noitems')) {
+                            // The filemanager caches the last loaded image, so we would not realy know
+                            // if it is deleted. To make sure we know later too, we remove that cached image.
+                            let img = event.target.getElementsByTagName('img')[0];
+                            img.remove();
+                            // Now reset the preview image.
+                            refreshBackgroundImage();
+                        }
+                    }
+                }, 100);
+            });
+        });
+
         if (backgroundfileNode) {
             let observer = new MutationObserver(refreshBackgroundImage);
             observer.observe(backgroundfileNode, {attributes: true, childList: true, subtree: true});
@@ -370,10 +394,41 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
                 // Run the JS for the new image. This actually does nothing but sometime it will.
                 Templates.runTemplateJS(result.resultJs);
 
-                // Add the mutation listener for the filepicker element related to the new image.
+
+                // Add listeners to the filemanager.
                 let imagefileNode = document.getElementById('fitem_id_unilabeltype_imageboard_image_' + (number));
                 if (imagefileNode) {
-                    let observer = new MutationObserver(refreshImage);
+                    // Add the listener to watch changes in the filemanager.
+                    // We use this to be aware of deleted images.
+                    // From core_form/events come the event types. We use the event type "uploadChanged".
+                    require(['core_form/events'], function(FormEvent) {
+                        imagefileNode.addEventListener(FormEvent.eventTypes.uploadChanged, (event) => {
+                            // In the event object the target is the filemanager we want to access.
+                            const filemanager = event.target;
+                            const interval = setInterval(async() => {
+                                // As long the filemanager is updating, e.g. while uploading large images, we have to wait.
+                                if (!filemanager.classList.contains('fm-updating')) {
+                                    clearInterval(interval);
+                                    // If the filemanager does not have any items we can reset our preview image.
+                                    if (filemanager.classList.contains('fm-noitems')) {
+                                        // The filemanager caches the last loaded image, so we would not realy know
+                                        // if it is deleted. To make sure we know later too, we remove that cached image.
+                                        let img = event.target.getElementsByTagName('img')[0];
+                                        img.remove();
+                                        // Now reset the preview image.
+                                        resetPreviewImage(number);
+                                    }
+                                }
+                            }, 100);
+                        });
+                    });
+
+                    // Add the mutation listener for the filepicker element related to the new image.
+                    let observer = new MutationObserver(async() => {
+                        await addImageToDom(number);
+                        // Refresh the presentation of the image.
+                        refreshImage(number);
+                    });
                     observer.observe(imagefileNode, {attributes: true, childList: true, subtree: true});
                 }
             }
@@ -382,6 +437,25 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
             // to an already existing div.
             refreshImage(number);
         }
+    }
+
+    /**
+     * Reset the preview image if the image is deleted but the element is still there.
+     * @param {Integer} number
+     */
+    function resetPreviewImage(number) {
+        let prevImg = document.querySelector('#unilabel-imageboard-imageid-' + number);
+        prevImg.setAttribute('src', emptyPictureSrc);
+        prevImg.style.background = 'none';
+        prevImg.style.height = 'auto';
+        prevImg.style.width = 'auto';
+        prevImg.style.border = 'none';
+        prevImg.style.borderRadius = 0;
+        log.debug('Image nr ' + number + ' removed');
+        document.getElementById('id_unilabeltype_imageboard_targetwidth_' + number).value = 0;
+        document.getElementById('id_unilabeltype_imageboard_targetheight_' + number).value = 0;
+        document.getElementById('id_unilabeltype_imageboard_border_' + number).value = 0;
+        document.getElementById('id_unilabeltype_imageboard_borderradius_' + number).value = 0;
     }
 
     /**
@@ -399,7 +473,7 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
             number: number,
             displaynumber: parseInt(number) + 1,
             title: "title",
-            wwwroot: cfg.wwwroot
+            src: emptyPictureSrc
         };
 
         let resultHtml;
@@ -425,11 +499,8 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
      * @param {Integer} number
      */
     async function refreshImage(number) {
-        // When there was an upload, then the number is NOT a number.
-        // TODO: Do not yet know the best way how I will get the number in his case.
-        // For now if it is a number the normal refresh can be used and only ONE image will be refreshed.
-        // In the else code ther will be a refresh of ALL images until I can refactor this.
-        if (!Array.isArray(number)) {
+        // Only refresh a real image with a positive number.
+        if (number >= 0) {
             let imageid = document.getElementById("unilabel-imageboard-imageid-" + number);
             if (imageid) {
                 // Fill all the needed values for imagedata.
@@ -495,9 +566,6 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
                 elementtitle.style.fontSize = imagedata.fontsize + "px";
                 elementtitle.style.borderRadius = imagedata.borderradius + "px";
             }
-        } else {
-            // Because the next call is a async call we have to wait till it is ready.
-            await refreshAllImages();
         }
     }
 
@@ -540,7 +608,7 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
         // Get the src of the draftfile.
         const element = document.getElementById('id_unilabeltype_imageboard_image_' + number + '_fieldset');
         const imagetag = element.getElementsByTagName('img');
-        let src = '';
+        let src = emptyPictureSrc;
         if (imagetag.length && imagetag.length != 0) {
             src = imagetag[0].src;
             src = src.split('?')[0];
