@@ -1,5 +1,11 @@
 ## Release notes
 
+### Release 4.4.5
+* imageboard: remove setTimeout in js and fix helpergrid and preview image structure
+* imageboard: fix preview when deleting images in filemanager
+* optimize github actions for subplugins
+* fix lang string order
+
 ### Release 4.4.4
 * Add new url title to show a user friendly aria-label (#50)
 * Make tiles in grid focussable with keyboard (#52)
