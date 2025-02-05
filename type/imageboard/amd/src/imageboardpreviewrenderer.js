@@ -256,6 +256,9 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
             backgrounddiv.style.height = canvasheight + "px";
             await refreshHelpergrid(canvaswidth, canvasheight, gridcolor, xsteps, ysteps);
         }
+        log.debug('canvas size changed');
+        const myevent = new CustomEvent('canvaschanged');
+        document.dispatchEvent(myevent);
     }
 
     /**
