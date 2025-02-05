@@ -1,5 +1,8 @@
 ## Release notes
 
+### Release 4.5.5
+* imageboard: fix dnd boundery after changing background size
+
 ### Release 4.5.4
 * imageboard: remove setTimeout in js and fix helpergrid and preview image structure
 * imageboard: fix preview when deleting images in filemanager

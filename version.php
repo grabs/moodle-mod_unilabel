@@ -24,8 +24,8 @@
  */
 defined('MOODLE_INTERNAL') || die;
 
-$plugin->version  = 2025020400;     // The current version.
-$plugin->release  = '4.5.4 (Build: 2025020400)';
+$plugin->version  = 2025020401;     // The current version.
+$plugin->release  = '4.5.5 (Build: 2025020500)';
 $plugin->maturity = MATURITY_STABLE;
 
 $plugin->requires  = 2024100100;     // Requires Moodle 4.1.
