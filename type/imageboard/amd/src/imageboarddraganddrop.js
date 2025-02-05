@@ -35,11 +35,19 @@ export const init = () => {
      *  We need two event listeners for drag and drop. One when the dragging starts and one when it ends.
      */
     function registerDnDListener() {
+        refreshCanvasSize();
+        canvas.addEventListener("dragstart", dragStart, false);
+        canvas.addEventListener("dragend", dragEnd, false);
+        document.addEventListener("canvaschanged", refreshCanvasSize);
+    }
+
+    /**
+     * Update canvas size. So drag and drop has new boundaries.
+     */
+    function refreshCanvasSize() {
         canvas = document.getElementById("unilabel-imageboard-background-canvas");
         canvaswidth = canvas.clientWidth;
         canvasheight = canvas.clientHeight;
-        canvas.addEventListener("dragstart", dragStart, false);
-        canvas.addEventListener("dragend", dragEnd, false);
     }
 
     /**
