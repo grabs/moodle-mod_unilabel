@@ -729,7 +729,6 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
             src: '',
             border: 'id_unilabeltype_imageboard_border_' + technicalnumber,
             borderradius: 'id_unilabeltype_imageboard_borderradius_' + technicalnumber,
-               coordinates: "unilabel-imageboard-coordinates-" + technicalnumber,
         };
 
         let imagedata = {};
@@ -757,17 +756,6 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
         imagedata.border = document.getElementById(imageids.border).value;
         imagedata.borderradius = document.getElementById(imageids.borderradius).value;
 
-        let div = document.getElementById(imageids.coordinates);
-        if (div) {
-            if (imagedata.xposition === "") {
-                // If an element was added the coordinates are empty ...
-                imagedata.xposition = 0;
-            }
-            if (imagedata.yposition === "") {
-                imagedata.yposition = 0;
-            }
-            div.innerHTML = (parseInt(technicalnumber) + 1) + ": " + imagedata.xposition + " / " + imagedata.yposition;
-        }
         return imagedata;
     }
 
