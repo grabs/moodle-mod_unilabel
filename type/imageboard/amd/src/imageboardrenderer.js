@@ -17,11 +17,11 @@ import * as Str from 'core/str';
  */
 export const init = (cmid, canvaswidth, canvasheight, autoscale, showgrid) => {
     if (autoscale === true) {
-        // To autoscale we can not just listen to the risize event from the window.
+        // To autoscale we can not just listen to the resize event from the window.
         // We have to check the size of the module container. It will change its size depending on the left and right drawers.
         // To accomplish this, we use the resizeObserver object.
 
-        // The container we want be informed about its resize.
+        // The container we want to be informed about its resize.
         const moduleContainer = document.querySelector("#module-" + cmid + " div.activity-item");
 
         // Now we create the resizeObserver object.

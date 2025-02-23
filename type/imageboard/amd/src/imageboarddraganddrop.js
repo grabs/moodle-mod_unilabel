@@ -41,6 +41,7 @@ export const init = () => {
         document.addEventListener("canvaschanged", refreshCanvasSize);
     }
 
+
     /**
      * Update canvas size. So drag and drop has new boundaries.
      */
@@ -81,6 +82,8 @@ export const init = () => {
             selectedImage.fontsize = imagedata.fontsize;
             selectedImage.width = imagedata.targetwidth;
             selectedImage.height = imagedata.targetheight;
+            selectedImage.border = imagedata.border;
+            selectedImage.borderradius = imagedata.borderradius;
             selectedImage.itemToMove = document.getElementById('unilabel-imageboard-element-' + selectedImage.number);
             // Attention: layerX and layerY is the relative position of the mouseposition inside div.
             // So div is the image or the title and the layer depends on this according to the complete element.
@@ -114,24 +117,64 @@ export const init = () => {
             // xposition = 123 with snap 100 will be calculated to 10.
             let xposition = calculateXposition(event, snap);
             let yposition = calculateYposition(event, snap);
+
+            // Den Imagesettings-Dialog neben dem Mauszeiger anzeigen.
+            // ISt eh sichtbar showimagesettingsdiv();
+
+            // Die mform aktiasieren;
+            updateform(selectedImage.number, xposition, yposition);
+            // Den Imagesettings-Anzeigebereich aktualisieren
+            updateimagesettings(selectedImage, xposition, yposition);
+
+            // Update the Position of the image
             selectedImage.itemToMove.style.left = xposition + selectedImage.titlecorrectorX + "px";
             selectedImage.itemToMove.style.top = parseInt(yposition) + parseInt(selectedImage.titlecorrectorY) + "px";
-
-            // Change the inputfield.
-            const inputPositionX = document.getElementById('id_unilabeltype_imageboard_xposition_' + (selectedImage.number));
-            inputPositionX.value = xposition;
-
-            const inputPositionY = document.getElementById('id_unilabeltype_imageboard_yposition_' + (selectedImage.number));
-            inputPositionY.value = parseInt(yposition) + parseInt(selectedImage.titlecorrectorY);
-
-            let coordinates = document.getElementById('unilabel-imageboard-coordinates-' + selectedImage.number);
-            coordinates.innerHTML = (parseInt(selectedImage.number) + 1) + ": " +
-                inputPositionX.value + " / " + inputPositionY.value;
 
             // Reset saved image data
             selectedImage.number = null;
             selectedImage.titlecorrectorY = 0;
         }
+    }
+    /**
+     *
+     * @param {number} number
+     * @param {string} xposition
+     * @param {string} yposition
+     */
+    function updateform(number, xposition, yposition) {
+        // Change the inputfield in form.
+        const inputPositionX = document.getElementById('id_unilabeltype_imageboard_xposition_' + (selectedImage.number));
+        inputPositionX.value = xposition;
+
+        const inputPositionY = document.getElementById('id_unilabeltype_imageboard_yposition_' + (selectedImage.number));
+        inputPositionY.value = parseInt(yposition) + parseInt(selectedImage.titlecorrectorY);
+    }
+
+    /**
+     * Call this function after drag and drop end or if input fields in form where changed.
+     * @param {selectedImage} selectedImage image that was changed
+     * @param {xposition} xposition
+     * @param {yposition} yposition
+     */
+    function updateimagesettings(selectedImage, xposition, yposition) {
+
+        // Den Imagesettings-Anzeigebereich aktualisieren
+        const imagesettingsNumber = document.getElementById('id-unilabeltype-imageboard-imagesettings-dialog-number');
+        imagesettingsNumber.innerHTML = (parseInt(selectedImage.number) + 1);
+
+        const imagesettingsTitle = document.getElementById('id-unilabeltype-imageboard-imagesettings-dialog-title');
+        imagesettingsTitle.value = selectedImage.title;
+
+        const imagesettingsInputPositionX = document.getElementById('id-unilabeltype-imageboard-imagesettings-dialog-xposition');
+        imagesettingsInputPositionX.value = parseInt(xposition) + parseInt(selectedImage.titlecorrectorX);
+        const imagesettingsInputPositionY = document.getElementById('id-unilabeltype-imageboard-imagesettings-dialog-yposition');
+        imagesettingsInputPositionY.value = parseInt(yposition) + parseInt(selectedImage.titlecorrectorY);
+        const imagesettingsInputBorder = document.getElementById('id-unilabeltype-imageboard-imagesettings-dialog-border');
+        imagesettingsInputBorder.value = parseInt(selectedImage.border);
+
+        const imagesettingsInputBorderradius =
+            document.getElementById('id-unilabeltype-imageboard-imagesettings-dialog-borderradius');
+        imagesettingsInputBorderradius.value = parseInt(selectedImage.borderradius);
     }
 
     /**
