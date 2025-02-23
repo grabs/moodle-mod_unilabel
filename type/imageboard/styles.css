@@ -149,3 +149,34 @@
 .unilabeltype-imageboard-helpergrid-rectangle {
     z-index: 0;
 }
+
+
+#id-unilabeltype-imageboard-imagesettings-dialog {
+    width: 100%;
+    max-width: 400px;
+    z-index: 10;
+    margin-bottom: 20px;
+}
+#id-unilabeltype-imageboard-imagesettings-dialog-close {
+    color: #000;
+    background-color: #eee;
+    position: absolute;
+    z-index: 10;
+    right: 0;
+    opacity: 1;
+}
+#id-unilabeltype-imageboard-imagesettings-dialog-close:hover {
+    color: #000;
+    background-color: #aaa;
+}
+#id-unilabeltype-imageboard-imagesettings-dialog-xposition,
+#id-unilabeltype-imageboard-imagesettings-dialog-yposition {
+    width: 70px;
+}
+#id-unilabeltype-imageboard-imagesettings-dialog-border,
+#id-unilabeltype-imageboard-imagesettings-dialog-borderradius {
+    width: 50px;
+}
+.unilabeltype-imageboard-imagesettings-dialog-position .row {
+    margin-left: 0;
+}

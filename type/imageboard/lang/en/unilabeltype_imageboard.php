@@ -66,6 +66,7 @@ $string['image'] = 'Image';
 $string['imagelist'] = 'Imagelist';
 $string['imagenr'] = 'Image {$a}';
 $string['images'] = 'Images';
+$string['imagesettingsdialogtitle'] = 'Settings of selected image';
 $string['nocontent'] = 'No content';
 $string['placeholder_targetheight'] = 'Height';
 $string['placeholder_targetwidth'] = 'Width';

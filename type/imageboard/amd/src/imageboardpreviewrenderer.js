@@ -83,46 +83,149 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
     }
 
     /**
-     *
+     * This function handles all focus out events if the event is from on of our input fields.
      * @param {event} event
      */
     async function onChangeAttribute(event) {
-        var number = getNumberFromEvent(event);
-        if (number >= 0) {
-            refreshImage(number);
-        // } else {
-        //     // TODO: only refresh if titlecolor, titlebackgroundcolor, titlesize was changed.
-        //     await refreshAllImages();
+        let technicalnumber = -1;
+        // 1. Check where the focus out event was created form input or imagesetting input.
+        const eventid = event.target.getAttribute('id');
+        let eventsourceimagesetting = eventid.split("id-unilabeltype-imageboard-imagesettings-dialog-")[1];
+        let eventsourceform = eventid.split("id_unilabeltype_imageboard_")[1];
+        // ToDo:  Check if it is a focus out event has to be more precise ... Delete-Icon!!!!
+        if (typeof eventsourceimagesetting !== "undefined" || typeof eventsourceform !== "undefined") {
+
+            // 2. If ID starts with id_unilabeltype_imageboard_ then focus out came from form input fields.
+            if (typeof eventsourceimagesetting !== "undefined" && eventsourceimagesetting !== '') {
+                // Call updateForm and use as parameter the input field that should be updated in the form.
+                technicalnumber = updateForm(eventsourceimagesetting);
+            }
+
+            // 3. ID starts with id_unilabeltype_imageboard_. Focus from the form The imagesettings must be updated.
+            if (typeof eventsourceform !== "undefined" && eventsourceform !== '') {
+                // We have to update all field in imagesettingsdialog
+                // Aus dem event nun doch die nummer auslesen
+                technicalnumber = eventsourceform.substr(eventsourceform.length - 1, eventsourceform.length);
+                writeFormdataOfImageToImagesettingsdialogupdate(technicalnumber);
+            }
+
+            // Now we know which image was changed and we can refresh on or all images.
+            if (technicalnumber >= 0) {
+                refreshImage(technicalnumber);
+            // } else {
+            //     // TODO: only refresh if titlecolor, titlebackgroundcolor, titlesize was changed.
+            //     await refreshAllImages();
+            }
         }
     }
 
     /**
      *
      * @param {event} event
-     * @returns {*}
      */
-    function getNumberFromEvent(event) {
-        // If there is a focusout event from one of the following input fields then evaluate
-        // the number of the element that was changed.
-        let imageidselectors = [
-            'id_unilabeltype_imageboard_title_',
-            'id_unilabeltype_imageboard_alt_',
-            'id_unilabeltype_imageboard_xposition_',
-            'id_unilabeltype_imageboard_yposition_',
-            'id_unilabeltype_imageboard_targetwidth_',
-            'id_unilabeltype_imageboard_targetheight_',
-            'id_unilabeltype_imageboard_border_',
-            'id_unilabeltype_imageboard_borderradius_',
-        ];
-        const eventid = event.target.getAttribute('id');
-        for (let i = 0; i < imageidselectors.length; i++) {
-            if (eventid.includes(imageidselectors[i])) {
-                return eventid.split(imageidselectors[i])[1];
+    function onRightclick(event) {
+        event.preventDefault();
+        // Get the number of the image that was selected with the right mouse button
+        var idoftarget = event.target.getAttribute('id');
+        if (!idoftarget) {
+            return;
+        }
+
+        // Check, if idoftarget ist an id of an image
+        let technicalnumber = idoftarget.split('unilabel-imageboard-imageid-')[1];
+        // Oder ein Titel wurde angeklickt
+        if (!technicalnumber) {
+            technicalnumber = idoftarget.split('id_elementtitle-')[1];
+        }
+        if (technicalnumber) {
+            // Update the imagesettingsdialog with the data of that image and show the dialog
+            writeFormdataOfImageToImagesettingsdialogupdate(technicalnumber);
+            // Wenn das selectierte Bild eine andere nummer hat als das aktuelle imagesettings anzeigt dann auf jeden fall anzeigen
+            const imagenumber =
+                parseInt(document.getElementById('id-unilabeltype-imageboard-imagesettings-dialog-number').innerHTML);
+            if (technicalnumber == imagenumber) {
+                imagesettingsdivvisibilitytoggler();
+            } else {
+                // Imagesettingsdialog has do be visible. So if it is already visible it is no problem to set it
+                // once again visible. If it is hidden, the set it to visible.
+                imagesettingsdivvisibility('visible');
+            }
+        } else {
+            // No image was selected ... do nothing.
+        }
+    }
+
+    /**
+     *
+     */
+    function imagesettingsdivvisibilitytoggler() {
+        let imagesettingsdiv = document.getElementById("id-unilabeltype-imageboard-imagesettings-dialog");
+        if (imagesettingsdiv && imagesettingsdiv.style && imagesettingsdiv.style.visibility == 'visible') {
+            imagesettingsdiv.style.visibility = 'hidden';
+        } else {
+            if (imagesettingsdiv && imagesettingsdiv.style && imagesettingsdiv.style.visibility == 'hidden') {
+                imagesettingsdiv.style.visibility = 'visible';
             }
         }
-        // If focus out was NOT from one of our inputfield then return a number less than zero.
-        return -1;
     }
+
+    /**
+     * Upates the input field in the mform
+     *
+     * @param {string} eventsourceimagesetting
+     * @returns {number}
+     */
+    function updateForm(eventsourceimagesetting) {
+        const technicalnumber =
+            parseInt(document.getElementById('id-unilabeltype-imageboard-imagesettings-dialog-number').innerHTML) - 1;
+        // Only do something if the changed value is an integer.
+        // ToDo: Also add check all other input fields.
+        let value =
+            document.getElementById('id-unilabeltype-imageboard-imagesettings-dialog-' + eventsourceimagesetting).value;
+        if (eventsourceimagesetting === 'xposition' ||
+            eventsourceimagesetting === 'yposition' ||
+            eventsourceimagesetting === 'border' ||
+            eventsourceimagesetting === 'borderradius') {
+            let num = Number(value);
+            if (value !== '' && !Number.isInteger(num)) {
+                return -1;
+            }
+        }
+
+        let field = document.getElementById('id_unilabeltype_imageboard_' + eventsourceimagesetting + '_' + technicalnumber);
+        if (field !== null) {
+            field.value = value;
+        }
+        return technicalnumber;
+    }
+
+    /**
+     *
+     * @param {number} technicalnumber
+     */
+    function writeFormdataOfImageToImagesettingsdialogupdate(technicalnumber) {
+        let selectedImage = getAllImagedataFromForm(technicalnumber);
+        // Den Imagesettings-Anzeigebereich aktualisieren
+        const imagesettingsNumber = document.getElementById('id-unilabeltype-imageboard-imagesettings-dialog-number');
+        imagesettingsNumber.innerHTML = (parseInt(selectedImage.technicalnumber) + 1);
+
+        const imagesettingsTitle = document.getElementById('id-unilabeltype-imageboard-imagesettings-dialog-title');
+        imagesettingsTitle.value = selectedImage.title;
+
+        const imagesettingsInputPositionX =
+            document.getElementById('id-unilabeltype-imageboard-imagesettings-dialog-xposition');
+        imagesettingsInputPositionX.value = parseInt(selectedImage.xposition);
+        const imagesettingsInputPositionY =
+            document.getElementById('id-unilabeltype-imageboard-imagesettings-dialog-yposition');
+        imagesettingsInputPositionY.value = parseInt(selectedImage.yposition);
+        const imagesettingsInputBorder = document.getElementById('id-unilabeltype-imageboard-imagesettings-dialog-border');
+        imagesettingsInputBorder.value = parseInt(selectedImage.border);
+
+        const imagesettingsInputBorderradius =
+            document.getElementById('id-unilabeltype-imageboard-imagesettings-dialog-borderradius');
+        imagesettingsInputBorderradius.value = parseInt(selectedImage.borderradius);
+    }
+
 
     /**
      * Add a new preview image when a new element is added.
@@ -172,6 +275,12 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
             onRemoveElement(event);
         });
 
+        // All click-events will be handeled by oneListenerForAllInputClick.
+        mform.addEventListener("click", onclickExecute, false);
+
+        // All click-events will be handeled by oneListenerForAllInputClick.
+        mform.addEventListener("contextmenu", onRightclick, false);
+
         // First: When uploading a backgroundimage the backgroundimage of the backgroundimagediv must be updated.
         // TODO: better use eventlistener
         let backgroundfileNode = document.getElementById('id_unilabeltype_imageboard_backgroundimage_fieldset');
@@ -210,6 +319,33 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
         if (canvasy) {
             canvasy.addEventListener('change', refreshBackgroundImage);
         }
+    }
+
+
+    /**
+     * OnClickEvent is needed for the close-Button of imagesettings.
+     * @param {event} event
+     */
+    function onclickExecute(event) {
+        var targetid = event.target.getAttribute('id');
+        var mform = targetid.split('button-mform1')[1];
+        if (mform) {
+            // Das wird über den event itemadded bereits abgearbeitet ...
+        } else {
+            // Wenn kein Element hinzugefügt wird prüfen, ob man den Imagesettingsdialog ausblenden will.
+            var imagesettindgdialogid = event.target.getAttribute('id');
+            if (imagesettindgdialogid === 'id-unilabeltype-imageboard-imagesettings-dialog-close') {
+                imagesettingsdivvisibility('hidden');
+            }
+        }
+    }
+    /**
+     *
+     * @param {string} visibility
+     */
+    function imagesettingsdivvisibility(visibility) {
+        let imagesettingsdiv = document.getElementById("id-unilabeltype-imageboard-imagesettings-dialog");
+        imagesettingsdiv.style.visibility = visibility;
     }
 
     /**
@@ -575,28 +711,29 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
     /**
      * Get all data from image that is stored in the form and collects them in one array.
      *
-     * @param {Integer} number of the image
+     * @param {Integer} technicalnumber of the image
      * @returns {*[]} Array with the collected information that are set in the form for the image.
      */
-    function getAllImagedataFromForm(number) {
+    function getAllImagedataFromForm(technicalnumber) {
         let imageids = {
-            title: 'id_unilabeltype_imageboard_title_' + number,
+            title: 'id_unilabeltype_imageboard_title_' + technicalnumber,
             titlecolor: 'id_unilabeltype_imageboard_titlecolor_colourpicker',
             titlebackgroundcolor: 'id_unilabeltype_imageboard_titlebackgroundcolor_colourpicker',
             titlelineheight: 'id_unilabeltype_imageboard_titlelineheight',
             fontsize: 'id_unilabeltype_imageboard_fontsize',
-            alt: 'id_unilabeltype_imageboard_alt_' + number,
-            xposition: 'id_unilabeltype_imageboard_xposition_' + number,
-            yposition: 'id_unilabeltype_imageboard_yposition_' + number,
-            targetwidth: 'id_unilabeltype_imageboard_targetwidth_' + number,
-            targetheight: 'id_unilabeltype_imageboard_targetheight_' + number,
+            alt: 'id_unilabeltype_imageboard_alt_' + technicalnumber,
+            xposition: 'id_unilabeltype_imageboard_xposition_' + technicalnumber,
+            yposition: 'id_unilabeltype_imageboard_yposition_' + technicalnumber,
+            targetwidth: 'id_unilabeltype_imageboard_targetwidth_' + technicalnumber,
+            targetheight: 'id_unilabeltype_imageboard_targetheight_' + technicalnumber,
             src: '',
-            border: 'id_unilabeltype_imageboard_border_' + number,
-            borderradius: 'id_unilabeltype_imageboard_borderradius_' + number,
-            coordinates: "unilabel-imageboard-coordinates-" + number,
+            border: 'id_unilabeltype_imageboard_border_' + technicalnumber,
+            borderradius: 'id_unilabeltype_imageboard_borderradius_' + technicalnumber,
+               coordinates: "unilabel-imageboard-coordinates-" + technicalnumber,
         };
 
         let imagedata = {};
+        imagedata.technicalnumber = technicalnumber;
         imagedata.title = document.getElementById(imageids.title).value;
         imagedata.titlecolor = document.getElementById(imageids.titlecolor).value;
         imagedata.titlebackgroundcolor = document.getElementById(imageids.titlebackgroundcolor).value;
@@ -609,7 +746,7 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
         imagedata.targetheight = document.getElementById(imageids.targetheight).value;
 
         // Get the src of the draftfile.
-        const element = document.getElementById('id_unilabeltype_imageboard_image_' + number + '_fieldset');
+        const element = document.getElementById('id_unilabeltype_imageboard_image_' + technicalnumber + '_fieldset');
         const imagetag = element.getElementsByTagName('img');
         let src = emptyPictureSrc;
         if (imagetag.length && imagetag.length != 0) {
@@ -629,7 +766,7 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
             if (imagedata.yposition === "") {
                 imagedata.yposition = 0;
             }
-            div.innerHTML = (parseInt(number) + 1) + ": " + imagedata.xposition + " / " + imagedata.yposition;
+            div.innerHTML = (parseInt(technicalnumber) + 1) + ": " + imagedata.xposition + " / " + imagedata.yposition;
         }
         return imagedata;
     }
