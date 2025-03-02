@@ -170,6 +170,14 @@
 #id-unilabeltype-imageboard-imagesettings-dialog-borderradius {
     width: 50px;
 }
-.unilabeltype-imageboard-imagesettings-dialog-position .row {
+.unilabeltype-imageboard-imagesettings-dialog-position .row,
+.unilabeltype-imageboard-imagesettings-dialog-targetsize .row {
     margin-left: 0;
+}
+
+.unilabeltype-imageboard-imagesettings-dialog-position,
+.unilabeltype-imageboard-imagesettings-dialog-targetsize {
+    border: solid 1px;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
 }

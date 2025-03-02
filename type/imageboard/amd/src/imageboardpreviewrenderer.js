@@ -218,6 +218,14 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
         const imagesettingsInputPositionY =
             document.getElementById('id-unilabeltype-imageboard-imagesettings-dialog-yposition');
         imagesettingsInputPositionY.value = parseInt(selectedImage.yposition);
+
+        const imagesettingsInputTargetwidth =
+            document.getElementById('id-unilabeltype-imageboard-imagesettings-dialog-targetwidth');
+        imagesettingsInputTargetwidth.value = parseInt(selectedImage.targetwidth);
+        const imagesettingsInputTargetheight =
+            document.getElementById('id-unilabeltype-imageboard-imagesettings-dialog-targetheight');
+        imagesettingsInputTargetheight.value = parseInt(selectedImage.targetheight);
+
         const imagesettingsInputBorder = document.getElementById('id-unilabeltype-imageboard-imagesettings-dialog-border');
         imagesettingsInputBorder.value = parseInt(selectedImage.border);
 
