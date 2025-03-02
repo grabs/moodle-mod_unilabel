@@ -652,7 +652,7 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
             if (imageid) {
                 // Fill all the needed values for imagedata.
                 let imagedata = getAllImagedataFromForm(number);
-                imageid.style.background = imagedata.titlebackgroundcolor;
+                // A imageid.style.background = imagedata.titlebackgroundcolor;
                 imageid.src = imagedata.src;
 
                 if (imagedata.src === "") {
