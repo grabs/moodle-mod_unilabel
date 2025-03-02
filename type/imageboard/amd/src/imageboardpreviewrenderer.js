@@ -232,6 +232,9 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
         const imagesettingsInputBorderradius =
             document.getElementById('id-unilabeltype-imageboard-imagesettings-dialog-borderradius');
         imagesettingsInputBorderradius.value = parseInt(selectedImage.borderradius);
+
+        const imagesettingsUrl = document.getElementById('id-unilabeltype-imageboard-imagesettings-dialog-url');
+        imagesettingsUrl.value = selectedImage.url;
     }
 
 
@@ -729,6 +732,7 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
             titlebackgroundcolor: 'id_unilabeltype_imageboard_titlebackgroundcolor_colourpicker',
             titlelineheight: 'id_unilabeltype_imageboard_titlelineheight',
             fontsize: 'id_unilabeltype_imageboard_fontsize',
+            url: 'id_unilabeltype_imageboard_url_' + technicalnumber,
             alt: 'id_unilabeltype_imageboard_alt_' + technicalnumber,
             xposition: 'id_unilabeltype_imageboard_xposition_' + technicalnumber,
             yposition: 'id_unilabeltype_imageboard_yposition_' + technicalnumber,
@@ -746,6 +750,7 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
         imagedata.titlebackgroundcolor = document.getElementById(imageids.titlebackgroundcolor).value;
         imagedata.titlelineheight = document.getElementById(imageids.titlelineheight).value;
         imagedata.fontsize = document.getElementById(imageids.fontsize).value;
+        imagedata.url = document.getElementById(imageids.url).value;
         imagedata.alt = document.getElementById(imageids.alt).value;
         imagedata.xposition = document.getElementById(imageids.xposition).value;
         imagedata.yposition = document.getElementById(imageids.yposition).value;
