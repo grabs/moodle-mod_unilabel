@@ -25,5 +25,5 @@
 defined('MOODLE_INTERNAL') || die;
 
 $plugin->component = 'unilabeltype_collapsedtext';
-$plugin->version   = 2024050806;
+$plugin->version   = 2024050807;
 $plugin->requires  = 2022111800;
