@@ -1,5 +1,8 @@
 ## Release notes
 
+### Release 4.5.6
+* collapsedtext: upgrade faile on null values (#56)
+
 ### Release 4.5.5
 * imageboard: fix dnd boundery after changing background size
 
