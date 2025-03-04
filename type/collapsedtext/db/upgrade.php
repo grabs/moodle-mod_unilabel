@@ -40,7 +40,9 @@ function xmldb_unilabeltype_collapsedtext_upgrade($oldversion) {
         // Move all titles from collapsedtext to the unilabel name field.
         $collapsedelements = $DB->get_recordset('unilabeltype_collapsedtext', [], 'id ASC');
         foreach ($collapsedelements as $element) {
-            $DB->set_field('unilabel', 'name', $element->title, ['id' => $element->unilabelid]);
+            // Prevent empty values which are not allowed on the "name" field.
+            $title = $element->title ?: get_string('notitle', 'unilabeltype_collapsedtext');
+            $DB->set_field('unilabel', 'name', $title, ['id' => $element->unilabelid]);
         }
         $collapsedelements->close();
 
