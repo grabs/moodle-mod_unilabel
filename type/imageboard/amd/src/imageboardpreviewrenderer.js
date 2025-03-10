@@ -138,6 +138,9 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
             technicalnumber = idoftarget.split('id_elementtitle-')[1];
         }
         if (technicalnumber) {
+            // Add class selected to the selected image
+            marktargetasselected(event.target);
+            // Remove selected in all other not selected images
             // Update the imagesettingsdialog with the data of that image and show the dialog
             writeFormdataOfImageToImagesettingsdialogupdate(technicalnumber);
             // Wenn das selectierte Bild eine andere nummer hat als das aktuelle imagesettings anzeigt dann auf jeden fall anzeigen
@@ -153,6 +156,25 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
         } else {
             // No image was selected ... do nothing.
         }
+    }
+
+    /**
+     *
+     * @param {target} target
+     */
+    function marktargetasselected(target) {
+        const singleElements = document.querySelectorAll('[id^="fitem_id_unilabeltype_imageboard_image_"]');
+        for (let i = 0; i < singleElements.length; i++) {
+            // TODO: Skip removed elements that are still in the dom but hidden.
+            let singleElement = singleElements[i].getAttribute('id');
+            let number = singleElement.split('fitem_id_unilabeltype_imageboard_image_')[1];
+            let dummy = document.getElementById('unilabel-imageboard-imageid-' + number);
+            dummy.classList.remove("selected");
+            dummy = document.getElementById('id_elementtitle-' + number);
+            dummy.classList.remove("selected");
+
+        }
+        target.classList.add("selected");
     }
 
     /**
