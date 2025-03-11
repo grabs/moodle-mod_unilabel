@@ -110,7 +110,8 @@ export const init = () => {
         if (snapelement !== null && Number.isInteger(Number(snapelement.value))) {
             snap = snapelement.value;
         }
-
+        console.log("event.target", event.target);
+        marktargetasselected(event.target);
         if (selectedImage.number !== null) {
             // Information: snap is an integer and allows to use an snapping grid.
             // xposition = 123 with snap 10 will be calculated to 120.
@@ -135,6 +136,32 @@ export const init = () => {
             selectedImage.titlecorrectorY = 0;
         }
     }
+
+    /**
+     *
+     * @param {target} target
+     */
+    function marktargetasselected(target) {
+        console.log("marktargetasselected");
+        console.log("target", target);
+        let technicalnumber = target.getAttribute('id').split('unilabel-imageboard-element-')[1];
+
+        const singleElements = document.querySelectorAll('[id^="fitem_id_unilabeltype_imageboard_image_"]');
+        for (let i = 0; i < singleElements.length; i++) {
+            // TODO: Skip removed elements that are still in the dom but hidden.
+            let singleElement = singleElements[i].getAttribute('id');
+            let number = singleElement.split('fitem_id_unilabeltype_imageboard_image_')[1];
+            let dummy = document.getElementById('unilabel-imageboard-imageid-' + number);
+            dummy.classList.remove("selected");
+            dummy = document.getElementById('id_elementtitle-' + number);
+            dummy.classList.remove("selected");
+        }
+        let dummy = document.getElementById('unilabel-imageboard-imageid-' + technicalnumber);
+        dummy.classList.add("selected");
+        dummy = document.getElementById('id_elementtitle-' + technicalnumber);
+        dummy.classList.add("selected");
+    }
+
     /**
      *
      * @param {number} number
