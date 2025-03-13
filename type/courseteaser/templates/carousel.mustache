@@ -16,7 +16,7 @@
 }}
 {{!
     @template unilabeltype_courseteaser/carousel
-    Template to show a bootstrap modal dialog.
+    Template to show a carousel with course items.
 
     Example context (json):
     {
@@ -52,12 +52,12 @@
     {{{intro}}}
 {{/showintro}}
 {{#hasitems}}
-    <div id="{{plugin}}-{{uniqid}}" class="{{plugin}} carousel slide my-2" data-ride="carousel" data-interval="{{#interval}}{{.}}000{{/interval}}{{^interval}}false{{/interval}}">
+    <div id="{{plugin}}-{{uniqid}}" class="{{plugin}} carousel slide my-2" {{#interval}}data-bs-ride="carousel" data-bs-interval="{{.}}000"{{/interval}} {{^interval}}data-bs-interval="0"{{/interval}}>
 
         <!-- Indicators -->
-        <ul class="carousel-indicators">
+        <ul class="carousel-indicators mb-0">
             {{#items}}
-                <li data-target="#{{plugin}}-{{uniqid}}" data-slide-to="{{nr}}"{{#first}} class="active"{{/first}}></li>
+                <li data-bs-target="#{{plugin}}-{{uniqid}}" data-bs-slide-to="{{nr}}"{{#first}} class="active"{{/first}}></li>
             {{/items}}
         </ul>
 

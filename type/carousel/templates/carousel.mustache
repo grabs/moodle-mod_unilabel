@@ -79,12 +79,12 @@
     {{{intro}}}
 {{/showintro}}
 {{#hasslides}}
-    <div id="{{plugin}}-{{uniqid}}-{{cmid}}" class="{{plugin}} carousel slide my-2" data-ride="carousel" data-interval="{{#interval}}{{.}}000{{/interval}}{{^interval}}false{{/interval}}">
+    <div id="{{plugin}}-{{uniqid}}-{{cmid}}" class="{{plugin}} carousel slide my-2" {{#interval}}data-bs-ride="carousel" data-bs-interval="{{.}}000"{{/interval}} {{^interval}}data-bs-interval="0"{{/interval}}>
 
         <!-- Indicators -->
-        <ul class="carousel-indicators" style="z-index:999;">
+        <ul class="carousel-indicators mb-0" style="z-index:999;">
             {{#slides}}
-                <li data-target="#{{plugin}}-{{uniqid}}-{{cmid}}" data-slide-to="{{nr}}"{{^nr}} class="active"{{/nr}}></li>
+                <li data-bs-target="#{{plugin}}-{{uniqid}}-{{cmid}}" data-bs-slide-to="{{nr}}"{{^nr}} class="active"{{/nr}}></li>
             {{/slides}}
         </ul>
 

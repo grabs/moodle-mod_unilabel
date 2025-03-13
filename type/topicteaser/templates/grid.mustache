@@ -54,10 +54,10 @@
 {{#hasitems}}
     <div class="row mx-0">
         {{#items}}
-            <div class="text-center {{{colclasses}}}">
+            <div class="text-center position-relative {{{colclasses}}}">
                 <!-- The overlay is used as button to show the modal dialog -->
                 <a href="{{{viewurl}}}"{{!
-                }}{{#openmodal}} data-toggle="modal" data-target="#topicteaser-modal-{{cmid}}-{{nr}}"{{/openmodal}}{{!
+                }}{{#openmodal}} data-bs-toggle="modal" data-bs-target="#topicteaser-modal-{{cmid}}-{{nr}}"{{/openmodal}}{{!
                 }} title="{{#str}} link_to, mod_unilabel, {{name}} {{/str}}"{{!
                 }} aria-label="{{#str}} link_to, mod_unilabel, {{name}} {{/str}}"{{!
                 }} role="button">

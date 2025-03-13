@@ -71,11 +71,11 @@
             <div class="activity-basis d-flex align-items-center">
                 <div class="d-flex flex-column flex-md-row w-100 align-self-start">
                     <div class="activity-instance w-100">
-                        <div class="activitytitle media modtype_{{module}} position-relative align-self-start">
-                            <div class="activityiconcontainer {{purpose}} courseicon align-self-start mr-3" style="{{#hidden}}opacity:0.5;{{/hidden}}">
+                        <div class="activitytitle d-flex justify-content-between modtype_{{module}} position-relative align-self-start">
+                            <div class="activityiconcontainer {{purpose}} courseicon align-self-start me-3" style="{{#hidden}}opacity:0.5;{{/hidden}}">
                                 <img src="{{{icon}}}" class="activityicon" alt="{{{module}}} icon">
                             </div>
-                            <div class="media-body align-self-center" style="{{#hidden}}opacity:0.5;{{/hidden}}">
+                            <div class="d-flex flex-column me-auto align-self-center" style="{{#hidden}}opacity:0.5;{{/hidden}}">
                                 <div class="text-uppercase small">
                                     {{{modulename}}}
                                 </div>
@@ -105,7 +105,7 @@
                                     </a>
                                 </div>
                             </div>
-                            <div class="float-right unilabel-activity-picker-info">
+                            <div class="ms-auto unilabel-activity-picker-info">
                                 <i class="fa fa-external-link"></i>
                             </div>
                         </div>

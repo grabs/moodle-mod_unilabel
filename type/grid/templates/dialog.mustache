@@ -31,14 +31,14 @@
 }}
 
 <!-- The Modal -->
-<div class="modal fade" tabindex="-1" id="grid-modal-{{cmid}}-{{nr}}">
-    <div class="modal-dialog modal-lg">
+<div class="modal moodle-has-zindex" data-region="modal-container" role="dialog" tabindex="-1" id="grid-modal-{{cmid}}-{{nr}}">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" data-region="modal" tabindex="0">
         <div class="modal-content">
 
             <!-- Modal Header -->
             <div class="modal-header">
                 <h4 class="modal-title">{{{title}}}</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
 
             <!-- Modal body -->
@@ -47,16 +47,14 @@
             </div>
             <!-- Modal footer -->
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">{{#str}} closebuttontitle {{/str}}</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">{{#str}} closebuttontitle {{/str}}</button>
             </div>
         </div>
     </div>
 </div>
 
 {{#js}}
-    require(['jquery'], function($) {
-        $('#grid-modal-{{cmid}}-{{nr}}').on('show.bs.modal', function() {
-            $('#grid-modal-{{cmid}}-{{nr}}').appendTo('body');
-        });
+    require(['mod_unilabel/modal_helper'], function(modalhelper) {
+        modalhelper.init('#grid-modal-{{cmid}}-{{nr}}');
     });
 {{/js}}

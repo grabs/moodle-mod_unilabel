@@ -57,22 +57,24 @@ along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 <div class="accordion" id="accordion-wrapper-{{uniqid}}-{{cmid}}">
 {{#segments}}
     {{#visible}}
-        <div class="card" id="accordion-{{uniqid}}-{{id}}">
-            <div class="card-header" id="accordion-heading-{{uniqid}}-{{id}}">
+        <div class="accordion-item" id="accordion-{{uniqid}}-{{id}}">
+            <div class="accordion-header" id="accordion-heading-{{uniqid}}-{{id}}">
                 <button id="unilabel-button-{{uniqid}}-{{id}}"{{!
-                }} class="btn btn-link btn-block collapsed"{{!
+                }} class="accordion-button collapsed bg-light"{{!
                 }} type="button"{{!
-                }} data-toggle="collapse"{{!
-                }} data-target="#accordion-segment-{{uniqid}}-{{id}}"{{!
+                }} data-bs-toggle="collapse"{{!
+                }} data-bs-target="#accordion-segment-{{uniqid}}-{{id}}"{{!
                 }} aria-expanded="false"{{!
                 }} aria-controls="accordion-segment-{{uniqid}}-{{id}}"{{!
                 }} aria-label="{{#str}} showmore, mod_unilabel {{/str}}"{{!
                 }} title="{{#str}} showmore, mod_unilabel {{/str}}">
-                    {{{ heading }}}
+                    <span class="d-block w-100">
+                        {{{ heading }}}
+                    </span>
                 </button>
             </div>
-            <div id="accordion-segment-{{uniqid}}-{{id}}" class="collapse" aria-labelledby="accordion-heading-{{uniqid}}-{{id}}" {{^collapse}}data-parent="#accordion-wrapper-{{uniqid}}-{{cmid}}"{{/collapse}}>
-                <div class="card-body">
+            <div id="accordion-segment-{{uniqid}}-{{id}}" class="accordion-collapse collapse" aria-labelledby="accordion-heading-{{uniqid}}-{{id}}" {{^collapse}}data-bs-parent="#accordion-wrapper-{{uniqid}}-{{cmid}}"{{/collapse}}>
+                <div class="accordion-body">
                     {{{ content }}}
                 </div>
             </div>

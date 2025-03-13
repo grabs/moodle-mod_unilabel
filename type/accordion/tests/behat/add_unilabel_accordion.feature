@@ -99,7 +99,7 @@ Feature: Modify content of the unilabeltype accordion
 
     # Deleting a segment
     And I click on "Edit content" "link" in the "#section-1" "css_element"
-    And I click on "Delete element-1" "link"
+    And I click on "Delete element-1" "button"
     And I should see "Confirm"
     And I should see "Delete element 1"
     And I click on "Yes" "button"
