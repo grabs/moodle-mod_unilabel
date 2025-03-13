@@ -72,12 +72,12 @@
 
 {{> unilabeltype_topicteaser/intro }}
 {{#hasitems}}
-    <div id="{{plugin}}-{{cmid}}" class="{{plugin}} carousel slide my-2" data-ride="carousel" data-interval="{{#interval}}{{.}}000{{/interval}}{{^interval}}false{{/interval}}">
+    <div id="{{plugin}}-{{cmid}}" class="{{plugin}} carousel slide my-2" {{#interval}}data-bs-ride="carousel" data-bs-interval="{{.}}000"{{/interval}} {{^interval}}data-bs-interval="0"{{/interval}}>
 
         <!-- Indicators -->
-        <ul class="carousel-indicators" style="z-index:999;">
+        <ul class="carousel-indicators mb-0" style="z-index:999;">
             {{#items}}
-                <li data-target="#{{plugin}}-{{cmid}}" data-slide-to="{{nr}}"{{#first}} class="active"{{/first}}></li>
+                <li data-bs-target="#{{plugin}}-{{cmid}}" data-bs-slide-to="{{nr}}"{{#first}} class="active"{{/first}}></li>
             {{/items}}
         </ul>
 
@@ -87,7 +87,7 @@
                 <div class="carousel-item text-center py-4{{#first}} active{{/first}}">
                     <!-- The overlay is used as button to show the modal dialog -->
                     <a href="{{{viewurl}}}"{{!
-                    }}{{#openmodal}} data-toggle="modal" data-target="#topicteaser-modal-{{cmid}}-{{nr}}"{{/openmodal}}{{!
+                    }}{{#openmodal}} data-bs-toggle="modal" data-bs-target="#topicteaser-modal-{{cmid}}-{{nr}}"{{/openmodal}}{{!
                     }} title="{{#str}} link_to, mod_unilabel, {{name}} {{/str}}" aria-label="{{#str}} link_to, mod_unilabel, {{name}} {{/str}}"{{!
                     }} role="button">
                         <div class="unilabel-overlay-effect bg-primary h-100 w-100"></div>

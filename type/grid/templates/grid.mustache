@@ -16,7 +16,7 @@
 }}
 {{!
     @template unilabeltype_grid/grid
-    Template to show a bootstrap modal dialog.
+    Template to show a grid.
 
     Example context (json):
     {
@@ -63,7 +63,7 @@
 {{#hastiles}}
     <div class="row mx-0">
         {{#tiles}}
-            <div class="text-center {{{colclasses}}} py-4">
+            <div class="text-center position-relative {{{colclasses}}} py-4">
                 <!-- The overlay is used as button to show the modal dialog -->
                 {{#url}}
                     <a tabindex="0" role="button" href="{{{url}}}"{{#newwindow}}{{!
@@ -74,8 +74,8 @@
                     </a>
                 {{/url}}
                 {{^url}}
-                    <a tabindex="0" role="button" href="#" data-toggle="modal"{{!
-                             }} data-target="#grid-modal-{{cmid}}-{{nr}}"{{!
+                    <a tabindex="0" role="button" href="#" data-bs-toggle="modal"{{!
+                             }} data-bs-target="#grid-modal-{{cmid}}-{{nr}}"{{!
                              }} title="{{#str}}open_content, unilabeltype_grid, {{title}}{{/str}}"{{!
                              }} aria-label="{{#str}}open_content, unilabeltype_grid, {{title}}{{/str}}">
                         <div class="unilabel-overlay-effect bg-primary h-100 w-100"></div>

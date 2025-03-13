@@ -187,8 +187,8 @@ function unilabel_get_extra_capabilities() {
  * @uses FEATURE_COMPLETION_TRACKS_VIEWS
  * @uses FEATURE_GRADE_HAS_GRADE
  * @uses FEATURE_GRADE_OUTCOMES
- * @param  string    $feature FEATURE_xx constant for requested feature
- * @return bool|null True if module supports feature, false if not, null if doesn't know
+ * @param  string $feature FEATURE_xx constant for requested feature
+ * @return mixed  True if module supports feature, false if not, null if doesn't know or string for the module purpose.
  */
 function unilabel_supports($feature) {
     switch ($feature) {

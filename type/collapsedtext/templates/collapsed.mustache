@@ -16,7 +16,7 @@
 }}
 {{!
     @template unilabeltype_collapsedtext/collapsed
-    Template to show a bootstrap modal dialog.
+    Template to show a collapsed content.
 
     Example context (json):
     {
@@ -38,20 +38,20 @@
 
 {{#useanimation}}
     <div class="unilabeltype-collapsed">
-        <a data-toggle="collapse"{{!
+        <a data-bs-toggle="collapse"{{!
         }} href="#unilabeltype-collapsed-{{uniqid}}-{{cmid}}"{{!
         }} class="icons-collapse-expand {{^openonstart}}collapsed{{/openonstart}}"{{!
         }} aria-expanded="true"{{!
         }} aria-controls="unilabeltype-collapsed-{{uniqid}}-{{cmid}}"{{!
         }} aria-label="{{#str}}showmore, mod_unilabel{{/str}}">
-            <span class="collapsed-icon icon-no-margin mr-1" title="{{srtitle_expand}}">
+            <span class="collapsed-icon icon-no-margin me-1" title="{{srtitle_expand}}">
                 <span class="dir-rtl-hide"><i class="icon fa fa-chevron-right fa-fw " aria-hidden="true"></i></span>
                 <span class="dir-ltr-hide"><i class="icon fa fa-chevron-left fa-fw " aria-hidden="true"></i></span>
-                <span class="sr-only">{{srtitle_expand}}</span>
+                <span class="visually-hidden">{{srtitle_expand}}</span>
             </span>
-            <span class="expanded-icon icon-no-margin mr-1" title="{{srtitle_collapse}}">
+            <span class="expanded-icon icon-no-margin me-1" title="{{srtitle_collapse}}">
                 <i class="icon fa fa-chevron-down fa-fw " aria-hidden="true"></i>
-                <span class="sr-only">{{srtitle_collapse}}</span>
+                <span class="visually-hidden">{{srtitle_collapse}}</span>
             </span>
             {{title}}
         </a>

@@ -42,7 +42,7 @@
     }
 }}
 <div class="unilabel-imageboard-list">
-    <a class="unilabeltype-imageboard-controllbutton" href="#" data-toggle="collapse" data-target="#unilabel-imageboard-list{{cmid}}"
+    <a class="unilabeltype-imageboard-controllbutton" href="#" data-bs-toggle="collapse" data-bs-target="#unilabel-imageboard-list{{cmid}}"
             aria-expanded="false" aria-controls="unilabel-imageboard-list{{cmid}}">
         <i class="fa fa-list fa-fw"></i> {{#str}} imagelist, unilabeltype_imageboard {{/str}}
     </a>
@@ -62,10 +62,10 @@
                                     }}{{#newwindow}} target="_blank"{{/newwindow}}>{{!
                             }}{{/url}}
                             {{#imageurl}}
-                                <img class="mr-2" src="{{{imageurl}}}" width="40" alt="{{title}}">
+                                <img class="me-2" src="{{{imageurl}}}" width="40" alt="{{title}}">
                             {{/imageurl}}
                             {{^imageurl}}
-                                <i style="width: 40px" class="fa fa-picture-o fa-lg fa-fw mr-2"></i>
+                                <i style="width: 40px" class="fa fa-picture-o fa-lg fa-fw me-2"></i>
                             {{/imageurl}}
                                 {{title}}
                             {{#url}}</a>{{/url}} {{! If there is a url we close the a-tag here.}}

@@ -30,7 +30,7 @@ define(['jquery', 'theme_boost/bootstrap/carousel'], function($, carousel) {
             }
             var c = $('#' + id + '.carousel');
             c.carousel({
-                interval: c.data('interval')
+                interval: c.data('bsInterval')
             });
         }
     };

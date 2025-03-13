@@ -26,32 +26,37 @@
     }
 }}
 
-<span class="ml-auto"><!-- A dummy to move the buttons to the right side. --></span>
+<span class="ms-auto"><!-- A dummy to move the buttons to the right side. --></span>
 <span>
     <i class="fa fa-arrows fa-fw draghandle"></i>
 </span>
-<a href="#" class="delete-button">
-    <i class="fa fa-trash fa-fw text-danger" data-toggle="modal" data-target="#unilabel_{{type}}_confirm_{{repeatindex}}"></i>
-    <span class="sr-only">{{#str}} delete_element, mod_unilabel {{/str}}-{{repeatnr}}</span>
-</a>
-<div id="unilabel_{{type}}_confirm_{{repeatindex}}" class="modal" tabindex="-1">
-    <div class="modal-dialog">
+<button type="button" class="delete-button btn btn-link" title="{{#str}} delete_element, mod_unilabel {{/str}}-{{repeatnr}}">
+    <i class="fa fa-trash fa-fw text-danger" data-bs-toggle="modal" data-bs-target="#unilabel_{{type}}_confirm_{{repeatindex}}"></i>
+    <span class="visually-hidden">{{#str}} delete_element, mod_unilabel {{/str}}-{{repeatnr}}</span>
+</button>
+<div id="unilabel_{{type}}_confirm_{{repeatindex}}" class="modal moodle-has-zindex" data-region="modal-container" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-dialog-scrollable" data-region="modal" tabindex="0">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">
                     {{#str}}confirm{{/str}}
                 </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 {{#str}} delete_element_nr, mod_unilabel, {{repeatnr}} {{/str}}
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{#str}} no {{/str}}</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" data-action="deleteelement" data-id="{{repeatindex}}">{{#str}} yes {{/str}}</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{#str}} no {{/str}}</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" data-action="deleteelement" data-id="{{repeatindex}}">{{#str}} yes {{/str}}</button>
             </div>
         </div>
     </div>
 </div>
+{{#js}}
+    require(['jquery'], function($) {
+        $('#unilabel_{{type}}_confirm_{{repeatindex}}').on('shown.bs.modal', function() {
+            $('body').css('overflow', '');
+        });
+    });
+{{/js}}
