@@ -62,12 +62,12 @@
                                     }}{{#newwindow}} target="_blank"{{/newwindow}}>{{!
                             }}{{/url}}
                             {{#imageurl}}
-                                <img class="mr-2" src="{{{imageurl}}}" width="40" alt="{{title}}">
+                                <img class="mr-2" src="{{{imageurl}}}" width="40" alt="{{titleplain}}">
                             {{/imageurl}}
                             {{^imageurl}}
                                 <i style="width: 40px" class="fa fa-picture-o fa-lg fa-fw mr-2"></i>
                             {{/imageurl}}
-                                {{title}}
+                                {{{title}}}
                             {{#url}}</a>{{/url}} {{! If there is a url we close the a-tag here.}}
                         </div>
                     </div>

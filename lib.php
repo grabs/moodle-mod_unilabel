@@ -151,7 +151,7 @@ function unilabel_cm_info_view(cm_info $cm) {
         }
     }
 
-    $cm->set_content($renderer->render_from_template('mod_unilabel/content', $content));
+    $cm->set_content($renderer->render_from_template('mod_unilabel/content', $content), true);
 
     $cm->set_custom_cmlist_item(true);
 }

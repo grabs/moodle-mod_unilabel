@@ -182,7 +182,7 @@ abstract class content_type {
      * @return string
      */
     public function format_intro($unilabel, $cm) {
-        return format_module_intro('unilabel', $unilabel, $cm->id, false);
+        return format_module_intro('unilabel', $unilabel, $cm->id, true);
     }
 
     /**

@@ -579,7 +579,8 @@ class content_type extends \mod_unilabel\content_type {
             foreach ($tiles as $tile) {
                 $tile->imageurl       = $this->get_image_for_tile($tile);
                 $tile->imagemobileurl = $this->get_image_mobile_for_tile($tile);
-                $tile->title          = empty($tile->title) ? get_string('tilenr', $this->component, $index + 1) : $tile->title;
+                $tile->titleplain     = empty($tile->title) ? get_string('tilenr', $this->component, $index + 1) : $tile->title;
+                $tile->title          = format_text($tile->titleplain);
                 $tile->content        = $this->format_content($tile, $this->context);
                 $tile->nr             = $index;
                 ++$index;

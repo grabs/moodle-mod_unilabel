@@ -58,21 +58,25 @@ class content_type extends \mod_unilabel\content_type {
      * Load and cache the unilabel record.
      *
      * @param  int       $unilabelid
-     * @return \stdClass
+     * @return ?\stdClass
      */
     public function load_unilabeltype_record($unilabelid) {
         global $DB;
 
+        $this->segments = [];
         if (empty($this->record)) {
             if (!$this->record = $DB->get_record('unilabeltype_accordion', ['unilabelid' => $unilabelid])) {
-                $this->segments = [];
-
-                return;
+                return null;
             }
             $this->cm      = get_coursemodule_from_instance('unilabel', $unilabelid);
             $this->context = \context_module::instance($this->cm->id);
 
-            $this->segments = $DB->get_records('unilabeltype_accordion_seg', ['accordionid' => $this->record->id], 'sortorder ASC');
+            $segments = $DB->get_records('unilabeltype_accordion_seg', ['accordionid' => $this->record->id], 'sortorder ASC');
+            foreach ($segments as $segment) {
+                $segment->heading = format_text($segment->heading);
+                $segment->content = format_text($segment->content);
+                $this->segments[] = $segment;
+            }
         }
 
         return $this->record;
