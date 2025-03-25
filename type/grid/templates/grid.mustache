@@ -76,8 +76,8 @@
                 {{^url}}
                     <a tabindex="0" role="button" href="#" data-bs-toggle="modal"{{!
                              }} data-bs-target="#grid-modal-{{cmid}}-{{nr}}"{{!
-                             }} title="{{#str}}open_content, unilabeltype_grid, {{title}}{{/str}}"{{!
-                             }} aria-label="{{#str}}open_content, unilabeltype_grid, {{title}}{{/str}}">
+                             }} title="{{#str}}open_content, unilabeltype_grid, {{titleplain}}{{/str}}"{{!
+                             }} aria-label="{{#str}}open_content, unilabeltype_grid, {{titleplain}}{{/str}}">
                         <div class="unilabel-overlay-effect bg-primary h-100 w-100"></div>
                     </a>
                 {{/url}}
@@ -85,18 +85,18 @@
 
                 {{#imagemobileurl}}
                     {{#imageurl}}
-                        <img class="img-fluid d-none d-md-inline" alt="{{title}}" src="{{{imageurl}}}"{{^autoheight}} style="height:100%;object-fit:contain;"{{/autoheight}}>
+                        <img class="img-fluid d-none d-md-inline" alt="{{titleplain}}" src="{{{imageurl}}}"{{^autoheight}} style="height:100%;object-fit:contain;"{{/autoheight}}>
                     {{/imageurl}}
-                    <img class="img-fluid d-inline d-md-none" alt="{{title}}" src="{{{imagemobileurl}}}"{{^autoheight}} style="height:100%;object-fit:contain;"{{/autoheight}}>
+                    <img class="img-fluid d-inline d-md-none" alt="{{titleplain}}" src="{{{imagemobileurl}}}"{{^autoheight}} style="height:100%;object-fit:contain;"{{/autoheight}}>
                 {{/imagemobileurl}}
                 {{^imagemobileurl}}
                     {{#imageurl}}
-                        <img class="img-fluid" alt="{{title}}" src="{{{imageurl}}}"{{^autoheight}} style="height:100%;object-fit:contain;"{{/autoheight}}>
+                        <img class="img-fluid" alt="{{titleplain}}" src="{{{imageurl}}}"{{^autoheight}} style="height:100%;object-fit:contain;"{{/autoheight}}>
                     {{/imageurl}}
                 {{/imagemobileurl}}
 
                 {{^autoheight}}</div>{{/autoheight}}
-                <h5 class="unilabel-hyphens">{{title}}</h5>
+                <h5 class="unilabel-hyphens">{{{title}}}</h5>
             </div>
         {{/tiles}}
     </div>

@@ -618,6 +618,7 @@ class content_type extends \mod_unilabel\content_type {
                 $slide->imagemobileurl = $this->get_image_mobile_for_slide($slide);
                 $slide->nr             = $index;
                 $slide->captionplain   = format_string($slide->caption);
+                $slide->caption        = format_text($slide->caption);
                 ++$index;
             }
             $this->slides = $slides;

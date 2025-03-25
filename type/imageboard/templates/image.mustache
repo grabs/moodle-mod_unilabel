@@ -59,7 +59,7 @@
                 }}{{#borderradius}}border-radius: {{.}}px;{{/borderradius}}{{!
                 }}{{^borderradius}}border-radius: 0;{{/borderradius}}{{!
                 }}white-space: nowrap;">
-                {{title}}
+                {{{title}}}
             </div>
         {{/title}}
         {{#imageurl}}
@@ -74,7 +74,7 @@
                         }}{{#borderradius}}border-radius: {{.}}px;{{/borderradius}}{{!
                         }}{{^borderradius}}border-radius: 0;{{/borderradius}}{{!
                     }}">
-                    <img class="unilabel-imageboard-image" src="{{{.}}}" title="{{title}}" alt="{{alt}}" style="{{#targetwidth}}width: 100%; {{/targetwidth}}{{!
+                    <img class="unilabel-imageboard-image" src="{{{.}}}" title="{{titleplain}}" alt="{{alt}}" style="{{#targetwidth}}width: 100%; {{/targetwidth}}{{!
                         }}{{#targetheight}}height: 100%; {{/targetheight}}{{!
                         }}{{#border}}border: solid {{.}}px {{titlebackgroundcolor}};{{/border}}{{!
                         }}{{#borderradius}}border-radius: {{.}}px;{{/borderradius}}{{!
