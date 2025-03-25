@@ -687,6 +687,8 @@ class content_type extends \mod_unilabel\content_type {
             foreach ($images as $image) {
                 $image->imageurl = $this->get_imageurl_for_image($image);
                 $image->nr = $index;
+                $image->titleplain = format_string($image->title);
+                $image->title = format_text($image->title);
                 $index++;
             }
             $this->images = $images;
