@@ -111,6 +111,19 @@ abstract class edit_element_base implements \templatable, \renderable {
     abstract public function get_elements();
 
     /**
+     * Add a visibility element to the form fragment.
+     *
+     * @return void
+     */
+    protected function add_visibility() {
+        $visibleelement = $this->get_hidden('visible');
+        $visibleelement->setValue(1);
+        $this->data->visibilityelement = $this->render_element(
+            $visibleelement
+        );
+    }
+
+    /**
      * Add a sortorder element to the form fragment.
      *
      * @return void

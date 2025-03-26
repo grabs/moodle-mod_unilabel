@@ -47,6 +47,7 @@ class edit_element extends \mod_unilabel\output\edit_element_base {
 
         parent::__construct($formid, $context, $course, $type, $repeatindex);
         $this->add_sortorder();
+        $this->add_visibility();
     }
 
     /**

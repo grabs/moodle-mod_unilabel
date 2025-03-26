@@ -53,7 +53,7 @@ class backup_unilabeltype_carousel_subplugin extends backup_subplugin {
         );
         $subpluginslide = new backup_nested_element('unilabeltype_carousel_slide',
             ['id'],
-            ['sortorder', 'url', 'caption', 'urltitle']
+            ['sortorder', 'url', 'caption', 'urltitle', 'visible']
         );
 
         // Connect XML elements into the tree.

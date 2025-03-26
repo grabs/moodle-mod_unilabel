@@ -27,10 +27,13 @@
 }}
 
 <span class="ms-auto"><!-- A dummy to move the buttons to the right side. --></span>
-<span>
+<span class="mx-1">
     <i class="fa fa-arrows fa-fw draghandle"></i>
 </span>
-<button type="button" class="delete-button btn btn-link" title="{{#str}} delete_element, mod_unilabel {{/str}}-{{repeatnr}}">
+<a href="#" class="mx-1 visible-button" data-action="setvisible" data-id="{{repeatindex}}">
+    <i class="fa fa-eye fa-fw" data-action="setvisible" data-id="{{repeatindex}}"></i>
+</a>
+<button type="button" class="delete-button btn btn-link mx-1" title="{{#str}} delete_element, mod_unilabel {{/str}}-{{repeatnr}}">
     <i class="fa fa-trash fa-fw text-danger" data-bs-toggle="modal" data-bs-target="#unilabel_{{type}}_confirm_{{repeatindex}}"></i>
     <span class="visually-hidden">{{#str}} delete_element, mod_unilabel {{/str}}-{{repeatnr}}</span>
 </button>

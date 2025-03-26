@@ -27,19 +27,22 @@ along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
                 "id": "4",
                 "accordionid": "1",
                 "heading": "Heading-1",
-                "content": "Content-1"
+                "content": "Content-1",
+                "visible": 1
             },
             {
                 "id": "5",
                 "accordionid": "1",
                 "heading": "Heading-2",
-                "content": "Content-2"
+                "content": "Content-2",
+                "visible": 1
             },
             {
                 "id": "6",
                 "accordionid": "1",
                 "heading": "Heading-3",
-                "content": "Content-3"
+                "content": "Content-3",
+                "visible": 1
             }
         ],
         "cmid": "3",
@@ -53,28 +56,30 @@ along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 {{/showintro}}
 <div class="accordion" id="accordion-wrapper-{{uniqid}}-{{cmid}}">
 {{#segments}}
-    <div class="accordion-item" id="accordion-{{uniqid}}-{{id}}">
-        <div class="accordion-header" id="accordion-heading-{{uniqid}}-{{id}}">
-            <button id="unilabel-button-{{uniqid}}-{{id}}"{{!
-            }} class="accordion-button collapsed bg-light"{{!
-            }} type="button"{{!
-            }} data-bs-toggle="collapse"{{!
-            }} data-bs-target="#accordion-segment-{{uniqid}}-{{id}}"{{!
-            }} aria-expanded="false"{{!
-            }} aria-controls="accordion-segment-{{uniqid}}-{{id}}"{{!
-            }} aria-label="{{#str}} showmore, mod_unilabel {{/str}}"{{!
-            }} title="{{#str}} showmore, mod_unilabel {{/str}}">
-                <span class="d-block w-100">
-                    {{{ heading }}}
-                </span>
-            </button>
-        </div>
-        <div id="accordion-segment-{{uniqid}}-{{id}}" class="accordion-collapse collapse" aria-labelledby="accordion-heading-{{uniqid}}-{{id}}" {{^collapse}}data-bs-parent="#accordion-wrapper-{{uniqid}}-{{cmid}}"{{/collapse}}>
-            <div class="accordion-body">
-                {{{ content }}}
+    {{#visible}}
+        <div class="accordion-item" id="accordion-{{uniqid}}-{{id}}">
+            <div class="accordion-header" id="accordion-heading-{{uniqid}}-{{id}}">
+                <button id="unilabel-button-{{uniqid}}-{{id}}"{{!
+                }} class="accordion-button collapsed bg-light"{{!
+                }} type="button"{{!
+                }} data-bs-toggle="collapse"{{!
+                }} data-bs-target="#accordion-segment-{{uniqid}}-{{id}}"{{!
+                }} aria-expanded="false"{{!
+                }} aria-controls="accordion-segment-{{uniqid}}-{{id}}"{{!
+                }} aria-label="{{#str}} showmore, mod_unilabel {{/str}}"{{!
+                }} title="{{#str}} showmore, mod_unilabel {{/str}}">
+                    <span class="d-block w-100">
+                        {{{ heading }}}
+                    </span>
+                </button>
+            </div>
+            <div id="accordion-segment-{{uniqid}}-{{id}}" class="accordion-collapse collapse" aria-labelledby="accordion-heading-{{uniqid}}-{{id}}" {{^collapse}}data-bs-parent="#accordion-wrapper-{{uniqid}}-{{cmid}}"{{/collapse}}>
+                <div class="accordion-body">
+                    {{{ content }}}
+                </div>
             </div>
         </div>
-    </div>
+    {{/visible}}
 {{/segments}}
 </div>
 {{#js}}

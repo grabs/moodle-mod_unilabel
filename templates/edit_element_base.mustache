@@ -50,8 +50,18 @@
         {{> mod_unilabel/element_action_buttons }}
     </div>
     <div id="id_singleelementheader_{{repeatindex}}container" class="fcontainer collapseable collapse">
-        {{#sortorderelement}}
-            <div class="d-none">
+    {{#sortorderelement}}
+        <div class="d-none">
+            {{{.}}}
+        </div>
+    {{/sortorderelement}}
+    {{#visibilityelement}}
+        <div class="d-none">
+            {{{.}}}
+        </div>
+    {{/visibilityelement}}
+        {{#elements}}
+            <div>
                 {{{.}}}
             </div>
         {{/sortorderelement}}

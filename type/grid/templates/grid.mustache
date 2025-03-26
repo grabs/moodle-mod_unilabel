@@ -36,7 +36,8 @@
                 "content": "<p>fdsafsdf<br><\/p>",
                 "imageurl": "https://url-to-image",
                 "imagemobileurl": "",
-                "nr": 0
+                "nr": 0,
+                "visible": 1
             },
             {
                 "id": "2",
@@ -48,7 +49,8 @@
                 "content": "<p>fdfdfdfdf<br><\/p>",
                 "imageurl": "https://url-to-image",
                 "imagemobileurl": "",
-                "nr": 1
+                "nr": 1,
+                "visible": 1
             }
         ],
         "hastiles": true,
@@ -63,48 +65,52 @@
 {{#hastiles}}
     <div class="row mx-0">
         {{#tiles}}
-            <div class="text-center position-relative {{{colclasses}}} py-4">
-                <!-- The overlay is used as button to show the modal dialog -->
-                {{#url}}
-                    <a tabindex="0" role="button" href="{{{url}}}"{{#newwindow}}{{!
-                            }} target="_blank"{{/newwindow}}{{!
-                            }} title="{{#urltitle}}{{#str}}link_to, mod_unilabel, {{.}}{{/str}}{{/urltitle}}{{^urltitle}}{{#str}}link_to, mod_unilabel, {{url}}{{/str}}{{/urltitle}}"{{!
-                            }} aria-label="{{#urltitle}}{{#str}}link_to, mod_unilabel, {{.}}{{/str}}{{/urltitle}}{{^urltitle}}{{#str}}link_to, mod_unilabel, {{url}}{{/str}}{{/urltitle}}">
-                        <div class="unilabel-overlay-effect bg-primary h-100 w-100"></div>
-                    </a>
-                {{/url}}
-                {{^url}}
-                    <a tabindex="0" role="button" href="#" data-bs-toggle="modal"{{!
-                             }} data-bs-target="#grid-modal-{{cmid}}-{{nr}}"{{!
-                             }} title="{{#str}}open_content, unilabeltype_grid, {{titleplain}}{{/str}}"{{!
-                             }} aria-label="{{#str}}open_content, unilabeltype_grid, {{titleplain}}{{/str}}">
-                        <div class="unilabel-overlay-effect bg-primary h-100 w-100"></div>
-                    </a>
-                {{/url}}
-                {{^autoheight}}<div style="height:{{{height}}}px;width:100%;">{{/autoheight}}
+            {{#visible}}
+                <div class="text-center position-relative {{{colclasses}}} py-4">
+                    <!-- The overlay is used as button to show the modal dialog -->
+                    {{#url}}
+                        <a tabindex="0" role="button" href="{{{url}}}"{{#newwindow}}{{!
+                                }} target="_blank"{{/newwindow}}{{!
+                                }} title="{{#urltitle}}{{#str}}link_to, mod_unilabel, {{.}}{{/str}}{{/urltitle}}{{^urltitle}}{{#str}}link_to, mod_unilabel, {{url}}{{/str}}{{/urltitle}}"{{!
+                                }} aria-label="{{#urltitle}}{{#str}}link_to, mod_unilabel, {{.}}{{/str}}{{/urltitle}}{{^urltitle}}{{#str}}link_to, mod_unilabel, {{url}}{{/str}}{{/urltitle}}">
+                            <div class="unilabel-overlay-effect bg-primary h-100 w-100"></div>
+                        </a>
+                    {{/url}}
+                    {{^url}}
+                        <a tabindex="0" role="button" href="#" data-bs-toggle="modal"{{!
+                                }} data-bs-target="#grid-modal-{{cmid}}-{{nr}}"{{!
+                                }} title="{{#str}}open_content, unilabeltype_grid, {{title}}{{/str}}"{{!
+                                }} aria-label="{{#str}}open_content, unilabeltype_grid, {{title}}{{/str}}">
+                            <div class="unilabel-overlay-effect bg-primary h-100 w-100"></div>
+                        </a>
+                    {{/url}}
+                    {{^autoheight}}<div style="height:{{{height}}}px;width:100%;">{{/autoheight}}
 
-                {{#imagemobileurl}}
-                    {{#imageurl}}
-                        <img class="img-fluid d-none d-md-inline" alt="{{titleplain}}" src="{{{imageurl}}}"{{^autoheight}} style="height:100%;object-fit:contain;"{{/autoheight}}>
-                    {{/imageurl}}
-                    <img class="img-fluid d-inline d-md-none" alt="{{titleplain}}" src="{{{imagemobileurl}}}"{{^autoheight}} style="height:100%;object-fit:contain;"{{/autoheight}}>
-                {{/imagemobileurl}}
-                {{^imagemobileurl}}
-                    {{#imageurl}}
-                        <img class="img-fluid" alt="{{titleplain}}" src="{{{imageurl}}}"{{^autoheight}} style="height:100%;object-fit:contain;"{{/autoheight}}>
-                    {{/imageurl}}
-                {{/imagemobileurl}}
+                    {{#imagemobileurl}}
+                        {{#imageurl}}
+                            <img class="img-fluid d-none d-md-inline" alt="{{title}}" src="{{{imageurl}}}"{{^autoheight}} style="height:100%;object-fit:contain;"{{/autoheight}}>
+                        {{/imageurl}}
+                        <img class="img-fluid d-inline d-md-none" alt="{{title}}" src="{{{imagemobileurl}}}"{{^autoheight}} style="height:100%;object-fit:contain;"{{/autoheight}}>
+                    {{/imagemobileurl}}
+                    {{^imagemobileurl}}
+                        {{#imageurl}}
+                            <img class="img-fluid" alt="{{title}}" src="{{{imageurl}}}"{{^autoheight}} style="height:100%;object-fit:contain;"{{/autoheight}}>
+                        {{/imageurl}}
+                    {{/imagemobileurl}}
 
-                {{^autoheight}}</div>{{/autoheight}}
-                <h5 class="unilabel-hyphens">{{{title}}}</h5>
-            </div>
+                    {{^autoheight}}</div>{{/autoheight}}
+                    <h5 class="unilabel-hyphens">{{title}}</h5>
+                </div>
+            {{/visible}}
         {{/tiles}}
     </div>
 
     {{#tiles}}
-        {{^url}}
-            {{> unilabeltype_grid/dialog }}
-        {{/url}}
+        {{#visible}}
+            {{^url}}
+                {{> unilabeltype_grid/dialog }}
+            {{/url}}
+        {{/visible}}
     {{/tiles}}
 {{/hastiles}}
 {{^hastiles}}
