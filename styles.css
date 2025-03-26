@@ -38,6 +38,17 @@ a:focus .unilabel-overlay-effect {
     z-index: 998;
 }
 
+/* Visible button style */
+#page-mod-unilabel-edit_content form fieldset a.visible-button {
+    display: none;
+}
+#page-mod-unilabel-edit_content form fieldset.has-visibility a.visible-button {
+    display: inline;
+}
+#page-mod-unilabel-edit_content form fieldset.has-visibility.visible-off {
+    opacity: 0.5;
+}
+
 /* Drag and drop style */
 #page-mod-unilabel-edit_content form fieldset span .draghandle {
     display: none;

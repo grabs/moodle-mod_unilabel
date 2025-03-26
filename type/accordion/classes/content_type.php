@@ -55,6 +55,15 @@ class content_type extends \mod_unilabel\content_type {
     }
 
     /**
+     * Get true if the unilabeltype supports the visibility button.
+     *
+     * @return bool
+     */
+    public function use_visibility() {
+        return true;
+    }
+
+    /**
      * Load and cache the unilabel record.
      *
      * @param  int       $unilabelid
@@ -195,6 +204,10 @@ class content_type extends \mod_unilabel\content_type {
             $prefix . 'sortorder'
         );
         $repeatarray[] = $mform->createElement(
+            'hidden',
+            $prefix . 'visible'
+        );
+        $repeatarray[] = $mform->createElement(
             'editor',
             $prefix . 'heading',
             get_string('heading', $this->component),
@@ -211,6 +224,7 @@ class content_type extends \mod_unilabel\content_type {
 
         $repeatedoptions                                = [];
         $repeatedoptions[$prefix . 'sortorder']['type'] = PARAM_INT;
+        $repeatedoptions[$prefix . 'visible']['type']   = PARAM_BOOL;
         $repeatedoptions[$prefix . 'heading']['type']   = PARAM_RAW;
         $repeatedoptions[$prefix . 'content']['type']   = PARAM_RAW;
         // Adding the help buttons.
@@ -257,6 +271,7 @@ class content_type extends \mod_unilabel\content_type {
                 $prefix,
                 $myelements,
                 $this->use_sortorder(), // Use drag and drop.
+                $this->use_visibility(), // Use the visibility button.
             ]
         );
     }
@@ -329,6 +344,10 @@ class content_type extends \mod_unilabel\content_type {
             $elementname        = $prefix . 'sortorder[' . $index . ']';
             $data[$elementname] = $segment->sortorder ?? ($index + 1);
 
+            // Prepare the visible field.
+            $elementname        = $prefix . 'visible[' . $index . ']';
+            $data[$elementname] = $segment->visible ?? ($index + 1);
+
             ++$index;
         }
 
@@ -384,6 +403,7 @@ class content_type extends \mod_unilabel\content_type {
             $segmentrecord->content = file_rewrite_urls_to_pluginfile($content, $formdata->{$prefix . 'content'}[$i]['itemid']);
 
             $segmentrecord->sortorder = $formdata->{$prefix . 'sortorder'}[$i];
+            $segmentrecord->visible = $formdata->{$prefix . 'visible'}[$i];
 
             $segmentrecord->id = $DB->insert_record('unilabeltype_accordion_seg', $segmentrecord);
 

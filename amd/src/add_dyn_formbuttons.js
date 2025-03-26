@@ -33,10 +33,11 @@ let _elements;
  * Register the del button and get the html from mustache.
  *
  * @param {Element} headerelement The draggable header element
+ * @param {Boolean} useVisibility Show visible button or not.
  * @param {Integer} index The index of the headerelement
  * @returns {Promise}
  */
-const registerActionButtons = (headerelement, index) => {
+const registerActionButtons = (headerelement, useVisibility, index) => {
     const context = {
         type: _type,
         repeatindex: index,
@@ -47,9 +48,73 @@ const registerActionButtons = (headerelement, index) => {
         headerelement.querySelector('div.d-flex').insertAdjacentHTML(
             'beforeend', html
         );
+        if (useVisibility) {
+            initVisibleButton(headerelement, index);
+        }
         Templates.runTemplateJS(js);
         return;
     }).catch((error) => notification.exception(error));
+};
+
+/**
+ * Initilize the visible button.
+ *
+ * @param {Element} headerelement The collapseble form section header
+ * @param {Integer} index The repeatindex of the element
+ */
+const initVisibleButton = (headerelement, index) => {
+    headerelement.classList.add('has-visibility');
+    var visibleElement = document.getElementsByName('unilabeltype_' + _type + '_visible[' + index + ']')[0];
+    if (!visibleElement) {
+        return;
+    }
+    var visibleButton = headerelement.querySelector('a.visible-button i');
+    if (!visibleButton) {
+        return;
+    }
+    setVisibilityStyle(visibleButton, visibleElement.value == '1');
+};
+
+/**
+ * Set the icon of the visible button
+ *
+ * @param {Element} visibleButton The visible button element
+ * @param {Boolean} enabled Show as enabled or disabled
+ */
+const setVisibilityStyle = (visibleButton, enabled) => {
+    if (enabled) {
+        visibleButton.classList.remove('fa-eye-slash');
+        visibleButton.classList.add('fa-eye');
+        visibleButton.closest('fieldset').classList.remove('visible-off');
+    } else {
+        visibleButton.classList.remove('fa-eye');
+        visibleButton.classList.add('fa-eye-slash');
+        visibleButton.closest('fieldset').classList.add('visible-off');
+    }
+};
+
+/**
+ * Switch the visiblity of the repeat elment with the given index.
+ *
+ * @param {Integer} index The repeatindex of the element we want to switch.
+ */
+const switchElementVisible = (index) => {
+    log.debug('Set element visible/visible-off: ' + index);
+
+    // Get the hidden input for the visiblity state.
+    var visibleElement = document.getElementsByName('unilabeltype_' + _type + '_visible[' + index + ']')[0];
+    if (!visibleElement) {
+        return;
+    }
+    // Switch the visibility state.
+    visibleElement.value = visibleElement.value == '1' ? '0' : '1';
+
+    // Now we have to change the icon of the visible button.
+    var visibleButton = document.querySelector('#id_singleelementheader_' + index + ' a.visible-button i');
+    if (!visibleButton) {
+        return;
+    }
+    setVisibilityStyle(visibleButton, visibleElement.value == '1');
 };
 
 /**
@@ -89,8 +154,9 @@ const delElement = (index) => {
  * @param {string} prefix
  * @param {array} elements The dummy fields we need if we want to delete an element
  * @param {boolean} useDragdrop The same as element but for editor which has subelements like "text", "format" and "itemid"
+ * @param {boolean} useVisibility Should we show the visible button?
  */
-export const init = async(type, formid, contextid, prefix, elements, useDragdrop) => {
+export const init = async(type, formid, contextid, prefix, elements, useDragdrop, useVisibility) => {
     // Import the dragdrop module asynchron.
     const dragDrop = await import('mod_unilabel/dragdrop');
     dragDrop.init(type, formid, useDragdrop);
@@ -102,10 +168,23 @@ export const init = async(type, formid, contextid, prefix, elements, useDragdrop
     // Register a click for the whole form but only applying to the delButtons.
     var thisform = document.querySelector('#' + formid);
     thisform.addEventListener('click', (e) => {
+        var index;
+        if (e.target.dataset.action == 'shoulddelete') {
+            e.preventDefault();
+        }
         if (e.target.dataset.action == 'deleteelement') {
-            var index = e.target.dataset.id;
+            index = e.target.dataset.id;
             log.debug('Deleting element: ' + index);
             delElement(index);
+        }
+        if (e.target.dataset.action == 'setvisible') {
+            e.preventDefault();
+            index = e.target.dataset.id;
+            switchElementVisible(index);
+            // To make the moodle form aware of the change, we set the data-initial-value to its original value.
+            log.debug('GRABS:');
+            log.debug(e);
+            e.target.closest('form').dataset.formDirty = true;
         }
     });
 
@@ -114,7 +193,7 @@ export const init = async(type, formid, contextid, prefix, elements, useDragdrop
     for (var i = 0; i < headerelements.length; i++) {
         var headerelement = headerelements[i];
         log.debug('looking for: ' + headerelement.id);
-        registerActionButtons(headerelement, i);
+        registerActionButtons(headerelement, useVisibility, i);
     }
 
     var button = document.querySelector('#button-' + formid);
@@ -142,6 +221,10 @@ export const init = async(type, formid, contextid, prefix, elements, useDragdrop
 
             var contentLoader = new ContentLoader(contentcontainerselector, fragmentcall, serviceparams, contextid);
             contentLoader.loadContent('beforebegin').then(() => {
+                if (useVisibility) {
+                    var headerelement = document.querySelector('#id_singleelementheader_' + repeatindex);
+                    initVisibleButton(headerelement, repeatindex);
+                }
                 const myevent = new CustomEvent('itemadded', {detail: repeatindex});
                 thisform.dispatchEvent(myevent);
                 return true;
