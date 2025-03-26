@@ -27,19 +27,22 @@ along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
                 "id": "4",
                 "accordionid": "1",
                 "heading": "Heading-1",
-                "content": "Content-1"
+                "content": "Content-1",
+                "visible": 1
             },
             {
                 "id": "5",
                 "accordionid": "1",
                 "heading": "Heading-2",
-                "content": "Content-2"
+                "content": "Content-2",
+                "visible": 1
             },
             {
                 "id": "6",
                 "accordionid": "1",
                 "heading": "Heading-3",
-                "content": "Content-3"
+                "content": "Content-3",
+                "visible": 1
             }
         ],
         "cmid": "3",
@@ -53,26 +56,28 @@ along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 {{/showintro}}
 <div class="accordion" id="accordion-wrapper-{{uniqid}}-{{cmid}}">
 {{#segments}}
-    <div class="card" id="accordion-{{uniqid}}-{{id}}">
-        <div class="card-header" id="accordion-heading-{{uniqid}}-{{id}}">
-            <button id="unilabel-button-{{uniqid}}-{{id}}"{{!
-            }} class="btn btn-link btn-block collapsed"{{!
-            }} type="button"{{!
-            }} data-toggle="collapse"{{!
-            }} data-target="#accordion-segment-{{uniqid}}-{{id}}"{{!
-            }} aria-expanded="false"{{!
-            }} aria-controls="accordion-segment-{{uniqid}}-{{id}}"{{!
-            }} aria-label="{{#str}} showmore, mod_unilabel {{/str}}"{{!
-            }} title="{{#str}} showmore, mod_unilabel {{/str}}">
-                {{{ heading }}}
-            </button>
-        </div>
-        <div id="accordion-segment-{{uniqid}}-{{id}}" class="collapse" aria-labelledby="accordion-heading-{{uniqid}}-{{id}}" {{^collapse}}data-parent="#accordion-wrapper-{{uniqid}}-{{cmid}}"{{/collapse}}>
-            <div class="card-body">
-                {{{ content }}}
+    {{#visible}}
+        <div class="card" id="accordion-{{uniqid}}-{{id}}">
+            <div class="card-header" id="accordion-heading-{{uniqid}}-{{id}}">
+                <button id="unilabel-button-{{uniqid}}-{{id}}"{{!
+                }} class="btn btn-link btn-block collapsed"{{!
+                }} type="button"{{!
+                }} data-toggle="collapse"{{!
+                }} data-target="#accordion-segment-{{uniqid}}-{{id}}"{{!
+                }} aria-expanded="false"{{!
+                }} aria-controls="accordion-segment-{{uniqid}}-{{id}}"{{!
+                }} aria-label="{{#str}} showmore, mod_unilabel {{/str}}"{{!
+                }} title="{{#str}} showmore, mod_unilabel {{/str}}">
+                    {{{ heading }}}
+                </button>
+            </div>
+            <div id="accordion-segment-{{uniqid}}-{{id}}" class="collapse" aria-labelledby="accordion-heading-{{uniqid}}-{{id}}" {{^collapse}}data-parent="#accordion-wrapper-{{uniqid}}-{{cmid}}"{{/collapse}}>
+                <div class="card-body">
+                    {{{ content }}}
+                </div>
             </div>
         </div>
-    </div>
+    {{/visible}}
 {{/segments}}
 </div>
 {{#js}}

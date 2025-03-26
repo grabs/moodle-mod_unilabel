@@ -55,6 +55,15 @@ class content_type extends \mod_unilabel\content_type {
     }
 
     /**
+     * Get true if the unilabeltype supports the visibility button.
+     *
+     * @return bool
+     */
+    public function use_visibility() {
+        return true;
+    }
+
+    /**
      * Add elements to the activity settings form.
      *
      * @param  \mod_unilabel\edit_content_form $form
@@ -136,6 +145,10 @@ class content_type extends \mod_unilabel\content_type {
             'hidden',
             $prefix . 'sortorder'
         );
+        $repeatarray[] = $mform->createElement(
+            'hidden',
+            $prefix . 'visible'
+        );
 
         $repeatarray[] = $mform->createElement(
             'text',
@@ -200,6 +213,7 @@ class content_type extends \mod_unilabel\content_type {
 
         $repeatedoptions                                   = [];
         $repeatedoptions[$prefix . 'sortorder']['type']    = PARAM_INT;
+        $repeatedoptions[$prefix . 'visible']['type']   = PARAM_BOOL;
         $repeatedoptions[$prefix . 'title']['type']        = PARAM_TEXT;
         $repeatedoptions[$prefix . 'urltitle']['type']     = PARAM_TEXT;
         $repeatedoptions[$prefix . 'url']['type']          = PARAM_URL;
@@ -254,6 +268,7 @@ class content_type extends \mod_unilabel\content_type {
                 $prefix,
                 $myelements,
                 $this->use_sortorder(), // Use drag and drop.
+                $this->use_visibility(), // Use the visibility button.
             ]
         );
     }
@@ -369,6 +384,10 @@ class content_type extends \mod_unilabel\content_type {
             // Prepare the sortorder field.
             $elementname        = $prefix . 'sortorder[' . $index . ']';
             $data[$elementname] = $tile->sortorder ?? ($index + 1);
+
+            // Prepare the visible field.
+            $elementname        = $prefix . 'visible[' . $index . ']';
+            $data[$elementname] = $tile->visible ?? ($index + 1);
 
             ++$index;
         }
@@ -512,7 +531,6 @@ class content_type extends \mod_unilabel\content_type {
                 $draftitemidmobile = $formdata->{$prefix . 'image_mobile'}[$i];
             }
             $draftitemidcontent = $formdata->{$prefix . 'content'}[$i]['itemid'];
-            $sortorder = $formdata->{$prefix . 'sortorder'}[$i];
 
             $tilerecord            = new \stdClass();
             $tilerecord->gridid    = $unilabeltyperecord->id;
@@ -520,7 +538,8 @@ class content_type extends \mod_unilabel\content_type {
             $tilerecord->urltitle  = $urltitle;
             $tilerecord->url       = $formdata->{$prefix . 'url'}[$i];
             $tilerecord->newwindow = !empty($formdata->{$prefix . 'newwindow'}[$i]);
-            $tilerecord->sortorder = $sortorder;
+            $tilerecord->sortorder = $formdata->{$prefix . 'sortorder'}[$i];
+            $tilerecord->visible   = $formdata->{$prefix . 'visible'}[$i];
 
             $tilerecord->content = ''; // Dummy content.
             $tilerecord->id      = $DB->insert_record('unilabeltype_grid_tile', $tilerecord);

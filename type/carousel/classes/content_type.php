@@ -62,6 +62,15 @@ class content_type extends \mod_unilabel\content_type {
     }
 
     /**
+     * Get true if the unilabeltype supports the visibility button.
+     *
+     * @return bool
+     */
+    public function use_visibility() {
+        return true;
+    }
+
+    /**
      * Add elements to the activity settings form.
      *
      * @param  \mod_unilabel\edit_content_form $form
@@ -144,6 +153,10 @@ class content_type extends \mod_unilabel\content_type {
             'hidden',
             $prefix . 'sortorder'
         );
+        $repeatarray[] = $mform->createElement(
+            'hidden',
+            $prefix . 'visible'
+        );
 
         $repeatarray[] = $mform->createElement(
             'editor',
@@ -203,6 +216,7 @@ class content_type extends \mod_unilabel\content_type {
 
         $repeatedoptions                                   = [];
         $repeatedoptions[$prefix . 'sortorder']['type']    = PARAM_INT;
+        $repeatedoptions[$prefix . 'visible']['type']   = PARAM_BOOL;
         $repeatedoptions[$prefix . 'url']['type']          = PARAM_URL;
         $repeatedoptions[$prefix . 'urltitle']['type']     = PARAM_TEXT;
         $repeatedoptions[$prefix . 'caption']['type']      = PARAM_RAW;
@@ -256,6 +270,7 @@ class content_type extends \mod_unilabel\content_type {
                 $prefix,
                 $myelements,
                 $this->use_sortorder(), // Use drag and drop.
+                $this->use_visibility(), // Use the visibility button.
             ]
         );
     }
@@ -355,6 +370,10 @@ class content_type extends \mod_unilabel\content_type {
             // Prepare the sortorder field.
             $elementname        = $prefix . 'sortorder[' . $index . ']';
             $data[$elementname] = $slide->sortorder ?? ($index + 1);
+
+            // Prepare the visible field.
+            $elementname        = $prefix . 'visible[' . $index . ']';
+            $data[$elementname] = $slide->visible ?? ($index + 1);
 
             ++$index;
         }
@@ -553,6 +572,7 @@ class content_type extends \mod_unilabel\content_type {
             $sliderecord->newwindow = !empty($formdata->{$prefix . 'newwindow'}[$i]);
             $sliderecord->caption    = $caption;
             $sliderecord->sortorder  = $sortorder;
+            $sliderecord->visible    = $formdata->{$prefix . 'visible'}[$i];
 
             $sliderecord->id = $DB->insert_record('unilabeltype_carousel_slide', $sliderecord);
 

@@ -123,6 +123,15 @@ abstract class content_type {
     }
 
     /**
+     * Get true if the unilabeltype supports the visibility button.
+     *
+     * @return bool
+     */
+    public function use_visibility() {
+        return false;
+    }
+
+    /**
      * Get the namespace of the content type class.
      *
      * @return string
