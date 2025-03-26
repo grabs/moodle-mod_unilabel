@@ -180,11 +180,16 @@ class content_type extends \mod_unilabel\content_type {
         // If we want each repeated elment in a numbered group we add a header with '{no}' in its label.
         // This is replaced by the number of element.
         $repeatarray[] = $mform->createElement(
+            'html', '<div class="elementwrapper d-none">'
+        );
+        /*
+        $repeatarray[] = $mform->createElement(
             'header',
             'singleelementheader',
             get_string('image', $this->component) . '-{no}'
-        );
+        );*/
 
+        // We will search for fitem_id_unilabeltype_imageboard_title_{no} and will then switch to nearest elementwrapper
         $repeatarray[] = $mform->createElement(
             'text',
             $prefix . 'title',
@@ -308,6 +313,10 @@ class content_type extends \mod_unilabel\content_type {
             $prefix . 'urltitle',
             get_string('urltitle', $this->component) . '-{no}',
             ['size' => 50]
+        );
+
+        $repeatarray[] = $mform->createElement(
+            'html', '</div>'
         );
 
         $repeatedoptions = [];

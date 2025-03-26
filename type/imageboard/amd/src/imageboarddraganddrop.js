@@ -109,6 +109,7 @@ export const init = () => {
         }
 
         if (selectedImage.number !== null) {
+            showSettingsOfImage(selectedImage.number);
             // Information: snap is an integer and allows to use an snapping grid.
             // xposition = 123 with snap 10 will be calculated to 120.
             // xposition = 123 with snap 100 will be calculated to 10.
@@ -132,6 +133,45 @@ export const init = () => {
             selectedImage.number = null;
             selectedImage.titlecorrectorY = 0;
         }
+    }
+
+
+    /**
+     * Hides all setting of elements by adding d-none and removes d-none only for element with the specified number.
+     * @param {int} number
+     */
+    function showSettingsOfImage(number) {
+        // In order do know how many elements are existing in the imageboard we search for
+        // fitem_id_unilabeltype_imageboard_title_ . The length tells us how many elements exists.
+        const singleElements = document.querySelectorAll('[id^="fitem_id_unilabeltype_imageboard_title_"]');
+        for (let i = 0; i < singleElements.length; i++) {
+            let wrapperOfElement = getWrapper(i);
+            if (wrapperOfElement && number == i) {
+                // If it is the selected element we have to remove display none (bootstrap class d-none).
+                wrapperOfElement.classList.remove('d-none');
+            } else {
+                // We will hide all other element settings.
+                wrapperOfElement.classList.add('d-none');
+            }
+        }
+    }
+
+    /**
+     * This function looks for an element in the dom that belongs to an given id and then returns the
+     * surrounding wrapper div.
+     *
+     * @param {number} number
+     * @returns {*}
+     */
+    function getWrapper(number) {
+        console.log("getWrapper number=", number);
+        let element = document.getElementById('fitem_id_unilabeltype_imageboard_title_' + number);
+        console.log("element =", element);
+        let wrapperElement = element.closest(".elementwrapper");
+        if (wrapperElement) {
+            return wrapperElement;
+        }
+        return null;
     }
 
     /**
