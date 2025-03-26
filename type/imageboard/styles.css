@@ -149,3 +149,10 @@
 .unilabeltype-imageboard-helpergrid-rectangle {
     z-index: 0;
 }
+
+#page-mod-unilabel-edit_content .elementwrapper {
+    border: solid 1px #112289;
+    box-shadow: 0 0 10px 0 #444;
+    margin-bottom: 10px;
+    padding: 5px;
+}
