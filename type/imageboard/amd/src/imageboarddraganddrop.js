@@ -125,7 +125,8 @@ export const init = () => {
             const inputPositionY = document.getElementById('id_unilabeltype_imageboard_yposition_' + (selectedImage.number));
             inputPositionY.value = parseInt(yposition) + parseInt(selectedImage.titlecorrectorY);
 
-            let coordinates = document.getElementById('unilabel-imageboard-coordinates-' + selectedImage.number);
+            // ToDo: duplicate code for update coordinates
+            let coordinates = document.getElementById('unilabel-imageboard-coordinates');
             coordinates.innerHTML = (parseInt(selectedImage.number) + 1) + ": " +
                 inputPositionX.value + " / " + inputPositionY.value;
 

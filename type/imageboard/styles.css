@@ -140,12 +140,6 @@
     padding-left: 25px;
 }
 
-.unilabel-imageboard-coordinates {
-    background-color: rgba(255, 255, 255, 0.9);
-    padding-left: 2px;
-    padding-right: 2px;
-}
-
 .unilabeltype-imageboard-helpergrid-rectangle {
     z-index: 0;
 }

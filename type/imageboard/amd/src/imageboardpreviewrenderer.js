@@ -117,6 +117,11 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
         if (technicalnumber) {
             showSettingsOfImage(technicalnumber);
         }
+        // Update coordinates
+        let coordinates = document.getElementById('unilabel-imageboard-coordinates');
+        let imagedata = getAllImagedataFromForm(technicalnumber);
+        coordinates.innerHTML = (parseInt(technicalnumber) + 1) + ": " + imagedata.xposition + " / " + imagedata.yposition;
+        console.log('coordinates=', coordinates);
     }
 
     /**
@@ -658,7 +663,8 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
             src: '',
             border: 'id_unilabeltype_imageboard_border_' + number,
             borderradius: 'id_unilabeltype_imageboard_borderradius_' + number,
-            coordinates: "unilabel-imageboard-coordinates-" + number,
+            coordinates: "unilabel-imageboard-coordinates",
+            // For all images we wil use the same div to show the coorinates
         };
 
         let imagedata = {};
@@ -694,6 +700,7 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
             if (imagedata.yposition === "") {
                 imagedata.yposition = 0;
             }
+            // This will update the coordinates in the html.
             div.innerHTML = (parseInt(number) + 1) + ": " + imagedata.xposition + " / " + imagedata.yposition;
         }
         return imagedata;
@@ -702,7 +709,7 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
     /**
      * This is a helper function to create an html element which can be used to replace another element.
      *
-     * @param {Sring} htmlString
+     * @param {String} htmlString
      * @returns {Element}
      */
     function createElementFromHTML(htmlString) {
