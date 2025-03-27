@@ -99,6 +99,67 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
     /**
      *
      * @param {event} event
+     */
+    function onRightclick(event) {
+        event.preventDefault();
+        // Get the number of the image that was selected with the right mouse button
+        var idoftarget = event.target.getAttribute('id');
+        if (!idoftarget) {
+            return;
+        }
+
+        // Check, if idoftarget ist an id of an image
+        let technicalnumber = idoftarget.split('unilabel-imageboard-imageid-')[1];
+        // Oder ein Titel wurde angeklickt
+        if (!technicalnumber) {
+            technicalnumber = idoftarget.split('id_elementtitle-')[1];
+        }
+        if (technicalnumber) {
+            showSettingsOfImage(technicalnumber);
+        }
+    }
+
+    /**
+     * Hides all setting of elements by adding d-none and removes d-none only for element with the specified number.
+     * @param {int} number
+     */
+    function showSettingsOfImage(number) {
+        // In order do know how many elements are existing in the imageboard we search for
+        // fitem_id_unilabeltype_imageboard_title_ . The length tells us how many elements exists.
+        const singleElements = document.querySelectorAll('[id^="fitem_id_unilabeltype_imageboard_title_"]');
+        for (let i = 0; i < singleElements.length; i++) {
+            let wrapperOfElement = getWrapper(i);
+            if (wrapperOfElement && number == i) {
+                // If it is the selected element we have to remove display none (bootstrap class d-none).
+                wrapperOfElement.classList.remove('d-none');
+            } else {
+                // We will hide all other element settings.
+                wrapperOfElement.classList.add('d-none');
+            }
+        }
+    }
+
+    /**
+     * This function looks for an element in the dom that belongs to an given id and then returns the
+     * surrounding wrapper div.
+     *
+     * @param {number} number
+     * @returns {*}
+     */
+    function getWrapper(number) {
+        console.log("getWrapper number=", number);
+        let element = document.getElementById('fitem_id_unilabeltype_imageboard_title_' + number);
+        console.log("element =", element);
+        let wrapperElement = element.closest(".elementwrapper");
+        if (wrapperElement) {
+            return wrapperElement;
+        }
+        return null;
+    }
+
+    /**
+     *
+     * @param {event} event
      * @returns {*}
      */
     function getNumberFromEvent(event) {
@@ -171,6 +232,10 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
         mform.addEventListener("itemremoved", (event) => {
             onRemoveElement(event);
         });
+
+        // All click-events will be handeled by oneListenerForAllInputClick.
+        mform.addEventListener("contextmenu", onRightclick, false);
+
 
         // First: When uploading a backgroundimage the backgroundimage of the backgroundimagediv must be updated.
         // TODO: better use eventlistener
