@@ -135,13 +135,15 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
             // TODO: Skip removed elements that are still in the dom but hidden.
             let singleElement = singleElements[i].getAttribute('id');
             let number = singleElement.split('fitem_id_unilabeltype_imageboard_image_')[1];
-            let selectedimage = document.getElementById('unilabel-imageboard-imageid-' + number);
-            if (selectedimage) {
-                selectedimage.classList.remove("selected");
-            }
-            let selectedtitle = document.getElementById('id_elementtitle-' + number);
-            if (selectedtitle) {
-                selectedtitle.classList.remove("selected");
+            if (number) {
+                let image = document.getElementById('unilabel-imageboard-imageid-' + number);
+                if (image) {
+                    image.classList.remove("selected");
+                }
+                let title = document.getElementById('id_elementtitle-' + number);
+                if (title) {
+                    title.classList.remove("selected");
+                }
             }
         }
         target.classList.add("selected");

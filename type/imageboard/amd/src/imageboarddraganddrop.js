@@ -108,6 +108,7 @@ export const init = () => {
             snap = snapelement.value;
         }
 
+        marktargetasselected(event.target);
         if (selectedImage.number !== null) {
             showSettingsOfImage(selectedImage.number);
             // Information: snap is an integer and allows to use an snapping grid.
@@ -136,6 +137,35 @@ export const init = () => {
         }
     }
 
+    /**
+     *
+     * @param {target} target
+     */
+    function marktargetasselected(target) {
+        console.log("marktargetasselected");
+        console.log("target", target);
+        let technicalnumber = target.getAttribute('id').split('unilabel-imageboard-element-')[1];
+        const singleElements = document.querySelectorAll('[id^="fitem_id_unilabeltype_imageboard_image_"]');
+        for (let i = 0; i < singleElements.length; i++) {
+            // TODO: Skip removed elements that are still in the dom but hidden.
+            let singleElement = singleElements[i].getAttribute('id');
+            let number = singleElement.split('fitem_id_unilabeltype_imageboard_image_')[1];
+            if (number) {
+                let image = document.getElementById('unilabel-imageboard-imageid-' + number);
+                if (image) {
+                    image.classList.remove("selected");
+                }
+                let title = document.getElementById('id_elementtitle-' + number);
+                if (title) {
+                    title.classList.remove("selected");
+                }
+            }
+        }
+        let selectedimage = document.getElementById('unilabel-imageboard-imageid-' + technicalnumber);
+        selectedimage.classList.add("selected");
+        let selectedtitle = document.getElementById('id_elementtitle-' + technicalnumber);
+        selectedtitle.classList.add("selected");
+    }
 
     /**
      * Hides all setting of elements by adding d-none and removes d-none only for element with the specified number.

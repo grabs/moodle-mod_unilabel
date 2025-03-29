@@ -166,6 +166,7 @@
 }
 
 [id^="unilabel-imageboard-imageid-"].selected,
+[id^="unilabel-imageboard-element-"].selected,
 [id^="id_elementtitle-"].selected {
     box-shadow: 0 0 10px 0 #fff;
     animation: rahmen-farbwechsel 2s infinite alternate;
