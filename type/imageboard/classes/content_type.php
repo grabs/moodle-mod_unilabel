@@ -331,6 +331,7 @@ class content_type extends \mod_unilabel\content_type {
         $repeatedoptions[$prefix . 'borderradius']['default'] = $this->config->default_borderradius;
         // Adding the help buttons.
         $repeatedoptions[$prefix . 'urlgroup']['helpbutton'] = ['url', $this->component];
+        $repeatedoptions[$prefix . 'urltitle']['helpbutton'] = ['urltitle', $this->component];
         $repeatedoptions[$prefix . 'position']['helpbutton'] = ['position', $this->component];
         $repeatedoptions[$prefix . 'targetsize']['helpbutton'] = ['targetsize', $this->component];
 
