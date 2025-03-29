@@ -116,6 +116,7 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
         }
         if (technicalnumber) {
             showSettingsOfImage(technicalnumber);
+            marktargetasselected(event.target);
         }
         // Update coordinates
         let coordinates = document.getElementById('unilabel-imageboard-coordinates');
@@ -123,6 +124,29 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
         coordinates.innerHTML = (parseInt(technicalnumber) + 1) + ": " + imagedata.xposition + " / " + imagedata.yposition;
         console.log('coordinates=', coordinates);
     }
+
+    /**
+     *
+     * @param {target} target
+     */
+    function marktargetasselected(target) {
+        const singleElements = document.querySelectorAll('[id^="fitem_id_unilabeltype_imageboard_image_"]');
+        for (let i = 0; i < singleElements.length; i++) {
+            // TODO: Skip removed elements that are still in the dom but hidden.
+            let singleElement = singleElements[i].getAttribute('id');
+            let number = singleElement.split('fitem_id_unilabeltype_imageboard_image_')[1];
+            let selectedimage = document.getElementById('unilabel-imageboard-imageid-' + number);
+            if (selectedimage) {
+                selectedimage.classList.remove("selected");
+            }
+            let selectedtitle = document.getElementById('id_elementtitle-' + number);
+            if (selectedtitle) {
+                selectedtitle.classList.remove("selected");
+            }
+        }
+        target.classList.add("selected");
+    }
+
 
     /**
      * Hides all setting of elements by adding d-none and removes d-none only for element with the specified number.

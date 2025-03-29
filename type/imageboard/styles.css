@@ -149,4 +149,24 @@
     box-shadow: 0 0 10px 0 #444;
     margin-bottom: 10px;
     padding: 5px;
+    max-width: 600px;
+}
+
+
+@keyframes rahmen-farbwechsel {
+    0% {
+        box-shadow: 0 0 10px 4px #fff;
+    }
+    50% {
+        box-shadow: 0 0 2px 4px #777;
+    }
+    100% {
+        box-shadow: 0 0 10px 4px #333;
+    }
+}
+
+[id^="unilabel-imageboard-imageid-"].selected,
+[id^="id_elementtitle-"].selected {
+    box-shadow: 0 0 10px 0 #fff;
+    animation: rahmen-farbwechsel 2s infinite alternate;
 }
