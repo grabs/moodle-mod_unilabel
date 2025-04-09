@@ -1,5 +1,10 @@
 ## Release notes
 
+### Release 5.0.0
+* Adjust output for new bootstrap 5.x
+* Change output filtering (#58)
+* Add a visibility option to accordion, carousel and grid (#55)
+
 ### Release 4.5.6
 * collapsedtext: upgrade faile on null values (#56)
 
