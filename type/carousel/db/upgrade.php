@@ -103,7 +103,7 @@ function xmldb_unilabeltype_carousel_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2024122600, 'unilabeltype', 'carousel');
     }
 
-    if ($oldversion < 2025020403) {
+    if ($oldversion < 2025030800) {
 
         // Define field visible to be added to unilabeltype_carousel_slide.
         $table = new xmldb_table('unilabeltype_carousel_slide');
@@ -115,7 +115,7 @@ function xmldb_unilabeltype_carousel_upgrade($oldversion) {
         }
 
         // Accordion savepoint reached.
-        upgrade_plugin_savepoint(true, 2025020403, 'unilabeltype', 'carousel');
+        upgrade_plugin_savepoint(true, 2025030800, 'unilabeltype', 'carousel');
     }
 
     return true;

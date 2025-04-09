@@ -60,7 +60,7 @@ function xmldb_unilabeltype_accordion_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2023111601, 'unilabeltype', 'accordion');
     }
 
-    if ($oldversion < 2025020403) {
+    if ($oldversion < 2025030800) {
 
         // Define field visible to be added to unilabeltype_accordion_seg.
         $table = new xmldb_table('unilabeltype_accordion_seg');
@@ -72,7 +72,7 @@ function xmldb_unilabeltype_accordion_upgrade($oldversion) {
         }
 
         // Accordion savepoint reached.
-        upgrade_plugin_savepoint(true, 2025020403, 'unilabeltype', 'accordion');
+        upgrade_plugin_savepoint(true, 2025030800, 'unilabeltype', 'accordion');
     }
 
     return true;

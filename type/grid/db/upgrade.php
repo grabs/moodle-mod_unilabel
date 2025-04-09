@@ -103,7 +103,7 @@ function xmldb_unilabeltype_grid_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2024122600, 'unilabeltype', 'grid');
     }
 
-    if ($oldversion < 2025020403) {
+    if ($oldversion < 2025030800) {
 
         // Define field visible to be added to unilabeltype_grid_tile.
         $table = new xmldb_table('unilabeltype_grid_tile');
@@ -115,7 +115,7 @@ function xmldb_unilabeltype_grid_upgrade($oldversion) {
         }
 
         // Accordion savepoint reached.
-        upgrade_plugin_savepoint(true, 2025020403, 'unilabeltype', 'grid');
+        upgrade_plugin_savepoint(true, 2025030800, 'unilabeltype', 'grid');
     }
 
     return true;
