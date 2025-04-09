@@ -60,5 +60,20 @@ function xmldb_unilabeltype_accordion_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2023111601, 'unilabeltype', 'accordion');
     }
 
+    if ($oldversion < 2025030800) {
+
+        // Define field visible to be added to unilabeltype_accordion_seg.
+        $table = new xmldb_table('unilabeltype_accordion_seg');
+        $field = new xmldb_field('visible', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '1', 'content');
+
+        // Conditionally launch add field visible.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Accordion savepoint reached.
+        upgrade_plugin_savepoint(true, 2025030800, 'unilabeltype', 'accordion');
+    }
+
     return true;
 }
