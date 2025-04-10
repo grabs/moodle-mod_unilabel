@@ -103,5 +103,20 @@ function xmldb_unilabeltype_carousel_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2024050804, 'unilabeltype', 'carousel');
     }
 
+    if ($oldversion < 2024050900) {
+
+        // Define field visible to be added to unilabeltype_carousel_slide.
+        $table = new xmldb_table('unilabeltype_carousel_slide');
+        $field = new xmldb_field('visible', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '1', 'urltitle');
+
+        // Conditionally launch add field visible.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Accordion savepoint reached.
+        upgrade_plugin_savepoint(true, 2024050900, 'unilabeltype', 'carousel');
+    }
+
     return true;
 }

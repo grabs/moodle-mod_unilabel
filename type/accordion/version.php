@@ -24,5 +24,5 @@
 defined('MOODLE_INTERNAL') || die;
 
 $plugin->component = 'unilabeltype_accordion';
-$plugin->version   = 2024050806;
+$plugin->version   = 2024050900;
 $plugin->requires  = 2022111800;

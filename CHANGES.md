@@ -1,5 +1,9 @@
 ## Release notes
 
+### Release 4.4.8
+* Change output filtering (#58)
+* Add a visibility option to accordion, carousel and grid (#55)
+
 ### Release 4.4.7
 * collapsedtext: upgrade faile on null values (#56)
 

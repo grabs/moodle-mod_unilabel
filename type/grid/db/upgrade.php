@@ -103,5 +103,20 @@ function xmldb_unilabeltype_grid_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2024050804, 'unilabeltype', 'grid');
     }
 
+    if ($oldversion < 2024050900) {
+
+        // Define field visible to be added to unilabeltype_grid_tile.
+        $table = new xmldb_table('unilabeltype_grid_tile');
+        $field = new xmldb_field('visible', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '1', 'content');
+
+        // Conditionally launch add field visible.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Accordion savepoint reached.
+        upgrade_plugin_savepoint(true, 2024050900, 'unilabeltype', 'grid');
+    }
+
     return true;
 }
