@@ -23,6 +23,7 @@ Feature: Modify content of the unilabeltype topicteaser
       | clickaction      | opendialog | unilabeltype_topicteaser |
       | showintro        | 0          | unilabeltype_topicteaser |
       | showcoursetitle  | 1          | unilabeltype_topicteaser |
+      | texteditors      | textarea   |                          |
     And the following "activity" exists:
       | activity | label         |
       | course   | C2            |

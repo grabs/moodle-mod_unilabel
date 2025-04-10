@@ -14,8 +14,9 @@ Feature: Modify content of the unilabeltype imageboard
       | teacher1 | C1     | editingteacher |
       | student1 | C1     | student        |
     And the following config values are set as admin:
-      | active  | 1   | unilabeltype_imageboard |
-      | columns | 4   | unilabeltype_imageboard |
+      | active      | 1        | unilabeltype_imageboard |
+      | columns     | 4        | unilabeltype_imageboard |
+      | texteditors | textarea |                         |
 
   @javascript @_file_upload
   Scenario: Add content to the unilabel as imageboard

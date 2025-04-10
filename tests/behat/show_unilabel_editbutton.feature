@@ -18,6 +18,8 @@ Feature: Show teachers and users the unilabel on the course page
       | user     | course | role           |
       | teacher1 | C1     | editingteacher |
       | student1 | C1     | student        |
+    And the following config values are set as admin:
+      | texteditors | textarea |
 
   @javascript
   Scenario: See the "Edit content" button as teacher

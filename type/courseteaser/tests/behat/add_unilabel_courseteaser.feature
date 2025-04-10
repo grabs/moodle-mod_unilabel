@@ -25,6 +25,7 @@ Feature: Modify content of the unilabeltype courseteaser
       | columns          | 4        | unilabeltype_courseteaser |
       | presentation     | carousel | unilabeltype_courseteaser |
       | showintro        | 0        | unilabeltype_courseteaser |
+      | texteditors      | textarea |                           |
     And the following "activity" exists:
       | activity | label          |
       | course   | C3             |
