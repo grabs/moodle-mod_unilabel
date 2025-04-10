@@ -14,7 +14,8 @@ Feature: Modify content of the unilabeltype accordion
       | teacher1 | C1     | editingteacher |
       | student1 | C1     | student        |
     And the following config values are set as admin:
-      | active | 1 | unilabeltype_accordion |
+      | active      | 1        | unilabeltype_accordion |
+      | texteditors | textarea |                        |
 
   @javascript
   Scenario: Add and delete segments to and from the accordion

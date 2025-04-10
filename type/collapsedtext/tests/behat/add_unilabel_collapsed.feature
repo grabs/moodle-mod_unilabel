@@ -14,7 +14,8 @@ Feature: Modify content of the unilabeltype collapsedtext
       | teacher1 | C1     | editingteacher |
       | student1 | C1     | student        |
     And the following config values are set as admin:
-      | active | 1 | unilabeltype_collapsedtext |
+      | active      | 1        | unilabeltype_collapsedtext |
+      | texteditors | textarea |                            |
 
   @javascript
   Scenario: Add a title for the collapsed text

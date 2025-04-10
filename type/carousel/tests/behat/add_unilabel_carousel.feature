@@ -14,7 +14,8 @@ Feature: Modify content of the unilabeltype carousel
       | teacher1 | C1     | editingteacher |
       | student1 | C1     | student        |
     And the following config values are set as admin:
-      | active | 1 | unilabeltype_carousel |
+      | active      | 1        | unilabeltype_carousel |
+      | texteditors | textarea |                       |
 
   @javascript @_file_upload
   Scenario: Add a unilabel as carousel with autorun active
