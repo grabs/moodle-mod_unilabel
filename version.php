@@ -28,6 +28,6 @@ $plugin->version  = 2025030800;     // The current version.
 $plugin->release  = '5.0.0 (Build: 2025030400)';
 $plugin->maturity = MATURITY_STABLE;
 
-$plugin->requires  = 2025040800;     // Requires Moodle 5.x
+$plugin->requires  = 2025040800;     // Requires Moodle 5.x.
 $plugin->component = 'mod_unilabel'; // Full name of the plugin (used for diagnostics).
 $plugin->cron      = 0;
