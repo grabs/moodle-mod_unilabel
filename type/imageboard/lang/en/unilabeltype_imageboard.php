@@ -91,5 +91,6 @@ $string['titlelineheight_help'] = 'Lineheight in em';
 $string['url'] = 'Url';
 $string['url_help'] = 'The image becomes a clickable button linked to the defined url by defining an url.';
 $string['urltitle'] = 'Url title';
+$string['urltitle_help'] = 'Accessibility improvements by using title as aria-label and as tooltip when hovering a link.';
 $string['xposition'] = 'X';
 $string['yposition'] = 'Y';

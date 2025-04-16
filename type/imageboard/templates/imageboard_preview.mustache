@@ -71,12 +71,13 @@
             <div></div>
         </div>
     </div>
-
 </div>
+
+<div id="unilabel-imageboard-coordinates" class="unilabel-imageboard-coordinates" tabindex="0">Nummer: x-Position / y-Position</div>
 
 <div class="unilabeltype-imageboard-controllbuttons d-flex flex-column mt-2">
     <div class="unilabel-imageboard-gridtoggler">
-        <a class="unilabeltype-imageboard-controllbutton" href="#" id="unilabeltype-imageboard-gridtoggler-{{cmid}}">
+        <a href="#" id="unilabeltype-imageboard-gridtoggler-{{cmid}}">
             <i class="fa fa-th fa-fw"></i> <span class="unilabeltype-imageboard-toggle-text">{{#str}} buttonlabelhelpergridhide, unilabeltype_imageboard {{/str}}</span>
         </a>
     </div>
@@ -87,8 +88,7 @@
         <label for="unilabeltype-imageboard-snap">
             {{#str}} snap, unilabeltype_imageboard {{/str}}
             <input id="unilabeltype-imageboard-snap" type="number"
-                   min="1" max="100" step="1" value="1"
-                   inputmode="decimal">
+                   min="1" max="100" step="1" value="1">
         </label>
     </div>
 </div>

@@ -15,7 +15,7 @@
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
 {{!
-    @template unilabeltype_imageboard/edit_element
+    @template mod_unilabel/edit_element_base
     Template to get the form items for a single element
 
     Example context (json):
@@ -23,14 +23,27 @@
         "formid": "mform_jflajfldsa",
         "repeatindex": 1,
         "repeatnr": 2,
-        "titleelement": "<div>Dummy title</div>",
-        "imageelement": "<div>Dummy image</div>",
-        "postionelement": "<div>Dummy position</div>",
-        "targetsizeelement": "<div>Dummy targetsize</div>",
-        "urlelement": "<div>Dummy url</div>",
-        "pickerbutton": "<div>Dummy pickerbutton</div>",
-        "borderelement": "<div>Dummy border element</div>"
+        "sortorderelement": "<div>Dummy sortorderelement</div>",
+        "headingelement": "<div>Dummy heading</div>",
+        "contentelement": "<div>Dummy content</div>"
     }
 }}
 
-{{> mod_unilabel/edit_element_base }}
+    <legend class="sr-only">{{elementsname}}-{{repeatnr}}</legend>
+    <div id="id_addedsingleelement_{{repeatindex}}" class="elementwrapper d-none">
+
+        <!-- ToDo: Check the following lines of code sortorderelement  -->
+        {{#sortorderelement}}
+            <div class="d-none">
+                {{{.}}}
+            </div>
+        {{/sortorderelement}}
+
+
+        {{#elements}}
+            <div>
+                {{{.}}}
+            </div>
+        {{/elements}}
+    </div>
+

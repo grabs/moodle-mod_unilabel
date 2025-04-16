@@ -140,12 +140,34 @@
     padding-left: 25px;
 }
 
-.unilabel-imageboard-coordinates {
-    background-color: rgba(255, 255, 255, 0.9);
-    padding-left: 2px;
-    padding-right: 2px;
-}
-
 .unilabeltype-imageboard-helpergrid-rectangle {
     z-index: 0;
+}
+
+#page-mod-unilabel-edit_content .elementwrapper {
+    border: solid 1px #112289;
+    box-shadow: 0 0 10px 0 #444;
+    margin-bottom: 10px;
+    padding: 5px;
+    max-width: 600px;
+}
+
+
+@keyframes rahmen-farbwechsel {
+    0% {
+        box-shadow: 0 0 10px 4px #fff;
+    }
+    50% {
+        box-shadow: 0 0 2px 4px #777;
+    }
+    100% {
+        box-shadow: 0 0 10px 4px #333;
+    }
+}
+
+[id^="unilabel-imageboard-imageid-"].selected,
+[id^="unilabel-imageboard-element-"].selected,
+[id^="id_elementtitle-"].selected {
+    box-shadow: 0 0 10px 0 #fff;
+    animation: rahmen-farbwechsel 2s infinite alternate;
 }
