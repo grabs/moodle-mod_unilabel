@@ -82,13 +82,26 @@ class content_type extends \mod_unilabel\content_type {
 
             $segments = $DB->get_records('unilabeltype_accordion_seg', ['accordionid' => $this->record->id], 'sortorder ASC');
             foreach ($segments as $segment) {
-                $segment->heading = format_text($segment->heading);
-                $segment->content = format_text($segment->content);
+                $segment->heading = $this->format_content($segment->heading, 'heading', $segment->id);
+                $segment->content = $this->format_content($segment->content, 'content', $segment->id);
                 $this->segments[] = $segment;
             }
         }
 
         return $this->record;
+    }
+
+    /**
+     * Format the given content and rewrites the pluginfile unilabel_reset_userdata
+     *
+     * @param string $content
+     * @param string $area
+     * @param int $itemid
+     * @return string
+     */
+    public function format_content(string $content, string $area, int $itemid) {
+        $content = file_rewrite_pluginfile_urls($content, 'pluginfile.php', $this->context->id, $this->component, $area, $itemid);
+        return format_text($content, FORMAT_HTML);
     }
 
     /**
