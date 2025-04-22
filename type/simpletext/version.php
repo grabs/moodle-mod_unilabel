@@ -25,5 +25,5 @@
 defined('MOODLE_INTERNAL') || die;
 
 $plugin->component = 'unilabeltype_simpletext';
-$plugin->version   = 2024050900;
+$plugin->version   = 2024050901;
 $plugin->requires  = 2022111800;

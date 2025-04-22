@@ -1,5 +1,8 @@
 ## Release notes
 
+### Release 4.4.9
+* fix missing rewrite files in accordion (#61)
+
 ### Release 4.4.8
 * Change output filtering (#58)
 * Add a visibility option to accordion, carousel and grid (#55)
