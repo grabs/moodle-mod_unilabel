@@ -1,5 +1,8 @@
 ## Release notes
 
+### Release 5.0.1
+* fix missing rewrite files in accordion (#61)
+
 ### Release 5.0.0
 * Adjust output for new bootstrap 5.x
 * Change output filtering (#58)
