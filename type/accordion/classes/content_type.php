@@ -101,7 +101,7 @@ class content_type extends \mod_unilabel\content_type {
      */
     public function format_content(string $content, string $area, int $itemid) {
         $content = file_rewrite_pluginfile_urls($content, 'pluginfile.php', $this->context->id, $this->component, $area, $itemid);
-        return format_text($content, FORMAT_HTML);
+        return format_text($content, FORMAT_HTML, ['noclean' => true]);
     }
 
     /**
