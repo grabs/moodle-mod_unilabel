@@ -27,6 +27,6 @@
 }}
 
 <div class="carousel-caption p-1 mx-auto rounded{{#captionstyle}} {{.}}{{/captionstyle}}{{#captionwidth}} fixedwidth{{/captionwidth}}"{{!
-                                                                        }} {{#captionwidth}} style="max-width:{{.}}px"{{/captionwidth}}>
+                                                                        }}  style="{{#captionwidth}}max-width:{{.}}px;{{/captionwidth}}{{^captionstyle}}mix-blend-mode:difference;{{/captionstyle}}">
     {{{caption}}}
 </div>
