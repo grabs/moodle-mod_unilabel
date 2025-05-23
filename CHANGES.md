@@ -1,5 +1,9 @@
 ## Release notes
 
+### Release 4.5.9
+* MBS-10126: Do not clean accordion content (#63, #64)
+* Make caption more visible by default
+
 ### Release 4.5.8
 * fix missing rewrite files in accordion (#61)
 
