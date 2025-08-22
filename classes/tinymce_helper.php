@@ -118,8 +118,12 @@ class tinymce_helper extends \editor_tiny\editor {
         }
 
         $configoptions = json_encode(convert_to_array($config), JSON_UNESCAPED_SLASHES + JSON_PRETTY_PRINT);
-
-        return str_replace('\\', '\\\\', $configoptions); // We have to escape the output because it gets directly into js.
+        // We have to escape the output because it gets directly into js.
+        $configoptions = str_replace('\\', '\\\\', $configoptions);
+        // However, we must not double-escape quotes to avoid screwing up the JSON,
+        // so revert them back to single backslashes.
+        $configoptions = str_replace('\\\\"', '\\"', $configoptions);
+        return $configoptions;
     }
 
     /**
