@@ -28,11 +28,14 @@
 
 
 <div id='unilabel-imageboard-element-{{number}}' draggable='true' class='unilabel-imageboard-element-draggable' style='z-index: 5; position: absolute;'>
-    <div id='id_elementtitle-{{number}}' draggable='false' class='unilabel-imageboard-title' style='position: absolute;'>
-        <i class="fa fa-refresh" aria-hidden="true"></i>
-    </div>
     <div id='imageidimage-{{number}}' draggable='false'>
         <div class="image-container">
+
+            <div id='id_elementtitle-{{number}}' draggable='false' class='unilabel-imageboard-title' style='position: absolute;'>
+                <i class="fa fa-refresh" aria-hidden="true"></i>
+            </div>
+            <i draggable='true' id='edit-icon-{{number}}' class="fa fa-edit edit-icon"></i>
+
             <img id='unilabel-imageboard-imageid-{{number}}' draggable='false' class='unilabel-imageboard-image' alt='image' src='{{{src}}}' style='position: relative;'>
             <span class="dot" aria-hidden="true"></span>
         </div>

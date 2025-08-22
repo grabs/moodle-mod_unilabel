@@ -176,6 +176,12 @@ class content_type extends \mod_unilabel\content_type {
         $pickerbutton = new \mod_unilabel\output\component\activity_picker_button($formid, $inputidbase, $urltitleinputidbase);
         $mform->addElement('html', $OUTPUT->render($picker));
 
+
+        $preview = new \unilabeltype_imageboard\output\imageboard_preview($form->unilabel, $this, null, $context);
+        $mform->addElement('html', $OUTPUT->render($preview));
+
+
+
         $repeatarray = [];
         // If we want each repeated elment in a numbered group we add a header with '{no}' in its label.
         // This is replaced by the number of element.
@@ -387,8 +393,8 @@ class content_type extends \mod_unilabel\content_type {
         );
 
         // Added parameter $context might not nessessary???
-        $preview = new \unilabeltype_imageboard\output\imageboard_preview($form->unilabel, $this, null, $context);
-        $mform->addElement('html', $OUTPUT->render($preview));
+       // $preview = new \unilabeltype_imageboard\output\imageboard_preview($form->unilabel, $this, null, $context);
+       // $mform->addElement('html', $OUTPUT->render($preview));
     }
 
     /**

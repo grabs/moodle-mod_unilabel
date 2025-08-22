@@ -104,6 +104,23 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
         event.preventDefault();
         // Get the number of the image that was selected with the right mouse button
         var idoftarget = event.target.getAttribute('id');
+        console.log("rightclick event.target", event.target);
+        console.log("rightclick idoftarget", idoftarget);
+        if (event.target &&
+            event.target.getAttribute('id') &&
+            event.target.getAttribute('id').split('edit-icon-')[1] >= 1) {
+            console.log("Icon nummer=", event.target.getAttribute('id').split('edit-icon-')[1]);
+            // Edit wurde angecklickt
+
+            let technicalnumber = idoftarget.split('edit-icon-')[1];
+            if (technicalnumber) {
+                showSettingsOfImage(technicalnumber);
+                marktargetasselected(event.target);
+            }
+
+            return;
+        }
+
         if (!idoftarget) {
             return;
         }
@@ -660,6 +677,11 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
                 // Title above image.
                 const elementtitle = document.getElementById('id_elementtitle-' + number);
                 elementtitle.innerHTML = imagedata.title;
+                /* A const weitereDiv = "<div> "
+                    + "<i id='unilable-imageboard-edit-" + number + "'"
+                    + "class='fa fa-arrows-up-down-left-right' aria-hidden='true' style='position: relative;'></i>"
+                    + "</div>";
+                elementtitle.insertAdjacentHTML('afterend', weitereDiv);*/
                 elementtitle.style.color = imagedata.titlecolor;
                 elementtitle.style.backgroundColor = imagedata.titlebackgroundcolor;
                 elementtitle.style.fontSize = imagedata.fontsize + "px";

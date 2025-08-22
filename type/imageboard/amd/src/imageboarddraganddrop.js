@@ -55,6 +55,14 @@ export const init = () => {
      * @param {event} event
      */
     function dragStart(event) {
+        console.log("event.target.getAttribute('id').split('edit-icon-')[1]",
+            event.target.getAttribute('id').split('edit-icon-')[1]);
+        if (event.target &&
+            event.target.getAttribute('id') &&
+            event.target.getAttribute('id').split('edit-icon-')[1] >= 1) {
+            console.log("Icon nummer=", event.target.getAttribute('id').split('edit-icon-')[1]);
+            return;
+        }
         // Check if title or image is selected because this leads to different offsets.
         // We have to do different calculation of x and y position.
         let selectedType = "nix";
@@ -108,7 +116,14 @@ export const init = () => {
             snap = snapelement.value;
         }
 
+        if (event.target &&
+            event.target.getAttribute('id') &&
+            event.target.getAttribute('id').split('edit-icon-')[1] >= 1) {
+            console.log("Icon nummerrr=", event.target.getAttribute('id').split('edit-icon-')[1]);
+            return;
+        }
         marktargetasselected(event.target);
+
         if (selectedImage.number !== null) {
             showSettingsOfImage(selectedImage.number);
             // Information: snap is an integer and allows to use an snapping grid.
