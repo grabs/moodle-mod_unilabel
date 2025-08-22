@@ -94,36 +94,6 @@
     display: block;
 }
 
-/* Der Punkt: Diagonal geteiltes Quadrat */
-#unilabel-imageboard-preview .dot {
-    position: absolute;
-    top: 0; /* Abstand vom oberen Rand */
-    left: 0; /* Abstand vom linken Rand */
-    width: 20px; /* Breite des Quadrats */
-    height: 20px; /* Höhe des Quadrats */
-    pointer-events: none; /* Interaktionslos */
-    opacity: 0; /* Unsichtbar im Normalzustand */
-    transition: opacity 0.3s ease; /* Weicher Übergang beim Hover */
-}
-
-/* Oberes Dreieck */
-#unilabel-imageboard-preview .dot::before {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 0;
-    border-style: solid;
-    border-width: 0 20px 20px 0; /* Diagonales Dreieck */
-    border-color: transparent #333 #eee transparent; /* Obere Dreieckfarbe (schwarz) */
-    top: 0;
-    left: 0;
-}
-
-/* Hover-Effekt */
-#unilabel-imageboard-preview .image-container:hover .dot {
-    opacity: 1; /* Quadrat wird sichtbar */
-}
-
 .unilabeltype-imageboard-x-achse {
     top: -17px;
 }
@@ -140,12 +110,47 @@
     padding-left: 25px;
 }
 
-.unilabel-imageboard-coordinates {
-    background-color: rgba(255, 255, 255, 0.9);
-    padding-left: 2px;
-    padding-right: 2px;
-}
-
 .unilabeltype-imageboard-helpergrid-rectangle {
     z-index: 0;
+}
+
+#page-mod-unilabel-edit_content .elementwrapper {
+    border: solid 1px #112289;
+    box-shadow: 0 0 10px 0 #444;
+    margin-bottom: 10px;
+    padding: 5px;
+    max-width: 600px;
+}
+
+
+@keyframes rahmen-farbwechsel {
+    0% {
+        box-shadow: 0 0 10px 4px #fff;
+    }
+    50% {
+        box-shadow: 0 0 2px 4px #777;
+    }
+    100% {
+        box-shadow: 0 0 10px 4px #333;
+    }
+}
+
+[id^="unilabel-imageboard-imageid-"].selected,
+[id^="unilabel-imageboard-element-"].selected,
+[id^="id_elementtitle-"].selected {
+    box-shadow: 0 0 10px 0 #fff;
+    animation: rahmen-farbwechsel 2s infinite alternate;
+}
+
+
+.edit-icon {
+    position: absolute;
+    top: -25px;
+    left: -25px;
+    color: white;
+    cursor: pointer;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 5px;
+    border-radius: 5px;
+    z-index: 400;
 }

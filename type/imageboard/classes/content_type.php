@@ -176,15 +176,26 @@ class content_type extends \mod_unilabel\content_type {
         $pickerbutton = new \mod_unilabel\output\component\activity_picker_button($formid, $inputidbase, $urltitleinputidbase);
         $mform->addElement('html', $OUTPUT->render($picker));
 
+
+        $preview = new \unilabeltype_imageboard\output\imageboard_preview($form->unilabel, $this, null, $context);
+        $mform->addElement('html', $OUTPUT->render($preview));
+
+
+
         $repeatarray = [];
         // If we want each repeated elment in a numbered group we add a header with '{no}' in its label.
         // This is replaced by the number of element.
         $repeatarray[] = $mform->createElement(
+            'html', '<div class="elementwrapper d-none">'
+        );
+        /*
+        $repeatarray[] = $mform->createElement(
             'header',
             'singleelementheader',
             get_string('image', $this->component) . '-{no}'
-        );
+        );*/
 
+        // We will search for fitem_id_unilabeltype_imageboard_title_{no} and will then switch to nearest elementwrapper
         $repeatarray[] = $mform->createElement(
             'text',
             $prefix . 'title',
@@ -310,6 +321,10 @@ class content_type extends \mod_unilabel\content_type {
             ['size' => 50]
         );
 
+        $repeatarray[] = $mform->createElement(
+            'html', '</div>'
+        );
+
         $repeatedoptions = [];
         $repeatedoptions[$prefix . 'title']['type'] = PARAM_TEXT;
         $repeatedoptions[$prefix . 'urltitle']['type'] = PARAM_TEXT;
@@ -322,6 +337,7 @@ class content_type extends \mod_unilabel\content_type {
         $repeatedoptions[$prefix . 'borderradius']['default'] = $this->config->default_borderradius;
         // Adding the help buttons.
         $repeatedoptions[$prefix . 'urlgroup']['helpbutton'] = ['url', $this->component];
+        $repeatedoptions[$prefix . 'urltitle']['helpbutton'] = ['urltitle', $this->component];
         $repeatedoptions[$prefix . 'position']['helpbutton'] = ['position', $this->component];
         $repeatedoptions[$prefix . 'targetsize']['helpbutton'] = ['targetsize', $this->component];
 
@@ -377,8 +393,8 @@ class content_type extends \mod_unilabel\content_type {
         );
 
         // Added parameter $context might not nessessary???
-        $preview = new \unilabeltype_imageboard\output\imageboard_preview($form->unilabel, $this, null, $context);
-        $mform->addElement('html', $OUTPUT->render($preview));
+       // $preview = new \unilabeltype_imageboard\output\imageboard_preview($form->unilabel, $this, null, $context);
+       // $mform->addElement('html', $OUTPUT->render($preview));
     }
 
     /**

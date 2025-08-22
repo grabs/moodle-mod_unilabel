@@ -99,6 +99,115 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
     /**
      *
      * @param {event} event
+     */
+    function onRightclick(event) {
+        event.preventDefault();
+        // Get the number of the image that was selected with the right mouse button
+        var idoftarget = event.target.getAttribute('id');
+        console.log("rightclick event.target", event.target);
+        console.log("rightclick idoftarget", idoftarget);
+        if (event.target &&
+            event.target.getAttribute('id') &&
+            event.target.getAttribute('id').split('edit-icon-')[1] >= 1) {
+            console.log("Icon nummer=", event.target.getAttribute('id').split('edit-icon-')[1]);
+            // Edit wurde angecklickt
+
+            let technicalnumber = idoftarget.split('edit-icon-')[1];
+            if (technicalnumber) {
+                showSettingsOfImage(technicalnumber);
+                marktargetasselected(event.target);
+            }
+
+            return;
+        }
+
+        if (!idoftarget) {
+            return;
+        }
+
+        // Check, if idoftarget ist an id of an image
+        let technicalnumber = idoftarget.split('unilabel-imageboard-imageid-')[1];
+        // Oder ein Titel wurde angeklickt
+        if (!technicalnumber) {
+            technicalnumber = idoftarget.split('id_elementtitle-')[1];
+        }
+        if (technicalnumber) {
+            showSettingsOfImage(technicalnumber);
+            marktargetasselected(event.target);
+        }
+        // Update coordinates
+        let coordinates = document.getElementById('unilabel-imageboard-coordinates');
+        let imagedata = getAllImagedataFromForm(technicalnumber);
+        coordinates.innerHTML = (parseInt(technicalnumber) + 1) + ": " + imagedata.xposition + " / " + imagedata.yposition;
+        console.log('coordinates=', coordinates);
+    }
+
+    /**
+     *
+     * @param {target} target
+     */
+    function marktargetasselected(target) {
+        const singleElements = document.querySelectorAll('[id^="fitem_id_unilabeltype_imageboard_image_"]');
+        for (let i = 0; i < singleElements.length; i++) {
+            // TODO: Skip removed elements that are still in the dom but hidden.
+            let singleElement = singleElements[i].getAttribute('id');
+            let number = singleElement.split('fitem_id_unilabeltype_imageboard_image_')[1];
+            if (number) {
+                let image = document.getElementById('unilabel-imageboard-imageid-' + number);
+                if (image) {
+                    image.classList.remove("selected");
+                }
+                let title = document.getElementById('id_elementtitle-' + number);
+                if (title) {
+                    title.classList.remove("selected");
+                }
+            }
+        }
+        target.classList.add("selected");
+    }
+
+
+    /**
+     * Hides all setting of elements by adding d-none and removes d-none only for element with the specified number.
+     * @param {int} number
+     */
+    function showSettingsOfImage(number) {
+        // In order do know how many elements are existing in the imageboard we search for
+        // fitem_id_unilabeltype_imageboard_title_ . The length tells us how many elements exists.
+        const singleElements = document.querySelectorAll('[id^="fitem_id_unilabeltype_imageboard_title_"]');
+        for (let i = 0; i < singleElements.length; i++) {
+            let wrapperOfElement = getWrapper(i);
+            if (wrapperOfElement && number == i) {
+                // If it is the selected element we have to remove display none (bootstrap class d-none).
+                wrapperOfElement.classList.remove('d-none');
+            } else {
+                // We will hide all other element settings.
+                wrapperOfElement.classList.add('d-none');
+            }
+        }
+    }
+
+    /**
+     * This function looks for an element in the dom that belongs to an given id and then returns the
+     * surrounding wrapper div.
+     *
+     * @param {number} number
+     * @returns {*}
+     */
+    function getWrapper(number) {
+        console.log("getWrapper number=", number);
+        let element = document.getElementById('fitem_id_unilabeltype_imageboard_title_' + number);
+        console.log("element =", element);
+        let wrapperElement = element.closest(".elementwrapper");
+        if (wrapperElement) {
+            return wrapperElement;
+        }
+        return null;
+    }
+
+    /**
+     *
+     * @param {event} event
      * @returns {*}
      */
     function getNumberFromEvent(event) {
@@ -171,6 +280,10 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
         mform.addEventListener("itemremoved", (event) => {
             onRemoveElement(event);
         });
+
+        // All click-events will be handeled by oneListenerForAllInputClick.
+        mform.addEventListener("contextmenu", onRightclick, false);
+
 
         // First: When uploading a backgroundimage the backgroundimage of the backgroundimagediv must be updated.
         // TODO: better use eventlistener
@@ -508,7 +621,7 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
             if (imageid) {
                 // Fill all the needed values for imagedata.
                 let imagedata = getAllImagedataFromForm(number);
-                imageid.style.background = imagedata.titlebackgroundcolor;
+
                 imageid.src = imagedata.src;
 
                 if (imagedata.src === "") {
@@ -564,6 +677,11 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
                 // Title above image.
                 const elementtitle = document.getElementById('id_elementtitle-' + number);
                 elementtitle.innerHTML = imagedata.title;
+                /* A const weitereDiv = "<div> "
+                    + "<i id='unilable-imageboard-edit-" + number + "'"
+                    + "class='fa fa-arrows-up-down-left-right' aria-hidden='true' style='position: relative;'></i>"
+                    + "</div>";
+                elementtitle.insertAdjacentHTML('afterend', weitereDiv);*/
                 elementtitle.style.color = imagedata.titlecolor;
                 elementtitle.style.backgroundColor = imagedata.titlebackgroundcolor;
                 elementtitle.style.fontSize = imagedata.fontsize + "px";
@@ -593,7 +711,8 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
             src: '',
             border: 'id_unilabeltype_imageboard_border_' + number,
             borderradius: 'id_unilabeltype_imageboard_borderradius_' + number,
-            coordinates: "unilabel-imageboard-coordinates-" + number,
+            coordinates: "unilabel-imageboard-coordinates",
+            // For all images we wil use the same div to show the coorinates
         };
 
         let imagedata = {};
@@ -629,6 +748,7 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
             if (imagedata.yposition === "") {
                 imagedata.yposition = 0;
             }
+            // This will update the coordinates in the html.
             div.innerHTML = (parseInt(number) + 1) + ": " + imagedata.xposition + " / " + imagedata.yposition;
         }
         return imagedata;
@@ -637,7 +757,7 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
     /**
      * This is a helper function to create an html element which can be used to replace another element.
      *
-     * @param {Sring} htmlString
+     * @param {String} htmlString
      * @returns {Element}
      */
     function createElementFromHTML(htmlString) {

@@ -55,6 +55,14 @@ export const init = () => {
      * @param {event} event
      */
     function dragStart(event) {
+        console.log("event.target.getAttribute('id').split('edit-icon-')[1]",
+            event.target.getAttribute('id').split('edit-icon-')[1]);
+        if (event.target &&
+            event.target.getAttribute('id') &&
+            event.target.getAttribute('id').split('edit-icon-')[1] >= 1) {
+            console.log("Icon nummer=", event.target.getAttribute('id').split('edit-icon-')[1]);
+            return;
+        }
         // Check if title or image is selected because this leads to different offsets.
         // We have to do different calculation of x and y position.
         let selectedType = "nix";
@@ -108,7 +116,16 @@ export const init = () => {
             snap = snapelement.value;
         }
 
+        if (event.target &&
+            event.target.getAttribute('id') &&
+            event.target.getAttribute('id').split('edit-icon-')[1] >= 1) {
+            console.log("Icon nummerrr=", event.target.getAttribute('id').split('edit-icon-')[1]);
+            return;
+        }
+        marktargetasselected(event.target);
+
         if (selectedImage.number !== null) {
+            showSettingsOfImage(selectedImage.number);
             // Information: snap is an integer and allows to use an snapping grid.
             // xposition = 123 with snap 10 will be calculated to 120.
             // xposition = 123 with snap 100 will be calculated to 10.
@@ -124,7 +141,8 @@ export const init = () => {
             const inputPositionY = document.getElementById('id_unilabeltype_imageboard_yposition_' + (selectedImage.number));
             inputPositionY.value = parseInt(yposition) + parseInt(selectedImage.titlecorrectorY);
 
-            let coordinates = document.getElementById('unilabel-imageboard-coordinates-' + selectedImage.number);
+            // ToDo: duplicate code for update coordinates
+            let coordinates = document.getElementById('unilabel-imageboard-coordinates');
             coordinates.innerHTML = (parseInt(selectedImage.number) + 1) + ": " +
                 inputPositionX.value + " / " + inputPositionY.value;
 
@@ -132,6 +150,74 @@ export const init = () => {
             selectedImage.number = null;
             selectedImage.titlecorrectorY = 0;
         }
+    }
+
+    /**
+     *
+     * @param {target} target
+     */
+    function marktargetasselected(target) {
+        console.log("marktargetasselected");
+        console.log("target", target);
+        let technicalnumber = target.getAttribute('id').split('unilabel-imageboard-element-')[1];
+        const singleElements = document.querySelectorAll('[id^="fitem_id_unilabeltype_imageboard_image_"]');
+        for (let i = 0; i < singleElements.length; i++) {
+            // TODO: Skip removed elements that are still in the dom but hidden.
+            let singleElement = singleElements[i].getAttribute('id');
+            let number = singleElement.split('fitem_id_unilabeltype_imageboard_image_')[1];
+            if (number) {
+                let image = document.getElementById('unilabel-imageboard-imageid-' + number);
+                if (image) {
+                    image.classList.remove("selected");
+                }
+                let title = document.getElementById('id_elementtitle-' + number);
+                if (title) {
+                    title.classList.remove("selected");
+                }
+            }
+        }
+        let selectedimage = document.getElementById('unilabel-imageboard-imageid-' + technicalnumber);
+        selectedimage.classList.add("selected");
+        let selectedtitle = document.getElementById('id_elementtitle-' + technicalnumber);
+        selectedtitle.classList.add("selected");
+    }
+
+    /**
+     * Hides all setting of elements by adding d-none and removes d-none only for element with the specified number.
+     * @param {int} number
+     */
+    function showSettingsOfImage(number) {
+        // In order do know how many elements are existing in the imageboard we search for
+        // fitem_id_unilabeltype_imageboard_title_ . The length tells us how many elements exists.
+        const singleElements = document.querySelectorAll('[id^="fitem_id_unilabeltype_imageboard_title_"]');
+        for (let i = 0; i < singleElements.length; i++) {
+            let wrapperOfElement = getWrapper(i);
+            if (wrapperOfElement && number == i) {
+                // If it is the selected element we have to remove display none (bootstrap class d-none).
+                wrapperOfElement.classList.remove('d-none');
+            } else {
+                // We will hide all other element settings.
+                wrapperOfElement.classList.add('d-none');
+            }
+        }
+    }
+
+    /**
+     * This function looks for an element in the dom that belongs to an given id and then returns the
+     * surrounding wrapper div.
+     *
+     * @param {number} number
+     * @returns {*}
+     */
+    function getWrapper(number) {
+        console.log("getWrapper number=", number);
+        let element = document.getElementById('fitem_id_unilabeltype_imageboard_title_' + number);
+        console.log("element =", element);
+        let wrapperElement = element.closest(".elementwrapper");
+        if (wrapperElement) {
+            return wrapperElement;
+        }
+        return null;
     }
 
     /**
