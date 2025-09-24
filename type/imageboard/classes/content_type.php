@@ -185,6 +185,13 @@ class content_type extends \mod_unilabel\content_type {
             get_string('image', $this->component) . '-{no}'
         );
 
+        // Add a div wrapper around all fields, so we can move all elements in one step into the modal form.
+        // The closing tag comes at the end of the repeatarray.
+        $repeatarray[] = $mform->createElement(
+            'html',
+            '<div class="element-edit-container">'
+        );
+
         $repeatarray[] = $mform->createElement(
             'text',
             $prefix . 'title',
@@ -308,6 +315,12 @@ class content_type extends \mod_unilabel\content_type {
             $prefix . 'urltitle',
             get_string('urltitle', $this->component) . '-{no}',
             ['size' => 50]
+        );
+
+        // Closing tag for the div wrapper.
+        $repeatarray[] = $mform->createElement(
+            'html',
+            '</div>'
         );
 
         $repeatedoptions = [];

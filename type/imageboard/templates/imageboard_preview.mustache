@@ -91,6 +91,29 @@
                    inputmode="decimal">
         </label>
     </div>
+    <!-- The Modal -->
+    <div class="modal" id="unilabeltype_imageboard_modal">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Modal Heading</h4>
+                <button type="button" class="close" data-dismiss="modal">×</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body"></div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+
+            </div>
+        </div>
+    </div>
+
 </div>
 
 {{#js}}
@@ -103,4 +126,54 @@
             '{{ysteps}}'
         );
     });
+
+    require(['jquery', 'mod_unilabel/modal_helper'], function($, modalHelper) {
+        var hidenumber = 0;
+        var singelelementheader;
+        while (true) {
+            singelelementheader = document.querySelector('#id_singleelementheader_' + hidenumber)
+            if (!singelelementheader) {
+                break;
+            }
+            singelelementheader.classList.add('d-none');
+            hidenumber++;
+        }
+
+        var actualnumber = -1;
+        var currentparent = null;
+        modalHelper.init('#unilabeltype_imageboard_modal');
+        document.querySelector('#imageboardcontainer').addEventListener('click', function(e) {
+            if (e.target.dataset.type === 'imageaction') {
+                actualnumber = parseInt(e.target.dataset.number);
+                $("#unilabeltype_imageboard_modal").modal();
+            }
+            if (e.target.dataset.type === 'deleteimage') {
+                event.stopPropagation();
+                event.preventDefault();
+                deletenumber = parseInt(e.target.dataset.number);
+                $('#unilabel_imageboard_confirm_inline_' + deletenumber).modal();
+            }
+
+        });
+        $('#unilabeltype_imageboard_modal').on('show.bs.modal', function() {
+            var src = document.querySelector('#id_singleelementheader_' + actualnumber + ' .element-edit-container');
+            currentparent = src.parentElement;
+            var dst = document.querySelector('#unilabeltype_imageboard_modal .modal-body');
+            dst.append(src);
+            //src.classList.remove('d-none');
+        });
+        $('#unilabeltype_imageboard_modal').on('hidden.bs.modal', function() {
+            var src = document.querySelector('#unilabeltype_imageboard_modal .modal-body .element-edit-container');
+            //src.classList.add('d-none');
+            var dst = currentparent;
+            dst.append(src);
+        });
+
+        var mform = document.querySelector('[id^="mform"]');
+        mform.addEventListener('itemadded', function(e) {
+            actualnumber = e.detail;
+            $("#unilabeltype_imageboard_modal").modal();
+        });
+    });
+
 {{/js}}

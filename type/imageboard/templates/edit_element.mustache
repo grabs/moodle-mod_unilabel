@@ -33,4 +33,26 @@
     }
 }}
 
-{{> mod_unilabel/edit_element_base }}
+<div class="clearfix d-none" id="id_singleelementheader_{{repeatindex}}">
+    <legend class="sr-only">{{elementsname}}-{{repeatnr}}</legend>
+    <div class="d-flex align-items-center mb-2">
+        {{> mod_unilabel/element_action_buttons }}
+    </div>
+    {{#sortorderelement}}
+        <div class="d-none">
+            {{{.}}}
+        </div>
+    {{/sortorderelement}}
+    {{#visibilityelement}}
+        <div class="d-none">
+            {{{.}}}
+        </div>
+    {{/visibilityelement}}
+    <div class="element-edit-container">
+        {{#elements}}
+            <div>
+                {{{.}}}
+            </div>
+        {{/elements}}
+    </div>
+</div>

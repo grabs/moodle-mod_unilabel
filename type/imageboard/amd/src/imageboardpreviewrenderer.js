@@ -149,6 +149,7 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
      */
     async function registerAllEventlistener() {
         var mform = document.querySelectorAll('[id^="mform"]')[0];
+        var modal = document.querySelector('#unilabeltype_imageboard_modal');
         // We register one listener per eventtype to the mform and use the bubble-event-feature to check out
         // the target of an event.
 
@@ -170,6 +171,16 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
         // If there is an element removed, the event "itemremoved" is fired and we can remove the related preview image.
         mform.addEventListener("itemremoved", (event) => {
             onRemoveElement(event);
+        });
+
+        // Register change events to the modal, because the modal is not inside the form if visible.
+        // All change events will be handeled by the onChangeAttribute function.
+        modal.addEventListener("change", async(event) => {
+            await onChangeAttribute(event);
+        });
+        // All keyup events will be handeled by the onChangeAttribute function.
+        modal.addEventListener("keyup", async(event) => {
+            await onChangeAttribute(event);
         });
 
         // First: When uploading a backgroundimage the backgroundimage of the backgroundimagediv must be updated.
