@@ -86,7 +86,11 @@
 #unilabel-imageboard-preview .image-container {
     position: relative;
     display: inline-block;
-    cursor: grab;
+    cursor: move;
+}
+
+#unilabel-imageboard-preview .image-container .action {
+    cursor: pointer;
 }
 
 /* Bild-Stil */

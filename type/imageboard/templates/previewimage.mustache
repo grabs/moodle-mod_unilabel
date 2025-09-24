@@ -34,8 +34,31 @@
     <div id='imageidimage-{{number}}' draggable='false'>
         <div class="image-container">
             <img id='unilabel-imageboard-imageid-{{number}}' draggable='false' class='unilabel-imageboard-image' alt='image' src='{{{src}}}' style='position: relative;'>
-            <span class="dot" aria-hidden="true"></span>
+            <span class="action"><i class="fa fa-cog" data-type="imageaction" data-number="{{number}}"></i></span>
+            <a href="#" class="mx-1 delete-button">
+                <i class="fa fa-trash fa-fw text-danger" data-type="deleteimage" data-number="{{number}}"></i>
+                <span class="sr-only">{{#str}} delete_element, mod_unilabel {{/str}}-{{number}}</span>
+            </a>
         </div>
         <div id="unilabel-imageboard-coordinates-{{number}}" class="unilabel-imageboard-coordinates" tabindex="0">{{displaynumber}}: 0 / 0</div>
+    </div>
+</div>
+<div id="unilabel_imageboard_confirm_inline_{{number}}" class="modal" tabindex="-1" style="z-index: 1040;" aria-hidden="true">
+    <div class="modal-dialog" tabindex="0">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    {{#str}}confirm{{/str}}
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{#str}}closebuttontitle{{/str}}"></button>
+            </div>
+            <div class="modal-body">
+                {{#str}} delete_element_nr, mod_unilabel, {{number}} {{/str}}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{#str}} no {{/str}}</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" data-action="deleteelement" data-id="{{number}}">{{#str}} yes {{/str}}</button>
+            </div>
+        </div>
     </div>
 </div>
