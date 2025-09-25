@@ -59,6 +59,9 @@ class content_type extends \mod_unilabel\content_type {
         $mform->setType($prefix . 'title', PARAM_TEXT);
         $mform->addRule($prefix . 'title', get_string('required'), 'required', null, 'client');
 
+        $mform->addElement('checkbox', $prefix . 'applytextfilters', get_string('applytextfilters', 'unilabeltype_collapsedtext'));
+        $mform->addHelpButton($prefix . 'applytextfilters', 'applytextfilters', 'unilabeltype_collapsedtext');
+
         $select = [
             static::PRESENTATION_COLLAPSED => get_string('collapsed', 'unilabeltype_collapsedtext'),
             static::PRESENTATION_DIALOG    => get_string('dialog', 'unilabeltype_collapsedtext'),
@@ -81,9 +84,10 @@ class content_type extends \mod_unilabel\content_type {
         $this->load_unilabeltype_record($unilabel->id);
         $prefix = 'unilabeltype_collapsedtext_';
 
-        $data[$prefix . 'title']        = $unilabel->name;
-        $data[$prefix . 'useanimation'] = static::get_useanimation();
-        $data[$prefix . 'presentation'] = static::get_presentation();
+        $data[$prefix . 'title']            = $unilabel->name;
+        $data[$prefix . 'applytextfilters'] = static::get_applytextfilters();
+        $data[$prefix . 'useanimation']     = static::get_useanimation();
+        $data[$prefix . 'presentation']     = static::get_presentation();
 
         return $data;
     }
@@ -110,9 +114,16 @@ class content_type extends \mod_unilabel\content_type {
         $cmidfromurl = optional_param('cmid', 0, PARAM_INT);
         $intro        = $this->format_intro($unilabel, $cm);
         $useanimation = $this->get_useanimation();
+        $applytextfilters = $this->get_applytextfilters();
+
+        $title = $this->get_title($unilabel);
+        if ($applytextfilters) {
+            $title = format_text($title, FORMAT_HTML, ['noclean' => true]);
+        }
 
         $content = [
-            'title'            => $this->get_title($unilabel),
+            'title'            => $title,
+            'applytextfilters' => $applytextfilters,
             'content'          => $intro,
             'cmid'             => $cm->id,
             'useanimation'     => $useanimation,
@@ -172,6 +183,7 @@ class content_type extends \mod_unilabel\content_type {
 
         $title        = $formdata->{$prefix . 'title'};
 
+        $unilabeltyperecord->applytextfilters = !empty($formdata->{$prefix . 'applytextfilters'});
         $unilabeltyperecord->useanimation = !empty($formdata->{$prefix . 'useanimation'});
         $unilabeltyperecord->presentation = $formdata->{$prefix . 'presentation'};
 
@@ -202,6 +214,15 @@ class content_type extends \mod_unilabel\content_type {
      */
     public function get_presentation() {
         return $this->unilabeltyperecord->presentation ?? $this->config->presentation;
+    }
+
+    /**
+     * Do we want to apply text filters.
+     *
+     * @return bool
+     */
+    public function get_applytextfilters() {
+        return (bool) ($this->unilabeltyperecord->applytextfilters ?? $this->config->applytextfilters);
     }
 
     /**
