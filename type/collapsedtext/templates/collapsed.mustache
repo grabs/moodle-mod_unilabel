@@ -23,6 +23,7 @@
         "title": "fdsfsdf",
         "content": "<div><p>...</p></div>",
         "cmid": "55",
+        "applytextfilters": true,
         "useanimation": true
     }
 }}
@@ -30,7 +31,9 @@
 {{^useanimation}}
     <div class="unilabeltype-details">
         <details{{#openonstart}} open=""{{/openonstart}}>
-            <summary>{{{title}}}</summary>
+            <summary>{{#applytextfilters}}{{{title}}}{{/applytextfilters}}{{!
+                }}{{^applytextfilters}}{{title}}{{/applytextfilters}}{{!
+                }}</summary>
             <div>{{{content}}}</div>
         </details>
     </div>
@@ -53,7 +56,8 @@
                 <i class="icon fa fa-chevron-down fa-fw " aria-hidden="true"></i>
                 <span class="visually-hidden">{{srtitle_collapse}}</span>
             </span>
-            {{title}}
+            {{#applytextfilters}}{{{title}}}{{/applytextfilters}}{{!
+            }}{{^applytextfilters}}{{title}}{{/applytextfilters}}
         </a>
         <div class="collapse{{#openonstart}} show{{/openonstart}}" id="unilabeltype-collapsed-{{uniqid}}-{{cmid}}">
             {{{content}}}

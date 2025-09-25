@@ -34,6 +34,13 @@ $collapsedtextsettings[] = new admin_setting_configcheckbox('unilabeltype_collap
     true);
 
 $collapsedtextsettings[] = new admin_setting_configcheckbox(
+    'unilabeltype_collapsedtext/applytextfilters',
+    get_string('applytextfilters', 'unilabeltype_collapsedtext'),
+    get_string('applytextfilters_help', 'unilabeltype_collapsedtext'),
+    0
+);
+
+$collapsedtextsettings[] = new admin_setting_configcheckbox(
     'unilabeltype_collapsedtext/useanimation',
     get_string('useanimation', 'unilabeltype_collapsedtext'),
     '',
