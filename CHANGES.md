@@ -1,5 +1,9 @@
 ## Release notes
 
+### Release 5.0.3
+* MBS-10139: Error when drag and dropping accordion sections (#68)
+* Collapsed text type does not process filters anymore for the content in the "name" field (#70)
+
 ### Release 5.0.2
 * MBS-10126: Do not clean accordion content (#63, #64)
 * Make caption more visible by default

@@ -58,5 +58,20 @@ function xmldb_unilabeltype_collapsedtext_upgrade($oldversion) {
         // Collapsedtext savepoint reached.
         upgrade_plugin_savepoint(true, 2024050800, 'unilabeltype', 'collapsedtext');
     }
+
+    if ($oldversion < 2025042202) {
+
+        // Define field sortorder to be added to unilabeltype_collapsedtext_tile.
+        $table = new xmldb_table('unilabeltype_collapsedtext');
+        $field = new xmldb_field('applytextfilters', XMLDB_TYPE_INTEGER, '1');
+
+        // Conditionally launch add field applytextfilters.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Collapsedtext savepoint reached.
+        upgrade_plugin_savepoint(true, 2025042202, 'unilabeltype', 'collapsedtext');
+    }
     return true;
 }
