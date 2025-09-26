@@ -93,7 +93,7 @@
     </div>
     <!-- The Modal -->
     <div class="modal" id="unilabeltype_imageboard_modal">
-        <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
 
             <!-- Modal Header -->
@@ -115,6 +115,53 @@
     </div>
 
 </div>
+
+<style>
+    /* Make dialog moveable */
+    #unilabeltype_imageboard_modal .modal-dialog {
+        position: fixed;   /* fixed in viewport */
+        right: 0;          /* dialog is alligned to the right */
+        cursor: move;      /*  */
+    }
+</style>
+
+<script>
+    // Verschieben per Header
+    document.addEventListener("DOMContentLoaded", function () {
+        const dialog = document.querySelector("#unilabeltype_imageboard_modal .modal-dialog");
+
+        let isDragging = false;
+        let startX, startY, initialX, initialY;
+
+        dialog.addEventListener("mousedown", function(e) {
+            isDragging = true;
+            startX = e.clientX;
+            startY = e.clientY;
+
+            const rect = dialog.getBoundingClientRect();
+            initialX = rect.left;
+            initialY = rect.top;
+
+            document.body.style.userSelect = "none"; // Verhindert Textauswahl
+        });
+
+        document.addEventListener("mousemove", function(e) {
+            if (!isDragging) return;
+
+            const dx = e.clientX - startX;
+            const dy = e.clientY - startY;
+
+            dialog.style.left = initialX + dx + "px";
+            dialog.style.top = initialY + dy + "px";
+            dialog.style.right = "auto";
+        });
+
+        document.addEventListener("mouseup", function() {
+            isDragging = false;
+            document.body.style.userSelect = "";
+        });
+    });
+</script>
 
 {{#js}}
     require(['unilabeltype_imageboard/imageboardpreviewrenderer'], function(imageboardpreviewrenderer) {
@@ -174,6 +221,7 @@
             actualnumber = e.detail;
             $("#unilabeltype_imageboard_modal").modal();
         });
+
     });
 
 {{/js}}
