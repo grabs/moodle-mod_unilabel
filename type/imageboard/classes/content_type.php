@@ -214,7 +214,7 @@ class content_type extends \mod_unilabel\content_type {
         $repeatarray[] = $mform->createElement(
             'text',
             $prefix . 'alt',
-            get_string('alt', $this->component) . '-{no}',
+            get_string('alt', $this->component),
             ['size' => 255]
         );
 
@@ -236,7 +236,7 @@ class content_type extends \mod_unilabel\content_type {
         $repeatarray[] = $mform->createElement(
             'group',
             $prefix . 'position',
-            get_string('position', $this->component) . '-{no}',
+            get_string('position', $this->component),
             $position,
             null,
             false
@@ -261,26 +261,36 @@ class content_type extends \mod_unilabel\content_type {
         $repeatarray[] = $mform->createElement(
             'group',
             $prefix . 'targetsize',
-            get_string('targetsize', $this->component) . '-{no}',
+            get_string('targetsize', $this->component),
             $targetsize,
             null,
             false
         );
         $mform->setType($prefix . 'targetsize', PARAM_RAW);
 
+        // Grouping the settings for the border (size/thickness and radius)
+        $bordersettings = [];
         $numbers = array_combine(range(0, 10, 1), range(0, 10, 1));
-        $repeatarray[] = $mform->createElement(
+        $bordersettings[] = $mform->createElement(
             'select',
             $prefix . 'border',
             get_string('border', $this->component),
             $numbers
         );
         $numbers = array_combine(range(0, 30, 1), range(0, 30, 1));
-        $repeatarray[] = $mform->createElement(
+        $bordersettings[] = $mform->createElement(
             'select',
             $prefix . 'borderradius',
             get_string('borderradius', $this->component),
-            $numbers
+            $numbers,
+        );
+        $repeatarray[] = $mform->createElement(
+            'group',
+            $prefix . '$bordersettings',
+            get_string('bordersettings', $this->component),
+            $bordersettings,
+            '',
+            false
         );
 
         $repeatarray[] = $mform->createElement(
@@ -313,7 +323,7 @@ class content_type extends \mod_unilabel\content_type {
         $repeatarray[] = $mform->createElement(
             'text',
             $prefix . 'urltitle',
-            get_string('urltitle', $this->component) . '-{no}',
+            get_string('urltitle', $this->component),
             ['size' => 50]
         );
 
