@@ -26,13 +26,13 @@
 defined('MOODLE_INTERNAL') || die;
 
 $string['addmoreimages'] = 'Add more images';
-$string['alt'] = 'Text for alt attribute of image';
+$string['alt'] = 'Text for alt attribute';
 $string['autoscale'] = 'Auto scale';
 $string['autoscale_help'] = 'The canvas is automatically scaled to the max width in the course page when using autoscale.<br>It might be cut off to fit the course page when this is deactivated.';
 $string['backgroundimage'] = 'Backgroundimage';
 $string['border'] = 'Border (px)';
 $string['borderradius'] = 'Borderradius (px)';
-$string['bordersettings'] = 'Borderthickness/borderadius';
+$string['bordersettings'] = 'Border size/radius';
 $string['buttonlabelhelpergridhide'] = 'Hide Grid';
 $string['buttonlabelhelpergridshow'] = 'Show Grid';
 $string['buttonlabelresize'] = 'Resize to fit';
