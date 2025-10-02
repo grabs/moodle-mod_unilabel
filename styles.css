@@ -77,6 +77,14 @@ a:focus .unilabel-overlay-effect {
     hyphens: auto;
 }
 
+/*************************************
+Show the move cursor on draggable modals
+**************************************/
+
+div.modal.draggable>.modal-dialog>.modal-content>.modal-header {
+    cursor: move;
+}
+
 /***********************************************/
 /*
 This is a workaround for a five-column grid.

@@ -289,7 +289,7 @@ class content_type extends \mod_unilabel\content_type {
             $prefix . '$bordersettings',
             get_string('bordersettings', $this->component),
             $bordersettings,
-            '',
+            null,
             false
         );
 

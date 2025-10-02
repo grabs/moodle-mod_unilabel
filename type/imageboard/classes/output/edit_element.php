@@ -82,7 +82,7 @@ class edit_element extends \mod_unilabel\output\edit_element_base {
             'yposition',
             ['size' => 4, 'placeholder' => get_string('placeholder_yposition', $this->component)]
         );
-        $elements[] = $this->get_group('position', [$xposition, $yposition], null, false, 'position');
+        $elements[] = $this->get_group('position', [$xposition, $yposition], null, false);
 
         $targetwidth = $this->get_textfield(
             'targetwidth',
@@ -92,19 +92,28 @@ class edit_element extends \mod_unilabel\output\edit_element_base {
             'targetheight',
             ['size' => 4, 'placeholder' => get_string('placeholder_targetheight', $this->component)]
         );
-        $elements[] = $this->get_group('targetsize', [$targetwidth, $targetheight], null, false, 'targetsize');
+        $elements[] = $this->get_group('targetsize', [$targetwidth, $targetheight], null, false);
 
         $numbers = array_combine(range(0, 10, 1), range(0, 10, 1));
-        $elements[] = $this->get_select(
+        // $elements[] = $this->get_select(
+        //     'border',
+        //     $numbers
+        // );
+        $targetborderwidth = $this->get_select(
             'border',
             $numbers
         );
 
         $numbers = array_combine(range(0, 30, 1), range(0, 30, 1));
-        $elements[] = $this->get_select(
+        // $elements[] = $this->get_select(
+        //     'borderradius',
+        //     $numbers
+        // );
+        $targetborderradius = $this->get_select(
             'borderradius',
             $numbers
         );
+        $elements[] = $this->get_group('bordersettings', [$targetborderwidth, $targetborderradius], null, false);
 
         $elements[] = $this->get_static(
             'picker',

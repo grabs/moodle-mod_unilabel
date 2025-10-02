@@ -34,13 +34,17 @@
     <div id='imageidimage-{{number}}' draggable='false'>
         <div class="image-container">
             <img id='unilabel-imageboard-imageid-{{number}}' draggable='false' class='unilabel-imageboard-image' alt='image' src='{{{src}}}' style='position: relative;'>
-            <span class="action"><i class="fa fa-cog" data-type="imageaction" data-number="{{number}}"></i></span>
-            <a href="#" class="mx-1 delete-button">
-                <i class="fa fa-trash fa-fw text-danger" data-type="deleteimage" data-number="{{number}}"></i>
-                <span class="sr-only">{{#str}} delete_element, mod_unilabel {{/str}}-{{number}}</span>
-            </a>
+            <div class="bg-light d-flex justify-content-between">
+                <div id="unilabel-imageboard-coordinates-{{number}}" class="unilabel-imageboard-coordinates mx-1" tabindex="0">{{displaynumber}}: 0 / 0</div>
+                <div class="border-left px-1">
+                    <span class="action"><i class="fa fa-cog" data-type="imageaction" data-number="{{number}}"></i></span>
+                    <a href="#" class="delete-button">
+                        <i class="fa fa-trash fa-fw text-danger" data-type="deleteimage" data-number="{{number}}"></i>
+                        <span class="sr-only">{{#str}} delete_element, mod_unilabel {{/str}}-{{number}}</span>
+                    </a>
+                </div>
+            </div>
         </div>
-        <div id="unilabel-imageboard-coordinates-{{number}}" class="unilabel-imageboard-coordinates" tabindex="0">{{displaynumber}}: 0 / 0</div>
     </div>
 </div>
 <div id="unilabel_imageboard_confirm_inline_{{number}}" class="modal" tabindex="-1" style="z-index: 1040;" aria-hidden="true">

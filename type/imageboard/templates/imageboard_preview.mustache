@@ -81,8 +81,6 @@
         </a>
     </div>
 
-
-
     <div>
         <label for="unilabeltype-imageboard-snap">
             {{#str}} snap, unilabeltype_imageboard {{/str}}
@@ -91,9 +89,10 @@
                    inputmode="decimal">
         </label>
     </div>
+
     <!-- The Modal -->
-    <div class="modal" id="unilabeltype_imageboard_modal">
-        <div class="modal-dialog modal-lg">
+    <div class="modal draggable" id="unilabeltype_imageboard_modal">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
 
             <!-- Modal Header -->
@@ -116,96 +115,6 @@
 
 </div>
 
-<style>
-    /* Make dialog dragable */
-    #unilabeltype_imageboard_modal .modal-dialog {
-        position: fixed;   /* fixed in viewport */
-        right: 0;          /* dialog is aligned to the right */
-        cursor: move;      /*  */
-    }
-</style>
-
-<script>
-    // Verschieben per Header
-    document.addEventListener("DOMContentLoaded", function () {
-        const dialog = document.querySelector("#unilabeltype_imageboard_modal .modal-dialog");
-
-        let isDragging = false;
-        let startX, startY, initialX, initialY;
-
-        dialog.addEventListener("mousedown", function(e) {
-            isDragging = true;
-            startX = e.clientX;
-            startY = e.clientY;
-
-            const rect = dialog.getBoundingClientRect();
-            initialX = rect.left;
-            initialY = rect.top;
-
-            document.body.style.userSelect = "none"; // Verhindert Textauswahl
-        });
-
-        document.addEventListener("mousemove", function(e) {
-            if (!isDragging) return;
-
-            const dx = e.clientX - startX;
-            const dy = e.clientY - startY;
-
-            dialog.style.left = initialX + dx + "px";
-            dialog.style.top = initialY + dy + "px";
-            dialog.style.right = "auto";
-        });
-
-        document.addEventListener("mouseup", function() {
-            isDragging = false;
-            document.body.style.userSelect = "";
-        });
-    });
-
-    // Support tablets with touch-events instead of mouse-events.
-    function startDrag(x, y) {
-        isDragging = true;
-        startX = x;
-        startY = y;
-        const rect = dialog.getBoundingClientRect();
-        initialX = rect.left;
-        initialY = rect.top;
-        document.body.style.userSelect = "none";
-    }
-
-    function drag(x, y) {
-        if (!isDragging) return;
-        const dx = x - startX;
-        const dy = y - startY;
-        dialog.style.left = initialX + dx + "px";
-        dialog.style.top = initialY + dy + "px";
-        dialog.style.right = "auto";
-        dialog.style.transform = "none";
-    }
-
-    function stopDrag() {
-        isDragging = false;
-        document.body.style.userSelect = "";
-    }
-
-    // Maus-Events
-    header.addEventListener("mousedown", e => startDrag(e.clientX, e.clientY));
-    document.addEventListener("mousemove", e => drag(e.clientX, e.clientY));
-    document.addEventListener("mouseup", stopDrag);
-
-    // Touch-Events für iPad / Tablet
-    header.addEventListener("touchstart", e => {
-        const touch = e.touches[0];
-        startDrag(touch.clientX, touch.clientY);
-    });
-    document.addEventListener("touchmove", e => {
-        const touch = e.touches[0];
-        drag(touch.clientX, touch.clientY);
-    });
-    document.addEventListener("touchend", stopDrag);
-
-</script>
-
 {{#js}}
     require(['unilabeltype_imageboard/imageboardpreviewrenderer'], function(imageboardpreviewrenderer) {
         imageboardpreviewrenderer.init(
@@ -217,59 +126,8 @@
         );
     });
 
-    require(['theme_boost/bootstrap/modal', 'mod_unilabel/modal_helper'], function(Modal, modalHelper) {
-        var hidenumber = 0;
-        var singelelementheader;
-        while (true) {
-            singelelementheader = document.querySelector('#id_singleelementheader_' + hidenumber)
-            if (!singelelementheader) {
-                break;
-            }
-            singelelementheader.classList.add('d-none');
-            hidenumber++;
-        }
-
-        var actualnumber = -1;
-        var currentparent = null;
-        modalHelper.init('#unilabeltype_imageboard_modal');
-        document.querySelector('#imageboardcontainer').addEventListener('click', function(e) {
-            if (e.target.dataset.type === 'imageaction') {
-                actualnumber = parseInt(e.target.dataset.number);
-                var myModal = new Modal(document.querySelector("#unilabeltype_imageboard_modal"));
-                myModal.show();
-            }
-            if (e.target.dataset.type === 'deleteimage') {
-                event.stopPropagation();
-                event.preventDefault();
-                deletenumber = parseInt(e.target.dataset.number);
-                var myModal = new Modal(document.querySelector('#unilabel_imageboard_confirm_inline_' + deletenumber));
-                myModal.show();
-            }
-
-        });
-        // $('#unilabeltype_imageboard_modal').on('show.bs.modal', function() {
-        document.querySelector('#unilabeltype_imageboard_modal').addEventListener('show.bs.modal', function() {
-            var src = document.querySelector('#id_singleelementheader_' + actualnumber + ' .element-edit-container');
-            currentparent = src.parentElement;
-            var dst = document.querySelector('#unilabeltype_imageboard_modal .modal-body');
-            dst.append(src);
-            //src.classList.remove('d-none');
-        });
-        // $('#unilabeltype_imageboard_modal').on('hidden.bs.modal', function() {
-        document.querySelector('#unilabeltype_imageboard_modal').addEventListener('hidden.bs.modal', function() {
-            var src = document.querySelector('#unilabeltype_imageboard_modal .modal-body .element-edit-container');
-            //src.classList.add('d-none');
-            var dst = currentparent;
-            dst.append(src);
-        });
-
-        var mform = document.querySelector('[id^="mform"]');
-        mform.addEventListener('itemadded', function(e) {
-            actualnumber = e.detail;
-            var myModal = new Modal(document.querySelector("#unilabeltype_imageboard_modal"));
-            myModal.show();
-        });
-
+    require(['unilabeltype_imageboard/editmodal'], function(editmodal) {
+        editmodal.init();
     });
 
 {{/js}}
