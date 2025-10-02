@@ -153,3 +153,27 @@
 .unilabeltype-imageboard-helpergrid-rectangle {
     z-index: 0;
 }
+
+/* Form more compact dialog for editing existing image */
+#unilabeltype_imageboard_modal .mb-3[id^="fitem_id_unilabeltype_imageboard_"] {
+    margin-bottom: 0.1rem !important;
+}
+#unilabeltype_imageboard_modal .mb-3[id^="fgroup_id_unilabeltype_imageboard_"] {
+    margin-bottom: 0.1rem !important;
+}
+
+#unilabeltype_imageboard_modal .form-filetypes-descriptions {
+    display: none;
+}
+/* remove text Accepted file types: */
+#unilabeltype_imageboard_modal fieldset[id^="id_unilabeltype_imageboard_image_"] p {
+    display: none;
+}
+
+/* Form more compact dialog for adding new image */
+#unilabeltype_imageboard_modal .element-edit-container [data-groupname^="unilabeltype_imageboard_"] {
+    margin-bottom: 0.1rem !important;
+}
+#unilabeltype_imageboard_modal .modal-body {
+    padding-bottom: 0;
+}
