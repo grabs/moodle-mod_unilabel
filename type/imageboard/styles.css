@@ -174,6 +174,3 @@
 #unilabeltype_imageboard_modal .element-edit-container [data-groupname^="unilabeltype_imageboard_"] {
     margin-bottom: 0.1rem !important;
 }
-#unilabeltype_imageboard_modal .modal-body {
-    padding-bottom: 0;
-}
