@@ -268,7 +268,7 @@ class content_type extends \mod_unilabel\content_type {
         );
         $mform->setType($prefix . 'targetsize', PARAM_RAW);
 
-        // Grouping the settings for the border (size/thickness and radius)
+        // Grouping the settings for the border (size/thickness and radius).
         $bordersettings = [];
         $numbers = array_combine(range(0, 10, 1), range(0, 10, 1));
         $bordersettings[] = $mform->createElement(
@@ -499,7 +499,7 @@ class content_type extends \mod_unilabel\content_type {
             $data[$elementname] = $image->borderradius;
 
             // Prepare the images.
-            // $draftitemid is set by the function file_prepare_draft_area().
+            // The $draftitemid is set by the function file_prepare_draft_area().
             $draftitemidimage = 0; // This is needed to create a new draftitemid.
             file_prepare_draft_area($draftitemidimage, $context->id, $this->component, 'image', $image->id);
             $elementname = $prefix . 'image[' . $index . ']';
