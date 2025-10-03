@@ -94,28 +94,30 @@ class edit_element extends \mod_unilabel\output\edit_element_base {
             'targetheight',
             ['size' => 4, 'placeholder' => get_string('placeholder_targetheight', $this->component)]
         );
-        $elements[] = $this->get_group('targetsize', [$targetwidth, $targetheight], null, get_string('targetsize', $this->component));
+        $elements[] = $this->get_group(
+            'targetsize',
+            [$targetwidth, $targetheight],
+            null,
+            get_string('targetsize', $this->component)
+        );
 
         $numbers = array_combine(range(0, 10, 1), range(0, 10, 1));
-        // $elements[] = $this->get_select(
-        //     'border',
-        //     $numbers
-        // );
         $targetborderwidth = $this->get_select(
             'border',
             $numbers
         );
 
         $numbers = array_combine(range(0, 30, 1), range(0, 30, 1));
-        // $elements[] = $this->get_select(
-        //     'borderradius',
-        //     $numbers
-        // );
         $targetborderradius = $this->get_select(
             'borderradius',
             $numbers
         );
-        $elements[] = $this->get_group('bordersettings', [$targetborderwidth, $targetborderradius], null, get_string('bordersettings', $this->component));
+        $elements[] = $this->get_group(
+            'bordersettings',
+            [$targetborderwidth, $targetborderradius],
+            null,
+            get_string('bordersettings', $this->component)
+        );
 
         $elements[] = $this->get_static(
             'picker',
