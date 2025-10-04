@@ -8,6 +8,7 @@
 
 // import modalHelper from 'mod_unilabel/modal_helper';
 import $ from 'jquery'; // Still needed for actions on bootstrap 4 modal dialogs.
+import * as Str from 'core/str';
 
 const fixModalPosition = (modalselector) => {
     var modal = document.querySelector(modalselector);
@@ -42,6 +43,8 @@ export const init = () => {
     var singelelementheader;
     var counter = 0;
 
+    var modalheader = document.querySelector('#' + modalId + ' .modal-header .modal-title');
+
     // Hide all elements with an id starting with "formHeaderPrefix"
     while (counter < 10000) { // There shouldn't be more than 10000 elements.
         singelelementheader = document.querySelector('#' + formHeaderPrefix + hidenumber);
@@ -74,6 +77,10 @@ export const init = () => {
         currentparent = src.parentElement; // Store the current parent element.
         var dst = document.querySelector('#' + modalId + ' .modal-body');
         dst.append(src); // Move the edit container to the modal body.
+
+        Str.get_string('imagenr', 'unilabeltype_imageboard', actualnumber + 1).done(function(text) {
+            modalheader.innerText = text;
+        });
     });
     $('#' + modalId).on('hidden.bs.modal', function() {
         var src = document.querySelector('#' + modalId + ' .modal-body .element-edit-container');
@@ -87,8 +94,8 @@ export const init = () => {
         $('#' + modalId).modal(); // Show the modal when a new item is added.
     });
 
-    var modal = document.querySelector('#' + modalId + '.draggable'); // Get the draggable modal element.
-    var header = modal.querySelector('.modal-header'); // Get the modal header for drag functionality.
+    var draggablemodal = document.querySelector('#' + modalId + '.draggable'); // Get the draggable modal element.
+    var draggableheader = draggablemodal.querySelector('.modal-header'); // Get the modal header for drag functionality.
 
     /**
      * Handles the start of a drag operation on the modal.
@@ -99,8 +106,8 @@ export const init = () => {
     function handleStart(e) {
         e.preventDefault();
         var touch = e.touches ? e.touches[0] : e;
-        var offsetX = touch.clientX - modal.getBoundingClientRect().left;
-        var offsetY = touch.clientY - modal.getBoundingClientRect().top;
+        var offsetX = touch.clientX - draggablemodal.getBoundingClientRect().left;
+        var offsetY = touch.clientY - draggablemodal.getBoundingClientRect().top;
 
         /**
          * Handles the movement of the modal during a drag operation.
@@ -111,8 +118,8 @@ export const init = () => {
         function moveHandler(e) {
             e.preventDefault();
             var moveTouch = e.touches ? e.touches[0] : e;
-            modal.style.left = (moveTouch.clientX - offsetX) + 'px';
-            modal.style.top = (moveTouch.clientY - offsetY) + 'px';
+            draggablemodal.style.left = (moveTouch.clientX - offsetX) + 'px';
+            draggablemodal.style.top = (moveTouch.clientY - offsetY) + 'px';
         }
 
         /**
@@ -134,7 +141,7 @@ export const init = () => {
     }
 
     // Add event listener for start dragging the modal.
-    header.addEventListener('mousedown', handleStart);
-    header.addEventListener('touchstart', handleStart);
+    draggableheader.addEventListener('mousedown', handleStart);
+    draggableheader.addEventListener('touchstart', handleStart);
 
 };
