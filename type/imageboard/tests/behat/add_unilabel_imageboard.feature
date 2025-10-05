@@ -60,8 +60,6 @@ Feature: Modify content of the unilabeltype imageboard
     And I click on "Add element" "button"
     And I should see "Image-1"
     # Set the values and image for elements.
-    # Click on the toggle "Image-1" and open the element
-    And I click on "#id_singleelementheader_0 div.ftoggler > a" "css_element"
     And I set the field "Title-1" to "Title-Element-1"
     And I upload "mod/unilabel/tests/fixtures/gradient-blue.png" file to "Image-1" filemanager
     And I set the field with xpath "//input[@type='text' and @name='unilabeltype_imageboard_xposition[0]']" to "100"
@@ -69,6 +67,7 @@ Feature: Modify content of the unilabeltype imageboard
     And I set the field "unilabeltype_imageboard_yposition[0]" to "100"
     And I set the field "unilabeltype_imageboard_targetwidth[0]" to "100"
     And I set the field "unilabeltype_imageboard_border[0]" to "2"
+    And I click on "Close" "button" in the "#unilabeltype_imageboard_modal .modal-header" "css_element"
 
     # Save the changes.
     And I press "Save changes"
@@ -79,14 +78,13 @@ Feature: Modify content of the unilabeltype imageboard
 
     And I click on "Add element" "button"
     And I should see "Image-2"
-    # Click on the toggle "Image-2" and open the element
-    And I click on "#id_singleelementheader_1 div.ftoggler > a" "css_element"
     And I set the field "Title-2" to "Title-Element-2"
     And I upload "mod/unilabel/tests/fixtures/gradient-red.png" file to "Image-2" filemanager
     And I set the field "unilabeltype_imageboard_xposition[1]" to "300"
     And I set the field "unilabeltype_imageboard_yposition[1]" to "100"
     And I set the field "unilabeltype_imageboard_targetwidth[1]" to "100"
     And I set the field "unilabeltype_imageboard_border[1]" to "2"
+    And I click on "Close" "button" in the "#unilabeltype_imageboard_modal .modal-header" "css_element"
 
     # Save the changes.
     And I press "Save changes"
