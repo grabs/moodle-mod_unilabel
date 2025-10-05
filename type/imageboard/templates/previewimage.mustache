@@ -37,10 +37,10 @@
             <div class="bg-light d-flex justify-content-between">
                 <div id="unilabel-imageboard-coordinates-{{number}}" class="unilabel-imageboard-coordinates mx-1" tabindex="0">{{displaynumber}}: 0 / 0</div>
                 <div class="border-left px-1">
-                    <span class="action"><i class="fa fa-cog" data-type="imageaction" data-number="{{number}}"></i></span>
-                    <a href="#" class="delete-button">
+                    <span class="action" title="{{#str}} edit_image_nr, unilabeltype_imageboard, {{displaynumber}} {{/str}}"><i class="fa fa-cog" data-type="imageaction" data-number="{{number}}"></i></span>
+                    <a href="#" class="delete-button" title="{{#str}} delete_image_nr, unilabeltype_imageboard, {{displaynumber}} {{/str}}">
                         <i class="fa fa-trash fa-fw text-danger" data-type="deleteimage" data-number="{{number}}"></i>
-                        <span class="sr-only">{{#str}} delete_element, mod_unilabel {{/str}}-{{number}}</span>
+                        <span class="sr-only">{{#str}} delete_image_nr, unilabeltype_imageboard, {{displaynumber}} {{/str}}</span>
                     </a>
                 </div>
             </div>
@@ -59,7 +59,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                {{#str}} delete_element_nr, mod_unilabel, {{number}} {{/str}}
+                {{#str}} delete_image_nr, unilabeltype_imageboard, {{displaynumber}} {{/str}}
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">{{#str}} no {{/str}}</button>
