@@ -94,6 +94,19 @@ export const init = () => {
         $('#' + modalId).modal(); // Show the modal when a new item is added.
     });
 
+    // Prevent submit if "return" key is pressed on image input element.
+    mform.addEventListener('submit', function(e) {
+        // Check if the active element (the element that triggered the submit)
+        // is inside the ".element-edit-container".
+        var editContainer = document.activeElement.closest('.element-edit-container');
+        if (editContainer) {
+            e.preventDefault();
+            return false;
+        }
+        // If not, let the form submit normally.
+        return true;
+    });
+
     var draggablemodal = document.querySelector('#' + modalId + '.draggable'); // Get the draggable modal element.
     var draggableheader = draggablemodal.querySelector('.modal-header'); // Get the modal header for drag functionality.
 
