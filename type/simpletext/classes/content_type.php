@@ -33,7 +33,6 @@ namespace unilabeltype_simpletext;
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class content_type extends \mod_unilabel\content_type {
-
     /**
      * Add elements to the activity settings form.
      *

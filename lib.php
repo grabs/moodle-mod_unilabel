@@ -333,7 +333,7 @@ function mod_unilabel_output_fragment_get_tinyconfig($args) {
         throw new \moodle_exception('Wrong contextlevel');
     }
 
-    list($course, $cm) = get_course_and_cm_from_cmid($context->instanceid, 'unilabel');
+    [$course, $cm] = get_course_and_cm_from_cmid($context->instanceid, 'unilabel');
     if (!$unilabel = $DB->get_record('unilabel', ['id' => $cm->instance])) {
         throw new \moodle_exception('Wrong instance "' . $cm->instance . '"');
     }
@@ -356,7 +356,6 @@ function mod_unilabel_output_fragment_get_tinyconfig($args) {
         if ($attributes['id'] == $targetid) {
             return $tinyhelper->get_options($editelementobj->editor_options(), $draftitemid);
         }
-
     }
 
     throw new \moodle_exception('Element not found');

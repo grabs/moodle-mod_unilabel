@@ -36,7 +36,6 @@ function xmldb_unilabeltype_carousel_upgrade($oldversion) {
     $dbman = $DB->get_manager();
 
     if ($oldversion < 2023121501) {
-
         // Define field sortorder to be added to unilabeltype_carousel_tile.
         $table = new xmldb_table('unilabeltype_carousel_slide');
         $field = new xmldb_field('sortorder', XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'carouselid');
@@ -51,7 +50,6 @@ function xmldb_unilabeltype_carousel_upgrade($oldversion) {
     }
 
     if ($oldversion < 2024012400) {
-
         // Define field sortorder to be added to unilabeltype_carousel_slide.
         $table = new xmldb_table('unilabeltype_carousel_slide');
         $field = new xmldb_field('newwindow', XMLDB_TYPE_INTEGER, '1', null, null, null, null, 'url');
@@ -66,7 +64,6 @@ function xmldb_unilabeltype_carousel_upgrade($oldversion) {
     }
 
     if ($oldversion < 2024050700) {
-
         // Define field captionstyle to be added to unilabeltype_carousel.
         $table = new xmldb_table('unilabeltype_carousel');
         $field = new xmldb_field('captionstyle', XMLDB_TYPE_CHAR, '255', null, null, null, null, 'background');
@@ -89,7 +86,6 @@ function xmldb_unilabeltype_carousel_upgrade($oldversion) {
     }
 
     if ($oldversion < 2024122600) {
-
         // Define field urltitle to be added to unilabeltype_carousel_slide.
         $table = new xmldb_table('unilabeltype_carousel_slide');
         $field = new xmldb_field('urltitle', XMLDB_TYPE_CHAR, '255', null, null, null, null, 'caption');
@@ -104,7 +100,6 @@ function xmldb_unilabeltype_carousel_upgrade($oldversion) {
     }
 
     if ($oldversion < 2025030800) {
-
         // Define field visible to be added to unilabeltype_carousel_slide.
         $table = new xmldb_table('unilabeltype_carousel_slide');
         $field = new xmldb_field('visible', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '1', 'urltitle');

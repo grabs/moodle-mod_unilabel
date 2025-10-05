@@ -513,10 +513,14 @@ class content_type extends \mod_unilabel\content_type {
             $section->viewurl = $courseformat->get_view_url($s->section);
 
             $context     = \context_course::instance($s->course);
-            $summarytext = file_rewrite_pluginfile_urls($s->summary, 'pluginfile.php',
+            $summarytext = file_rewrite_pluginfile_urls(
+                $s->summary,
+                'pluginfile.php',
                 $context->id,
                 'unilabeltype_topicteaser',
-                'section', $s->id);
+                'section',
+                $s->id
+            );
 
             $options              = new \stdClass();
             $options->noclean     = true;

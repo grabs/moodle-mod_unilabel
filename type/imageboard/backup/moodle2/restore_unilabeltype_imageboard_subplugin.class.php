@@ -32,7 +32,6 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class restore_unilabeltype_imageboard_subplugin extends restore_subplugin {
-
     /**
      * Returns the paths to be handled by the subplugin at unilabel level
      * @return array
@@ -94,11 +93,12 @@ class restore_unilabeltype_imageboard_subplugin extends restore_subplugin {
     public static function define_decode_contents() {
         $contents = [];
 
-        $contents[] = new restore_decode_content('unilabeltype_imageboard_img',
+        $contents[] = new restore_decode_content(
+            'unilabeltype_imageboard_img',
             ['url'],
-            'unilabeltype_imageboard_img');
+            'unilabeltype_imageboard_img'
+        );
 
         return $contents;
     }
-
 }

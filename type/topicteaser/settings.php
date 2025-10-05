@@ -28,20 +28,23 @@ $page = new admin_settingpage('unilabeltype_topicteaser', get_string('pluginname
 
 $topicteasersettings = [];
 
-$topicteasersettings[] = new admin_setting_configcheckbox('unilabeltype_topicteaser/active',
+$topicteasersettings[] = new admin_setting_configcheckbox(
+    'unilabeltype_topicteaser/active',
     get_string('active'),
     '',
     true
 );
 
-$topicteasersettings[] = new admin_setting_configcheckbox('unilabeltype_topicteaser/autorun',
+$topicteasersettings[] = new admin_setting_configcheckbox(
+    'unilabeltype_topicteaser/autorun',
     get_string('autorun', 'mod_unilabel'),
     '',
     true
 );
 
 $numbers               = array_combine(range(1, 10), range(1, 10));
-$topicteasersettings[] = new admin_setting_configselect('unilabeltype_topicteaser/carouselinterval',
+$topicteasersettings[] = new admin_setting_configselect(
+    'unilabeltype_topicteaser/carouselinterval',
     get_string('default_carouselinterval', 'unilabeltype_topicteaser'),
     '',
     5,
@@ -49,7 +52,8 @@ $topicteasersettings[] = new admin_setting_configselect('unilabeltype_topictease
 );
 
 $numbers               = array_combine(range(1, 6), range(1, 6));
-$topicteasersettings[] = new admin_setting_configselect('unilabeltype_topicteaser/columns',
+$topicteasersettings[] = new admin_setting_configselect(
+    'unilabeltype_topicteaser/columns',
     get_string('default_columns', 'unilabeltype_topicteaser'),
     get_string('columns_help', 'unilabeltype_topicteaser'),
     4,
@@ -80,19 +84,22 @@ $topicteasersettings[] = new admin_setting_configselect(
     $select
 );
 
-$topicteasersettings[] = new admin_setting_configcheckbox('unilabeltype_topicteaser/showintro',
+$topicteasersettings[] = new admin_setting_configcheckbox(
+    'unilabeltype_topicteaser/showintro',
     get_string('default_showintro', 'unilabeltype_topicteaser'),
     '',
     false
 );
 
-$topicteasersettings[] = new admin_setting_configcheckbox('unilabeltype_topicteaser/showcoursetitle',
+$topicteasersettings[] = new admin_setting_configcheckbox(
+    'unilabeltype_topicteaser/showcoursetitle',
     get_string('default_showcoursetitle', 'unilabeltype_topicteaser'),
     '',
     true
 );
 
-$topicteasersettings[] = new \mod_unilabel\setting_configselect_button('unilabeltype_topicteaser/custombutton',
+$topicteasersettings[] = new \mod_unilabel\setting_configselect_button(
+    'unilabeltype_topicteaser/custombutton',
     get_string('custombutton', 'unilabeltype_topicteaser'),
     '',
     0

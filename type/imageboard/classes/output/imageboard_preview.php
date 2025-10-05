@@ -34,7 +34,6 @@ namespace unilabeltype_imageboard\output;
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class imageboard_preview extends imageboard_view {
-
     /**
      * Constructor
      *

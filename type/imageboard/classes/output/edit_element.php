@@ -33,7 +33,6 @@ namespace unilabeltype_imageboard\output;
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class edit_element extends \mod_unilabel\output\edit_element_base {
-
     /**
      * Get the name of the elements group.
      *
@@ -165,5 +164,4 @@ class edit_element extends \mod_unilabel\output\edit_element_base {
             'accepted_types' => ['web_image'],
         ];
     }
-
 }

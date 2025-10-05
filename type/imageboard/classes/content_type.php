@@ -111,16 +111,16 @@ class content_type extends \mod_unilabel\content_type {
         $mform->addHelpButton($prefix . 'autoscale', 'autoscale', $this->component);
 
         $mform->addElement(
-                'filemanager',
-                $prefix . 'backgroundimage',
-                get_string('backgroundimage', $this->component),
-                null,
-                [
-                        'maxbytes' => $form->get_course()->maxbytes,
-                        'maxfiles' => 1,
-                        'subdirs' => false,
-                        'accepted_types' => ['web_image'],
-                ]
+            'filemanager',
+            $prefix . 'backgroundimage',
+            get_string('backgroundimage', $this->component),
+            null,
+            [
+                'maxbytes' => $form->get_course()->maxbytes,
+                'maxfiles' => 1,
+                'subdirs' => false,
+                'accepted_types' => ['web_image'],
+            ]
         );
         $mform->setType($prefix . 'backgroundimage', PARAM_FILE);
 
@@ -150,10 +150,12 @@ class content_type extends \mod_unilabel\content_type {
         } else {
             $titlecolor = $unilabeltyperecord->titlecolor;
         }
-        $this->add_colourpicker($mform,
-                $prefix . 'titlecolor',
-                get_string('titlecolor', $this->component),
-                $titlecolor);
+        $this->add_colourpicker(
+            $mform,
+            $prefix . 'titlecolor',
+            get_string('titlecolor', $this->component),
+            $titlecolor
+        );
 
         $titlebackgroundcolor = '';
         if (empty($unilabeltyperecord->titlebackgroundcolor)) {
@@ -162,10 +164,12 @@ class content_type extends \mod_unilabel\content_type {
             $titlebackgroundcolor = $unilabeltyperecord->titlebackgroundcolor;
         }
 
-        $this->add_colourpicker($mform,
-                $prefix . 'titlebackgroundcolor',
-                get_string('titlebackgroundcolor', $this->component),
-                $titlebackgroundcolor);
+        $this->add_colourpicker(
+            $mform,
+            $prefix . 'titlebackgroundcolor',
+            get_string('titlebackgroundcolor', $this->component),
+            $titlebackgroundcolor
+        );
 
         // Prepare the activity url picker.
         $formid = $mform->getAttribute('id');
@@ -204,10 +208,10 @@ class content_type extends \mod_unilabel\content_type {
             get_string('image', $this->component) . '-{no}',
             null,
             [
-                    'maxbytes' => $form->get_course()->maxbytes,
-                    'maxfiles' => 1,
-                    'subdirs' => false,
-                    'accepted_types' => ['web_image'],
+                'maxbytes' => $form->get_course()->maxbytes,
+                'maxfiles' => 1,
+                'subdirs' => false,
+                'accepted_types' => ['web_image'],
             ]
         );
 
@@ -310,7 +314,6 @@ class content_type extends \mod_unilabel\content_type {
             'checkbox',
             $prefix . 'newwindow',
             get_string('newwindow')
-
         );
         $repeatarray[] = $mform->createElement(
             'group',
@@ -451,11 +454,7 @@ class content_type extends \mod_unilabel\content_type {
         $data[$prefix . 'titlebackgroundcolor'] = $unilabeltyperecord->titlebackgroundcolor;
 
         // Set default data for images.
-        if (!$images = $DB->get_records(
-                'unilabeltype_imageboard_img',
-                ['imageboardid' => $unilabeltyperecord->id],
-                'id ASC'
-        )) {
+        if (!$images = $DB->get_records('unilabeltype_imageboard_img', ['imageboardid' => $unilabeltyperecord->id], 'id ASC')) {
             return $data;
         }
 
@@ -526,9 +525,9 @@ class content_type extends \mod_unilabel\content_type {
         // Check the colour values.
         $colourvaluestocheck = ['titlecolor', 'titlebackgroundcolor'];
         foreach ($colourvaluestocheck as $cv) {
-            if (!empty($data[$prefix.$cv])) {
-                if (!\mod_unilabel\configcolourpicker_validation::validate_colourdata($data[$prefix.$cv])) {
-                    $errors[$prefix.$cv] = get_string('invalidvalue', 'mod_unilabel');
+            if (!empty($data[$prefix . $cv])) {
+                if (!\mod_unilabel\configcolourpicker_validation::validate_colourdata($data[$prefix . $cv])) {
+                    $errors[$prefix . $cv] = get_string('invalidvalue', 'mod_unilabel');
                 }
             }
         }
@@ -734,12 +733,12 @@ class content_type extends \mod_unilabel\content_type {
             return '';
         }
         $imageurl = \moodle_url::make_pluginfile_url(
-                $this->context->id,
-                $this->component,
-                'backgroundimage',
-                0,
-                '/',
-                $file->get_filename()
+            $this->context->id,
+            $this->component,
+            'backgroundimage',
+            0,
+            '/',
+            $file->get_filename()
         );
         return $imageurl;
     }
@@ -757,12 +756,12 @@ class content_type extends \mod_unilabel\content_type {
             return '';
         }
         $imageurl = \moodle_url::make_pluginfile_url(
-                $this->context->id,
-                $this->component,
-                'image',
-                $image->id,
-                '/',
-                $file->get_filename()
+            $this->context->id,
+            $this->component,
+            'image',
+            $image->id,
+            '/',
+            $file->get_filename()
         );
         return $imageurl;
     }
@@ -822,5 +821,4 @@ class content_type extends \mod_unilabel\content_type {
     public function is_active() {
         return !empty($this->config->active);
     }
-
 }

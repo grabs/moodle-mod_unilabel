@@ -180,7 +180,6 @@ class content_type extends \mod_unilabel\content_type {
             'checkbox',
             $prefix . 'newwindow',
             get_string('newwindow')
-
         );
         $repeatarray[] = $mform->createElement(
             'group',

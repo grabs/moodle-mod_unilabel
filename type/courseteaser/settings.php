@@ -28,20 +28,23 @@ $page = new admin_settingpage('unilabeltype_courseteaser', get_string('pluginnam
 
 $courseteasersettings = [];
 
-$courseteasersettings[] = new admin_setting_configcheckbox('unilabeltype_courseteaser/active',
+$courseteasersettings[] = new admin_setting_configcheckbox(
+    'unilabeltype_courseteaser/active',
     get_string('active'),
     '',
     true
 );
 
-$courseteasersettings[] = new admin_setting_configcheckbox('unilabeltype_courseteaser/autorun',
+$courseteasersettings[] = new admin_setting_configcheckbox(
+    'unilabeltype_courseteaser/autorun',
     get_string('autorun', 'mod_unilabel'),
     '',
     true
 );
 
 $numbers                = array_combine(range(1, 10), range(1, 10));
-$courseteasersettings[] = new admin_setting_configselect('unilabeltype_courseteaser/carouselinterval',
+$courseteasersettings[] = new admin_setting_configselect(
+    'unilabeltype_courseteaser/carouselinterval',
     get_string('default_carouselinterval', 'unilabeltype_courseteaser'),
     '',
     5,
@@ -49,7 +52,8 @@ $courseteasersettings[] = new admin_setting_configselect('unilabeltype_coursetea
 );
 
 $numbers                = array_combine(range(1, 6), range(1, 6));
-$courseteasersettings[] = new admin_setting_configselect('unilabeltype_courseteaser/columns',
+$courseteasersettings[] = new admin_setting_configselect(
+    'unilabeltype_courseteaser/columns',
     get_string('default_columns', 'unilabeltype_courseteaser'),
     get_string('columns_help', 'unilabeltype_courseteaser'),
     4,
@@ -68,13 +72,15 @@ $courseteasersettings[] = new admin_setting_configselect(
     $select
 );
 
-$courseteasersettings[] = new admin_setting_configcheckbox('unilabeltype_courseteaser/showintro',
+$courseteasersettings[] = new admin_setting_configcheckbox(
+    'unilabeltype_courseteaser/showintro',
     get_string('default_showintro', 'unilabeltype_courseteaser'),
     '',
     false
 );
 
-$courseteasersettings[] = new \mod_unilabel\setting_configselect_button('unilabeltype_courseteaser/custombutton',
+$courseteasersettings[] = new \mod_unilabel\setting_configselect_button(
+    'unilabeltype_courseteaser/custombutton',
     get_string('custombutton', 'unilabeltype_courseteaser'),
     '',
     0

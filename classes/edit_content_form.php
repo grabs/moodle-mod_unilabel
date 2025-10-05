@@ -38,7 +38,7 @@ require_once($CFG->libdir . '/formslib.php');
  */
 class edit_content_form extends \moodleform {
     /** @var \stdClass */
-    private $_course;
+    private $mycourse;
     /** @var content_type */
     protected $unilabeltype;
     /** @var \stdClass */
@@ -75,7 +75,7 @@ class edit_content_form extends \moodleform {
         $this->unilabeltype = $this->_customdata['unilabeltype'];
         $this->cm           = $this->_customdata['cm'];
         $this->context      = \context_module::instance($this->cm->id);
-        $this->_course      = get_course($this->cm->course);
+        $this->mycourse      = get_course($this->cm->course);
 
         $mform->addElement('hidden', 'cmid');
         $mform->setType('cmid', PARAM_INT);
@@ -114,7 +114,8 @@ class edit_content_form extends \moodleform {
      */
     private function add_intro_editor() {
         $mform = $this->_form;
-        $mform->addElement('editor',
+        $mform->addElement(
+            'editor',
             'introeditor',
             get_string('unilabeltext', 'mod_unilabel'),
             ['rows' => 10],
@@ -138,13 +139,15 @@ class edit_content_form extends \moodleform {
 
         $draftitemid = file_get_submitted_draft_itemid('introeditor');
 
-        $defaultvalues['introeditor']['text'] = file_prepare_draft_area($draftitemid,
-                                    $this->context->id,
-                                    'mod_unilabel',
-                                    'intro',
-                                    false,
-                                    ['subdirs' => true],
-                                    $defaultvalues['intro']);
+        $defaultvalues['introeditor']['text'] = file_prepare_draft_area(
+            $draftitemid,
+            $this->context->id,
+            'mod_unilabel',
+            'intro',
+            false,
+            ['subdirs' => true],
+            $defaultvalues['intro']
+        );
         $defaultvalues['introeditor']['format'] = $defaultvalues['introformat'];
         $defaultvalues['introeditor']['itemid'] = $draftitemid;
 
@@ -188,6 +191,6 @@ class edit_content_form extends \moodleform {
      * @return \stdClass
      */
     public function get_course() {
-        return $this->_course;
+        return $this->mycourse;
     }
 }

@@ -115,10 +115,12 @@ class content_type extends \mod_unilabel\content_type {
         $mform->addHelpButton($prefix . 'height', 'height', $this->component);
 
         $backgrounddefault = empty($unilabeltyperecord->background) ? '' : $unilabeltyperecord->background;
-        $this->add_colourpicker($mform,
+        $this->add_colourpicker(
+            $mform,
             $prefix . 'background',
             get_string('background', $this->component),
-            $backgrounddefault);
+            $backgrounddefault
+        );
 
         $mform->addElement('advcheckbox', $prefix . 'usemobile', get_string('use_mobile_images', $this->component));
         $mform->addHelpButton($prefix . 'usemobile', 'use_mobile_images', $this->component);
@@ -182,7 +184,6 @@ class content_type extends \mod_unilabel\content_type {
             'checkbox',
             $prefix . 'newwindow',
             get_string('newwindow')
-
         );
         $repeatarray[] = $mform->createElement(
             'group',

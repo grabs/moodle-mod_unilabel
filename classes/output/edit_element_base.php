@@ -32,8 +32,7 @@ namespace mod_unilabel\output;
  * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-abstract class edit_element_base implements \templatable, \renderable {
-
+abstract class edit_element_base implements \renderable, \templatable {
     /** @var \stdClass */
     protected $data;
 
@@ -180,8 +179,13 @@ abstract class edit_element_base implements \templatable, \renderable {
      * @param string $extralabel In from the name independent label.
      * @return \MoodleQuickForm_filemanager The element
      */
-    protected function get_filemanager(string $name, array $attributes = [],
-                                        array $options = [], $helpbutton = '', string $extralabel = '') {
+    protected function get_filemanager(
+        string $name,
+        array $attributes = [],
+        array $options = [],
+        $helpbutton = '',
+        string $extralabel = ''
+    ) {
 
         $elementname = $this->prefix . $name . '[' . $this->repeatindex . ']';
         $attributes['id'] = 'id_' . $this->prefix . $name . '_' . $this->repeatindex;
@@ -211,8 +215,13 @@ abstract class edit_element_base implements \templatable, \renderable {
      * @param string $extralabel In from the name independent label.
      * @return \MoodleQuickForm_editor The element
      */
-    protected function get_editor(string $name, array $attributes = [],
-                                            array $options = [], $helpbutton = '', string $extralabel = '') {
+    protected function get_editor(
+        string $name,
+        array $attributes = [],
+        array $options = [],
+        $helpbutton = '',
+        string $extralabel = ''
+    ) {
 
         $elementname = $this->prefix . $name . '[' . $this->repeatindex . ']';
         $attributes['id'] = 'id_' . $this->prefix . $name . '_' . $this->repeatindex;
@@ -350,7 +359,6 @@ abstract class edit_element_base implements \templatable, \renderable {
         $element->setAttributes($attributes);
 
         return $element;
-
     }
 
     /**

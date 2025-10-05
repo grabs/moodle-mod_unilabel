@@ -49,7 +49,7 @@ function unilabeltype_imageboard_pluginfile($course, $cm, $context, $filearea, $
     }
 
     $relativepath = implode('/', $args);
-    $fullpath = '/'.$context->id.'/unilabeltype_imageboard/'.$filearea.'/'.$relativepath;
+    $fullpath = '/' . $context->id . '/unilabeltype_imageboard/' . $filearea . '/' . $relativepath;
 
     $fs = get_file_storage();
     if ($file = $fs->get_file_by_hash(sha1($fullpath))) {

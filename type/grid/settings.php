@@ -28,13 +28,16 @@ $page = new admin_settingpage('unilabeltype_grid', get_string('pluginname', 'uni
 
 $gridsettings = [];
 
-$gridsettings[] = new admin_setting_configcheckbox('unilabeltype_grid/active',
+$gridsettings[] = new admin_setting_configcheckbox(
+    'unilabeltype_grid/active',
     get_string('active'),
     '',
-    true);
+    true
+);
 
 $numbers        = array_combine(range(1, 6), range(1, 6));
-$gridsettings[] = new admin_setting_configselect('unilabeltype_grid/columns',
+$gridsettings[] = new admin_setting_configselect(
+    'unilabeltype_grid/columns',
     get_string('default_columns', 'unilabeltype_grid'),
     '',
     4,
@@ -43,20 +46,23 @@ $gridsettings[] = new admin_setting_configselect('unilabeltype_grid/columns',
 
 $numbers        = array_combine(range(100, 600, 50), range(100, 600, 50));
 $numbers        = [0 => get_string('autoheight', 'unilabeltype_grid')] + $numbers;
-$gridsettings[] = new admin_setting_configselect('unilabeltype_grid/height',
+$gridsettings[] = new admin_setting_configselect(
+    'unilabeltype_grid/height',
     get_string('default_height', 'unilabeltype_grid'),
     get_string('height_help', 'unilabeltype_grid'),
     300,
     $numbers
 );
 
-$gridsettings[] = new admin_setting_configcheckbox('unilabeltype_grid/showintro',
+$gridsettings[] = new admin_setting_configcheckbox(
+    'unilabeltype_grid/showintro',
     get_string('default_showintro', 'unilabeltype_grid'),
     '',
     false
 );
 
-$gridsettings[] = new admin_setting_configcheckbox('unilabeltype_grid/usemobile',
+$gridsettings[] = new admin_setting_configcheckbox(
+    'unilabeltype_grid/usemobile',
     get_string('default_usemobile', 'unilabeltype_grid'),
     '',
     true

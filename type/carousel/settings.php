@@ -28,19 +28,23 @@ $page = new admin_settingpage('unilabeltype_carousel', get_string('pluginname', 
 
 $carouselsettings = [];
 
-$carouselsettings[] = new admin_setting_configcheckbox('unilabeltype_carousel/active',
+$carouselsettings[] = new admin_setting_configcheckbox(
+    'unilabeltype_carousel/active',
     get_string('active'),
     '',
-    true);
+    true
+);
 
-$carouselsettings[] = new admin_setting_configcheckbox('unilabeltype_carousel/autorun',
+$carouselsettings[] = new admin_setting_configcheckbox(
+    'unilabeltype_carousel/autorun',
     get_string('autorun', 'mod_unilabel'),
     '',
     true
 );
 
 $numbers            = array_combine(range(1, 10), range(1, 10));
-$carouselsettings[] = new admin_setting_configselect('unilabeltype_carousel/carouselinterval',
+$carouselsettings[] = new admin_setting_configselect(
+    'unilabeltype_carousel/carouselinterval',
     get_string('default_carouselinterval', 'unilabeltype_carousel'),
     '',
     5,
@@ -49,26 +53,30 @@ $carouselsettings[] = new admin_setting_configselect('unilabeltype_carousel/caro
 
 $numbers            = array_combine(range(100, 600, 50), range(100, 600, 50));
 $numbers            = [0 => get_string('autoheight', 'unilabeltype_carousel')] + $numbers;
-$carouselsettings[] = new admin_setting_configselect('unilabeltype_carousel/height',
+$carouselsettings[] = new admin_setting_configselect(
+    'unilabeltype_carousel/height',
     get_string('default_height', 'unilabeltype_carousel'),
     get_string('height_help', 'unilabeltype_carousel'),
     300,
     $numbers
 );
 
-$carouselsettings[] = new admin_setting_configcheckbox('unilabeltype_carousel/showintro',
+$carouselsettings[] = new admin_setting_configcheckbox(
+    'unilabeltype_carousel/showintro',
     get_string('default_showintro', 'unilabeltype_carousel'),
     '',
     false
 );
 
-$carouselsettings[] = new admin_setting_configcheckbox('unilabeltype_carousel/usemobile',
+$carouselsettings[] = new admin_setting_configcheckbox(
+    'unilabeltype_carousel/usemobile',
     get_string('default_usemobile', 'unilabeltype_carousel'),
     '',
     true
 );
 
-$carouselsettings[] = new \mod_unilabel\setting_configselect_button('unilabeltype_carousel/custombutton',
+$carouselsettings[] = new \mod_unilabel\setting_configselect_button(
+    'unilabeltype_carousel/custombutton',
     get_string('custombutton', 'unilabeltype_carousel'),
     '',
     0
