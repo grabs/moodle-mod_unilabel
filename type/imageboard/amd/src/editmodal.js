@@ -1,37 +1,49 @@
 /**
  * Unilabel type imageboard
  *
- * @author      Andreas Schenkel
- * @copyright   Andreas Schenkel {@link https://github.com/andreasschenkel}
+ * @author      Andreas Grabs <info@grabs-edv.de>
+ * @copyright   2018 onwards Grabs EDV {@link https://www.grabs-edv.de}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 // import modalHelper from 'mod_unilabel/modal_helper';
-import $ from 'jquery'; // Still needed for actions on bootstrap 4 modal dialogs.
+// import $ from 'jquery'; // Still needed for actions on bootstrap 4 modal dialogs.
 import * as Str from 'core/str';
+import Modal from 'theme_boost/bootstrap/modal';
 
 const fixModalPosition = (modalselector) => {
     var modal = document.querySelector(modalselector);
     var form = modal.closest('form');
 
-    $(modalselector).on('show.bs.modal', function() {
+    document.querySelector(modalselector).addEventListener('show.bs.modal', function() {
         form.append(modal);
     });
 
     // Hack for stacked modals to show the backdrop with the right z-index.
-    $(document).on('show.bs.modal', '.modal', function() {
-        var zIndex = 1040 + (10 * $('.modal:visible').length);
-        $(this).css('z-index', zIndex);
-        setTimeout(function() {
-            $('.modal-backdrop').not('.modal-stack').css('z-index', zIndex - 1).addClass('modal-stack');
-        }, 100);
+    document.addEventListener('show.bs.modal', function(event) {
+        if (event.target.classList.contains('modal')) {
+            var visibleModals = document.querySelectorAll('.modal.show').length;
+            var zIndex = 1040 + (10 * visibleModals);
+            event.target.style.zIndex = zIndex;
+            setTimeout(function() {
+                var backdrops = document.querySelectorAll('.modal-backdrop:not(.modal-stack)');
+                backdrops.forEach(function(backdrop) {
+                    backdrop.style.zIndex = zIndex - 1;
+                    backdrop.classList.add('modal-stack');
+                });
+            }, 100);
+        }
+    });
+
+    modal.addEventListener('shown.bs.modal', function(event) {
+        event.target.querySelector('.modal-dialog').focus();
     });
 
     // Hack to enable stacked modals by making sure the .modal-open class
     // is set to the <body> when there is at least one modal open left.
-    $(document).on('hidden.bs.modal', function() {
-        if ($('.modal.show').length > 0) {
-            $('body').addClass('modal-open');
+    document.addEventListener('hidden.bs.modal', function() {
+        if (document.querySelectorAll('.modal.show').length > 0) {
+            document.body.classList.add('modal-open');
         }
     });
 };
@@ -60,19 +72,23 @@ export const init = () => {
     var currentparent = null; // Variable to store the current parent element.
     fixModalPosition('#' + modalId); // Initialize the modal helper.
     document.querySelector('#imageboardcontainer').addEventListener('click', function(e) {
+        var myModal;
         if (e.target.dataset.type === 'imageaction') {
             actualnumber = parseInt(e.target.dataset.number); // Set the actual number from the clicked element.
-            $('#' + modalId).modal(); // Show the modal.
+            myModal = new Modal(document.querySelector("#unilabeltype_imageboard_modal"));
+            myModal.show();
         }
         if (e.target.dataset.type === 'deleteimage') {
             e.stopPropagation();
             e.preventDefault();
             var deletenumber = parseInt(e.target.dataset.number); // Get the number of the image to delete.
-            $('#unilabel_imageboard_confirm_inline_' + deletenumber).modal(); // Show the confirmation modal.
+            myModal = new Modal(document.querySelector('#unilabel_imageboard_confirm_inline_' + deletenumber));
+            myModal.show();
         }
 
     });
-    $('#' + modalId).on('show.bs.modal', function() {
+
+    document.querySelector('#' + modalId).addEventListener('show.bs.modal', function() {
         var src = document.querySelector('#' + formHeaderPrefix + actualnumber + ' .element-edit-container');
         currentparent = src.parentElement; // Store the current parent element.
         var dst = document.querySelector('#' + modalId + ' .modal-body');
@@ -82,7 +98,10 @@ export const init = () => {
             modalheader.innerText = text;
         });
     });
-    $('#' + modalId).on('hidden.bs.modal', function() {
+
+    document.querySelector('#' + modalId).addEventListener('hidden.bs.modal', function(event) {
+        event.target.querySelector('.modal-dialog').classList.remove('focus');
+
         var src = document.querySelector('#' + modalId + ' .modal-body .element-edit-container');
         var dst = currentparent;
         dst.append(src); // Move the edit container back to its original parent when the modal is hidden.
@@ -91,7 +110,8 @@ export const init = () => {
     var mform = document.querySelector('[id^="mform"]');
     mform.addEventListener('itemadded', function(e) {
         actualnumber = e.detail; // Set the actual number from the event detail.
-        $('#' + modalId).modal(); // Show the modal when a new item is added.
+        var myModal = new Modal(document.querySelector('#' + modalId));
+        myModal.show();
     });
 
     var draggablemodal = document.querySelector('#' + modalId + '.draggable'); // Get the draggable modal element.
@@ -143,5 +163,4 @@ export const init = () => {
     // Add event listener for start dragging the modal.
     draggableheader.addEventListener('mousedown', handleStart);
     draggableheader.addEventListener('touchstart', handleStart);
-
 };
