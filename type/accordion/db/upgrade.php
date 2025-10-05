@@ -46,7 +46,6 @@ function xmldb_unilabeltype_accordion_upgrade($oldversion) {
     }
 
     if ($oldversion < 2023111601) {
-
         // Define field sortorder to be added to unilabeltype_accordion_seg.
         $table = new xmldb_table('unilabeltype_accordion_seg');
         $field = new xmldb_field('sortorder', XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'accordionid');
@@ -61,7 +60,6 @@ function xmldb_unilabeltype_accordion_upgrade($oldversion) {
     }
 
     if ($oldversion < 2025020403) {
-
         // Define field visible to be added to unilabeltype_accordion_seg.
         $table = new xmldb_table('unilabeltype_accordion_seg');
         $field = new xmldb_field('visible', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '1', 'content');

@@ -145,7 +145,7 @@ class content_type extends \mod_unilabel\content_type {
                 $template = 'dialog';
                 break;
             default:
-                throw new \moodle_exception('Wrong presentation type: '. $presentation);
+                throw new \moodle_exception('Wrong presentation type: ' . $presentation);
         }
 
         $content = $renderer->render_from_template('unilabeltype_collapsedtext/' . $template, $content);

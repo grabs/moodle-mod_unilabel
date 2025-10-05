@@ -32,7 +32,6 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class backup_unilabeltype_imageboard_subplugin extends backup_subplugin {
-
     /**
      * Returns the assessment form definition to attach to 'unilabel' XML element
      * @return \backup_subplugin_element
@@ -42,7 +41,8 @@ class backup_unilabeltype_imageboard_subplugin extends backup_subplugin {
         // XML nodes declaration.
         $subplugin = $this->get_subplugin_element();
         $subpluginwrapper = new backup_nested_element($this->get_recommended_name());
-        $subpluginimageboard = new backup_nested_element('unilabeltype_imageboard',
+        $subpluginimageboard = new backup_nested_element(
+            'unilabeltype_imageboard',
             ['id'],
             // 8. Add setting to backup
             [
@@ -56,7 +56,8 @@ class backup_unilabeltype_imageboard_subplugin extends backup_subplugin {
                 'titlebackgroundcolor',
             ]
         );
-        $subpluginimage = new backup_nested_element('unilabeltype_imageboard_img',
+        $subpluginimage = new backup_nested_element(
+            'unilabeltype_imageboard_img',
             ['id'],
             ['title', 'urltitle', 'url', 'alt', 'xposition', 'yposition', 'targetwidth', 'targetheight', 'border', 'borderradius']
         );

@@ -36,7 +36,6 @@ function xmldb_unilabeltype_collapsedtext_upgrade($oldversion) {
     $dbman = $DB->get_manager();
 
     if ($oldversion < 2024050800) {
-
         // Move all titles from collapsedtext to the unilabel name field.
         $collapsedelements = $DB->get_recordset('unilabeltype_collapsedtext', [], 'id ASC');
         foreach ($collapsedelements as $element) {
@@ -60,7 +59,6 @@ function xmldb_unilabeltype_collapsedtext_upgrade($oldversion) {
     }
 
     if ($oldversion < 2025020406) {
-
         // Define field sortorder to be added to unilabeltype_collapsedtext_tile.
         $table = new xmldb_table('unilabeltype_collapsedtext');
         $field = new xmldb_field('applytextfilters', XMLDB_TYPE_INTEGER, '1');

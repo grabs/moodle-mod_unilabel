@@ -86,7 +86,8 @@ if ($formdata = $form->get_data()) {
     // Save the intro and after that the current unilabeltype plugin.
     if ($draftitemid = $formdata->introeditor['itemid']) {
         $formdata->intro = file_save_draft_area_files(
-            $draftitemid, $context->id,
+            $draftitemid,
+            $context->id,
             'mod_unilabel',
             'intro',
             0,

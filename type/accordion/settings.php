@@ -27,12 +27,15 @@ $page = new admin_settingpage('unilabeltype_accordion', get_string('pluginname',
 
 $accordionsettings = [];
 
-$accordionsettings[] = new admin_setting_configcheckbox('unilabeltype_accordion/active',
+$accordionsettings[] = new admin_setting_configcheckbox(
+    'unilabeltype_accordion/active',
     get_string('active'),
     '',
-    true);
+    true
+);
 
-$accordionsettings[] = new admin_setting_configcheckbox('unilabeltype_accordion/showintro',
+$accordionsettings[] = new admin_setting_configcheckbox(
+    'unilabeltype_accordion/showintro',
     get_string('default_showintro', 'unilabeltype_accordion'),
     '',
     false

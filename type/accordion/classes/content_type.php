@@ -312,11 +312,7 @@ class content_type extends \mod_unilabel\content_type {
         $data[$prefix . 'showintro'] = $this->record->showintro;
         $data[$prefix . 'type']      = $this->record->type;
 
-        if (!$segments = $DB->get_records(
-            'unilabeltype_accordion_seg',
-            ['accordionid' => $this->record->id],
-            'sortorder ASC'
-        )) {
+        if (!$segments = $DB->get_records('unilabeltype_accordion_seg', ['accordionid' => $this->record->id], 'sortorder ASC')) {
             return $data;
         }
 

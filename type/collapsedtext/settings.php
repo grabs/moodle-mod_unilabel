@@ -28,10 +28,12 @@ $page = new admin_settingpage('unilabeltype_collapsedtext', get_string('pluginna
 
 $collapsedtextsettings = [];
 
-$collapsedtextsettings[] = new admin_setting_configcheckbox('unilabeltype_collapsedtext/active',
+$collapsedtextsettings[] = new admin_setting_configcheckbox(
+    'unilabeltype_collapsedtext/active',
     get_string('active'),
     '',
-    true);
+    true
+);
 
 $collapsedtextsettings[] = new admin_setting_configcheckbox(
     'unilabeltype_collapsedtext/applytextfilters',

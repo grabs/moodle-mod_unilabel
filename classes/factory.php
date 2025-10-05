@@ -120,9 +120,11 @@ class factory {
         $group = [];
         $group[] = $mform->createElement(
             'html',
-            $OUTPUT->render(new \mod_unilabel\output\component\edit_info(
-                $plugin->get_namespace(),
-                $infotext)
+            $OUTPUT->render(
+                new \mod_unilabel\output\component\edit_info(
+                    $plugin->get_namespace(),
+                    $infotext
+                )
             )
         );
         $mform->addGroup($group, $groupname, '', '');

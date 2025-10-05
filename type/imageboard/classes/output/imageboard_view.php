@@ -35,7 +35,6 @@ use unilabeltype_imageboard\helper;
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class imageboard_view implements \renderable, \templatable {
-
     /** @var \stdClass */
     protected $data;
     /** @var \stdClass */
@@ -128,7 +127,7 @@ class imageboard_view implements \renderable, \templatable {
             $this->data->titlecolor = $this->unilabeltyperecord->titlecolor;
             $this->data->titlebackgroundcolor = $this->unilabeltyperecord->titlebackgroundcolor;
 
-            $this->data->helpergrids = helper::createdataforhelpergrid($canvaswidth, $canvasheight, $xsteps, $ysteps);;
+            $this->data->helpergrids = helper::createdataforhelpergrid($canvaswidth, $canvasheight, $xsteps, $ysteps);
         }
     }
 

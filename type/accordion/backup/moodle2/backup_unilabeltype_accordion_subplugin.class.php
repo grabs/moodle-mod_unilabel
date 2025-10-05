@@ -30,7 +30,8 @@ class backup_unilabeltype_accordion_subplugin extends backup_subplugin {
         $subplugin          = $this->get_subplugin_element();
         $subpluginwrapper   = new backup_nested_element($this->get_recommended_name());
         $subpluginaccordion = new backup_nested_element('unilabeltype_accordion', ['id'], ['showintro', 'type']);
-        $subpluginsegment   = new backup_nested_element('unilabeltype_accordion_seg',
+        $subpluginsegment   = new backup_nested_element(
+            'unilabeltype_accordion_seg',
             ['id'],
             ['sortorder', 'heading', 'content', 'visible']
         );

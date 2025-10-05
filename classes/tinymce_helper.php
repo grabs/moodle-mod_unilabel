@@ -44,7 +44,7 @@ class tinymce_helper extends \editor_tiny\editor {
     public function get_options(array $editoroptions = [], int $draftitemid = 0) {
         global $PAGE;
 
-        list($options, $fpoptions) = static::split_editor_options(
+        [$options, $fpoptions] = static::split_editor_options(
             $editoroptions,
             $draftitemid
         );
