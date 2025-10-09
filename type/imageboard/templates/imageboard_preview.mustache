@@ -75,10 +75,24 @@
 </div>
 
 <div class="unilabeltype-imageboard-controllbuttons d-flex flex-column mt-2">
-    <div class="unilabel-imageboard-gridtoggler">
-        <a class="unilabeltype-imageboard-controllbutton" href="#" id="unilabeltype-imageboard-gridtoggler-{{cmid}}">
-            <i class="fa fa-th fa-fw"></i> <span class="unilabeltype-imageboard-toggle-text">{{#str}} buttonlabelhelpergridhide, unilabeltype_imageboard {{/str}}</span>
-        </a>
+    <div class="custom-control custom-switch">
+        <input type="checkbox"
+               class="custom-control-input"
+               id="toggle-grid"
+               data-id="grid">
+        <label class="custom-control-label"
+               for="toggle-grid">
+            {{#str}} previewtogglelabel, unilabeltype_imageboard {{/str}}
+            <span class="sr-only">{{#str}} previewtogglelabel, unilabeltype_imageboard {{/str}}</span>
+        </label>
+        <span class="form-text text-muted d-inline-block ml-2">
+           <i class="icon fa fa-info-circle"
+              aria-hidden="true"
+              data-toggle="tooltip"
+              data-placement="right"
+              title="{{#str}} previewtogglelabel_tooltip, unilabeltype_imageboard {{/str}}">
+           </i>
+        </span>
     </div>
 
     <div>
