@@ -7,7 +7,7 @@
  */
 
 import Templates from 'core/templates';
-import * as Str from 'core/str';
+
 import log from 'core/log';
 import cfg from 'core/config';
 
@@ -36,18 +36,19 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
     await refreshBackgroundImage();
     await refreshAllImages();
     await renderHelpergrid(canvaswidth, canvasheight, gridcolor, xsteps, ysteps);
-
-    // In preview only ONE helpergrid exists with number 0...
-    const gridtoggler = document.getElementById("unilabeltype-imageboard-gridtoggler-0");
-    const togglerText = gridtoggler.querySelector('.unilabeltype-imageboard-toggle-text');
-    gridtoggler.addEventListener("click", function(event) {
+    // 1. Element auswählen
+    const toggleGrid = document.getElementById('toggle-grid');
+    // 2. Eventlistener hinzufügen
+    toggleGrid.addEventListener('change', function() {
         const helpergrid = document.getElementById("unilabeltype-imageboard-helpergrid-0");
         event.stopPropagation();
         event.preventDefault();
-        if (helpergrid.classList.contains("hidden")) {
-            showGrid(togglerText, helpergrid);
+        if (this.checked) {
+            // Vorschau an, also ausblenden von grid und co
+            hideGrid(helpergrid);
         } else {
-            hideGrid(togglerText, helpergrid);
+            // Vorschau aus
+            showGrid(helpergrid);
         }
     });
 
@@ -57,29 +58,30 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
     /**
      * Helper function to show the grid from imageboard.
      *
-     * @param {object} button
      * @param {object} helpergrid
      */
-    function showGrid(button, helpergrid) {
-        helpergrid.classList.remove("hidden");
-        button.value = 'gridvisible';
-        Str.get_string('buttonlabelhelpergridhide', 'unilabeltype_imageboard').done(function(text) {
-            button.innerText = text;
+    function showGrid(helpergrid) {
+        const elements = document.querySelectorAll('.unilabel-imageboard-coordinatesandtools');
+        elements.forEach(el => {
+            el.classList.remove("d-none");
+            el.classList.add("d-flex");
         });
+
+        helpergrid.classList.remove("hidden");
     }
 
     /**
      * Helper function to remove the grid from imageboard.
      *
-     * @param {object} button
      * @param {object} helpergrid
      */
-    function hideGrid(button, helpergrid) {
-        helpergrid.classList.add("hidden");
-        button.value = 'gridhidden';
-        Str.get_string('buttonlabelhelpergridshow', 'unilabeltype_imageboard').done(function(text) {
-            button.innerText = text;
+    function hideGrid(helpergrid) {
+        const elements = document.querySelectorAll('.unilabel-imageboard-coordinatesandtools');
+        elements.forEach(el => {
+            el.classList.add("d-none");
+            el.classList.remove("d-flex");
         });
+        helpergrid.classList.add("hidden");
     }
 
     /**
@@ -208,18 +210,88 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
             });
         });
 
+        // Add observer to get notice of file upload.
         if (backgroundfileNode) {
             let observer = new MutationObserver(refreshBackgroundImage);
             observer.observe(backgroundfileNode, {attributes: true, childList: true, subtree: true});
         }
-        // Also add listener for canvas size
-        let canvasx = document.getElementById('id_unilabeltype_imageboard_canvaswidth');
-        if (canvasx) {
-            canvasx.addEventListener('change', refreshBackgroundImage);
-        }
-        let canvasy = document.getElementById('id_unilabeltype_imageboard_canvasheight');
-        if (canvasy) {
-            canvasy.addEventListener('change', refreshBackgroundImage);
+        // Collect the selectors that should be listened to
+        const selectorEventTodoMappings = [
+            {
+                selector: 'canvaswidth',
+                event: 'change',
+                todo: refreshBackgroundImage,
+                listnetopreviouselement: false,
+            },
+            {
+                selector: 'canvasheight',
+                event: 'change',
+                todo: refreshBackgroundImage,
+                listnetopreviouselement: false,
+            },
+            {
+                selector: 'titlelineheight',
+                event: 'change',
+                todo: refreshAllImages,
+                listnetopreviouselement: false,
+            },
+            {
+                selector: 'fontsize',
+                event: 'change',
+                todo: refreshAllImages,
+                listnetopreviouselement: false,
+            },
+            {
+                selector: 'titlecolor_colourpicker_hidden',
+                event: 'click',
+                todo: refreshAllImages,
+                listnetopreviouselement: true,
+            },
+            {
+                selector: 'titlecolor_colourpicker',
+                event: 'keyup',
+                todo: refreshAllImages,
+                listnetopreviouselement: false,
+            },
+            {
+                selector: 'titlebackgroundcolor_colourpicker_hidden',
+                event: 'click',
+                todo: refreshAllImages,
+                listnetopreviouselement: true,
+            },
+            {
+                selector: 'titlebackgroundcolor_colourpicker',
+                event: 'keyup',
+                todo: refreshAllImages,
+                listnetopreviouselement: false,
+            }
+        ];
+
+        // Schleife über alle Mappings:
+        selectorEventTodoMappings.forEach(mapping => {
+            addListenerToMainsettings(
+                mapping.selector,
+                mapping.event,
+                mapping.todo,
+                mapping.listnetopreviouselement
+            );
+        });
+    }
+
+    /**
+     * @param {string} selector
+     * @param {string} event
+     * @param {string} todo Function that should be done if event is fired
+     * @param {bool} listnetopreviouselement
+     */
+    function addListenerToMainsettings(selector, event, todo, listnetopreviouselement) {
+        log.debug('addListenerToMainsettings', selector, event, todo, listnetopreviouselement);
+        let objecttolisten = document.getElementById('id_unilabeltype_imageboard_' + selector);
+        if (objecttolisten) {
+            if (listnetopreviouselement) {
+                objecttolisten = objecttolisten.previousElementSibling;
+            }
+            objecttolisten.addEventListener(event, todo);
         }
     }
 
@@ -370,6 +442,7 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
      * This function is designed as async function, so we can wait till all depending actions are ready.
      */
     async function refreshAllImages() {
+        log.debug('Refreshing all images');
         const singleElements = document.querySelectorAll('[id^="fitem_id_unilabeltype_imageboard_image_"]');
         for (let i = 0; i < singleElements.length; i++) {
             // TODO: Skip removed elements that are still in the dom but hidden.
