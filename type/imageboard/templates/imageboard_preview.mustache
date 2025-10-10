@@ -74,14 +74,14 @@
 
 </div>
 
-<div class="unilabeltype-imageboard-controllbuttons d-flex flex-column mt-2">
+<div id="unilabeltype-imageboard-controllbuttons" class="d-flex flex-column mt-2">
     <div class="custom-control custom-switch">
         <input type="checkbox"
-               class="custom-control-input"
-               id="toggle-grid"
+               class="custom-control-input toggle-grid"
+               id="toggle-grid-{{uniqid}}"
                data-id="grid">
         <label class="custom-control-label"
-               for="toggle-grid">
+               for="toggle-grid-{{uniqid}}">
             {{#str}} previewtogglelabel, unilabeltype_imageboard {{/str}}
             <span class="sr-only">{{#str}} previewtogglelabel, unilabeltype_imageboard {{/str}}</span>
         </label>

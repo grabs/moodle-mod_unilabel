@@ -61,6 +61,8 @@ export const init = () => {
     fixModalPosition('#' + modalId); // Initialize the modal helper.
     document.querySelector('#imageboardcontainer').addEventListener('click', function(e) {
         if (e.target.dataset.type === 'imageaction') {
+            e.stopPropagation();
+            e.preventDefault();
             actualnumber = parseInt(e.target.dataset.number); // Set the actual number from the clicked element.
             $('#' + modalId).modal(); // Show the modal.
         }

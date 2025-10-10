@@ -37,9 +37,9 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
     await refreshAllImages();
     await renderHelpergrid(canvaswidth, canvasheight, gridcolor, xsteps, ysteps);
     // 1. Element auswählen
-    const toggleGrid = document.getElementById('toggle-grid');
+    const toggleGrid = document.querySelector('#unilabeltype-imageboard-controllbuttons input.toggle-grid');
     // 2. Eventlistener hinzufügen
-    toggleGrid.addEventListener('change', function() {
+    toggleGrid.addEventListener('change', function(event) {
         const helpergrid = document.getElementById("unilabeltype-imageboard-helpergrid-0");
         event.stopPropagation();
         event.preventDefault();
@@ -67,7 +67,7 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
             el.classList.add("d-flex");
         });
 
-        helpergrid.classList.remove("hidden");
+        helpergrid.classList.remove("d-none");
     }
 
     /**
@@ -81,7 +81,7 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
             el.classList.add("d-none");
             el.classList.remove("d-flex");
         });
-        helpergrid.classList.add("hidden");
+        helpergrid.classList.add("d-none");
     }
 
     /**
@@ -481,6 +481,18 @@ export const init = async(canvaswidth, canvasheight, gridcolor, xsteps, ysteps) 
                 // Run the JS for the new image. This actually does nothing but sometime it will.
                 Templates.runTemplateJS(result.resultJs);
 
+                // Hide all control elements like edit and delete button if the preview toggle is on.
+                const toggleGrid = document.querySelector('#unilabeltype-imageboard-controllbuttons input.toggle-grid');
+                if (toggleGrid.checked) {
+                    log.debug('Imageboard: Preview toggle is on');
+                    const img = document.querySelector('#imageidimage-' + number);
+                    log.debug(img);
+                    const elements = img.querySelectorAll('.unilabel-imageboard-coordinatesandtools');
+                    elements.forEach(el => {
+                        el.classList.add("d-none");
+                        el.classList.remove("d-flex");
+                    });
+                }
 
                 // Add listeners to the filemanager.
                 let imagefileNode = document.getElementById('fitem_id_unilabeltype_imageboard_image_' + (number));
