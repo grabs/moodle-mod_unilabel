@@ -9,7 +9,7 @@
 .unilabel-imageboard-list-nr {
     width: 30px;
 }
-.unilabeltype-imageboard-controllbuttons {
+#unilabeltype-imageboard-controllbuttons {
     margin-bottom: 38px;
     z-index: 1;
     position: relative;
@@ -24,7 +24,7 @@
     visibility: hidden;
 }
 
-.unilabeltype-imageboard-controllbuttons .form-text {
+#unilabeltype-imageboard-controllbuttons .form-text {
     margin-top: 0;
 }
 
@@ -91,10 +91,6 @@
     position: relative;
     display: inline-block;
     cursor: move;
-}
-
-#unilabel-imageboard-preview .image-container .action {
-    cursor: pointer;
 }
 
 /* Bild-Stil */

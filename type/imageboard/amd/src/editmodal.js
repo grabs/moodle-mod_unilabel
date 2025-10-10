@@ -74,6 +74,8 @@ export const init = () => {
     document.querySelector('#imageboardcontainer').addEventListener('click', function(e) {
         var myModal;
         if (e.target.dataset.type === 'imageaction') {
+            e.stopPropagation();
+            e.preventDefault();
             actualnumber = parseInt(e.target.dataset.number); // Set the actual number from the clicked element.
             myModal = new Modal(document.querySelector("#unilabeltype_imageboard_modal"));
             myModal.show();

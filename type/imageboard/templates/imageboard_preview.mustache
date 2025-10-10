@@ -74,22 +74,22 @@
 
 </div>
 
-<div class="unilabeltype-imageboard-controllbuttons d-flex flex-column mt-2">
-    <div class="custom-control custom-switch">
+<div id="unilabeltype-imageboard-controllbuttons" class="d-flex flex-column mt-2">
+    <div class="form-check form-switch">
         <input type="checkbox"
-               class="custom-control-input"
-               id="toggle-grid"
+               class="form-check-input toggle-grid"
+               id="toggle-grid-{{uniqid}}"
                data-id="grid">
-        <label class="custom-control-label"
-               for="toggle-grid">
+        <label class="form-check-label"
+               for="toggle-grid-{{uniqid}}">
             {{#str}} previewtogglelabel, unilabeltype_imageboard {{/str}}
-            <span class="sr-only">{{#str}} previewtogglelabel, unilabeltype_imageboard {{/str}}</span>
+            <span class="visually-hidden">{{#str}} previewtogglelabel, unilabeltype_imageboard {{/str}}</span>
         </label>
-        <span class="form-text text-muted d-inline-block ml-2">
+        <span class="form-text text-muted d-inline-block me-2">
            <i class="icon fa fa-info-circle"
               aria-hidden="true"
-              data-toggle="tooltip"
-              data-placement="right"
+              data-bs-toggle="tooltip"
+              data-bs-placement="right"
               title="{{#str}} previewtogglelabel_tooltip, unilabeltype_imageboard {{/str}}">
            </i>
         </span>
