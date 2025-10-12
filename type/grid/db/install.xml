@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="mod/unilabel/type/grid/db" VERSION="20231215" COMMENT="XMLDB file for Moodle mod/unilabel/type/grid"
+<XMLDB PATH="mod/unilabel/type/grid/db" VERSION="20251012" COMMENT="XMLDB file for Moodle mod/unilabel/type/grid"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../../../lib/xmldb/xmldb.xsd"
 >
@@ -17,6 +17,7 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="unilabelid" TYPE="foreign-unique" FIELDS="unilabelid" REFTABLE="unilabel" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="unilabeltype_grid_tile" COMMENT="Default comment for the table, please edit me">
@@ -33,6 +34,7 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="gridid" TYPE="foreign" FIELDS="gridid" REFTABLE="unilabeltype_grid" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
   </TABLES>
