@@ -114,5 +114,17 @@ function xmldb_unilabeltype_grid_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2025030800, 'unilabeltype', 'grid');
     }
 
+    if ($oldversion < 2025101200) {
+        $table = new xmldb_table('unilabeltype_grid');
+        $key = new xmldb_key('unilabelid', XMLDB_KEY_FOREIGN_UNIQUE, ['unilabelid'], 'unilabel', ['id']);
+        $dbman->add_key($table, $key);
+
+        $table = new xmldb_table('unilabeltype_grid_tile');
+        $key = new xmldb_key('gridid', XMLDB_KEY_FOREIGN, ['gridid'], 'unilabeltype_grid', ['id']);
+        $dbman->add_key($table, $key);
+
+        upgrade_plugin_savepoint(true, 2025101200, 'unilabeltype', 'grid');
+    }
+
     return true;
 }

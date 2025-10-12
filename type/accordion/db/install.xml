@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="mod/unilabel/type/accordion/db" VERSION="20220718" COMMENT="XMLDB file for Moodle mod/unilabel/type/accordion"
+<XMLDB PATH="mod/unilabel/type/accordion/db" VERSION="20251012" COMMENT="XMLDB file for Moodle mod/unilabel/type/accordion"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../../../lib/xmldb/xmldb.xsd"
 >
@@ -13,6 +13,7 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="unilabelid" TYPE="foreign-unique" FIELDS="unilabelid" REFTABLE="unilabel" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="unilabeltype_accordion_seg" COMMENT="Default comment for the table, please edit me">
@@ -26,6 +27,7 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="accordionid" TYPE="foreign" FIELDS="accordionid" REFTABLE="unilabeltype_accordion" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
   </TABLES>
