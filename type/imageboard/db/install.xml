@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="mod/unilabel/type/imageboard/db" VERSION="20231029" COMMENT="XMLDB file for Moodle mod/unilabel/type/imageboard"
+<XMLDB PATH="mod/unilabel/type/imageboard/db" VERSION="20251012" COMMENT="XMLDB file for Moodle mod/unilabel/type/imageboard"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../../../lib/xmldb/xmldb.xsd"
 >
@@ -19,6 +19,7 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="unilabelid" TYPE="foreign-unique" FIELDS="unilabelid" REFTABLE="unilabel" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="unilabeltype_imageboard_img" COMMENT="Default comment for the table, please edit me">
@@ -39,6 +40,7 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="imageboardid" TYPE="foreign" FIELDS="imageboardid" REFTABLE="unilabeltype_imageboard" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
   </TABLES>

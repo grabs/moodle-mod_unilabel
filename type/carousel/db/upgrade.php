@@ -113,5 +113,17 @@ function xmldb_unilabeltype_carousel_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2025020403, 'unilabeltype', 'carousel');
     }
 
+    if ($oldversion < 2025101200) {
+        $table = new xmldb_table('unilabeltype_carousel');
+        $key = new xmldb_key('unilabelid', XMLDB_KEY_FOREIGN_UNIQUE, ['unilabelid'], 'unilabel', ['id']);
+        $dbman->add_key($table, $key);
+
+        $table = new xmldb_table('unilabeltype_carousel_slide');
+        $key = new xmldb_key('carouselid', XMLDB_KEY_FOREIGN, ['carouselid'], 'unilabeltype_carousel', ['id']);
+        $dbman->add_key($table, $key);
+
+        upgrade_plugin_savepoint(true, 2025101200, 'unilabeltype', 'carousel');
+    }
+
     return true;
 }
