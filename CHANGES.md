@@ -1,5 +1,9 @@
 ## Release notes
 
+### Release 5.1
+* Imageboard: new editing interface with image related modal view - Thanks to Andreas Schenkel
+* Apply new coding style
+
 ### Release 5.0.3
 * MBS-10139: Error when drag and dropping accordion sections (#68)
 * Collapsed text type does not process filters anymore for the content in the "name" field (#70)
