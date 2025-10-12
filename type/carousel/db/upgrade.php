@@ -118,7 +118,7 @@ function xmldb_unilabeltype_carousel_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2024050900, 'unilabeltype', 'carousel');
     }
 
-    if ($oldversion < 2025101200) {
+    if ($oldversion < 2024050910) {
         $table = new xmldb_table('unilabeltype_carousel');
         $key = new xmldb_key('unilabelid', XMLDB_KEY_FOREIGN_UNIQUE, ['unilabelid'], 'unilabel', ['id']);
         $dbman->add_key($table, $key);
@@ -127,7 +127,7 @@ function xmldb_unilabeltype_carousel_upgrade($oldversion) {
         $key = new xmldb_key('carouselid', XMLDB_KEY_FOREIGN, ['carouselid'], 'unilabeltype_carousel', ['id']);
         $dbman->add_key($table, $key);
 
-        upgrade_plugin_savepoint(true, 2025101200, 'unilabeltype', 'carousel');
+        upgrade_plugin_savepoint(true, 2024050910, 'unilabeltype', 'carousel');
     }
 
     return true;

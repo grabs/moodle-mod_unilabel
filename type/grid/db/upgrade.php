@@ -118,7 +118,7 @@ function xmldb_unilabeltype_grid_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2024050900, 'unilabeltype', 'grid');
     }
 
-    if ($oldversion < 2025101200) {
+    if ($oldversion < 2024050910) {
         $table = new xmldb_table('unilabeltype_grid');
         $key = new xmldb_key('unilabelid', XMLDB_KEY_FOREIGN_UNIQUE, ['unilabelid'], 'unilabel', ['id']);
         $dbman->add_key($table, $key);
@@ -127,7 +127,7 @@ function xmldb_unilabeltype_grid_upgrade($oldversion) {
         $key = new xmldb_key('gridid', XMLDB_KEY_FOREIGN, ['gridid'], 'unilabeltype_grid', ['id']);
         $dbman->add_key($table, $key);
 
-        upgrade_plugin_savepoint(true, 2025101200, 'unilabeltype', 'grid');
+        upgrade_plugin_savepoint(true, 2024050910, 'unilabeltype', 'grid');
     }
 
     return true;

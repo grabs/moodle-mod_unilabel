@@ -1,5 +1,8 @@
 ## Release notes
 
+### Release 4.4.12
+* MBS-10379: Add foreign keys to all unilabel type plugins (#74)
+
 ### Release 4.4.11
 * MBS-10139: Error when drag and dropping accordion sections (#68)
 * Collapsed text type does not process filters anymore for the content in the "name" field (#70)
