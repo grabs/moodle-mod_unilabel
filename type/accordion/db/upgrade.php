@@ -75,5 +75,17 @@ function xmldb_unilabeltype_accordion_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2024050900, 'unilabeltype', 'accordion');
     }
 
+    if ($oldversion < 2025101200) {
+        $table = new xmldb_table('unilabeltype_accordion');
+        $key = new xmldb_key('unilabelid', XMLDB_KEY_FOREIGN_UNIQUE, ['unilabelid'], 'unilabel', ['id']);
+        $dbman->add_key($table, $key);
+
+        $table = new xmldb_table('unilabeltype_accordion_seg');
+        $key = new xmldb_key('accordionid', XMLDB_KEY_FOREIGN, ['accordionid'], 'unilabeltype_accordion', ['id']);
+        $dbman->add_key($table, $key);
+
+        upgrade_plugin_savepoint(true, 2025101200, 'unilabeltype', 'accordion');
+    }
+
     return true;
 }

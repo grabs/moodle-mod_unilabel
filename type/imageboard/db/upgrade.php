@@ -181,5 +181,17 @@ function xmldb_unilabeltype_imageboard_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2024050804, 'unilabeltype', 'imageboard');
     }
 
+    if ($oldversion < 2025101200) {
+        $table = new xmldb_table('unilabeltype_imageboard');
+        $key = new xmldb_key('unilabelid', XMLDB_KEY_FOREIGN_UNIQUE, ['unilabelid'], 'unilabel', ['id']);
+        $dbman->add_key($table, $key);
+
+        $table = new xmldb_table('unilabeltype_imageboard_img');
+        $key = new xmldb_key('imageboardid', XMLDB_KEY_FOREIGN, ['imageboardid'], 'unilabeltype_imageboard', ['id']);
+        $dbman->add_key($table, $key);
+
+        upgrade_plugin_savepoint(true, 2025101200, 'unilabeltype', 'imageboard');
+    }
+
     return true;
 }

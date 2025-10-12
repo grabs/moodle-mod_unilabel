@@ -73,5 +73,14 @@ function xmldb_unilabeltype_collapsedtext_upgrade($oldversion) {
         // Collapsedtext savepoint reached.
         upgrade_plugin_savepoint(true, 2024050903, 'unilabeltype', 'collapsedtext');
     }
+
+    if ($oldversion < 2025101200) {
+        $table = new xmldb_table('unilabeltype_collapsedtext');
+        $key = new xmldb_key('unilabelid', XMLDB_KEY_FOREIGN_UNIQUE, ['unilabelid'], 'unilabel', ['id']);
+        $dbman->add_key($table, $key);
+
+        upgrade_plugin_savepoint(true, 2025101200, 'unilabeltype', 'collapsedtext');
+    }
+
     return true;
 }
