@@ -124,12 +124,12 @@ function xmldb_unilabeltype_topicteaser_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2020022900, 'unilabeltype', 'topicteaser');
     }
 
-    if ($oldversion < 2025101200) {
+    if ($oldversion < 2025020411) {
         $table = new xmldb_table('unilabeltype_topicteaser');
         $key = new xmldb_key('unilabelid', XMLDB_KEY_FOREIGN_UNIQUE, ['unilabelid'], 'unilabel', ['id']);
         $dbman->add_key($table, $key);
 
-        upgrade_plugin_savepoint(true, 2025101200, 'unilabeltype', 'topicteaser');
+        upgrade_plugin_savepoint(true, 2025020411, 'unilabeltype', 'topicteaser');
     }
 
     return true;
