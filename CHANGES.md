@@ -1,5 +1,8 @@
 ## Release notes
 
+### Release 5.1.1
+* MBS-10379: Add foreign keys to all unilabel type plugins (#74)
+
 ### Release 5.1
 * Imageboard: new editing interface with image related modal view - Thanks to Andreas Schenkel
 * Apply new coding style

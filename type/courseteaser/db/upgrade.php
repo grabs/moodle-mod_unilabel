@@ -96,12 +96,12 @@ function xmldb_unilabeltype_courseteaser_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2020022900, 'unilabeltype', 'courseteaser');
     }
 
-    if ($oldversion < 2025101200) {
+    if ($oldversion < 2025042211) {
         $table = new xmldb_table('unilabeltype_courseteaser');
         $key = new xmldb_key('unilabelid', XMLDB_KEY_FOREIGN_UNIQUE, ['unilabelid'], 'unilabel', ['id']);
         $dbman->add_key($table, $key);
 
-        upgrade_plugin_savepoint(true, 2025101200, 'unilabeltype', 'courseteaser');
+        upgrade_plugin_savepoint(true, 2025042211, 'unilabeltype', 'courseteaser');
     }
 
     return true;
