@@ -30,6 +30,8 @@ define(['jquery', 'core/local/aria/focuslock'], function($, FocusLock) {
 
             // Hack for stacked modals to show the backdrop with the right z-index.
             $(document).on('show.bs.modal', '.modal', function() {
+                // MBS-10391: Make sure the modal is appended to body to avoid z-index stacking context issues
+                $(this).appendTo('body');
                 var zIndex = 1040 + (10 * $('.modal:visible').length);
                 $(this).css('z-index', zIndex);
                 setTimeout(function() {
