@@ -1,5 +1,8 @@
 ## Release notes
 
+### Release 5.1.2
+* Refactor rendering of grid tiles (#75)
+
 ### Release 5.1.1
 * MBS-10379: Add foreign keys to all unilabel type plugins (#74)
 
