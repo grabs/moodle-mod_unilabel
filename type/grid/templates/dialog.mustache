@@ -16,45 +16,20 @@
 }}
 {{!
     @template unilabeltype_grid/dialog
-    Template to show a bootstrap modal dialog.
+
+    Context variables required for this template:
+    * title A cleaned string (use clean_text()) to display.
+    * body HTML content for the boday
 
     Example context (json):
     {
-        "title": "Title",
-        "name": "Topic 1",
-        "section": "1",
-        "summary": "",
-        "cmlist": "<ul class=\"section img-text\"><\/ul>",
-        "nr": 0,
-        "first": true
+        "title": "Example title",
+        "body": "&nbsp;"
     }
 }}
 
-<!-- The Modal -->
-<div class="modal moodle-has-zindex" data-region="modal-container" role="dialog" tabindex="-1" id="grid-modal-{{cmid}}-{{nr}}">
-    <div class="modal-dialog modal-dialog-scrollable modal-lg" data-region="modal" tabindex="0">
-        <div class="modal-content">
-
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <h4 class="modal-title">{{{title}}}</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-
-            <!-- Modal body -->
-            <div class="modal-body">
-                {{{content}}}
-            </div>
-            <!-- Modal footer -->
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">{{#str}} closebuttontitle {{/str}}</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-{{#js}}
-    require(['mod_unilabel/modal_helper'], function(modalhelper) {
-        modalhelper.init('#grid-modal-{{cmid}}-{{nr}}');
-    });
-{{/js}}
+{{< core/modal }}
+    {{$footer}}
+        <button type="button" class="btn btn-primary" data-action="hide" aria-label="{{#str}} closebuttontitle {{/str}}">{{#str}} closebuttontitle {{/str}}</button>
+    {{/footer}}
+{{/ core/modal }}

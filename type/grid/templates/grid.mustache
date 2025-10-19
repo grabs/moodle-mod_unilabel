@@ -55,6 +55,7 @@
         ],
         "hastiles": true,
         "cmid": "55",
+        "unilabelid" : "2",
         "colclasses": "col-lg-3 col-md-6 col-sm-12"
     }
 }}
@@ -77,11 +78,26 @@
                         </a>
                     {{/url}}
                     {{^url}}
-                        <a tabindex="0" role="button" href="#" data-bs-toggle="modal"{{!
-                                }} data-bs-target="#grid-modal-{{cmid}}-{{nr}}"{{!
-                                }} title="{{#str}}open_content, unilabeltype_grid, {{title}}{{/str}}"{{!
-                                }} aria-label="{{#str}}open_content, unilabeltype_grid, {{title}}{{/str}}">
-                            <div class="unilabel-overlay-effect bg-primary h-100 w-100"></div>
+                        <!-- This tile is loaded dynamically -->
+                        <a tabindex="0" role="button" href="#"{{!
+                                }} data-module="unilabel"{{!
+                                }} data-unilabelid="{{unilabelid}}"{{!
+                                }} data-type="grid"{{!
+                                }} data-cmid="{{cmid}}"{{!
+                                }} data-id="{{id}}"{{!
+                                }} data-contextid="{{contextid}}"{{!
+                                }} data-title="{{title}}"{{!
+                                }} title="{{#str}}open_content, unilabeltype_grid, {{titleplain}}{{/str}}"{{!
+                                }} aria-label="{{#str}}open_content, unilabeltype_grid, {{titleplain}}{{/str}}">
+                            <div class="unilabel-overlay-effect bg-primary h-100 w-100"{{!
+                                }} data-module="unilabel"{{!
+                                }} data-unilabelid="{{unilabelid}}"{{!
+                                }} data-type="grid"{{!
+                                }} data-cmid="{{cmid}}"{{!
+                                }} data-id="{{id}}"{{!
+                                }} data-contextid="{{contextid}}"{{!
+                                }} data-title="{{title}}">
+                            </div>
                         </a>
                     {{/url}}
                     {{^autoheight}}<div style="height:{{{height}}}px;width:100%;">{{/autoheight}}
@@ -104,14 +120,6 @@
             {{/visible}}
         {{/tiles}}
     </div>
-
-    {{#tiles}}
-        {{#visible}}
-            {{^url}}
-                {{> unilabeltype_grid/dialog }}
-            {{/url}}
-        {{/visible}}
-    {{/tiles}}
 {{/hastiles}}
 {{^hastiles}}
 <span>{{#str}} nocontent , unilabeltype_grid {{/str}}</span>

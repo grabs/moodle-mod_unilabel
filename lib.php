@@ -360,3 +360,25 @@ function mod_unilabel_output_fragment_get_tinyconfig($args) {
 
     throw new \moodle_exception('Element not found');
 }
+
+/**
+ * Get a html fragment from a content type.
+ *
+ * @param  mixed  $args an array or object with context and parameters needed to get the data
+ * @return string The html fragment we want to use by ajax
+ */
+function mod_unilabel_output_fragment_get_type_content($args) {
+    if (!isset($args['type'])) {
+        throw new \moodle_exception('Missing param "type"');
+    }
+    // Get type and check it.
+    $type = $args['type'];
+    $classname = '\\unilabeltype_' . $type . '\\content_type';
+    if (!class_exists($classname)) {
+        throw new \moodle_exception('Wrong element type "' . $classname . '"');
+    }
+
+    /** @var \mod_unilabel\content_type $typeobj */
+    $typeobj = new $classname();
+    return $typeobj->get_fragment($args);
+}
