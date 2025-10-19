@@ -149,6 +149,19 @@ abstract class content_type {
     abstract public function get_content($unilabel, $cm, \plugin_renderer_base $renderer);
 
     /**
+     * General method to get a unilabeltype related content by using the Fragment API.
+     *
+     * This method has to be overridden by the unilabeltype specific implementation.
+     * It is called in unilabel/lib.php "mod_unilabel_output_fragment_get_type_content".
+     *
+     * @param array $args The arguments needed by the type.
+     * @return string
+     */
+    public function get_fragment($args) {
+        return '';
+    }
+
+    /**
      * Delete the content from database.
      *
      * @param  int  $unilabelid
