@@ -97,15 +97,6 @@ jobs:
         if: ${{ always() }}
         run: moodle-plugin-ci grunt --max-lint-warnings=0
 
-      - name: Run grunt for subplugins
-        if: ${{ always() }}
-        run: |
-          for s in $(ls /home/runner/work/$REPO_DIRECTORY/$REPO_DIRECTORY/moodle/mod/unilabel/type)
-          do
-            echo "Running grunt for subplugin $s"
-            moodle-plugin-ci grunt --max-lint-warnings=0 /home/runner/work/$REPO_DIRECTORY/$REPO_DIRECTORY/moodle/mod/unilabel/type/$s
-          done
-
       - name: Run phpdoc
         if: ${{ always() }}
         run: moodle-plugin-ci phpdoc
@@ -113,21 +104,6 @@ jobs:
       - name: Run phpunit
         if: ${{ always() }}
         run: moodle-plugin-ci phpunit
-
-      - name: Run phpunit for subplugins
-        if: ${{ always() }}
-        run: |
-          for s in $(ls /home/runner/work/$REPO_DIRECTORY/$REPO_DIRECTORY/moodle/mod/unilabel/type)
-          do
-            echo "Running phpunit tests for subplugin $s"
-            moodle-plugin-ci phpunit /home/runner/work/$REPO_DIRECTORY/$REPO_DIRECTORY/moodle/mod/unilabel/type/$s
-          done
-
-      - name: Run behat with scss deprecations check
-        if: ${{ always() }}
-        run: |
-          php /home/runner/work/$REPO_DIRECTORY/$REPO_DIRECTORY/moodle/admin/tool/behat/cli/init.php --scss-deprecations
-          moodle-plugin-ci behat --profile chrome
 
       - name: PHP Copy/Paste Detector
         continue-on-error: true # This step will show errors but will not fail
@@ -138,3 +114,55 @@ jobs:
         continue-on-error: true # This step will show errors but will not fail
         if: ${{ always() }}
         run: moodle-plugin-ci phpmd
+
+      #############################################################################################
+      # Run MOODLE_500_STABLE specific tests
+      - name: Run grunt for subplugins for MOODLE_500_STABLE
+        if: ${{ always() && matrix.moodlebranch == 'MOODLE_500_STABLE' }}
+        run: |
+          for s in $(ls /home/runner/work/$REPO_DIRECTORY/$REPO_DIRECTORY/moodle/mod/unilabel/type)
+          do
+            echo "Running grunt for subplugin $s"
+            moodle-plugin-ci grunt --max-lint-warnings=0 /home/runner/work/$REPO_DIRECTORY/$REPO_DIRECTORY/moodle/mod/unilabel/type/$s
+          done
+
+      - name: Run phpunit for subplugins for MOODLE_500_STABLE
+        if: ${{ always() && matrix.moodlebranch == 'MOODLE_500_STABLE' }}
+        run: |
+          for s in $(ls /home/runner/work/$REPO_DIRECTORY/$REPO_DIRECTORY/moodle/mod/unilabel/type)
+          do
+            echo "Running phpunit tests for subplugin $s"
+            moodle-plugin-ci phpunit /home/runner/work/$REPO_DIRECTORY/$REPO_DIRECTORY/moodle/mod/unilabel/type/$s
+          done
+
+      - name: Run behat with scss deprecations check for MOODLE_500_STABLE
+        if: ${{ always() && matrix.moodlebranch == 'MOODLE_500_STABLE' }}
+        run: |
+          php /home/runner/work/$REPO_DIRECTORY/$REPO_DIRECTORY/moodle/admin/tool/behat/cli/init.php --scss-deprecations
+          moodle-plugin-ci behat --profile chrome
+
+      #############################################################################################
+      # Run MOODLE_501_STABLE specific tests
+      - name: Run grunt for subplugins for MOODLE_501_STABLE
+        if: ${{ always() && matrix.moodlebranch == 'MOODLE_501_STABLE' }}
+        run: |
+          for s in $(ls /home/runner/work/$REPO_DIRECTORY/$REPO_DIRECTORY/moodle/mod/unilabel/type)
+          do
+            echo "Running grunt for subplugin $s"
+            moodle-plugin-ci grunt --max-lint-warnings=0 /home/runner/work/$REPO_DIRECTORY/$REPO_DIRECTORY/moodle/mod/unilabel/type/$s
+          done
+
+      - name: Run phpunit for subplugins for MOODLE_501_STABLE
+        if: ${{ always() && matrix.moodlebranch == 'MOODLE_501_STABLE' }}
+        run: |
+          for s in $(ls /home/runner/work/$REPO_DIRECTORY/$REPO_DIRECTORY/moodle/public/mod/unilabel/type)
+          do
+            echo "Running phpunit tests for subplugin $s"
+            moodle-plugin-ci phpunit /home/runner/work/$REPO_DIRECTORY/$REPO_DIRECTORY/moodle/public/mod/unilabel/type/$s
+          done
+
+      - name: Run behat with scss deprecations check for MOODLE_501_STABLE
+        if: ${{ always() && matrix.moodlebranch == 'MOODLE_501_STABLE' }}
+        run: |
+          php /home/runner/work/$REPO_DIRECTORY/$REPO_DIRECTORY/moodle/public/admin/tool/behat/cli/init.php --scss-deprecations
+          moodle-plugin-ci behat --profile chrome
