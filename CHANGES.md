@@ -1,5 +1,8 @@
 ## Release notes
 
+### Release 4.5.14
+* Add option to disable ajax load in grid.
+
 ### Release 4.5.13
 * Refactor rendering of grid tiles (#75)
 
