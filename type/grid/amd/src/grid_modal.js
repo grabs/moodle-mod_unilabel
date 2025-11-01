@@ -30,8 +30,8 @@ import Modal from 'core/modal';
  * @extends module:core/modal
  */
 export default class GridModal extends Modal {
-    static TYPE = 'GRID_MODAL';
-    static TEMPLATE = 'unilabeltype_grid/dialog';
+    static TYPE = 'UNILABELTYPE_GRID_MODAL';
+    static TEMPLATE = 'unilabeltype_grid/grid_modal';
 }
 
 GridModal.registerModalType();
