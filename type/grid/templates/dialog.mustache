@@ -16,20 +16,50 @@
 }}
 {{!
     @template unilabeltype_grid/dialog
-
-    Context variables required for this template:
-    * title A cleaned string (use clean_text()) to display.
-    * body HTML content for the boday
+    Template to show a bootstrap modal dialog.
 
     Example context (json):
     {
-        "title": "Example title",
-        "body": "&nbsp;"
+        "title": "Title",
+        "name": "Topic 1",
+        "section": "1",
+        "summary": "",
+        "cmlist": "<ul class=\"section img-text\"><\/ul>",
+        "nr": 0,
+        "first": true
     }
 }}
 
-{{< core/modal }}
-    {{$footer}}
-        <button type="button" class="btn btn-primary" data-action="hide" aria-label="{{#str}} closebuttontitle {{/str}}">{{#str}} closebuttontitle {{/str}}</button>
-    {{/footer}}
-{{/ core/modal }}
+<!-- The Modal -->
+<div class="modal fade" tabindex="-1" id="grid-modal-{{cmid}}-{{nr}}">
+    <div class="modal-dialog modal-lg" tabindex="0">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">{{{title}}}</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                {{{content}}}
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">{{#str}} closebuttontitle {{/str}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{#js}}
+    require(['jquery'], function($) {
+        $('#grid-modal-{{cmid}}-{{nr}}').on('show.bs.modal', function() {
+            $('#grid-modal-{{cmid}}-{{nr}}').appendTo('body');
+        });
+        $('#grid-modal-{{cmid}}-{{nr}}').on('shown.bs.modal', function() {
+            $('#grid-modal-{{cmid}}-{{nr}} .modal-dialog').focus();
+        });
+    });
+{{/js}}

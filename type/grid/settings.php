@@ -68,6 +68,13 @@ $gridsettings[] = new admin_setting_configcheckbox(
     true
 );
 
+$gridsettings[] = new admin_setting_configcheckbox(
+    'unilabeltype_grid/useajax',
+    get_string('default_useajax', 'unilabeltype_grid'),
+    get_string('use_ajax_help', 'unilabeltype_grid'),
+    true
+);
+
 foreach ($gridsettings as $setting) {
     $page->add($setting);
 }

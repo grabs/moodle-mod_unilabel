@@ -126,5 +126,19 @@ function xmldb_unilabeltype_grid_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2025020411, 'unilabeltype', 'grid');
     }
 
+    if ($oldversion < 2025020413) {
+        // Define field useajax to be added to unilabeltype_grid.
+        $table = new xmldb_table('unilabeltype_grid');
+        $field = new xmldb_field('useajax', XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'usemobile');
+
+        // Conditionally launch add field useajax.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Grid savepoint reached.
+        upgrade_plugin_savepoint(true, 2025020413, 'unilabeltype', 'grid');
+    }
+
     return true;
 }
