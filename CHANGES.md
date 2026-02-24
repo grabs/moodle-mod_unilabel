@@ -1,5 +1,8 @@
 ## Release notes
 
+### Release 4.5.15
+* Add automated completion option (#78)
+
 ### Release 4.5.14
 * Add option to disable ajax load in grid.
 
