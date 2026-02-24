@@ -149,6 +149,10 @@ function unilabel_cm_info_view(cm_info $cm) {
             $editlink->url       = new \moodle_url('/mod/unilabel/edit_content.php', ['cmid' => $cm->id]);
             $content['editlink'] = $editlink;
         }
+    } else {
+        // Set the completion state.
+        $completioninfo = new \mod_unilabel\completion_info($cm->get_course());
+        $completioninfo->set_module_viewed($cm);
     }
 
     $cm->set_content($renderer->render_from_template('mod_unilabel/content', $content), true);
@@ -201,7 +205,7 @@ function unilabel_supports($feature) {
         case FEATURE_MOD_INTRO:
             return true;
         case FEATURE_COMPLETION_TRACKS_VIEWS:
-            return false;
+            return true;
         case FEATURE_GRADE_HAS_GRADE:
             return false;
         case FEATURE_GRADE_OUTCOMES:
