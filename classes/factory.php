@@ -120,15 +120,38 @@ class factory {
         $group = [];
         $group[] = $mform->createElement(
             'html',
-            $OUTPUT->render(
+            static::get_type_info($type, true)
+        );
+        $mform->addGroup($group, $groupname, '', '');
+        $mform->hideIf($groupname, 'unilabeltype', 'neq', $type);
+    }
+
+    /**
+     * Retrieves information about a specific unilabel plugin type.
+     *
+     * This method fetches the edit information for the given plugin type and can return it
+     * either as plain text or formatted HTML.
+     *
+     * @param string $type The short name of the plugin type (e.g., 'grid', 'carousel')
+     * @param bool $ashtml Whether to return the information as HTML (true) or plain text (false)
+     * @return string The plugin information in the requested format, or empty string if none available
+     */
+    public static function get_type_info(string $type, bool $ashtml = false) {
+        global $OUTPUT;
+        $plugin = static::get_plugin($type);
+        if (!$infotext = $plugin->get_edit_info()) {
+            return '';
+        }
+
+        if ($ashtml) {
+            return $OUTPUT->render(
                 new \mod_unilabel\output\component\edit_info(
                     $plugin->get_namespace(),
                     $infotext
                 )
-            )
-        );
-        $mform->addGroup($group, $groupname, '', '');
-        $mform->hideIf($groupname, 'unilabeltype', 'neq', $type);
+            );
+        }
+        return $infotext;
     }
 
     /**

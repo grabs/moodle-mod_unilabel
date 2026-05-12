@@ -55,14 +55,39 @@ class mod_unilabel_mod_form extends moodleform_mod {
 
         $this->standard_intro_elements(get_string('unilabeltext', 'mod_unilabel'));
 
+        // Prepare items for the choicedropdown element.
         $plugins = \mod_unilabel\factory::get_plugin_list();
-        $plugintypes = array_keys($plugins);
-
         $plugins = ['' => get_string('choose')] + $plugins;
-        $mform->addElement('select', 'unilabeltype', get_string('labeltype', 'mod_unilabel'), $plugins);
-        $mform->addRule('unilabeltype', get_string('required'), 'required', null, 'client');
-        $mform->addHelpButton('unilabeltype', 'labeltype', 'mod_unilabel');
 
+        // This is the choicelist which get all selectable plugins for the choicedropdown.
+        $pluginlist = new \core\output\choicelist();
+        $pluginlist->set_allow_empty(false);
+
+        // Add each plugin to the pluginlist.
+        foreach ($plugins as $pluginshortname => $pluginfullname) {
+            $pluginlist->add_option(
+                $pluginshortname,
+                $pluginfullname,
+                [
+                    'description' => \mod_unilabel\factory::get_type_info($pluginshortname),
+                ]
+            );
+        }
+
+        // Create the choicedropdown element for the mform.
+        $dialog = $mform->createElement(
+            'choicedropdown',
+            'unilabeltype',
+            get_string('labeltype', 'mod_unilabel'),
+            $pluginlist
+        );
+        // Set the with to "big" which adds a css class to the element.
+        // To take effect to the width option we have an additional css rule for the "... .dropdown-menu" selector.
+        $dialog->set_dialog_width(\core\output\local\dropdown\dialog::WIDTH['big']);
+        $mform->addElement($dialog);
+
+        // Add the formated descriptions as depending labels.
+        $plugintypes = array_keys($plugins);
         foreach ($plugintypes as $type) {
             \mod_unilabel\factory::add_edit_info_element($type, $mform);
         }

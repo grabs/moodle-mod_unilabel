@@ -119,17 +119,9 @@ if ($formdata = $form->get_data()) {
 
 /** @var \mod_unilabel\output\renderer $renderer */
 $renderer = $PAGE->get_renderer('mod_unilabel');
-
 $plugins = \mod_unilabel\factory::get_plugin_list();
-$select  = new single_select(
-    new \moodle_url($mybaseurl, ['cmid' => $cmid, 'sesskey' => sesskey()]),
-    'switchtype',
-    $plugins,
-    $unilabeltype->get_plugintype()
-);
-$select->label = get_string('switchtype', 'mod_unilabel');
+$editpage = new \mod_unilabel\output\component\edit_content_page($cmid, $unilabeltype, $form, $plugins);
 
 echo $renderer->header();
-echo $renderer->render($select);
-$form->display();
+echo $renderer->render($editpage);
 echo $renderer->footer();
