@@ -193,4 +193,21 @@ class edit_content_form extends \moodleform {
     public function get_course() {
         return $this->mycourse;
     }
+
+    /**
+     * Captures and returns the HTML output of the form.
+     *
+     * This method starts output buffering, renders the form by calling display(),
+     * captures the output, cleans the buffer, and returns the captured HTML.
+     *
+     * @return string The HTML output of the form
+     */
+    public function get_html() {
+        ob_start();
+        $this->display();
+        $data = ob_get_contents();
+        ob_end_clean();
+
+        return $data;
+    }
 }

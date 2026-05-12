@@ -38,6 +38,11 @@ a:focus .unilabel-overlay-effect {
     z-index: 998;
 }
 
+/* Dropdown list in mod_form */
+#page-mod-unilabel-mod #fitem_id_unilabeltype .dropdown .dropdown-menu {
+    width: max-content;
+}
+
 /* Visible button style */
 #page-mod-unilabel-edit_content form fieldset a.visible-button {
     display: none;
