@@ -1,5 +1,9 @@
 ## Release notes
 
+### Release 4.5.16
+* Use new choicelist for type chooser
+* Fix wrong gap size in new elements
+
 ### Release 4.5.15
 * Add automated completion option (#78)
 
