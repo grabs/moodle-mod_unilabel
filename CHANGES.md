@@ -1,5 +1,10 @@
 ## Release notes
 
+### Release 5.2
+* Use new choicelist for type chooser
+* Add new module description string
+* Fix wrong gap size in new elements
+
 ### Release 5.1.4
 * Add automated completion option (#78)
 
