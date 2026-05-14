@@ -35,8 +35,23 @@ $string['labeltype']                         = 'Label type';
 $string['labeltype_help']                    = 'The label type defines the appearance of the content. Each type has an own configuration page.';
 $string['link_to']                           = 'Link to: {$a}';
 $string['modulename']                        = 'Unilabel';
-$string['modulename_help']                   = 'The unilabel module allows you to present your information in an attractive way on the course page.';
+$string['modulename_help']                   = '###### Key features
+- Accordion
+- Carousel
+- Collapsed text
+- Course teaser
+- Grid
+- Imageboard
+- Simple text
+- Topic teaser
+
+###### Ways to use it
+The configuration consists of two steps (except the "Simple text" type):
+
+1. The creation of a new instance by using the activity chooser.
+2. The configuration of the content depending on the content type you chose in the first step.';
 $string['modulename_link']                   = 'mod/unilabel/view';
+$string['modulename_summary']                = 'The unilabel module allows you to present your information in an attractive way on the course page.';
 $string['modulenameplural']                  = 'Unilabels';
 $string['next_slide']                        = 'Next slide';
 $string['noconfiguration']                   = 'No configuration';
