@@ -88,7 +88,8 @@ class edit_content_form extends \moodleform {
         $this->add_intro_editor();
         $this->add_plugin_form_elements();
 
-        $this->add_action_buttons();
+        $this->add_action_buttons(true, null); // Make sure there is a cancel button.
+        $mform->set_sticky_footer('buttonar'); // The value "buttonar" is defined in the method "add_action_buttons".
 
         $this->set_data((array) $this->unilabel);
     }
