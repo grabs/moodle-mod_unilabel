@@ -14,7 +14,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:15
+        image: postgres:17
         env:
           POSTGRES_USER: 'postgres'
           POSTGRES_HOST_AUTH_METHOD: 'trust'
@@ -27,23 +27,24 @@ jobs:
           - 5432:5432
 
       mariadb:
-        image: mariadb:10.11
+        image: mariadb:11.4
         env:
-          MYSQL_USER: 'root'
-          MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+          MARIADB_USER: 'root'
+          MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: "true"
+          MARIADB_ALLOW_EMPTY_PASSWORD: "true"
         ports:
           - 3306:3306
         options: >-
-          --health-cmd="mysqladmin ping"
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 3
     strategy:
       fail-fast: false
       matrix:
-        php: ['8.2', '8.3', '8.4']
+        php: ['8.3', '8.4']
         database: ['mariadb', 'pgsql']
-        moodlebranch: ['MOODLE_500_STABLE', MOODLE_501_STABLE]
+        moodlebranch: ['MOODLE_501_STABLE', 'MOODLE_502_STABLE']
 
     steps:
       - name: Check out repository code
@@ -55,6 +56,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
+          extensions: pgsql, mysqli, zip, gd, xmlrpc, soap
           ini-values: max_input_vars=5000
           coverage: none
 
@@ -115,45 +117,17 @@ jobs:
         if: ${{ always() }}
         run: moodle-plugin-ci phpmd
 
-      #############################################################################################
-      # Run MOODLE_500_STABLE specific tests
-      - name: Run grunt for subplugins for MOODLE_500_STABLE
-        if: ${{ always() && matrix.moodlebranch == 'MOODLE_500_STABLE' }}
+      - name: Run grunt for subplugins
+        if: ${{ always() }}
         run: |
-          for s in $(ls /home/runner/work/$REPO_DIRECTORY/$REPO_DIRECTORY/moodle/mod/unilabel/type)
+          for s in $(ls /home/runner/work/$REPO_DIRECTORY/$REPO_DIRECTORY/moodle/public/mod/unilabel/type)
           do
             echo "Running grunt for subplugin $s"
-            moodle-plugin-ci grunt --max-lint-warnings=0 /home/runner/work/$REPO_DIRECTORY/$REPO_DIRECTORY/moodle/mod/unilabel/type/$s
+            moodle-plugin-ci grunt --max-lint-warnings=0 /home/runner/work/$REPO_DIRECTORY/$REPO_DIRECTORY/moodle/public/mod/unilabel/type/$s
           done
 
-      - name: Run phpunit for subplugins for MOODLE_500_STABLE
-        if: ${{ always() && matrix.moodlebranch == 'MOODLE_500_STABLE' }}
-        run: |
-          for s in $(ls /home/runner/work/$REPO_DIRECTORY/$REPO_DIRECTORY/moodle/mod/unilabel/type)
-          do
-            echo "Running phpunit tests for subplugin $s"
-            moodle-plugin-ci phpunit /home/runner/work/$REPO_DIRECTORY/$REPO_DIRECTORY/moodle/mod/unilabel/type/$s
-          done
-
-      - name: Run behat with scss deprecations check for MOODLE_500_STABLE
-        if: ${{ always() && matrix.moodlebranch == 'MOODLE_500_STABLE' }}
-        run: |
-          php /home/runner/work/$REPO_DIRECTORY/$REPO_DIRECTORY/moodle/admin/tool/behat/cli/init.php --scss-deprecations
-          moodle-plugin-ci behat --profile chrome
-
-      #############################################################################################
-      # Run MOODLE_501_STABLE specific tests
-      - name: Run grunt for subplugins for MOODLE_501_STABLE
-        if: ${{ always() && matrix.moodlebranch == 'MOODLE_501_STABLE' }}
-        run: |
-          for s in $(ls /home/runner/work/$REPO_DIRECTORY/$REPO_DIRECTORY/moodle/mod/unilabel/type)
-          do
-            echo "Running grunt for subplugin $s"
-            moodle-plugin-ci grunt --max-lint-warnings=0 /home/runner/work/$REPO_DIRECTORY/$REPO_DIRECTORY/moodle/mod/unilabel/type/$s
-          done
-
-      - name: Run phpunit for subplugins for MOODLE_501_STABLE
-        if: ${{ always() && matrix.moodlebranch == 'MOODLE_501_STABLE' }}
+      - name: Run phpunit for subplugins
+        if: ${{ always() }}
         run: |
           for s in $(ls /home/runner/work/$REPO_DIRECTORY/$REPO_DIRECTORY/moodle/public/mod/unilabel/type)
           do
@@ -161,8 +135,8 @@ jobs:
             moodle-plugin-ci phpunit /home/runner/work/$REPO_DIRECTORY/$REPO_DIRECTORY/moodle/public/mod/unilabel/type/$s
           done
 
-      - name: Run behat with scss deprecations check for MOODLE_501_STABLE
-        if: ${{ always() && matrix.moodlebranch == 'MOODLE_501_STABLE' }}
+      - name: Run behat with scss deprecations check
+        if: ${{ always() }}
         run: |
           php /home/runner/work/$REPO_DIRECTORY/$REPO_DIRECTORY/moodle/public/admin/tool/behat/cli/init.php --scss-deprecations
           moodle-plugin-ci behat --profile chrome
