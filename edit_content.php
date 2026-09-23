@@ -97,6 +97,7 @@ if ($formdata = $form->get_data()) {
 
         $formdata->introformat = $formdata->introeditor['format'];
     }
+    $formdata->id = $unilabel->id;
     $updatesuccess = true;
     if (!$DB->update_record('unilabel', $formdata)) {
         $updatesuccess = false;
