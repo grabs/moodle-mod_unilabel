@@ -617,7 +617,8 @@ class content_type extends \mod_unilabel\content_type {
         $unilabeltyperecord->titlebackgroundcolor = $formdata->{$prefix . 'titlebackgroundcolor'};
 
         $fs = get_file_storage();
-        $context = \context_module::instance($formdata->cmid);
+        $cm = get_coursemodule_from_instance('unilabel', $unilabel->id, 0, false, MUST_EXIST);
+        $context = \context_module::instance($cm->id);
         $usercontext = \context_user::instance($USER->id);
         // First: remove old image images.
         // We use the module_context as context and this component as component.
