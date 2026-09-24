@@ -1,5 +1,11 @@
 ## Release notes
 
+### Release v5.3
+* Fix close button on activity chooser
+* Use sticky footer in edit form
+* MBS-11118: Pin the updated unilabel record to the checked instance
+* MBS-11379: Derive the imageboard file context from the unilabel instance
+
 ### Release 5.2
 * Use new choicelist for type chooser
 * Add new module description string
