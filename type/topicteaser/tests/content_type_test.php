@@ -83,4 +83,54 @@ final class content_type_test extends \advanced_testcase {
 
         $this->assertEquals($othercourse->id, $this->save_target_course($teacher, $unilabel, $othercourse->id));
     }
+
+    #[\PHPUnit\Framework\Attributes\Group('baseline')]
+    /**
+     * Active content in a section summary of the referenced course must be removed.
+     */
+    public function test_section_summary_script_is_removed(): void {
+        $summary = $this->get_rendered_summary('<p>Teaser</p><img src="x" onerror="alert(1)"><script>alert(2)</script>');
+
+        $this->assertStringNotContainsString('onerror', $summary);
+        $this->assertStringNotContainsString('<script', $summary);
+        $this->assertStringContainsString('<p>Teaser</p>', $summary);
+    }
+
+    #[\PHPUnit\Framework\Attributes\Group('baseline')]
+    /**
+     * Regular summary markup of the referenced course is kept.
+     */
+    public function test_section_summary_markup_is_kept(): void {
+        $summary = $this->get_rendered_summary('<p><strong>Wichtig</strong></p><ul><li>Punkt</li></ul>');
+
+        $this->assertStringContainsString('<strong>Wichtig</strong>', $summary);
+        $this->assertStringContainsString('<li>Punkt</li>', $summary);
+    }
+
+    /**
+     * Render the topic teaser sections of another course and return the summary of its first section.
+     *
+     * @param string $summary Summary of section 1 in the referenced course
+     * @return string Rendered summary
+     */
+    private function get_rendered_summary(string $summary): string {
+        global $DB, $PAGE;
+        $this->resetAfterTest();
+        $this->setAdminUser();
+
+        $sourcecourse = $this->getDataGenerator()->create_course(['numsections' => 1]);
+        $DB->set_field('course_sections', 'summary', $summary, ['course' => $sourcecourse->id, 'section' => 1]);
+        $DB->set_field('course_sections', 'summaryformat', FORMAT_HTML, ['course' => $sourcecourse->id, 'section' => 1]);
+        rebuild_course_cache($sourcecourse->id, true);
+
+        $hostcourse = $this->getDataGenerator()->create_course();
+        $unilabel = $this->getDataGenerator()->create_module('unilabel', [
+            'course' => $hostcourse->id,
+            'unilabeltype' => 'topicteaser',
+        ]);
+        $PAGE->set_course($hostcourse);
+
+        $sections = (new content_type())->get_sections_html($sourcecourse->id, $unilabel);
+        return $sections[0]->summary;
+    }
 }

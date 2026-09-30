@@ -563,8 +563,8 @@ class content_type extends \mod_unilabel\content_type {
             );
 
             $options              = new \stdClass();
-            $options->noclean     = true;
             $options->overflowdiv = true;
+            $options->context     = $context;
 
             $section->summary   = format_text($summarytext, $s->summaryformat, $options);
             $section->contextid = $context->id;
