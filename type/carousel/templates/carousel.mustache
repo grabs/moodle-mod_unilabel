@@ -95,7 +95,7 @@
                     <div class="carousel-item text-center py-4{{^nr}} active{{/nr}}">
                         {{#url}}
                             <!-- The overlay is used as button to show the modal dialog -->
-                            <a href="{{{url}}}"{{#newwindow}} target="_blank"{{/newwindow}}{{!
+                            <a href="{{url}}"{{#newwindow}} target="_blank"{{/newwindow}}{{!
                                 }} aria-label="{{#urltitle}}{{#str}}link_to, mod_unilabel, {{.}}{{/str}}{{/urltitle}}{{^urltitle}}{{#str}}link_to, mod_unilabel, {{url}}{{/str}}{{/urltitle}}"{{!
                                 }} title="{{#urltitle}}{{#str}}link_to, mod_unilabel, {{.}}{{/str}}{{/urltitle}}{{^urltitle}}{{#str}}link_to, mod_unilabel, {{url}}{{/str}}{{/urltitle}}">
                                 <div class="unilabel-overlay-effect bg-primary h-100 w-100"></div>
