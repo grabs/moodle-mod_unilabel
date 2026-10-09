@@ -59,6 +59,15 @@ class restore_unilabeltype_courseteaser_subplugin extends restore_subplugin {
         $controller = restore_controller::load_controller($restoreid);
         if (!$controller->is_samesite()) {
             $data->courses = '';
+        } else if (!empty($data->courses)) {
+            $courses = [];
+            foreach (explode(',', $data->courses) as $courseid) {
+                $courseid = clean_param($courseid, PARAM_INT);
+                if (\unilabeltype_courseteaser\content_type::can_use_course($courseid, $controller->get_userid())) {
+                    $courses[] = $courseid;
+                }
+            }
+            $data->courses = implode(',', $courses);
         }
 
         $data->unilabelid = $this->get_new_parentid('unilabel');

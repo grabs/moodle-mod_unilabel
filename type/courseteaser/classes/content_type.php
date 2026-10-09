@@ -302,7 +302,17 @@ class content_type extends \mod_unilabel\content_type {
             $unilabeltyperecord->carouselinterval = 0;
         }
         $unilabeltyperecord->showintro = $formdata->{$prefix . 'showintro'};
-        $unilabeltyperecord->courses   = implode(',', $formdata->{$prefix . 'courses'});
+
+        // The course picker only limits the suggestions, so newly added courses must be checked here.
+        $oldcourses = empty($unilabeltyperecord->courses) ? [] : explode(',', $unilabeltyperecord->courses);
+        $courses    = [];
+        foreach ((array) $formdata->{$prefix . 'courses'} as $courseid) {
+            $courseid = clean_param($courseid, PARAM_INT);
+            if (in_array((string) $courseid, $oldcourses, true) || self::can_use_course($courseid)) {
+                $courses[] = $courseid;
+            }
+        }
+        $unilabeltyperecord->courses = implode(',', $courses);
 
         if (empty($unilabeltyperecord->id)) {
             $unilabeltyperecord->id = $DB->insert_record('unilabeltype_courseteaser', $unilabeltyperecord);
@@ -360,6 +370,9 @@ class content_type extends \mod_unilabel\content_type {
             if (!$course = $DB->get_record('course', ['id' => $id])) {
                 continue;
             }
+            if (!\core_course_category::can_view_course_info($course)) {
+                continue;
+            }
             $cil  = new $courselistelementclass($course); // Special core object with some nice methods.
             $item = new \stdClass();
 
@@ -391,6 +404,24 @@ class content_type extends \mod_unilabel\content_type {
         }
 
         return $items;
+    }
+
+    /**
+     * Check whether a user may add the given course to a teaser, like the course picker does.
+     *
+     * @param  int      $courseid
+     * @param  int|null $userid
+     * @return bool
+     */
+    public static function can_use_course(int $courseid, ?int $userid = null): bool {
+        global $DB;
+
+        if (!$course = $DB->get_record('course', ['id' => $courseid])) {
+            return false;
+        }
+
+        return can_access_course($course, $userid)
+            && has_capability('moodle/course:manageactivities', \context_course::instance($course->id), $userid);
     }
 
     /**
