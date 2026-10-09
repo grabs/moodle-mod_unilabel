@@ -59,6 +59,11 @@ class restore_unilabeltype_topicteaser_subplugin extends restore_subplugin {
         $controller = restore_controller::load_controller($restoreid);
         if (!$controller->is_samesite()) {
             $data->course = 0;
+        } else if (
+            !empty($data->course) &&
+            !\unilabeltype_topicteaser\content_type::can_use_course($data->course, $controller->get_userid())
+        ) {
+            $data->course = 0;
         }
 
         $data->unilabelid = $this->get_new_parentid('unilabel');
