@@ -484,13 +484,18 @@ class content_type extends \mod_unilabel\content_type {
         $id        = (int) $args['id'];
 
         // Double check the given contextid with the context of the course module.
-        $context = \context_module::instance($cmid);
+        $cm      = get_coursemodule_from_id('unilabel', $cmid, 0, false, MUST_EXIST);
+        $context = \context_module::instance($cm->id);
         if ($context->id !== $contextid) {
             throw new \moodle_exception('wrong contextid');
         }
         require_capability('mod/unilabel:view', $context);
 
-        $tile = $DB->get_record('unilabeltype_grid_tile', ['id' => $id], '*', MUST_EXIST);
+        $sql = 'SELECT t.*
+                  FROM {unilabeltype_grid_tile} t
+                  JOIN {unilabeltype_grid} g ON g.id = t.gridid
+                 WHERE t.id = :tileid AND g.unilabelid = :unilabelid AND t.visible = 1';
+        $tile = $DB->get_record_sql($sql, ['tileid' => $id, 'unilabelid' => $cm->instance], MUST_EXIST);
         $content = $this->format_content($tile, $context);
 
         return $content;
