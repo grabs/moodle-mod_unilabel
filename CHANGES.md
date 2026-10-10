@@ -1,5 +1,13 @@
 ## Release notes
 
+### Release v5.3.1
+* MBS-11380: Restrict the topic teaser file callback to section files of teased courses
+* MBS-11417: Escape carousel slide url and clean restored slides
+* MBS-11382: Check the topic teaser target course on save, restore and render
+* MBS-11378: Bind grid tile fragment to the checked course module
+* MBS-11377: Serve only course overview files from the courseteaser callback
+* MBS-11381: Clean section summaries in the topic teaser
+
 ### Release v5.3
 * Fix close button on activity chooser
 * Use sticky footer in edit form
