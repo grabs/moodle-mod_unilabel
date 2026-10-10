@@ -239,8 +239,6 @@ class content_type extends \mod_unilabel\content_type {
      * @return string
      */
     public function get_content($unilabel, $cm, \plugin_renderer_base $renderer) {
-        global $DB;
-
         $unilabeltyperecord = $this->load_unilabeltype_record($unilabel->id);
 
         $intro     = $this->format_intro($unilabel, $cm);
@@ -249,7 +247,7 @@ class content_type extends \mod_unilabel\content_type {
         $items     = $this->get_sections_html($courseid, $unilabel);
         $title     = null;
         if (!empty($unilabeltyperecord->showcoursetitle)) {
-            if ($course = $DB->get_record('course', ['id' => $courseid])) {
+            if ($course = $this->get_target_course($courseid)) {
                 $title = $course->fullname;
             } else {
                 $title = get_string('coursenotfound', 'unilabeltype_topicteaser');
@@ -349,6 +347,11 @@ class content_type extends \mod_unilabel\content_type {
         if (is_numeric($formdata->{$prefix . 'course'})) {
             $course = (int) $formdata->{$prefix . 'course'};
         }
+        // The course picker only limits the suggestions, so a new target course must be checked here.
+        $oldcourse = (int) ($unilabeltyperecord->course ?? 0);
+        if ($course && $course != $oldcourse && !self::can_use_course($course)) {
+            $course = $oldcourse;
+        }
         $unilabeltyperecord->course = $course;
 
         if (empty($unilabeltyperecord->id)) {
@@ -443,6 +446,43 @@ class content_type extends \mod_unilabel\content_type {
     }
 
     /**
+     * Check whether a user may use the given course as teaser target, like the course picker does.
+     *
+     * @param  int      $courseid
+     * @param  int|null $userid
+     * @return bool
+     */
+    public static function can_use_course(int $courseid, ?int $userid = null): bool {
+        global $DB;
+
+        if (!$course = $DB->get_record('course', ['id' => $courseid])) {
+            return false;
+        }
+
+        return can_access_course($course, $userid)
+            && has_capability('moodle/course:manageactivities', \context_course::instance($course->id), $userid);
+    }
+
+    /**
+     * Get the target course if it exists and is not hidden from the current user.
+     *
+     * @param  int             $courseid
+     * @return \stdClass|false
+     */
+    private function get_target_course($courseid) {
+        global $DB;
+
+        if (!$course = $DB->get_record('course', ['id' => $courseid])) {
+            return false;
+        }
+        if (!$course->visible && !has_capability('moodle/course:viewhiddencourses', \context_course::instance($course->id))) {
+            return false;
+        }
+
+        return $course;
+    }
+
+    /**
      * Get the sections from the given course.
      *
      * @param  int   $courseid
@@ -488,7 +528,7 @@ class content_type extends \mod_unilabel\content_type {
             $mysection = $DB->get_record('course_sections', ['id' => $mycm->section]);
         }
 
-        if (!$course = $DB->get_record('course', ['id' => $courseid])) {
+        if (!$course = $this->get_target_course($courseid)) {
             return [];
         }
 
