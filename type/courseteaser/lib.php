@@ -41,6 +41,16 @@
  * @return bool
  */
 function unilabeltype_courseteaser_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload) {
+    global $CFG;
+
+    // Only the course overview images are served, with the same login rule core applies to them.
+    if ($filearea !== 'overviewfiles' || $context->contextlevel != CONTEXT_COURSE) {
+        return false;
+    }
+    if (!empty($CFG->forcelogin)) {
+        require_login();
+    }
+
     $itemid       = (int) array_shift($args);
     $relativepath = implode('/', $args);
 
