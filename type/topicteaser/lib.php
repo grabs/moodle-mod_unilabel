@@ -44,6 +44,10 @@ function unilabeltype_topicteaser_pluginfile($course, $cm, $context, $filearea, 
     $itemid       = (int) array_shift($args);
     $relativepath = implode('/', $args);
 
+    if (!unilabeltype_topicteaser_can_serve_section_file($context, $filearea, $itemid)) {
+        return false;
+    }
+
     // We switch the given component "unilabeltype_topicteaser" with the original "course".
     $fullpath = "/{$context->id}/course/$filearea/{$itemid}/$relativepath";
 
@@ -51,6 +55,41 @@ function unilabeltype_topicteaser_pluginfile($course, $cm, $context, $filearea, 
     if ($file = $fs->get_file_by_hash(sha1($fullpath))) {
         if (!$file->is_directory()) {
             send_stored_file($file, 0, 0, true); // Download MUST be forced - security!
+        }
+    }
+
+    return false;
+}
+
+/**
+ * Check whether a section summary file of a teased course may be sent to the current user.
+ *
+ * Only visible section files are served, and only if the user can view a topic teaser showing that course.
+ *
+ * @param  \context $context The course context of the teased course.
+ * @param  string   $filearea
+ * @param  int      $sectionid
+ * @return bool
+ */
+function unilabeltype_topicteaser_can_serve_section_file($context, $filearea, $sectionid) {
+    global $DB;
+
+    if ($context->contextlevel != CONTEXT_COURSE || $filearea !== 'section') {
+        return false;
+    }
+    $params = ['id' => $sectionid, 'course' => $context->instanceid, 'visible' => 1];
+    if (!$DB->record_exists('course_sections', $params)) {
+        return false;
+    }
+
+    $teasers = $DB->get_records('unilabeltype_topicteaser', ['course' => $context->instanceid], '', 'id, unilabelid');
+    foreach ($teasers as $teaser) {
+        $hostcm = get_coursemodule_from_instance('unilabel', $teaser->unilabelid, 0, false, IGNORE_MISSING);
+        if (
+            $hostcm && can_access_course(get_course($hostcm->course))
+            && has_capability('mod/unilabel:view', context_module::instance($hostcm->id))
+        ) {
+            return true;
         }
     }
 
