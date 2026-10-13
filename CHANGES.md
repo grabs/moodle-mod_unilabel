@@ -1,5 +1,8 @@
 ## Release notes
 
+### Release v5.3.2
+* MBS-11552: Fix bootstrap and moodle modal interactions
+
 ### Release v5.3.1
 * MBS-11380: Restrict the topic teaser file callback to section files of teased courses
 * MBS-11417: Escape carousel slide url and clean restored slides
