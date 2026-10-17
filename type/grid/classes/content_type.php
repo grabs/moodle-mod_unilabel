@@ -659,6 +659,11 @@ class content_type extends \mod_unilabel\content_type {
                 $tile->imagemobileurl = $this->get_image_mobile_for_tile($tile);
                 $tile->titleplain     = empty($tile->title) ? get_string('tilenr', $this->component, $index + 1) : $tile->title;
                 $tile->title          = format_text($tile->titleplain);
+                // Only http(s) and root-relative links may reach the href attribute.
+                $url = strtolower($tile->url ?? '');
+                if (!str_starts_with($url, 'https://') && !str_starts_with($url, 'http://') && !str_starts_with($url, '/')) {
+                    $tile->url = '';
+                }
                 if (empty($tile->url)) {
                     $tile->content = $this->format_content($tile, $this->context);
                 }

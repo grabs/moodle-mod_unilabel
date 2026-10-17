@@ -88,4 +88,47 @@ final class content_type_test extends \advanced_testcase {
         ]);
         $this->assertStringContainsString('Own tile', $content);
     }
+
+    /**
+     * Render a grid with one tile linking to the given url.
+     *
+     * @param string $url
+     * @return string
+     */
+    private function render_grid_with_url(string $url): string {
+        global $DB, $PAGE;
+        $course = $this->getDataGenerator()->create_course();
+        [$cm, $tileid] = $this->create_grid_with_tile($course, 'Tile content');
+        $DB->set_field('unilabeltype_grid_tile', 'url', $url, ['id' => $tileid]);
+        $unilabel = $DB->get_record('unilabel', ['id' => $cm->instance], '*', MUST_EXIST);
+        return (new content_type())->get_content($unilabel, $cm, $PAGE->get_renderer('mod_unilabel'));
+    }
+
+    #[\PHPUnit\Framework\Attributes\Group('baseline')]
+    /**
+     * A javascript url is not written into the tile link.
+     *
+     * @covers \unilabeltype_grid\content_type::get_content
+     */
+    public function test_get_content_drops_javascript_url(): void {
+        $this->resetAfterTest();
+
+        $content = $this->render_grid_with_url('javascript:0?0:alert(document.domain)');
+
+        $this->assertStringNotContainsString('javascript:', $content);
+    }
+
+    #[\PHPUnit\Framework\Attributes\Group('baseline')]
+    /**
+     * A regular url is rendered as escaped tile link.
+     *
+     * @covers \unilabeltype_grid\content_type::get_content
+     */
+    public function test_get_content_keeps_regular_url(): void {
+        $this->resetAfterTest();
+
+        $content = $this->render_grid_with_url('https://example.org/page?a=1&b=2');
+
+        $this->assertStringContainsString('href="https://example.org/page?a=1&amp;b=2"', $content);
+    }
 }
