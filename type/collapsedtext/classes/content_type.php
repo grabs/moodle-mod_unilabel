@@ -118,7 +118,7 @@ class content_type extends \mod_unilabel\content_type {
 
         $title = $this->get_title($unilabel);
         if ($applytextfilters) {
-            $title = format_text($title, FORMAT_HTML, ['noclean' => true]);
+            $title = format_text($title, FORMAT_HTML, ['context' => \context_module::instance($cm->id)]);
         }
 
         $content = [
