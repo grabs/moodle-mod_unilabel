@@ -102,4 +102,55 @@ final class content_type_test extends \advanced_testcase {
 
         $this->assertTrue(get_file_storage()->is_area_empty($context->id, 'unilabeltype_imageboard', 'image'));
     }
+
+    /**
+     * Render an imageboard with one image linking to the given url.
+     *
+     * @param string $url
+     * @return string
+     */
+    private function render_imageboard_with_url(string $url): string {
+        global $DB, $PAGE;
+        $course = $this->getDataGenerator()->create_course();
+        $unilabel = $this->getDataGenerator()->create_module('unilabel', [
+            'course' => $course->id,
+            'unilabeltype' => 'imageboard',
+        ]);
+        $imageboardid = $DB->insert_record('unilabeltype_imageboard', (object) [
+            'unilabelid' => $unilabel->id,
+            'canvaswidth' => 600,
+            'canvasheight' => 400,
+        ]);
+        $DB->insert_record('unilabeltype_imageboard_img', (object) [
+            'imageboardid' => $imageboardid,
+            'title' => 'Image',
+            'url' => $url,
+        ]);
+        $cm = get_coursemodule_from_instance('unilabel', $unilabel->id);
+        return (new content_type())->get_content($unilabel, $cm, $PAGE->get_renderer('mod_unilabel'));
+    }
+
+    /**
+     * A javascript url is not written into the image links.
+     */
+    #[\PHPUnit\Framework\Attributes\Group('baseline')]
+    public function test_get_content_drops_javascript_url(): void {
+        $this->resetAfterTest();
+
+        $content = $this->render_imageboard_with_url('javascript:1/1;alert(document.cookie)');
+
+        $this->assertStringNotContainsString('javascript:', $content);
+    }
+
+    /**
+     * A regular url is rendered as escaped image link.
+     */
+    #[\PHPUnit\Framework\Attributes\Group('baseline')]
+    public function test_get_content_keeps_regular_url(): void {
+        $this->resetAfterTest();
+
+        $content = $this->render_imageboard_with_url('https://example.org/page?a=1&b=2');
+
+        $this->assertStringContainsString('href="https://example.org/page?a=1&amp;b=2"', $content);
+    }
 }

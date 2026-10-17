@@ -56,7 +56,7 @@
                         </div>
                         <div{{^imageurl}} class="text-muted"{{/imageurl}}>
                             {{#url}}{{! If there is a url we add an a-tag here.
-                                    }}<a href="{{{.}}}"{{!
+                                    }}<a href="{{.}}"{{!
                                     }} title="{{#urltitle}}{{#str}}link_to, mod_unilabel, {{.}}{{/str}}{{/urltitle}}{{^urltitle}}{{#str}}link_to, mod_unilabel, {{url}}{{/str}}{{/urltitle}}"{{!
                                     }} aria-label="{{#urltitle}}{{#str}}link_to, mod_unilabel, {{.}}{{/str}}{{/urltitle}}{{^urltitle}}{{#str}}link_to, mod_unilabel, {{url}}{{/str}}{{/urltitle}}"{{!
                                     }}{{#newwindow}} target="_blank"{{/newwindow}}>{{!
