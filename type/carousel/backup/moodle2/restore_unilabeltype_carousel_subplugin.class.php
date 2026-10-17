@@ -61,6 +61,7 @@ class restore_unilabeltype_carousel_subplugin extends restore_subplugin {
         $oldid = $data->id;
 
         $data->unilabelid = $this->get_new_parentid('unilabel');
+        $data->height     = clean_param($data->height, PARAM_INT);
 
         $newitemid = $DB->insert_record('unilabeltype_carousel', $data);
         $this->set_mapping($this->get_namefor(), $oldid, $newitemid, true);

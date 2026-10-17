@@ -79,4 +79,52 @@ final class restore_test extends \advanced_testcase {
 
         $this->assertSame('https://example.org/page?a=1', $this->restore_slide_url('https://example.org/page?a=1'));
     }
+
+    /**
+     * Restore one carousel with the given height and return the stored height.
+     *
+     * @param string $height height from the backup
+     * @return string stored height
+     */
+    private function restore_carousel_height(string $height): string {
+        global $DB;
+        $step = $this->createMock(\restore_activity_structure_step::class);
+        $step->method('get_new_parentid')->willReturn(1);
+        $subplugin = new \restore_unilabeltype_carousel_subplugin('unilabeltype', 'carousel', $step);
+        $subplugin->process_unilabeltype_carousel([
+            'id' => 99,
+            'carouselinterval' => 5,
+            'height' => $height,
+            'background' => '#ffffff',
+            'captionstyle' => 'dark',
+            'captionwidth' => 0,
+            'showintro' => 0,
+            'usemobile' => 0,
+        ]);
+        return $DB->get_field('unilabeltype_carousel', 'height', ['unilabelid' => 1], MUST_EXIST);
+    }
+
+    #[Group('baseline')]
+    /**
+     * A height with markup from a manipulated backup is stored as number.
+     *
+     * @return void
+     */
+    public function test_restore_cleans_height(): void {
+        $this->resetAfterTest();
+
+        $this->assertSame('1', $this->restore_carousel_height('1"><img src=x onerror=alert(document.domain)>'));
+    }
+
+    #[Group('baseline')]
+    /**
+     * A regular height is restored unchanged.
+     *
+     * @return void
+     */
+    public function test_restore_keeps_regular_height(): void {
+        $this->resetAfterTest();
+
+        $this->assertSame('300', $this->restore_carousel_height('300'));
+    }
 }
