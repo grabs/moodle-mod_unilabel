@@ -61,6 +61,8 @@ class restore_unilabeltype_grid_subplugin extends restore_subplugin {
         $oldid = $data->id;
 
         $data->unilabelid = $this->get_new_parentid('unilabel');
+        $data->columns    = clean_param($data->columns, PARAM_INT);
+        $data->height     = clean_param($data->height, PARAM_INT);
 
         $newitemid = $DB->insert_record('unilabeltype_grid', $data);
         $this->set_mapping($this->get_namefor(), $oldid, $newitemid, true);
