@@ -265,6 +265,7 @@ function mod_unilabel_output_fragment_get_edit_element($args) {
     if ($context->contextlevel != CONTEXT_MODULE) {
         throw new \moodle_exception('Wrong contextlevel');
     }
+    require_capability('mod/unilabel:edit', $context);
 
     if (!$cm = get_coursemodule_from_id('unilabel', $context->instanceid)) {
         throw new \moodle_exception('Wrong contextid "' . $context->id . '"');
@@ -336,6 +337,7 @@ function mod_unilabel_output_fragment_get_tinyconfig($args) {
     if ($context->contextlevel != CONTEXT_MODULE) {
         throw new \moodle_exception('Wrong contextlevel');
     }
+    require_capability('mod/unilabel:edit', $context);
 
     [$course, $cm] = get_course_and_cm_from_cmid($context->instanceid, 'unilabel');
     if (!$unilabel = $DB->get_record('unilabel', ['id' => $cm->instance])) {
