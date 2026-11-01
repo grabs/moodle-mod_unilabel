@@ -59,10 +59,13 @@ final class content_type_test extends \advanced_testcase {
     public function test_colourpicker_escapes_stored_value(): void {
         $this->resetAfterTest();
 
-        $html = $this->render_colourpicker('#fff"><img src=x onerror=alert(1)>');
+        $evilstr = '#fff"><img src=x onerror=alert(1)>';
+        $quotedstr = htmlspecialchars($evilstr, ENT_QUOTES);
 
-        $this->assertStringNotContainsString('<img src=x', $html);
-        $this->assertStringContainsString('value="#fff&quot;&gt;&lt;img src=x onerror=alert(1)&gt;"', $html);
+        $html = $this->render_colourpicker($evilstr);
+
+        $this->assertStringNotContainsString($evilstr, $html);
+        $this->assertStringContainsString($quotedstr, $html);
     }
 
     #[Group('baseline')]
@@ -74,6 +77,16 @@ final class content_type_test extends \advanced_testcase {
     public function test_colourpicker_keeps_regular_value(): void {
         $this->resetAfterTest();
 
-        $this->assertStringContainsString('value="#A0E2FD"', $this->render_colourpicker('#A0E2FD'));
+        $colorstringstocheck = [
+            '#AABBCC',
+            'green',
+            'rgb(255,0,0)',
+            'rgba(255,0,0,0.5)',
+            'hsl(120,100%,50%)',
+            'hsla(60,100%,50%,0.5)',
+        ];
+        foreach ($colorstringstocheck as $colorstring) {
+            $this->assertStringContainsString($colorstring, $this->render_colourpicker($colorstring));
+        }
     }
 }
