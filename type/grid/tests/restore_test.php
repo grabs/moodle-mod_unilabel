@@ -68,7 +68,9 @@ final class restore_test extends \advanced_testcase {
     public function test_restore_cleans_height(): void {
         $this->resetAfterTest();
 
-        $this->assertSame('0', $this->restore_grid_height('0;width:0" onmouseover="alert(1)'));
+        // The evil height should be converted to the numeric "0".
+        $evilheight = '0;width:0" onmouseover="alert(1)';
+        $this->assertSame('0', $this->restore_grid_height($evilheight));
     }
 
     #[Group('baseline')]
@@ -80,6 +82,8 @@ final class restore_test extends \advanced_testcase {
     public function test_restore_keeps_regular_height(): void {
         $this->resetAfterTest();
 
-        $this->assertSame('300', $this->restore_grid_height('300'));
+        // The regular height should be kept as is.
+        $regularheight = '300';
+        $this->assertSame($regularheight, $this->restore_grid_height($regularheight));
     }
 }
