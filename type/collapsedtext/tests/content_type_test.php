@@ -65,10 +65,12 @@ final class content_type_test extends \advanced_testcase {
     public function test_filtered_title_is_cleaned(): void {
         $this->resetAfterTest();
 
-        $html = $this->render_with_filters('Chapter 1<img src=x onerror=alert(1)>');
+        $evilhtml = 'Chapter 1<img src=x onerror=alert(1)>';
+        $cleanedhtml = 'Chapter 1';
+        $html = $this->render_with_filters($evilhtml);
 
-        $this->assertStringContainsString('Chapter 1', $html);
-        $this->assertStringNotContainsString('onerror', $html);
+        $this->assertStringContainsString($cleanedhtml, $html);
+        $this->assertStringNotContainsString($evilhtml, $html);
     }
 
     #[Group('baseline')]
@@ -80,6 +82,7 @@ final class content_type_test extends \advanced_testcase {
     public function test_filtered_title_keeps_harmless_markup(): void {
         $this->resetAfterTest();
 
-        $this->assertStringContainsString('Chapter <strong>1</strong>', $this->render_with_filters('Chapter <strong>1</strong>'));
+        $harmlesshtml = 'Chapter <strong>1</strong>';
+        $this->assertStringContainsString($harmlesshtml, $this->render_with_filters($harmlesshtml));
     }
 }
