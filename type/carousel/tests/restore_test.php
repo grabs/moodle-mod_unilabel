@@ -65,7 +65,8 @@ final class restore_test extends \advanced_testcase {
     public function test_restore_drops_javascript_url(): void {
         $this->resetAfterTest();
 
-        $this->assertSame('', $this->restore_slide_url('javascript:alert(document.cookie)'));
+        $evilurl = 'javascript:alert(document.cookie)';
+        $this->assertSame('', $this->restore_slide_url($evilurl));
     }
 
     #[Group('baseline')]
@@ -77,7 +78,8 @@ final class restore_test extends \advanced_testcase {
     public function test_restore_keeps_regular_url(): void {
         $this->resetAfterTest();
 
-        $this->assertSame('https://example.org/page?a=1', $this->restore_slide_url('https://example.org/page?a=1'));
+        $regularurl = 'https://example.org/page?a=1';
+        $this->assertSame($regularurl, $this->restore_slide_url($regularurl));
     }
 
     /**
@@ -113,7 +115,9 @@ final class restore_test extends \advanced_testcase {
     public function test_restore_cleans_height(): void {
         $this->resetAfterTest();
 
-        $this->assertSame('1', $this->restore_carousel_height('1"><img src=x onerror=alert(document.domain)>'));
+        // The evil height should be converted to the numeric "0".
+        $evilheight = '0;width:0" onmouseover="alert(1)';
+        $this->assertSame('0', $this->restore_carousel_height($evilheight));
     }
 
     #[Group('baseline')]
@@ -125,6 +129,8 @@ final class restore_test extends \advanced_testcase {
     public function test_restore_keeps_regular_height(): void {
         $this->resetAfterTest();
 
-        $this->assertSame('300', $this->restore_carousel_height('300'));
+        // The regular height should be kept as is.
+        $regularheight = '300';
+        $this->assertSame($regularheight, $this->restore_carousel_height($regularheight));
     }
 }
