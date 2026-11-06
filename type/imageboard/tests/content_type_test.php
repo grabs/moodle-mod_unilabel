@@ -137,20 +137,31 @@ final class content_type_test extends \advanced_testcase {
     public function test_get_content_drops_javascript_url(): void {
         $this->resetAfterTest();
 
-        $content = $this->render_imageboard_with_url('javascript:1/1;alert(document.cookie)');
+        $evilurls = [
+            'javascript:0?0:alert(document.domain)',
+            'javascript:/*comment*/alert(1)',
+            'jav&#x0A;ascript:alert(1)',
+            '&#106;avascript:alert(1)',
+            'javascript&colon;alert(1)',
+            'JaVaScRiPt:alert(1)',
+        ];
 
-        $this->assertStringNotContainsString('javascript:', $content);
-    }
+        $regularurls = [
+            'https://example.org/page?a=1&b=2',
+            'https://example.org/page?a=1&b=2#Anchor',
+        ];
 
-    /**
-     * A regular url is rendered as escaped image link.
-     */
-    #[\PHPUnit\Framework\Attributes\Group('baseline')]
-    public function test_get_content_keeps_regular_url(): void {
-        $this->resetAfterTest();
+        foreach ($evilurls as $evilurl) {
+            $encodedevilurl = htmlspecialchars($evilurl);
+            $content = $this->render_imageboard_with_url($evilurl);
+            $this->assertStringNotContainsString($evilurl, $content);
+            $this->assertStringNotContainsString($encodedevilurl, $content);
+        }
 
-        $content = $this->render_imageboard_with_url('https://example.org/page?a=1&b=2');
-
-        $this->assertStringContainsString('href="https://example.org/page?a=1&amp;b=2"', $content);
+        foreach ($regularurls as $regularurl) {
+            $encodedregularurl = htmlspecialchars($regularurl);
+            $content = $this->render_imageboard_with_url($regularurl);
+            $this->assertStringContainsString($encodedregularurl, $content);
+        }
     }
 }

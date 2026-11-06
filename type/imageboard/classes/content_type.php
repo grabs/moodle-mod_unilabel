@@ -712,9 +712,10 @@ class content_type extends \mod_unilabel\content_type {
                 $image->nr = $index;
                 $image->titleplain = format_string($image->title);
                 $image->title = format_text($image->title);
+
                 // Only http(s) and root-relative links may reach the href attribute.
-                $url = strtolower($image->url ?? '');
-                if (!str_starts_with($url, 'https://') && !str_starts_with($url, 'http://') && !str_starts_with($url, '/')) {
+                $urlobj = new \moodle_url($image->url);
+                if (!in_array(strtolower($urlobj->get_scheme()), ['http', 'https'])) {
                     $image->url = '';
                 }
                 $index++;
