@@ -39,12 +39,13 @@ final class restore_test extends \advanced_testcase {
      * Restore one grid with the given height and return the stored height.
      *
      * @param string $height height from the backup
+     * @param int $unilabelid id of the restored unilabel
      * @return string stored height
      */
-    private function restore_grid_height(string $height): string {
+    private function restore_grid_height(string $height, int $unilabelid): string {
         global $DB;
         $step = $this->createMock(\restore_activity_structure_step::class);
-        $step->method('get_new_parentid')->willReturn(1);
+        $step->method('get_new_parentid')->willReturn($unilabelid);
         $subplugin = new \restore_unilabeltype_grid_subplugin('unilabeltype', 'grid', $step);
         $subplugin->process_unilabeltype_grid([
             'id' => 99,
@@ -56,7 +57,7 @@ final class restore_test extends \advanced_testcase {
             'usemobile' => 0,
             'useajax' => 0,
         ]);
-        return $DB->get_field('unilabeltype_grid', 'height', ['unilabelid' => 1], MUST_EXIST);
+        return $DB->get_field('unilabeltype_grid', 'height', ['unilabelid' => $unilabelid], MUST_EXIST);
     }
 
     #[Group('baseline')]
@@ -70,20 +71,10 @@ final class restore_test extends \advanced_testcase {
 
         // The evil height should be converted to the numeric "0".
         $evilheight = '0;width:0" onmouseover="alert(1)';
-        $this->assertSame('0', $this->restore_grid_height($evilheight));
-    }
-
-    #[Group('baseline')]
-    /**
-     * A regular height is restored unchanged.
-     *
-     * @return void
-     */
-    public function test_restore_keeps_regular_height(): void {
-        $this->resetAfterTest();
+        $this->assertSame('0', $this->restore_grid_height($evilheight, 1));
 
         // The regular height should be kept as is.
         $regularheight = '300';
-        $this->assertSame($regularheight, $this->restore_grid_height($regularheight));
+        $this->assertSame($regularheight, $this->restore_grid_height($regularheight, 2));
     }
 }
