@@ -79,6 +79,10 @@ class restore_unilabeltype_carousel_subplugin extends restore_subplugin {
         $oldid            = $data->id;
         $data->carouselid = $this->get_new_parentid($this->get_namefor());
         $data->url        = clean_param($data->url ?? '', PARAM_URL);
+        $urlobj = new \moodle_url($data->url);
+        if (!in_array(strtolower($urlobj->get_scheme()), ['http', 'https'])) {
+            $data->url = '';
+        }
         $data->urltitle   = clean_param($data->urltitle ?? '', PARAM_TEXT);
         $newitemid        = $DB->insert_record('unilabeltype_carousel_slide', $data);
         $this->set_mapping($this->get_namefor('slide'), $oldid, $newitemid, true);

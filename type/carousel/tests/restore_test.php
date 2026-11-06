@@ -39,12 +39,13 @@ final class restore_test extends \advanced_testcase {
      * Restore one slide with the given url and return the stored url.
      *
      * @param string $url url from the backup
+     * @param int $carouselid id of the restored carousel
      * @return string stored url
      */
-    private function restore_slide_url(string $url): string {
+    private function restore_slide_url(string $url, int $carouselid): string {
         global $DB;
         $step = $this->createMock(\restore_activity_structure_step::class);
-        $step->method('get_new_parentid')->willReturn(1);
+        $step->method('get_new_parentid')->willReturn($carouselid);
         $subplugin = new \restore_unilabeltype_carousel_subplugin('unilabeltype', 'carousel', $step);
         $subplugin->process_unilabeltype_carousel_slide([
             'id' => 99,
@@ -53,7 +54,7 @@ final class restore_test extends \advanced_testcase {
             'newwindow' => 0,
             'caption' => '',
         ]);
-        return $DB->get_field('unilabeltype_carousel_slide', 'url', ['carouselid' => 1], MUST_EXIST);
+        return $DB->get_field('unilabeltype_carousel_slide', 'url', ['carouselid' => $carouselid], MUST_EXIST);
     }
 
     #[Group('baseline')]
@@ -62,36 +63,43 @@ final class restore_test extends \advanced_testcase {
      *
      * @return void
      */
-    public function test_restore_drops_javascript_url(): void {
+    public function test_restore_check_url(): void {
         $this->resetAfterTest();
 
-        $evilurl = 'javascript:alert(document.cookie)';
-        $this->assertSame('', $this->restore_slide_url($evilurl));
-    }
-
-    #[Group('baseline')]
-    /**
-     * A regular url is restored unchanged.
-     *
-     * @return void
-     */
-    public function test_restore_keeps_regular_url(): void {
-        $this->resetAfterTest();
-
-        $regularurl = 'https://example.org/page?a=1';
-        $this->assertSame($regularurl, $this->restore_slide_url($regularurl));
+        $evilurls = [
+            'javascript:0?0:alert(document.domain)',
+            'javascript:/*comment*/alert(1)',
+            'jav&#x0A;ascript:alert(1)',
+            '&#106;avascript:alert(1)',
+            'javascript&colon;alert(1)',
+            'JaVaScRiPt:alert(1)',
+        ];
+        $regularurls = [
+            'https://example.org/page?a=1',
+            'https://example.org/page?a=1&b=2#Anchor',
+        ];
+        $counter = 1;
+        foreach ($evilurls as $evilurl) {
+            $this->assertSame('', $this->restore_slide_url($evilurl, $counter));
+            $counter++;
+        }
+        foreach ($regularurls as $regularurl) {
+            $this->assertSame($regularurl, $this->restore_slide_url($regularurl, $counter));
+            $counter++;
+        }
     }
 
     /**
      * Restore one carousel with the given height and return the stored height.
      *
      * @param string $height height from the backup
+     * @param int $unilabelid id of the restored unilabel
      * @return string stored height
      */
-    private function restore_carousel_height(string $height): string {
+    private function restore_carousel_height(string $height, int $unilabelid): string {
         global $DB;
         $step = $this->createMock(\restore_activity_structure_step::class);
-        $step->method('get_new_parentid')->willReturn(1);
+        $step->method('get_new_parentid')->willReturn($unilabelid);
         $subplugin = new \restore_unilabeltype_carousel_subplugin('unilabeltype', 'carousel', $step);
         $subplugin->process_unilabeltype_carousel([
             'id' => 99,
@@ -103,7 +111,7 @@ final class restore_test extends \advanced_testcase {
             'showintro' => 0,
             'usemobile' => 0,
         ]);
-        return $DB->get_field('unilabeltype_carousel', 'height', ['unilabelid' => 1], MUST_EXIST);
+        return $DB->get_field('unilabeltype_carousel', 'height', ['unilabelid' => $unilabelid], MUST_EXIST);
     }
 
     #[Group('baseline')]
@@ -117,20 +125,9 @@ final class restore_test extends \advanced_testcase {
 
         // The evil height should be converted to the numeric "0".
         $evilheight = '0;width:0" onmouseover="alert(1)';
-        $this->assertSame('0', $this->restore_carousel_height($evilheight));
-    }
+        $this->assertSame('0', $this->restore_carousel_height($evilheight, 1));
 
-    #[Group('baseline')]
-    /**
-     * A regular height is restored unchanged.
-     *
-     * @return void
-     */
-    public function test_restore_keeps_regular_height(): void {
-        $this->resetAfterTest();
-
-        // The regular height should be kept as is.
         $regularheight = '300';
-        $this->assertSame($regularheight, $this->restore_carousel_height($regularheight));
+        $this->assertSame($regularheight, $this->restore_carousel_height($regularheight, 2));
     }
 }
