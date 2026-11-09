@@ -1,5 +1,15 @@
 ## Release notes
 
+### Release v5.3.3
+* MBS-11482: Check edit capability in fragment callbacks
+* Check access to the teased courses in the course teaser (#84)
+* MBS-11524: Escape imageboard image url and allow only http(s) and root-relative links
+* MBS-11523: Escape grid tile url and allow only http(s) and root-relative links
+* MBS-11520: Clean restored carousel height and escape it in the template
+* MBS-11522: Clean restored grid height and escape it in the template
+* MBS-11521: Clean the collapsed text title when text filters are applied
+* MBS-11481: Escape the stored colour in the colour picker template
+
 ### Release v5.3.2
 * MBS-11552: Fix bootstrap and moodle modal interactions
 
